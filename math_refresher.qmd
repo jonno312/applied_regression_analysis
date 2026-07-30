@@ -1,0 +1,336 @@
+---
+title: "Math Refresher"
+format: html
+---
+
+Doing statistics necessarily requires doing some mathematics,
+even if that mathematics is identifying which of two numbers is larger
+than the other.
+In this section, I've collected those math skills that I think
+are most important for understanding the material that follows.
+
+## Equations
+
+Researchers often summarize their regression into a single equation;
+it's a compact way to represent the outcome, the covariates,
+and how they relate to each other.
+Also, interpreting coefficients requires some manipulation
+of equations.
+So, it's important that we are on the same page about how they work.
+
+An equals sign indicates that the two sides of the equation are exactly
+equal to each other:
+$$
+a = a \text{.}
+$$
+This implies that if we have an equation, and we do the same exact thing
+to both sides, the equality will still be true.
+For example,
+$$
+a + 3 = a + 3 \text{.}
+$$
+We started from the same place, so if we move the same distance in the same
+direction,
+we should end up in the same place.
+
+Of course, this applies to other operations besides addition:
+$$
+\begin{align*}
+3a &= 3a \\
+a/3 &= a/3 \\
+a - 3 &= a - 3 \text{.}
+\end{align*}
+$$
+
+## Exponents
+
+### Definition
+
+An exponent indicates how many times you should multiply something by itself.
+For example,
+$$
+a^3 = a \times a \times a \text{.}
+$$
+
+### Properties
+
+If you multiply two terms with the same base, their exponents add:
+$$
+\begin{align*}
+a^3 a^2 &= (a \times a \times a)(a \times a) \\
+&= a \times a \times a \times a \times a \\
+&= a^5 \\
+&= a^{3+2} \text{.}
+\end{align*}
+$$
+In the example above, $a$ is the base.
+For the first term, $a^3$, the exponent is $3$;
+for the second term, $a^2$, the exponent is $2$.
+
+If you divide two terms with the same base, the exponents subtract:
+$$
+\begin{align*}
+\frac{a^3}{a^2} &= \frac{a \times a \times a}{a \times a} \\
+&= a \\
+&= a^1 \\
+&= a^{3 - 2} \text{.}
+\end{align*}
+$$
+Look at what is implied by this fact:
+$$
+\begin{align*}
+a^{-3} &= a^{2-5} \\
+&= \frac{a^2}{a^5} \\
+&= \frac{a \times a}{a\times a \times a \times a \times a} \\
+&= \frac{1}{a\times a\times a} \\
+&= \frac{1}{a^3} \text{.} \\
+\end{align*}
+$$
+
+
+In general,
+$$
+a^{-b} = \frac{1}{a^b} \text{.}
+$$
+
+The next property is one that I see a lot of students get confused about.
+It says that
+$$
+\left(a^b\right)^c = a^{bc} \text{.}
+$$
+This is easier to see with an example:
+$$
+\begin{align*}
+\left(a^3\right)^2 &= a^3 \times a^3 \\
+&= (a\times a\times a) \times (a \times a \times a) \\
+&= a\times a\times a \times a \times a \times a \\
+&= a^6 \\
+&= a^{3\times 2} \text{.}
+\end{align*}
+$$
+
+### A Special Base
+
+A very common base in statistics is the special number $e$,
+which is approximately equal to 2.71828.
+It's like $\pi$ in that it is really useful in mathematics
+and can't be represented as a ratio of two whole numbers.
+We will see $e$ over and over again in this class.
+Sometimes we use the notation $\exp(b)$ instead of $e^b$
+to make the exponent easier to read.
+For example, we will see things like this quite a bit:
+$$
+e^{a+bx} = \exp(a+bx) \text{.}
+$$
+
+
+## Logarithms
+
+### Relationship to Exponentiation
+
+The logarithm is the opposite of the exponent.
+In general,
+$$
+\log_a c = b
+$$
+is exactly the same thing as
+$$
+a^b = c \text{.}
+$$
+This means that taking a logarithm "undoes" or "reverses" exponentiation.
+If we start with $a^b = c$ and take $\log_a$ of both sides, we get
+$$
+\begin{align*}
+a^b &= c \\
+\log_a a^b &= \log_a c \\
+b &= \log_a c \text{.}
+\end{align*}
+$$
+Why is this true?
+The expression $\log_a a^b$ is asking,
+"$a$ to what power equals $a^b$?"
+The answer to that question is $b$.
+
+It's also true that exponentiation undoes taking a logarithm.
+The expression $\log_a c$ is asking the question,
+"$a$ to what power equals $c$?"
+Whatever that power is, if we raise $a$ to it, we'll get $c$.
+So,
+$$
+a^{\log_a c} = c \text{.}
+$$
+
+
+
+### A Special Base
+
+You may have learned that $\log$ without a base should be interpreted
+as log base 10.
+Unfortunately, this is not how statisticians do things.
+We use log with base $e$ so often that for us,
+$\log$ with no base means $\log_e$.
+You may have learned that log with base $e$ is the natural log,
+and is written $\ln$.
+For whatever reason, statisticians use $\log$ rather than $\ln$.
+
+Just to drive that point home, for a statistican,
+$\log e = 1$, since $e^1 = e$.
+In this textbook, if I want to use log with base 10,
+I'll explicitly note it as $\log_{10}$.
+
+### Properties
+
+Similar to exponents, logarithms (or logs) have special properties.
+The properties hold for all bases, but for notational simplicity
+I'm just going to use log with base $e$.
+
+The first property is that
+$$
+\log (ab) = \log a + \log b \text{.}
+$$
+Why is this true?
+Suppose
+$$
+\begin{align*}
+\log(ab) &= x \\
+\log a &= y \\
+\log b &= z \text{.}
+\end{align*}
+$$
+This is equivalent to
+$$
+\begin{align*}
+e^x &= ab \\
+e^y &= a \\
+e^z &= b \text{.}
+\end{align*}
+$$
+So, we can say
+$$
+\begin{align*}
+e^x &= e^y e^z \\
+e^x &= e^{y+z} \\
+\log e^x &= \log e^{y+z} \\
+x &= y + z \\
+\log(ab) &= \log a + \log b \text{.}
+\end{align*}
+$$
+
+The second property is that
+$$
+a \log b = \log b^a \text{.}
+$$
+Why is this true?
+Define
+$$
+\begin{align*}
+a \log b &= x \\
+\log b^a &= y \text{.}
+\end{align*}
+$$
+The first implies
+$$
+\begin{align*}
+\log b &= \frac{x}{a} \\
+\exp\left(\frac{x}{a}\right) &= b \\
+\end{align*}
+$$
+and the second implies $e^y = b^a$.
+We can combine these results to get
+$$
+\begin{align*}
+e^y &= \exp\left(\frac{x}{a}\right)^a \\
+e^y &= \exp\left(a\frac{x}{a}\right) \\
+e^y &= e^x \\
+y &= x \\
+\log b^a &= a \log b \text{.}
+\end{align*}
+$$
+
+
+## Intercept and Slope
+
+We will talk about intercepts and slopes over and over again in this course.
+So, it's important to start with a good foundation.
+
+Consider the line $y = 2x + 4$:
+```{r}
+x_temp <- seq(from = -3,
+              to = 3,
+              length.out = 101)
+y_temp <- 2 * x_temp + 4
+plot(x = x_temp,
+     y = y_temp,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "y = 2x + 4",
+     col = "blue")
+abline(h = 0)
+abline(v = 0)
+```
+
+The intercept is 4. This means that when $x = 0$, $y = 4$:
+```{r}
+plot(x = x_temp,
+     y = y_temp,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "y = 2x + 4",
+     col = "blue")
+abline(h = 0)
+abline(v = 0)
+lines(x = c(0,0),
+      y = c(0,4),
+      col = "red",
+      lty = 2)
+lines(x = c(-3,0),
+      y = c(4,4),
+      col = "red",
+      lty = 2)
+```
+
+The slope is 2. This means that for each one-unit increase in $x$,
+$y$ increases by two units.
+```{r}
+plot(x = x_temp,
+     y = y_temp,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "y = 2x + 4",
+     col = "blue")
+abline(h = 0)
+abline(v = 0)
+lines(x = c(0,0),
+      y = c(0,4),
+      col = "red",
+      lty = 2)
+lines(x = c(-3,0),
+      y = c(4,4),
+      col = "red",
+      lty = 2)
+lines(x = c(1,1),
+      y = c(0,6),
+      col = "red",
+      lty = 2)
+lines(x = c(-3,1),
+      y = c(6,6),
+      col = "red",
+      lty = 2)
+```
+
+## Problems
+
+
+
+
+
+
+
+
+
+
+
+
