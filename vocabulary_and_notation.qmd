@@ -1,0 +1,144 @@
+---
+title: "Vocabulary and Notation"
+format: html
+---
+
+If we're going to talk about regression, we're going to need a shared
+language.
+Let's cover the most fundamental vocabulary and notation now;
+as we go through the course, we'll add to this list.
+
+## Random vs. Fixed
+
+If I write the number "1" on a golf ball,
+that's an example of something that's fixed.
+Five minutes later, I can be certain that the number on the golf ball
+will still be "1".
+If I write the numbers "1" through "1,000" on 1,000 golf balls,
+put those golf balls in a large basket,
+shake up the basket so the golf balls mix,
+and then select a golf ball from the basket,
+that's an example of something that's random.
+Before pulling the golf ball, I can't predict with perfect certainty
+which number I'll see.
+
+This might seem like a very obvious point,
+but in my experience teaching statistics,
+I've noticed two things:
+
+- It's very easy to get confused about whether a quantity is random or fixed.
+- It's very important to  understand which quantities are random and which
+are fixed.
+
+As we go, I'll try to point out which quantities are random and which are
+fixed, especially when making a mistake would cause problems down the line.
+
+Before moving on, let's consider an example that is less contrived.
+Suppose you want to measure your resting heart rate in beats per minute.
+So, every morning for two weeks in a row, you measure your heart rate
+the moment you wake up in the morning.
+In this example, we might assume that your resting heart rate is some fixed
+value.
+In contrast, the number of beats per minute that you measure on any given day
+is random.
+On Monday, we can't predict with perfect certainty what your heart rate
+will be the next morning;
+there will probably be some natural variation from day to day.
+
+## Observed vs. Unobserved
+
+The heart of statistics is making inferences about unobserved quantities
+based on observed data.
+In the heart rate example from the previous section,
+we assume there's a fixed, unobserved, true resting heart rate.
+We don't see it, but we want to know about it,
+so we collect data.
+The daily measurements are observed and random.
+
+Here's another example:
+Suppose we are conducting a randomized clinical trial of a new treatment
+for cancer.
+We recruit 200 people with the cancer of interest
+and randomly assign half to the drug;
+the other half gets a placebo.
+For all participants, we measure the time until death.
+We want to measure the effect of the drug,
+i.e., how much longer, on average, people live on the drug versus on placebo.
+This difference is unobserved and fixed.
+What we observe are the individual survival times of the participants
+in the study.
+
+In this class, it's very common that we will make inferences
+about fixed, unobserved quantities based on random, observed quantities.
+If you take a course in longitudinal data analysis
+or Bayesian statistics,
+you will spend a lot of time working with random, unobserved quantities.
+
+## Probability
+
+In this class, we will interpret probability as the long-run relative
+frequency of an event.
+For example, when we say that the probability of a coin landing heads is 0.5,
+we mean that if we were to flip the coin infinitely many times,
+half of the flips would land heads.
+Similarly, when we say that the probability of a die landing with the 1
+face-up is one-sixth,
+we mean that if we were to roll the die infinitely many times,
+one-sixth of the rolls would land with the 1 face-up.
+
+My guess is that this matches your intuition, so I won't belabor the point.
+What's more important is the notation.
+We use a capital $P(\text{event})$ to indicate the probability of an event.
+So, $P(\text{rain}) = 0.2$ means that there is a 20% chance of rain.
+
+## Conditional Probability
+
+We are often concerned about the probability of an event given that some
+other event has occurred.
+For example, the overall probability of rain tomorrow might be 20%,
+but the probability of rain tomorrow might be higher if it rained today.
+We would represent the probability of rain tomorrow given that it rained
+today by $P(\text{rain tomorrow}|\text{rain today})$.
+So, if $P(\text{rain tomorrow}|\text{rain today}) = 0.4$
+and $P(\text{rain tomorrow}|\text{no rain today}) = 0.1$,
+then the probability of rain tomorrow given rain today is 40%
+and the probability of rain tomorrow given no rain today is 10%.
+
+
+## Random Variable
+
+If I flip a coin, there are two possible outcomes: heads or tails.
+In practice, it's often easier to work with numerical outcomes
+than words.
+So, we might assign the value 1 to heads and the value 0 to tails.
+Similarly, in survival analysis, we might assign a value of 1 to death
+and a value of 0 to survival.
+
+We use the term "random variable" to refer to a real number that is the result
+of a random process.
+We usually denote random variables with capital letters.
+So, I might say that
+$$
+Y = \begin{cases}
+1 & \text{rain tomorrow} \\
+0 & \text{no rain tomorrow.}
+\end{cases}
+$$
+Then, I could represent the probability of rain tomorrow as either
+$P(\text{rain tomorrow})$ or $P(Y = 1)$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
