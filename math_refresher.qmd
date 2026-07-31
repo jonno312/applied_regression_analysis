@@ -323,6 +323,64 @@ lines(x = c(-3,1),
 
 ## Problems
 
+### Problem 1
+
+Solve for $a$:
+$$
+3a + 5 = 17 \text{.}
+$$
+
+Solution:
+$$
+\begin{align*}
+3a + 5 &= 17 \\
+3a &= 12 \\
+a &= 4 \text{.}
+\end{align*}
+$$
+
+### Problem 2
+
+Simplify this expression: $a^2 a^{-3} a^4 a^{-1} a$.
+
+Solution:
+$$
+\begin{align*}
+a^2 a^{-3} a^4 a^{-1} a &= a^{2 - 3 + 4 - 1 + 1} \\
+&= a^3 \text{.}
+\end{align*}
+$$
+
+### Problem 3
+
+Simplify this expression:
+$$
+\frac{\exp\left(\beta_0 + \beta_1(x+1)\right)}{\exp\left(\beta_0 + \beta_1x\right)} \text{.}
+$$
+
+Solution:
+$$
+\begin{align*}
+\frac{\exp\left(\beta_0 + \beta_1(x+1)\right)}{\exp\left(\beta_0 + \beta_1x\right)} &= \frac{\exp\left(\beta_0 + \beta_1x + \beta_1\right)}{\exp\left(\beta_0 + \beta_1x\right)} \\
+&= \exp\left(\beta_0 - \beta_0 + \beta_1x - \beta_1 x + \beta_1\right) \\
+&= \exp\left(\beta_1\right) \text{.}
+\end{align*}
+$$
+
+
+### Problem 4
+
+Solve for $a$: $40 \log_{13} 13 = a$.
+
+Solution:
+$$
+\begin{align*}
+40 \log_{13} 13 &= a \\
+\log_{13} 13^{40} &= a \\
+13^{40} &= 13^a \\
+40 &= a \text{.}
+\end{align*}
+$$
 
 
 
