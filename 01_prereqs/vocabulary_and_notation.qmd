@@ -74,35 +74,7 @@ If you take a course in longitudinal data analysis
 or Bayesian statistics,
 you will spend a lot of time working with random, unobserved quantities.
 
-## Probability
 
-In this class, we will interpret probability as the long-run relative
-frequency of an event.
-For example, when we say that the probability of a coin landing heads is 0.5,
-we mean that if we were to flip the coin infinitely many times,
-half of the flips would land heads.
-Similarly, when we say that the probability of a die landing with the 1
-face-up is one-sixth,
-we mean that if we were to roll the die infinitely many times,
-one-sixth of the rolls would land with the 1 face-up.
-
-My guess is that this matches your intuition, so I won't belabor the point.
-What's more important is the notation.
-We use a capital $P(\text{event})$ to indicate the probability of an event.
-So, $P(\text{rain}) = 0.2$ means that there is a 20% chance of rain.
-
-## Conditional Probability
-
-We are often concerned about the probability of an event given that some
-other event has occurred.
-For example, the overall probability of rain tomorrow might be 20%,
-but the probability of rain tomorrow might be higher if it rained today.
-We would represent the probability of rain tomorrow given that it rained
-today by $P(\text{rain tomorrow}|\text{rain today})$.
-So, if $P(\text{rain tomorrow}|\text{rain today}) = 0.4$
-and $P(\text{rain tomorrow}|\text{no rain today}) = 0.1$,
-then the probability of rain tomorrow given rain today is 40%
-and the probability of rain tomorrow given no rain today is 10%.
 
 
 ## Random Variable
