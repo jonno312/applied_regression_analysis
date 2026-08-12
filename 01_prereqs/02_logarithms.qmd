@@ -1,0 +1,216 @@
+---
+title: "Logarithms"
+format: html
+---
+
+## Learning Objective
+
+Manipulate logarithms.
+
+
+## Lesson
+
+### Relationship to Exponentiation
+
+The logarithm is the opposite of the exponent.
+In general,
+$$
+\log_a c = b
+$$
+is exactly the same thing as
+$$
+a^b = c \text{.}
+$$
+The expression $\log_a c$ answers the question,
+"$a$ to what power equals $c$?"
+
+This means that taking a logarithm "undoes" or "reverses" exponentiation.
+If we start with $a^b = c$ and take $\log_a$ of both sides, we get
+$$
+\begin{align*}
+a^b &= c \\
+\log_a a^b &= \log_a c \\
+b &= \log_a c \text{.}
+\end{align*}
+$$
+Why is this true?
+The expression $\log_a a^b$ is asking,
+"$a$ to what power equals $a^b$?"
+The answer to that question is $b$.
+
+It's also true that exponentiation undoes taking a logarithm.
+The expression $\log_a c$ is asking the question,
+"$a$ to what power equals $c$?"
+Whatever that power is, if we raise $a$ to it, we'll get $c$.
+So,
+$$
+a^{\log_a c} = c \text{.}
+$$
+This might be more clear with an example.
+Consider
+$$
+10^{\log_{10} 2} \text{.}
+$$
+I don't know what $\log_{10} 2$ is.
+I know it's the value that we have to raise 10 to in order to get 2,
+but I don't know what number that is.
+I'm just going to call it $b$.
+So,
+$$
+b = \log_{10} 2 \text{.}
+$$
+This means that $10^b = 2$.
+Now, I'm trying to find $10^{\log_{10} 2}$.
+I'm just going to replace the exponent with $b$:
+$$
+10^{\log_{10} 2} = 10^b \text{.}
+$$
+But I know that $10^b = 2$!
+So, 
+$$
+10^{\log_{10} 2} = 2 \text{.}
+$$
+
+
+### A Special Base
+
+You may have learned that $\log$ without a base should be interpreted
+as log base 10.
+Unfortunately, this is not how statisticians do things.
+We use log with base $e$ so often that for us,
+$\log$ with no base means $\log_e$.
+You may have learned that log with base $e$ is the natural log,
+and is written $\ln$.
+For whatever reason, statisticians use $\log$ rather than $\ln$.
+
+Just to drive that point home, for a statistican,
+$\log e = 1$, since $e^1 = e$.
+In this textbook, if I want to use log with base 10,
+I'll explicitly note it as $\log_{10}$.
+
+### Properties
+
+Similar to exponents, logarithms (or logs) have special properties.
+The properties hold for all bases, but for notational simplicity
+I'm just going to use log with base $e$.
+
+The first property is that
+$$
+\log (ab) = \log a + \log b \text{.}
+$$
+
+The second property is that
+$$
+a \log b = \log b^a \text{.}
+$$
+
+
+
+### Arguments for Why the Properties Are True
+
+If you need convincing that the properties are true,
+this section has arguments why.
+
+#### Property 1
+
+Suppose
+$$
+\begin{align*}
+\log(ab) &= x \\
+\log a &= y \\
+\log b &= z \text{.}
+\end{align*}
+$$
+This is equivalent to
+$$
+\begin{align*}
+e^x &= ab \\
+e^y &= a \\
+e^z &= b \text{.}
+\end{align*}
+$$
+So, we can say
+$$
+\begin{align*}
+e^x &= e^y e^z \\
+e^x &= e^{y+z} \\
+\log e^x &= \log e^{y+z} \\
+x &= y + z \\
+\log(ab) &= \log a + \log b \text{.}
+\end{align*}
+$$
+
+#### Property 2
+
+Define
+$$
+\begin{align*}
+a \log b &= x \\
+\log b^a &= y \text{.}
+\end{align*}
+$$
+The first implies
+$$
+\begin{align*}
+\log b &= \frac{x}{a} \\
+\exp\left(\frac{x}{a}\right) &= b \\
+\end{align*}
+$$
+and the second implies $e^y = b^a$.
+We can combine these results to get
+$$
+\begin{align*}
+e^y &= \exp\left(\frac{x}{a}\right)^a \\
+e^y &= \exp\left(a\frac{x}{a}\right) \\
+e^y &= e^x \\
+y &= x \\
+\log b^a &= a \log b \text{.}
+\end{align*}
+$$
+
+## Problems
+
+### Problem 1
+
+Solve for $a$:
+$$
+40 \log_{13} 13 = a \text{.}
+$$
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+40 \log_{13} 13 &= a \\
+\log_{13} 13^{40} &= a \\
+13^{40} &= 13^a \\
+40 &= a
+\end{align*}
+$$
+
+:::
+
+### Problem 2
+
+Solve for $a$:
+$$
+a = \log_{42} 3.5 + 2 \log_{42} 2 + \log_{42} 3 \text{.}
+$$
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+a &= \log_{42} 3.5 + 2 \log_{42} 2 + \log_{42} 3 \\
+&= \log_{42} 3.5 + \log_{42} 2^2 + \log_{42} 3 \\
+&= \log_{42} \left(3.5 \times 2^2 \times 3\right) \\
+&= \log_{42} 42 \\
+&= 1
+\end{align*}
+$$
+
+:::
+
+
+
+
