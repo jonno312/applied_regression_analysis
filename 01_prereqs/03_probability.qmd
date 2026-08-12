@@ -1,0 +1,116 @@
+---
+title: "Probability"
+format: html
+---
+
+## Learning Objectives
+
+- Compute probabilities and conditional probabilities.
+- Use the notation for probabilities and conditional probabilities.
+
+
+## Lesson
+
+### Probability
+
+In this class, we will interpret probability as the long-run relative
+frequency of an event.
+For example, when we say that the probability of a coin landing heads is 0.5,
+we mean that if we were to flip the coin infinitely many times,
+half of the flips would land heads.
+Similarly, when we say that the probability of a die landing with the 1
+face-up is one-sixth,
+we mean that if we were to roll the die infinitely many times,
+one-sixth of the rolls would land with the 1 face-up.
+
+My guess is that this matches your intuition, so I won't belabor the point.
+What's more important is the notation.
+We use a capital $P(\text{event})$ to indicate the probability of an event.
+So, $P(\text{rain}) = 0.2$ means that there is a 20% chance of rain.
+
+### Conditional Probability
+
+We are often concerned about the probability of an event given that some
+other event has occurred.
+For example, the overall probability of rain tomorrow might be 20%,
+but the probability of rain tomorrow might be higher if it rained today.
+We would represent the probability of rain tomorrow given that it rained
+today by $P(\text{rain tomorrow}|\text{rain today})$.
+So, if $P(\text{rain tomorrow}|\text{rain today}) = 0.4$
+and $P(\text{rain tomorrow}|\text{no rain today}) = 0.1$,
+then the probability of rain tomorrow given rain today is 40%
+and the probability of rain tomorrow given no rain today is 10%.
+
+## Problems
+
+### Problem 1
+
+What is wrong with the expression $P(3)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$P(3)$ is "the probability of 3", which doesn't make sense.
+3 is a number, not an event.
+
+:::
+
+### Problem 2
+
+The table below displays data for 100 people at bar.
+Most of the patrons are over 21, but a few people under 21 have managed
+to sneak in.
+
+| | Alcoholic Beverage | Non-Alcoholic Beverage | Total |
+|:-|-:|-:|-:|
+| Over 21 | 45 | 45 | 90 |
+| Under 21 | 9 | 1 | 10 |
+| Total | 54 | 46 | 100 |
+
+#### Part (a)
+
+What is $P\left(\text{Over 21}\right)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+P\left(\text{Over 21}\right) &= \frac{90}{100} \\
+&= 0.9
+\end{align*}
+$$
+
+:::
+
+#### Part (b)
+
+What is $P\left(\text{Alcoholic Beverage}\middle|\text{Under 21}\right)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+P\left(\text{Alcoholic Beverage}\middle|\text{Under 21}\right) &= \frac{9}{10} \\
+&= 0.9
+\end{align*}
+$$
+
+:::
+
+#### Part (c)
+
+What is $P\left(\text{Under 21}\middle|\text{Alcoholic Beverage}\right)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+P\left(\text{Under 21}\middle|\text{Alcoholic Beverage}\right) &= \frac{9}{54} \\
+&\approx 0.167
+\end{align*}
+$$
+
+:::
+
+
+
+
