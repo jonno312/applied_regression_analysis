@@ -1,0 +1,140 @@
+---
+title: "Exponents"
+format: html
+---
+
+## Learning Objective
+
+Manipulate exponents.
+
+## Lesson
+
+### Definition
+
+An exponent indicates how many times you should multiply something by itself.
+For example,
+$$
+a^3 = a \times a \times a \text{.}
+$$
+
+### Properties
+
+If you multiply two terms with the same base, their exponents add:
+$$
+\begin{align*}
+a^3 a^2 &= (a \times a \times a)(a \times a) \\
+&= a \times a \times a \times a \times a \\
+&= a^5 \\
+&= a^{3+2} \text{.}
+\end{align*}
+$$
+In the example above, $a$ is the base.
+For the first term, $a^3$, the exponent is $3$;
+for the second term, $a^2$, the exponent is $2$.
+
+If you divide two terms with the same base, the exponents subtract:
+$$
+\begin{align*}
+\frac{a^3}{a^2} &= \frac{a \times a \times a}{a \times a} \\
+&= a \\
+&= a^1 \\
+&= a^{3 - 2} \text{.}
+\end{align*}
+$$
+Look at what is implied by this fact:
+$$
+\begin{align*}
+a^{-3} &= a^{2-5} \\
+&= \frac{a^2}{a^5} \\
+&= \frac{a \times a}{a\times a \times a \times a \times a} \\
+&= \frac{1}{a\times a\times a} \\
+&= \frac{1}{a^3} \text{.} \\
+\end{align*}
+$$
+
+
+In general,
+$$
+a^{-b} = \frac{1}{a^b} \text{.}
+$$
+
+The next property is one that I see a lot of students get confused about.
+It says that
+$$
+\left(a^b\right)^c = a^{bc} \text{.}
+$$
+This is easier to see with an example:
+$$
+\begin{align*}
+\left(a^3\right)^2 &= a^3 \times a^3 \\
+&= (a\times a\times a) \times (a \times a \times a) \\
+&= a\times a\times a \times a \times a \times a \\
+&= a^6 \\
+&= a^{3\times 2} \text{.}
+\end{align*}
+$$
+
+### A Special Base
+
+A very common base in statistics is the special number $e$,
+which is approximately equal to 2.71828.
+It's like $\pi$ in that it is really useful in mathematics
+and can't be represented as a ratio of two whole numbers.
+We will see $e$ over and over again in this class.
+Sometimes we use the notation $\exp(b)$ instead of $e^b$
+to make the exponent easier to read.
+For example, we will see things like this quite a bit:
+$$
+e^{a+bx} = \exp(a+bx) \text{.}
+$$
+
+## Problems
+
+### Problem 1
+
+Simplify this expression: $a^2 a^{-3} a^4 a^{-1} a$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+a^2 a^{-3} a^4 a^{-1} a &= a^{2 - 3 + 4 - 1 + 1} \\
+&= a^3
+\end{align*}
+$$
+:::
+
+### Problem 2
+
+Simplify this expression:
+$$
+\frac{\exp\left(\beta_0 + \beta_1(x+1)\right)}{\exp\left(\beta_0 + \beta_1x\right)} \text{.}
+$$
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+\frac{\exp\left(\beta_0 + \beta_1(x+1)\right)}{\exp\left(\beta_0 + \beta_1x\right)} &= \frac{\exp\left(\beta_0 + \beta_1x + \beta_1\right)}{\exp\left(\beta_0 + \beta_1x\right)} \\
+&= \exp\left(\beta_0 - \beta_0 + \beta_1x - \beta_1 x + \beta_1\right) \\
+&= \exp\left(\beta_1\right)
+\end{align*}
+$$
+
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
