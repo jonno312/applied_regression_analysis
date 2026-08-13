@@ -1,0 +1,184 @@
+---
+title: "Assumptions of Simple Linear Regression"
+format: html
+---
+
+## Learning Objective
+
+Explain the four assumptions of simple linear regression.
+
+
+## Lesson
+
+Suppose we observe $n$ data points, each of which has two measurements.
+I'll call these points $\left(X_1,Y_1\right),\dotsc,\left(X_n,Y_n\right)$.
+The $Y_i$'s are the outcome variable,
+also known as the response or target.
+The $X_i$'s are the explanatory variables,
+also known as the predictors, covariates, or features.
+
+These are the four assumptions of simple linear regression:
+
+1. Linearity
+   a) Words: The relationship between the predictor and the outcome is linear.
+   b) Math: $E\left(Y_i\middle|X_i\right) = \beta_0 + \beta_1 X_i$
+2. Independence
+   a) The observations are independent.
+3. Equivariance (or homoscedasticity)
+   a) Words: No matter the value of the predictor, the variability
+   of the outcome around its mean is the same.
+   b) Math: $Var(Y_i|X_i) = \sigma^2$
+4. Normality
+   a) Words: The distribution of the outcome around its mean is normal.
+   b) Math: $Y_i|X_i$ is normally distributed.
+
+I've written them in order from most to least essential,
+but sometimes people switch the last two so that they create the acronym
+"LINE". This may be helpful as a mnemonic for remembering the assumptions.
+
+### Linearity
+
+The most fundamental assumption of simple linear regression is that
+there is a linear relationship between the explanatory variable
+and the outcome.
+Let's take a look at an example of when that is true and when that's not true.
+
+Here is a plot of simulated data where the linearity assumption is met:
+```{r}
+#| echo: false
+set.seed(1)
+n <- 1e3
+beta_0 <- 1
+beta_1 <- 0.5
+x <- rnorm(n = n,
+           sd = 2)
+epsilon <- rnorm(n = n)
+y <- beta_0 + beta_1 * x + epsilon
+plot(x = x,
+     y = y,
+     xlab = "X",
+     ylab = "Y",
+     main = "E(Y|X) = 1 + 0.5X")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+```
+For these data, $E(Y|X) = 1 + 0.5X$.
+The blue line is $y = 1 + 0.5x$,
+and it goes straight through the cloud of points.
+
+Watch what happens if we focus on a narrow band of points around $X = 2$:
+```{r}
+#| echo: false
+
+plot(x = x,
+     y = y,
+     xlab = "X",
+     ylab = "Y",
+     main = "E(Y|X) = 1 + 0.5X")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+abline(v = 1.9,
+       col = "red")
+abline(v = 2.1,
+       col = "red")
+```
+I'm going to extract just the points where $1.9 \le X_i \le 2.1$
+and make a histogram of their $Y_i$ values:
+```{r}
+#| echo: false
+subset_x_2 <- y[x >= 1.9 & x <= 2.1]
+hist(x = subset_x_2,
+     xlab = "Y",
+     main = "Histogram of Points with 1.9 <= X <= 2.1")
+```
+We know that $E(Y|X = 2) = 1 + 0.5(2) = 2$.
+For the points where $1.9 \le X \le 2.1$,
+the sample average is `r mean(subset_x_2)`,
+pretty darn close to what it's supposed to be.
+
+Now let's look at an example where this assumption is not met.
+```{r}
+#| echo: false
+y_quadratic <- x^2 + epsilon
+plot(x = x,
+     y = y_quadratic,
+     xlab = "X",
+     ylab = "Y",
+     main = "E(Y|X) = X^2")
+abline(lm(y_quadratic ~ x),
+       col = "blue")
+```
+I've done my best to fit a straight line through these points,
+but it's clearly not going through the cloud.
+The relationship between the explanatory variable and the response
+is U-shaped, not linear.
+
+
+### Independence
+
+We assume the observations are independent of each other.
+This isn't something we can visualize;
+it has to do with how the data were collected.
+
+Again, let's consider an example where this assumption is met
+and an example where it isn't.
+The summer after my first year of college, I worked at a survey organization
+called ORC Macro. (I don't think it exists anymore.)
+I sat at a computer that dialed ten-digit numbers at random.
+If the number belonged to someone and they picked up,
+I would ask them questions.
+Our biggest survey was commissioned by NOAA, and it was about fishing.
+I had to ask people how many fish they had caught in the last year.
+The participants in these surveys can probably be considered independent
+from each other.
+Knowing one person's answers to the survey probably wouldn't tell me
+anything about another person's answers.
+The respondents had nothing to do with each other.
+
+Now suppose that in addition to asking questions of each person who
+answered the phone, I asked questions of everyone in their household.
+Now, the respondents are no longer independent.
+People in the same household tend to be more similar to each other
+than to people in different households.
+For the fishing survey, two people in the same household are likely to catch
+similar numbers of fish.
+They might go fishing together, for example, as a family on vacation.
+So, knowing how many fish one person in the household caught
+would be be informative about how many fish another person in the household
+caught.
+This would be a violation of independence.
+
+
+### Equivariance (or Homoscedasticity)
+
+
+
+### Normality
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
