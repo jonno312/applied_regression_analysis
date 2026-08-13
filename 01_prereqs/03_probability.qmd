@@ -3,10 +3,9 @@ title: "Probability"
 format: html
 ---
 
-## Learning Objectives
+## Learning Objective
 
-- Compute probabilities and conditional probabilities.
-- Use the notation for probabilities and conditional probabilities.
+Use the notation for probabilities and conditional probabilities.
 
 
 ## Lesson
