@@ -1,0 +1,193 @@
+---
+title: "Distribution"
+format: html
+---
+
+## Learning Objective
+
+Use and interpret the term "distribution".
+
+
+## Lesson
+
+### Two Meanings
+
+In statistics, there are at least two meanings of the word "distribution".
+The first refers to the data.
+If someone asks how the data are distributed, you might show them
+a histogram or boxplot.
+What they want to know is where the points fall on the number line.
+Here are a histogram and boxplot of the pH of 53 lakes in Florida:
+
+```{r}
+#| echo: false
+
+d <- Lock5Data::FloridaLakes
+hist(x = d$pH,
+     xlab = "pH",
+     main = "Histogram of pH of Florida Lakes")
+boxplot(x = d$pH,
+        ylab = "pH",
+        main = "Boxplot of pH of Florida Lakes")
+```
+We can see that most of the lakes have a pH between 5 and 8,
+none has a pH below 3 or above 10,
+and the distribution is symmetric.
+
+The second meaning of the word "distribution" has to do with
+where the data come from.
+I don't mean who collected them or where they were collected;
+I mean the random process that generated the data.
+If we know the distribution in this sense,
+we know the exact probability of observing any number.
+It might help to consider some examples.
+
+### Examples
+
+#### Bernoulli Distribution
+
+The Bernoulli distribution is the simplest possible distribution.
+There are only two possible outcomes: 0 and 1.
+Suppose $X$ is Bernoulli-distributed with $P(X = 1) = 0.2$.
+Now we know the probability that $X$ takes on any value.
+If $P(X = 1) = 0.2$ and $X$ can only be 0 or 1,
+then $P(X = 0) = 1 - P(X = 1) = 1 - 0.2 = 0.8$.
+$$
+\begin{align*}
+P(X = 0) &= 1 - P(X = 1) \\
+&= 1 - 0.2 \\
+&= 0.8 \text{.}
+\end{align*}
+$$
+If $x \ne 0$ and $x \ne 1$, then $P(X = x) = 0$.
+
+The Bernoulli distribution describes any random variable that can only
+take on two values.
+Suppose we follow 100 patients for one year and record whether
+each has a heart attack in that year.
+If a patient does have a heart attack, we record a value of 1;
+if they don't, we record a value of 0.
+In this case, we have 100 random variables,
+and each follows the Bernoulli distribution.
+
+#### Normal Distribution
+
+The normal distribution is probably the one that gets talked about the most
+in introductory statistics courses.
+It has a classic bell shape:
+```{r}
+#| echo: false
+
+curve(expr = dnorm,
+      from = -3,
+      to = 3,
+      ylab = "f(x)",
+      ylim = c(0,0.8))
+```
+The normal distribution always has this shape, although it may
+be moved to the left or right or squished together or spread apart.
+For example, here is the same normal distribution, but moved one unit
+to the right:
+```{r}
+#| echo: false
+
+temp <- function(x){
+  dnorm(x = x,
+        mean = 1)
+}
+curve(expr = temp,
+      from = -3,
+      to = 3,
+      ylab = "f(x)",
+      ylim = c(0,0.8))
+```
+And here is the same normal distribution as in the first plot,
+but squished to the center:
+```{r}
+#| echo: false
+
+temp <- function(x){
+  dnorm(x = x,
+        sd = 0.5)
+}
+curve(expr = temp,
+      from = -3,
+      to = 3,
+      ylab = "f(x)")
+```
+
+The pH data from above kind of look like they might be normally distributed:
+```{r}
+#| echo: false
+
+mu_temp <- mean(d$pH)
+sd_temp <- sd(d$pH)
+temp <- function(x){
+  dnorm(x = x,
+        mean = mu_temp,
+        sd = sd_temp)
+}
+hist(x = d$pH,
+     xlab = "pH",
+     main = "Histogram of pH of Florida Lakes",
+     freq = FALSE)
+curve(expr = temp,
+      add = TRUE,
+      col = "red")
+```
+What I mean is that the empirical pH distribution (the first meaning of the word)
+appears to match an idealized normal distribution,
+so the data may have been generated from a normal distribution
+(the second meaning of the word).
+
+### Identically Distributed
+
+If $X$ and $Y$ are identically distributed, it means they have the same
+distribution.
+This means that if $P(X = 3) = 0.2$, then $P(Y = 3) = 0.2$ as well.
+If $P(X \le -4) = 0.8$, then $P(Y \le -4) = 0.8$ as well.
+This comes up a lot in statistics,
+because we often assume that data are identically distributed.
+
+## Problems
+
+### Problem 1
+
+If I say, "The gene counts are not Poisson-distributed,"
+what does that mean?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This means that the gene counts differ from the Poisson distribution
+in some way.
+Perhaps the gene counts are more variable or spread out than the Poisson
+distribution.
+Perhaps there are more zeroes in the gene counts than you would expect
+from the Poisson distribution.
+It could mean a lot of things,
+but practically, it means we should probably not use the Poisson distribution
+to model the gene counts.
+
+:::
+
+### Problem 2
+
+If $X$ and $Y$ are identically distributed and $P(Y \le 10) = 0$,
+what is $P(X > 10)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+P(X > 10) &= P(Y > 10) \\
+&= 1 - P(Y \le 10) \\
+&= 1 - 0 \\
+&= 1
+\end{align*}
+$$
+
+:::
+
+
+
+
