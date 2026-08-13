@@ -1,0 +1,157 @@
+---
+title: "Intercept and Slope"
+format: html
+---
+
+## Learning Objective
+
+Interpret the intercept and slope of a line.
+
+
+## Lesson
+
+We will talk about intercepts and slopes over and over again in this course.
+So, it's important to start with a good foundation.
+
+Consider the line $y = 2x + 4$:
+```{r}
+#| echo: false
+
+x_temp <- seq(from = -3,
+              to = 3,
+              length.out = 101)
+y_temp <- 2 * x_temp + 4
+plot(x = x_temp,
+     y = y_temp,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "y = 2x + 4",
+     col = "blue")
+abline(h = 0)
+abline(v = 0)
+```
+
+The intercept is 4. This means that when $x = 0$, $y = 4$:
+```{r}
+#| echo: false
+
+plot(x = x_temp,
+     y = y_temp,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "y = 2x + 4",
+     col = "blue")
+abline(h = 0)
+abline(v = 0)
+lines(x = c(0,0),
+      y = c(0,4),
+      col = "red",
+      lty = 2)
+lines(x = c(-3,0),
+      y = c(4,4),
+      col = "red",
+      lty = 2)
+```
+
+The slope is 2. This means that for each one-unit increase in $x$,
+$y$ increases by two units.
+```{r}
+#| echo: false
+
+plot(x = x_temp,
+     y = y_temp,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "y = 2x + 4",
+     col = "blue")
+abline(h = 0)
+abline(v = 0)
+lines(x = c(0,0),
+      y = c(0,4),
+      col = "red",
+      lty = 2)
+lines(x = c(-3,0),
+      y = c(4,4),
+      col = "red",
+      lty = 2)
+lines(x = c(1,1),
+      y = c(0,6),
+      col = "red",
+      lty = 2)
+lines(x = c(-3,1),
+      y = c(6,6),
+      col = "red",
+      lty = 2)
+```
+
+## Problems
+
+### Problem 1
+
+If $x$ is the temperature in degrees Fahrenheit
+and $y$ is the temperature in degrees Celsius,
+then $y = \frac{5}{9}(x - 32)$.
+
+#### Part (a)
+
+When it's 0 degrees Fahrenheit, what is the temperature in degrees Celsius?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+y &= \frac{5}{9}(0 - 32) \\
+&= -\frac{160}{9} \\
+&\approx - 17.78
+\end{align*}
+$$
+
+:::
+
+#### Part (b)
+
+If the temperature increases ten degrees Fahrenheit,
+how much does it increase in degrees Celsius?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The slope of the line is $\frac{5}{9}$,
+so with each one-degree Fahrenheit increase in temperature,
+there is a corresponding $\frac{5}{9}$-degree Celsius increase.
+This means that with a ten-degree Fahrenheit increase in temperature,
+there is a corresponding $\frac{5}{9}\times 10 \approx 5.56$-degree Celsius
+increase in temperature.
+
+:::
+
+### Problem 2
+
+There are 2.54 centimeters in every inch.
+Write a function connecting $y$,
+the length in inches, to $x$,
+the length in centimeters.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The first time I answered this question, I wrote $y = 2.54x$,
+but I knew that couldn't be right because it would imply that we would
+always have more inches than centimeters.
+But one centimeter is less than one inch,
+so the same distance should require more centimeters than inches.
+So, it's actually the case that $2.54y = x$, or
+$$
+\begin{align*}
+2.54y &= x \\
+y &= \frac{x}{2.54} \\
+y &= 0.3937x \text{.}
+\end{align*}
+$$
+
+:::
+
+
+
+
