@@ -1,0 +1,114 @@
+---
+title: "Random Variable"
+format: html
+---
+
+## Learning Objective
+
+Use and interpret the term "random variable".
+
+
+## Lesson
+
+### Random vs. Fixed
+
+If I write the number "1" on a golf ball,
+that's an example of something that's fixed.
+Five minutes later, I can be certain that the number on the golf ball
+will still be "1".
+If I write the numbers "1" through "1,000" on 1,000 golf balls,
+put those golf balls in a large basket,
+shake up the basket so the golf balls mix,
+and then select a golf ball from the basket,
+that's an example of something that's random.
+Before pulling the golf ball, I can't predict with perfect certainty
+which number I'll see.
+
+This might seem like a very obvious point,
+but in my experience teaching statistics,
+I've noticed two things:
+
+- It's very easy to get confused about whether a quantity is random or fixed.
+- It's very important to  understand which quantities are random and which
+are fixed.
+
+As we go, I'll try to point out which quantities are random and which are
+fixed, especially when making a mistake would cause problems down the line.
+
+Before moving on, let's consider an example that is less contrived.
+Suppose you want to measure your resting heart rate in beats per minute.
+So, every morning for two weeks in a row, you measure your heart rate
+the moment you wake up in the morning.
+In this example, we might assume that your resting heart rate is some fixed
+value.
+In contrast, the number of beats per minute that you measure on any given day
+is random.
+On Monday, we can't predict with perfect certainty what your heart rate
+will be the next morning;
+there will probably be some natural variation from day to day.
+
+### Random Variable
+
+If I flip a coin, there are two possible outcomes: heads or tails.
+In practice, it's often easier to work with numerical outcomes
+than words.
+So, we might assign the value 1 to heads and the value 0 to tails.
+Similarly, in survival analysis, we might assign a value of 1 to death
+and a value of 0 to survival.
+
+We use the term "random variable" to refer to a real number that is the result
+of a random process.
+We usually denote random variables with capital letters.
+So, I might say that
+$$
+Y = \begin{cases}
+1 & \text{rain tomorrow} \\
+0 & \text{no rain tomorrow.}
+\end{cases}
+$$
+Then, I could represent the probability of rain tomorrow as either
+$P(\text{rain tomorrow})$ or $P(Y = 1)$.
+
+## Problems
+
+### Problem 1
+
+What is wrong with the statement $X = \text{heads}$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Random variables must take on numeric values.
+Even if we're flipping a coin,
+and the outcomes are "heads" and "tails",
+we have to assign these outcomes numbers
+if we want to use random variables.
+
+:::
+
+### Problem 2
+
+In the expression $P(X = x)$, what is random and what is fixed?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$X$ is random.
+Prior to collecting our data, we don't know what value $X$ will take.
+If we repeat the experiment,
+$X$ may take on a different value.
+
+In contrast, $x$ is fixed.
+It's some value, like 0 or 4.8.
+The expression represents the probability that the random variable $X$
+takes on the value $x$.
+
+For completeness, I guess you could say $P$ is fixed.
+It's a function, and non-random.
+Also, $P(X = x)$ is fixed.
+It's some value between 0 and 1, inclusive,
+and will not change if we collect new data.
+
+:::
+
+
+
+
