@@ -1,0 +1,63 @@
+---
+title: "Support"
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the term "support".
+
+
+## Lesson
+
+The support of a distribution is the possible values it can take.
+
+For example, height cannot be negative.
+So, the support for the height of a randomly-selected person
+is positive real numbers.
+(We might want to restrict that even further
+and say the support is real numbers between 0 and 10 feet,
+since the
+[tallest human ever](https://www.guinnessworldrecords.com/records/hall-of-fame/robert-wadlow-tallest-man-ever)
+was 8 feet 11.1 inches tall.)
+
+Another example is the [Apgar score](https://medlineplus.gov/ency/article/003402.htm).
+This is a score from 0 to 10 that is assigned to babies immediately
+after birth based on their breathing, heart rate, muscle tone,
+response to stimulation, and skin color.
+The support for this variable is the whole numbers from 0 to 10,
+no fractions or decimals allowed.
+
+## Problems
+
+### Problem 1
+
+If I say, "The gamma distribution and the normal distribution
+don't have the same support,"
+what does that mean?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It means that these two distributions differ in the possible values
+they can take.
+Although you don't need to know this now,
+a random variable following the gamma distribution cannot be negative,
+whereas a random variable following the normal distribution can
+be negative.
+
+:::
+
+### Problem 2
+
+Do the normal distribution and the Bernoulli distribution have the same support?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. The support of the normal distribution is the entire real line.
+The support of the Bernoulli distribution is just 0 and 1.
+
+:::
+
+
+
+
