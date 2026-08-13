@@ -52,76 +52,7 @@ $$
 
 ## Intercept and Slope
 
-We will talk about intercepts and slopes over and over again in this course.
-So, it's important to start with a good foundation.
 
-Consider the line $y = 2x + 4$:
-```{r}
-x_temp <- seq(from = -3,
-              to = 3,
-              length.out = 101)
-y_temp <- 2 * x_temp + 4
-plot(x = x_temp,
-     y = y_temp,
-     type = "l",
-     xlab = "x",
-     ylab = "y",
-     main = "y = 2x + 4",
-     col = "blue")
-abline(h = 0)
-abline(v = 0)
-```
-
-The intercept is 4. This means that when $x = 0$, $y = 4$:
-```{r}
-plot(x = x_temp,
-     y = y_temp,
-     type = "l",
-     xlab = "x",
-     ylab = "y",
-     main = "y = 2x + 4",
-     col = "blue")
-abline(h = 0)
-abline(v = 0)
-lines(x = c(0,0),
-      y = c(0,4),
-      col = "red",
-      lty = 2)
-lines(x = c(-3,0),
-      y = c(4,4),
-      col = "red",
-      lty = 2)
-```
-
-The slope is 2. This means that for each one-unit increase in $x$,
-$y$ increases by two units.
-```{r}
-plot(x = x_temp,
-     y = y_temp,
-     type = "l",
-     xlab = "x",
-     ylab = "y",
-     main = "y = 2x + 4",
-     col = "blue")
-abline(h = 0)
-abline(v = 0)
-lines(x = c(0,0),
-      y = c(0,4),
-      col = "red",
-      lty = 2)
-lines(x = c(-3,0),
-      y = c(4,4),
-      col = "red",
-      lty = 2)
-lines(x = c(1,1),
-      y = c(0,6),
-      col = "red",
-      lty = 2)
-lines(x = c(-3,1),
-      y = c(6,6),
-      col = "red",
-      lty = 2)
-```
 
 ## Problems
 
