@@ -1,0 +1,72 @@
+---
+title: "Consequences of the Linearity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the consequences of violations of the linearity assumption
+of simple linear regression.
+
+
+## Lesson
+
+If the first assumption of simple linear regression is not met,
+the results are basically meaningless.
+Consider an example.
+The plot below shows mean monthly temperatures in Moscow
+for 2023 and 2024.
+```{r}
+# Data
+d <- Lock5Data::CityTemps
+
+# Plot
+plot(x = d$Month,
+     y = d$Moscow,
+     xlab = "Month of the Year",
+     ylab = "Temperature in Degrees Celsius",
+     main = "Moscow (2023-2024)")
+
+# Simple Linear Regression
+mod_01 <- lm(d$Moscow ~ d$Month)
+```
+
+If I perform simple linear regression on these data,
+I get that each additional month of the year is associated with
+a `r round(x = mod_01$coefficients[2],digits = 2)`-degree Celsius
+increase in temperature.
+```{r}
+plot(x = d$Month,
+     y = d$Moscow,
+     xlab = "Month of the Year",
+     ylab = "Temperature in Degrees Celsius",
+     main = "Moscow (2023-2024)")
+abline(mod_01,
+       col = "blue")
+```
+That's clearly not true.
+
+Simple linear regression is the most basic form of regression,
+and it's only appropriate when you have a clear linear relationship
+between two variables.
+
+## Problems
+
+### Problem 1
+
+Should you use simple linear regression if a scatterplot of your data
+forms the shape of an M?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No.
+
+:::
+
+
+
+
+
+
