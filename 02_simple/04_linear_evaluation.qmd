@@ -1,0 +1,53 @@
+---
+title: "Checking the Linearity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Evaluate the validity of the linearity assumption of simple linear regression
+in a data set.
+
+
+## Lesson
+
+It might seem straightforward to check the linearity assumption
+of simple linear regression.
+You can create a scatterplot of the data and eyeball whether
+the relationship between the two variables is linear.
+This is, in fact, a fantastic idea.
+You should always look at your data before trying to model it.
+
+I will add one thing, though:
+It can be easier to evaluate this (and the remaining) assumptions
+if we look at the residuals,
+particularly when we move on to multiple linear regression.
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
