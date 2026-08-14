@@ -5,6 +5,11 @@ execute:
 format: html
 ---
 
+```{r}
+# Load packages
+library(scales)
+```
+
 ## Learning Objective
 
 Evaluate the validity of the linearity assumption of simple linear regression
@@ -24,13 +29,139 @@ I will add one thing, though:
 It can be easier to evaluate this (and the remaining) assumptions
 if we look at the residuals,
 particularly when we move on to multiple linear regression.
+So, let's start getting practice with that technique now.
 
+Let's take a look at these simulated data again:
+```{r}
+set.seed(1)
+n <- 1e3
+beta_0 <- 1
+beta_1 <- 0.5
+x <- rnorm(n = n,
+           sd = 2)
+epsilon <- rnorm(n = n)
+y <- beta_0 + beta_1 * x + epsilon
+plot(x = x,
+     y = y,
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+```
+Now I'm going to plot the residuals as a function of $X$.
+```{r}
+mod_01 <- lm(y ~ x)
+plot(x = x,
+     y = mod_01$residuals,
+     xlab = "X",
+     ylab = "Residual")
+```
+Why is this better than just plotting the data?
+Well, it's not, at least not yet.
+Recall that we're trying to check the assumption that $E(\epsilon_i|X_i) = 0$.
+(This is from the "procedural math" way of looking at simple linear regression.)
+What this equation means in words is that,
+no matter the value of $X_i$, the expected value of the random error should
+be zero.
+So, no matter the value of $X_i$, the sample average of the residuals
+should be zero.
+
+I'm going to add a horizontal line at 0 so we have something to compare to.
+```{r}
+plot(x = x,
+     y = mod_01$residuals,
+     xlab = "X",
+     ylab = "Residual")
+abline(h = 0,
+       col = "red")
+```
+Again, no matter what value we choose on the horizontal axis,
+the average of the residuals at that point should be zero.
+Let's look at the points around $X = 2$,
+specifically, those points were $1.9 \le X_i \le 2.1$.
+```{r}
+plot(x = x,
+     y = mod_01$residuals,
+     xlab = "X",
+     ylab = "Residual")
+abline(h = 0,
+       col = "red")
+abline(v = 1.9,
+       col = "purple")
+abline(v = 2.1,
+       col = "purple")
+```
+The residuals in this band should average out to zero.
+Do they?
+```{r}
+#| echo: true
+mean(mod_01$residuals[x >= 1.9 & x <= 2.1])
+```
+Just about! There will always be a little bit of random error,
+but this is pretty close to zero.
+
+Let's consider another band.
+```{r}
+plot(x = x,
+     y = mod_01$residuals,
+     xlab = "X",
+     ylab = "Residual")
+abline(h = 0,
+       col = "red")
+abline(v = -3.1,
+       col = "purple")
+abline(v = -2.9,
+       col = "purple")
+```
+Do these residuals average out to zero?
+```{r}
+#| echo: true
+mean(mod_01$residuals[x >= -3.1 & x <= -2.9])
+```
+This average is farther from zero because there are few points in the band,
+but it's still close.
+
+In practice, we don't actually cut out vertical slices from the plot
+and compute averages.
+Instead, we look at the residual scatterplot and eyeball it.
+Why is this better than the original scatterplot?
+Sometimes zeroing out the slope makes it easier to assess the linearity
+assumption.
+Also, when we start learning about multiple linear regression,
+it will be too difficult to visualize a scatterplot of the outcome
+against all the covariates.
 
 ## Problems
 
 ### Problem 1
 
+```{r}
+# Scatterplot
+d <- Lock5Data::CommuteAtlanta
+plot(x = d$Distance,
+     y = d$Time,
+     xlab = "Distance (miles)",
+     ylab = "Time (minutes)",
+     main = "Commuting in Atlanta",
+     pch = 16,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
 
+# Model
+mod_02 <- lm(d$Time ~ d$Distance)
+
+# Residual Plot
+plot(x = d$Distance,
+     y = mod_02$residuals,
+     xlab = "Distance (miles)",
+     ylab = "Residuals",
+     pch = 16,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
