@@ -1,0 +1,214 @@
+---
+title: "Linearity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the linearity assumption of simple linear regression.
+
+
+## Lesson
+
+I'm going to explain the first assumption of simple linear regression in
+three ways: first with words, then with a procedural form of math,
+and finally with an abstract form of math.
+
+### Words
+
+The first assumption of simple linear regression is that
+the relationship between the predictor and the outcome is linear.
+(I'm using the term "predictor" now,
+but it's also known as the explanatory variable,
+covariate, feature, or just $X$.
+Also, I'm using the term "outcome",
+but it's also known as the response variable,
+target, or just $Y$.)
+
+What does this look like in a plot?
+Consider the following simulated points:
+```{r}
+set.seed(1)
+n <- 1e3
+beta_0 <- 1
+beta_1 <- 0.5
+x <- rnorm(n = n,
+           sd = 2)
+epsilon <- rnorm(n = n)
+y <- beta_0 + beta_1 * x + epsilon
+plot(x = x,
+     y = y,
+     xlab = "X",
+     ylab = "Y")
+```
+As $X$ increases, we can see $Y$ increasing linearly.
+We can draw a straight line through the cloud of points that
+describes the relationship well:
+```{r}
+plot(x = x,
+     y = y,
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+```
+
+It's probably helpful to look at some points where the relationship
+is not linear, to see the contrast.
+Consider these points:
+```{r}
+y_quadratic <- x^2 + epsilon
+plot(x = x,
+     y = y_quadratic,
+     xlab = "X",
+     ylab = "Y")
+abline(lm(y_quadratic ~ x),
+       col = "blue")
+```
+I've tried drawing a straight line through them, but it clearly doesn't
+describe them well.
+Here, the relationship between $X$ and $Y$ is U-shaped,
+not linear.
+
+### Procedural Math
+
+Another way of looking at the first assumption of simple linear regression
+is as a procedure.
+We start with $X_1$.
+We might know something about where it came from, or we might not.
+In the plots above, I drew $X_1$ from a normal distribution with mean 0
+and standard deviation of 2.
+In symbols, $X_1\sim N(0,4)$.
+(If the standard deviation is 2, the variance is $2^2 = 4$.)
+Often, we don't care so much about where $X_1$ came from,
+because we're more concerned about its relationship with $Y_1$.
+In this particular simulation, $X_1$ turned out to be `r x[1]`.
+
+Our next step is to plug $X_1$ into a formula.
+In the first plot above, I used $1 + \frac{1}{2}X_1$.
+Note that this is a linear formula.
+That brought me to the blue line in the second plot above.
+The height of the line at $X_1$ is `r 1 + 0.5 * x[1]`.
+```{r}
+temp <- function(x){
+  1 + 0.5 * x
+}
+curve(expr = temp,
+      xlim = c(-6,8),
+      ylim = c(-4,6),
+      col = "blue",
+      xlab = "X",
+      ylab = "Y")
+abline(v = x[1],
+       col = "red")
+abline(h = temp(x[1]),
+       col = "red")
+```
+
+The next step is to add some random error.
+I'm going to use $\epsilon_1$ to represent this random error.
+In the simulation above, $\epsilon_1\sim N(0,1)$.
+The first assumption doesn't require that the random error be normally
+distributed, just that it have mean 0.
+On average, we want the points to land on the line.
+(Obviously not every point will fall on the line;
+we just want that to be the case on average.)
+In the simulation above, $\epsilon_1$ turned out to be `r epsilon[1]`.
+If we add that value to the line at $X_1$, we get $Y_1$.
+```{r}
+plot(x = x[1],
+     y = y[1],
+     xlim = c(-6,8),
+     ylim = c(-4,6),
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+segments(x0 = x[1],
+         x1 = x[1],
+         y0 = y[1] - epsilon[1],
+         y1 = y[1],
+         col = "red")
+```
+In symbols, $Y_1 = 1 + \frac{1}{2}X + \epsilon_1$.
+Of course, that was only for this example.
+In general, we write $Y_1 = \beta_0 + \beta_1 X_1 + \epsilon_1$.
+
+That's the procedure for one observation.
+We repeat it for $X_2,X_3,\dotsc,X_n$,
+where $n$ is the sample size.
+Here are the next few points visualized:
+```{r}
+for(i in 2:4){
+  plot(x = x[1:i],
+     y = y[1:i],
+     xlim = c(-6,8),
+     ylim = c(-4,6),
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+segments(x0 = x[1:i],
+         x1 = x[1:i],
+         y0 = y[1:i] - epsilon[1:i],
+         y1 = y[1:i],
+         col = "red")
+}
+```
+
+To summarize the entire process, I'd write that for $i$ from $1$ to $n$,
+$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$,
+where $E(\epsilon_i|X_i) = 0$.
+
+### Abstract Math
+
+The most abstract way to write this first assumption is
+$E(Y_i|X_i) = \beta_0 + \beta_1 X_i$.
+Given $X_i$, we expect $Y_i$ to fall on the line $\beta_0 + \beta_1 X_i$.
+Why use such an abstract representation?
+When we move on to logistic regression, Poisson regression,
+and really every other form of regression in this class,
+we won't have any epsilons.
+They're nice for visualizing what's going on and understanding the procedure,
+but they cease to be relevant once we depart linear regression.
+
+## Problems
+
+### Problem 1
+
+Do these data satisfy the first assumption of simple linear regression?
+```{r}
+y_cos <- cos(2 * x) + epsilon / 2
+plot(x = x,
+     y = y_cos,
+     xlab = "X",
+     ylab = "Y")
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. The relationship between $X$ and $Y$ seems to be cyclical,
+not linear.
+
+:::
+
+### Problem 2
+
+Does the first assumption of simple linear regression require
+a certain variance for $\epsilon_i$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. It only requires that the expected value of $\epsilon_i$,
+conditional on $X_i$, is zero.
+
+:::
+
+
+
+
