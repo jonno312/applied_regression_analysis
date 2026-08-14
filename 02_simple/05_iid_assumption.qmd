@@ -1,0 +1,75 @@
+---
+title: "IID Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+
+Explain the iid assumption of simple linear regression.
+
+## Lesson
+
+### Independent
+
+We assume the observations are independent of each other.
+This isn't something we can visualize;
+it has to do with how the data were collected.
+
+Again, let's consider an example where this assumption is met
+and an example where it isn't.
+The summer after my first year of college, I worked at a survey organization
+called ORC Macro. (I don't think it exists anymore.)
+I sat at a computer that dialed ten-digit numbers at random.
+If the number belonged to someone and they picked up,
+I would ask them questions.
+Our biggest survey was commissioned by NOAA, and it was about fishing.
+I had to ask people how many fish they had caught in the last year.
+The participants in these surveys can probably be considered independent
+from each other.
+Knowing one person's answers to the survey probably wouldn't tell me
+anything about another person's answers.
+The respondents had nothing to do with each other.
+
+Now suppose that in addition to asking questions of each person who
+answered the phone, I asked questions of everyone in their household.
+Now, the respondents are no longer independent.
+People in the same household tend to be more similar to each other
+than to people in different households.
+For the fishing survey, two people in the same household are likely to catch
+similar numbers of fish.
+They might go fishing together, for example, as a family on vacation.
+So, knowing how many fish one person in the household caught
+would be be informative about how many fish another person in the household
+caught.
+This would be a violation of independence.
+
+### Identically Distributed
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
