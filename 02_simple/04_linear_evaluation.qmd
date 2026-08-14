@@ -5,11 +5,6 @@ execute:
 format: html
 ---
 
-```{r}
-# Load packages
-library(scales)
-```
-
 ## Learning Objective
 
 Evaluate the validity of the linearity assumption of simple linear regression
@@ -136,46 +131,51 @@ against all the covariates.
 
 ### Problem 1
 
+Below is a plot of annual expenditures (in dollars) as a function of age
+(in years) for 1,000 individuals supported by the California
+Department of Developmental Services (DDS).
+(The data have been altered slightly to protect privacy.)
+Is the first assumption of simple linear regression met for these data?
 ```{r}
 # Scatterplot
-d <- Lock5Data::CommuteAtlanta
-plot(x = d$Distance,
-     y = d$Time,
-     xlab = "Distance (miles)",
-     ylab = "Time (minutes)",
-     main = "Commuting in Atlanta",
-     pch = 16,
-     col = alpha(colour = "black",
-                 alpha = 0.2))
+d <- Lock5Data::DDS
+plot(x = d$Age,
+     y = d$Expenditures,
+     xlab = "Age (years)",
+     ylab = "Annual Expenditures (dollars)")
 
-# Model
-mod_02 <- lm(d$Time ~ d$Distance)
+```
 
-# Residual Plot
-plot(x = d$Distance,
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. There is clearly not a linear relationship between age
+and expenditures.
+
+:::
+
+### Problem 2
+
+Below are simulated data.
+Is the first assumption of simple linear regression met for these data?
+```{r}
+y_var <- beta_0 + x + x * epsilon
+plot(x = x,
+     y = y_var,
+     xlab = "X",
+     ylab = "Y")
+mod_02 <- lm(y_var ~ x)
+plot(x = x,
      y = mod_02$residuals,
-     xlab = "Distance (miles)",
-     ylab = "Residuals",
-     pch = 16,
-     col = alpha(colour = "black",
-                 alpha = 0.2))
+     xlab = "X",
+     ylab = "Residuals")
 abline(h = 0,
        col = "red")
 ```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
-
-:::
-
-### Problem 2
-
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
+Yes. This might be a case where it's a little harder to tell with
+the standard scatterplot than the residual scatterplot.
 
 :::
 
