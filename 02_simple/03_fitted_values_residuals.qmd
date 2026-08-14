@@ -1,0 +1,82 @@
+---
+title: "Fitted Values and Residuals"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the terms "fitted value" and "residual".
+
+
+## Lesson
+
+Now that we know how catastrophic it would be for our first assumption
+to be violated,
+we need to know how to check it.
+Before we can do that, though, we need a couple vocab terms.
+The first is "fitted value".
+In simple linear regression, we assume
+$E(Y_i|X_i) = \beta_0 + \beta_1 X_i$.
+We estimate $\beta_0$ and $\beta_1$
+(the parameters)
+with $\hat{\beta}_0$ and $\hat{\beta}_1$
+(the statistics).
+The fitted value of $Y_i$ is
+$$
+\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i \text{.}
+$$
+In other words, the fitted value of the $i$th observation
+is the height of the regression line at $X_i$.
+
+The second vocab term is "residual".
+I'll use $\hat{\epsilon}_i$ to represent the $i$th residual.
+Then
+$$
+\hat{\epsilon}_i = Y_i - \hat{Y}_i \text{.}
+$$
+I'd like to say that the residual is the vertical distance between
+the fitted value and the observed value of the outcome,
+but that's incomplete. Distances are positive, but residuals
+can be positive or negative.
+If a point lies above the regression line, its residual is positive,
+and if a point lies below the regression line,
+its residual is negative.
+It's possible to show that the sum of all the residuals is zero.
+
+## Problems
+
+### Problem 1
+
+True or false: The residual is the same thing as the random error.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+We never observe the random error, $\epsilon$.
+We do observe residuals,
+and these are estimates of the random errors.
+
+:::
+
+### Problem 2
+
+True or false: The fitted value is the same as the sample average.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+There's only one sample average for the entire data set,
+but there are $n$ fitted values.
+
+I should say that you could make this true by not including a slope term
+($\beta_1$) in your regression model,
+but that's such a specific case that I wouldn't really refer to it as
+simple linear regression anymore.
+
+:::
+
+
+
+
