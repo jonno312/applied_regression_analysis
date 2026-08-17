@@ -1,0 +1,42 @@
+---
+title: "Consequences of the Homoscedasticity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the consequences of violations of the homoscedasticity assumption
+of simple linear regression.
+
+
+## Lesson
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
