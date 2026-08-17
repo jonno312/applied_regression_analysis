@@ -15,6 +15,8 @@ Explain the iid assumption of simple linear regression.
 "IID" stands for "independent and identically distributed."
 In simple linear regression, we assume the points
 $(X_1,Y_1),\dotsc,(X_n,Y_n)$ are iid.
+Another way of saying this is that we assume the observations are
+sampled independently from the same population.
 
 ### Independent
 
@@ -77,12 +79,13 @@ It wouldn't make sense to continue that study, with the same analysis,
 through 2025.
 Here are some reasons why:
 
-- The relationship between cell phone ownership and anxiety has probably changed
+- The relationship between cell phone ownership and anxiety probably changed
 over those 23 years.
 - If you didn't change your recruitment practices, you would probably stop
 enrolling people who don't own a cell phone, since they're so rare.
-- People who do own a cell phone and people who don't probably differ
-in systematic ways that are related to anxiety.
+- By 2025,
+people who did own a cell phone and people who didn't probably differed
+in systematic ways that were related to anxiety.
 
 At the very least, we'd want to incorporate other variables in the analysis,
 like year.
