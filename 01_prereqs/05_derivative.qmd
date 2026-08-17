@@ -1,0 +1,122 @@
+---
+title: "Derivatives"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Use and interpret the terms “derivative” and “differentiate”.
+
+
+## Lesson
+
+Again, you do not need to know calculus here;
+I just want you to understand the concept.
+The derivative of a function at a point is its slope at that point.
+To differentiate a function is to find its derivative.
+
+The plot below shows the function $f(x) = -x^2 + 4$.
+I've plotted the tangent lines, in red,
+at $x = -2$, $x = 0$, and $x = 1$.
+```{r}
+# Quadratic
+f_quad <- function(x){
+  -x^2 + 4
+}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- f_quad(x)
+plot(x = x,
+     y = y,
+     type = "l")
+abline(h = 0)
+abline(v = 0)
+abline(a = 8,
+       b = 4,
+       col = "red")
+abline(h = 4,
+       col = "red")
+abline(a = 5,
+       b = -2,
+       col = "red")
+```
+The derivative at $x = -2$,
+represented by $f'(-2)$, is 4.
+So, the tangent line is increasing.
+The derivative at $x = 0$ is $f'(0) = 0$,
+so the tangent line is flat,
+and the derivative at $x = 1$ is $f'(1) = -2$,
+so the tangent line is decreasing.
+
+
+The plot below shows the function $f(x) = \frac{x}{2} + \sin(x)$.
+I've plotted the tangent lines, in red,
+at $x = 2$ and $x = 4$.
+```{r}
+# Sin
+f_sin <- function(x){
+  x / 2 + sin(x)
+}
+x_sin <- seq(from = 0,
+             to = 6,
+             length.out = 250)
+y_sin <- f_sin(x_sin)
+plot(x = x_sin,
+     y = y_sin,
+     type = "l",
+     xlab = "x",
+     ylab = "y")
+abline(h = 0)
+abline(v = 0)
+abline(a = sin(2) - 2 * cos(2),
+       b = 0.5 + cos(2),
+       col = "red")
+abline(a = sin(4) - 4 * cos(4),
+       b = 0.5 + cos(4),
+       col = "red")
+```
+
+The derivative at $x = 2$,
+represented by $f'(2)$, is around 0.08.
+So, the tangent line is increasing.
+The derivative at $x = 4$ is $f'(4) \approx -0.15$,
+so the tangent line is decreasing.
+
+## Problems
+
+### Problem 1
+
+What is the derivative of the function $f(x) = 2 - 3x$
+at $x = 0$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is a line, so it has the same slope everywhere.
+That slope is $-3$.
+
+:::
+
+### Problem 2
+
+What is the sign (positive or negative) of the derivative
+of the function below at $x = -2$?
+```{r}
+plot(x = x,
+     y = x^2,
+     type = "l")
+abline(h = 0)
+abline(v = 0)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+When $x = -2$, the function is decreasing, so its slope is negative.
+
+:::
+
+
+
+
