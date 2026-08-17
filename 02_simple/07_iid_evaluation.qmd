@@ -50,12 +50,22 @@ How were observations drawn from the population of interest?
 ### Problem 2
 
 Suppose you want to investigate the relationship between
-time spent studying and grades among Harvard students.
-So, you get a list of enrolled Harvard students
+physical activity and resting heart rate.
+This requires expensive equipment, so you can only observe ten people.
+You happen to be teaching a class,
+so you select ten students uniformly at random from the roster.
+Have you violated the iid assumption of simple linear regression?
+Why or why not?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+You have not violated the iid assumption.
+You've sample uniformly at random from your population,
+so each student is equally likely to be selected.
+They are not grouped, clustered, or related in any meaningful way.
+(It is true that your population is really just "students taking your class",
+which may not be a useful population,
+but you haven't violated the iid assumption.)
 
 :::
 
