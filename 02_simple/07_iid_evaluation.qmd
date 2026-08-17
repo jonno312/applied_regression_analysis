@@ -1,0 +1,64 @@
+---
+title: "Checking the IID Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Evaluate the validity of the iid assumption of simple linear regression
+in a data set.
+
+
+## Lesson
+
+Unlike the other assumptions of simple linear regression,
+we cannot check this one by making a plot or computing a statistic.
+Instead, we have to find out how the data were collected.
+Here are some questions to ask:
+
+- Are there any unmeasured variables that might make some observations
+more similar to each other than to others?
+- Are the observations grouped or clustered in some way?
+- Is there a hierarchical structure to the data?
+- Is the population changing over time?
+- Do the observations exist in a network, with some of them connected
+and some of them not connected?
+- Do we have multiple observations on the same person over time?
+
+If the answer to any of these questions is yes,
+you might have a violation of the iid assumption.
+
+
+## Problems
+
+### Problem 1
+
+True or false:
+A plot of the residuals as a function of the explanatory variable
+can rule out violations of the iid assumption of simple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+In order to check this assumption, you need to examine the sampling process.
+How were observations drawn from the population of interest?
+
+:::
+
+### Problem 2
+
+Suppose you want to investigate the relationship between
+time spent studying and grades among Harvard students.
+So, you get a list of enrolled Harvard students
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
