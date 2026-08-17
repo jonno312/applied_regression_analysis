@@ -12,6 +12,10 @@ Explain the iid assumption of simple linear regression.
 
 ## Lesson
 
+"IID" stands for "independent and identically distributed."
+In simple linear regression, we assume the points
+$(X_1,Y_1),\dotsc,(X_n,Y_n)$ are iid.
+
 ### Independent
 
 We assume the observations are independent of each other.
@@ -48,25 +52,91 @@ This would be a violation of independence.
 
 ### Identically Distributed
 
+In simple linear regression, we assume the pairs of points are
+identically distributed.
+If we go back to the procedural view of simple linear regression,
+this means that we assume $X_1,\dotsc,X_n$ are identically distributed;
+every point uses the same $\beta_0$ and $\beta_1$;
+and then the $\epsilon_1,\dotsc,\epsilon_n$ are identically distributed.
+
+Another way of looking at this is that we assume we're sampling from
+the same population.
+A violation of this assumption would occur if the population we're sampling
+from changes over time, especially if the variability of the explanatory
+variable decreases over time.
+
+Consider cell phone ownership.
+According to [Pew Research](https://www.pewresearch.org/internet/fact-sheet/mobile/),
+62% of US adults owned a cell phone in 2002.
+By 2025, the proportion had increased to 98%.
+Suppose we started a study in 2002 examining the relationship between
+cell phone ownership and anxiety.
+We planned to use simple linear regression with anxiety as the outcome
+and cell phone ownership as the explanatory variable.
+It wouldn't make sense to continue that study, with the same analysis,
+through 2025.
+Here are some reasons why:
+
+- The relationship between cell phone ownership and anxiety has probably changed
+over those 23 years.
+- If you didn't change your recruitment practices, you would probably stop
+enrolling people who don't own a cell phone, since they're so rare.
+- People who do own a cell phone and people who don't probably differ
+in systematic ways that are related to anxiety.
+
+At the very least, we'd want to incorporate other variables in the analysis,
+like year.
+This would make the analysis multiple linear regression, which we will
+talk about later.
+
+I recognize that this is a contrived example.
+However, it's important in any statistical analysis to make sure
+you're very clear about what population you're trying to generalize to.
+If that population changes over time,
+you need to make sure you account for that.
+
+
 ## Problems
 
 ### Problem 1
 
-
+Suppose you want to investigate the relationship between number of hours
+worked per week and job satisfaction.
+You randomly select 1,000 US companies and survey five workers at each company.
+Have you satisfied the iid assumption of simple linear regression?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+No. Workers at the same company are more similar to each other than
+to workers at other companies.
+So, the observation are not independent.
 
 :::
 
 ### Problem 2
 
-
+Suppose you are studying the relationship between age and approval
+of the new Spider-Man movie.
+So, you survey the members of your D&D (Dungeons and Dragons) group;
+then you ask them to recruit the members of their other D&D groups;
+then you ask *them* to recruit the members of *their* other D&D groups;
+and so forth, until you've surveyed every D&D player in the tri-state
+area.
+Have you satisfied the iid assumption of simple linear regression?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+No. People who play D&D together are more similar to each other than
+people who don't play D&D together.
+If you know what one player thinks of the new Spider-Man movie,
+you'll be better able to guess what other players in the same group
+think about the new Spider-Man movie.
+So, group membership should be included in the analysis.
+This would require some other analysis besides simple linear regression.
 
+By the way, this form of recruitment is a version of
+[respondent-driven sampling](www.publichealth.columbia.edu/research/population-health-methods/respondent-driven-sampling),
+which is a method for finding hard-to-reach or stigmatized populations.
 
 :::
 
