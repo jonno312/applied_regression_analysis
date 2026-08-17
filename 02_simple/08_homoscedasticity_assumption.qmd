@@ -1,0 +1,216 @@
+---
+title: "Homoscedasticity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the homoscedasticity assumption of simple linear regression.
+
+
+## Lesson
+
+Similar to with the linearity assumption,
+I'm going to try to explain this assumption in three ways.
+
+### Words
+
+The word "homoscedasticity" comes from the Greek words "homos",
+[meaning "same"](https://www.merriam-webster.com/dictionary/hom-),
+and "skedastikos",
+[meaning "able to disperse"](https://www.merriam-webster.com/dictionary/homoscedasticity).
+So the word means "same dispersion".
+If this assumption is met, then there is equal dispersion,
+or equal variability, of the points around the regression line,
+no matter the value of the explanatory variable.
+
+It will probably help to look at some pictures.
+Consider these simulated data:
+```{r}
+set.seed(1)
+n <- 1e3
+beta_0 <- 1
+beta_1 <- 0.5
+x <- rnorm(n = n,
+           sd = 2)
+epsilon <- rnorm(n = n)
+y <- beta_0 + beta_1 * x + epsilon
+plot(x = x,
+     y = y,
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+abline(v = 1.9,
+       col = "purple")
+abline(v = 2.1,
+       col = "purple")
+abline(v = -0.1,
+       col = "purple")
+abline(v = 0.1,
+       col = "purple")
+```
+If we look at the vertical spread of the points where $X \approx 0$
+and where $X \approx 2$,
+it's about the same.
+Even though $X$ has changed,
+the variability around the regression line has not.
+So, these points are homoscedastic.
+
+I have to acknowledge that you might disagree with me on this point.
+You might be thinking that the cloud of points looks more like a football,
+with lower variability at very high and very low values of $X$.
+That's fair.
+Having generated the data, I know that the assumption of homoscedasticity is
+met.
+So why the football shape?
+This is because, for any value of $X$, points are more likely to be close
+to the line than far away.
+If there are a lot of points at a certain value of $X$ (like around $X = 0$),
+there will be a few points far from the line,
+just by chance.
+If there are only a couple points at a certain value of $X$
+(like around $X = -6$),
+it's unlikely to observe many points far from the line.
+So, it appears that the vertical spread of the points tapers off
+for high and low values of $X$.
+
+Now look at these points:
+```{r}
+y_bowtie <- beta_0 + beta_1 * x + epsilon * x
+plot(x = x,
+     y = y_bowtie,
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+abline(v = 1.9,
+       col = "purple")
+abline(v = 2.1,
+       col = "purple")
+abline(v = -0.1,
+       col = "purple")
+abline(v = 0.1,
+       col = "purple")
+```
+The variability of the points around the regression line when $X \approx 0$
+is way different than the variability of the points around the regression
+line when $X \approx 2$.
+So, these points are heteroscedastic.
+
+### Procedural Math
+
+Recall that we're assuming that $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$.
+This assumption can be written as $Var(\epsilon_i|X_i) = \sigma^2$.
+Note that $\sigma^2$ doesn't depend on $X_i$ or even $i$;
+it's the same no matter which observation you're talking about.
+
+When we're walking through our procedure
+(draw $X_i$ from its distribution;
+plug it into $f(x) = \beta_0 + \beta_1 x$;
+add random error),
+we're not changing the variability of the random error for each observation.
+It stays the same.
+```{r}
+for(i in 1:4){
+  plot(x = x[1:i],
+     y = y[1:i],
+     xlim = c(-6,8),
+     ylim = c(-4,6),
+     xlab = "X",
+     ylab = "Y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+segments(x0 = x[1:i],
+         x1 = x[1:i],
+         y0 = y[1:i] - epsilon[1:i],
+         y1 = y[1:i],
+         col = "red")
+}
+```
+::: {.callout-caution collapse="true"}
+## Caution: Math
+
+Some of you might be saying,
+"Isn't this assumption included in the second assumption,
+when we assume the observations are identically distributed."
+Not exactly.
+If the data-generating procedure were
+$$
+Y_i = \beta_0 + \beta_1 X_i + \epsilon_i X_i \text{,}
+$$
+where $E(\epsilon_i|X_i) = 0$ (assumption 1),
+$X_1,\dotsc,X_n$ are iid (assumption 2),
+and $\epsilon_1,\dotsc,\epsilon_n$ are iid (assumption 2),
+we would satisfy the first two assumptions but not the third.
+This is because
+$$
+\begin{align*}
+E\left(\epsilon_i X_i\right) &= E\left(E\left(\epsilon_i X_i\middle|X_i\right)\right) \\
+&= E\left(X_i E\left(\epsilon_i \middle|X_i\right)\right) \\
+&= E\left(X_i \left(0\right)\right) \\
+&= E(0) \\
+&= 0
+\end{align*}
+$$
+but
+$$
+\begin{align*}
+Var\left(\epsilon_i X_i\right) &= E\left(Var\left(\epsilon_i X_i\middle|X_i\right)\right) + Var\left(E\left(\epsilon_i X_i\middle|X_i\right)\right) \\
+&= E\left(X_i^2 Var\left(\epsilon_i \middle|X_i\right)\right) + Var\left(0\right) \\
+&= E\left(X_i^2 \sigma^2\right) \\
+&= \sigma^2 E\left(X_i^2\right) \text{.}
+\end{align*}
+$$
+
+:::
+
+
+### Abstract Math
+
+In its most abstract form, we can write this assumption as
+$Var(Y_i|X_i) = \sigma^2$.
+Again, the $\sigma^2$ doesn't depend on $X_i$ or even $i$,
+so it's the same across all $X_i$.
+Why do we go to this level of abstraction?
+It will be useful when we talk about logistic regression
+and Poisson regression.
+
+## Problems
+
+### Problem 1
+
+Suppose $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$
+where $Var(\epsilon_i|X_i) = \tau^2$.
+Would this satisfy the homoscedasticity assumption of simple linear
+regression?
+Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Yes. It's not important which Greek letter you use to represent
+the variance of the random error,
+just so long as that variance is a constant,
+and does not change with $X_i$ or $i$.
+
+:::
+
+### Problem 2
+
+What is the opposite of homoscedasticity?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Heteroscedasticity, when the variability of the points around the regression
+line varies as a function of $X_i$.
+
+:::
+
+
+
+
