@@ -1,0 +1,164 @@
+---
+title: "Integrals"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Use and interpret the terms “integral” and “integrate”.
+
+
+## Lesson
+
+First, let me say that you do not need to know calculus
+in order to understand this material.
+All I want is for you to understand the concept.
+Essentially, the integral of a function is the area under it.
+In each of the following plots,
+the blue area represents the integral of the function
+from $a$ to $b$.
+```{r}
+# Quadratic
+f_quad <- function(x){
+  -x^2 + 4
+}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- f_quad(x)
+plot(x = x,
+     y = y,
+     type = "l",
+     main = "a = -2, b = 1")
+abline(h = 0)
+abline(v = 0)
+polygon(x = c(x[x >= -2 & x <= 1],
+              1,
+              1,
+              -2),
+        y = c(y[x >= -2 & x <= 1],
+              f_quad(1),
+              0,
+              0),
+        col = "blue")
+
+# Sin
+f_sin <- function(x){
+  x / 2 + sin(x)
+}
+x_sin <- seq(from = 0,
+             to = 6,
+             length.out = 250)
+y_sin <- f_sin(x_sin)
+plot(x = x_sin,
+     y = y_sin,
+     type = "l",
+     xlab = "x",
+     ylab = "y",
+     main = "a = 2, b = 4")
+abline(h = 0)
+abline(v = 0)
+polygon(x = c(x_sin[x_sin >= 2 & x_sin <= 4],
+              4,
+              4,
+              2),
+        y = c(y_sin[x_sin >= 2 & x_sin <= 4],
+              f_quad(4),
+              0,
+              0),
+        col = "blue")
+```
+
+## Problems
+
+### Problem 1
+
+For this problem, I do want you to compute an integral,
+but I promise that you can do it without any knowledge of calculus.
+Consider the function $f(x) = x$, or $y = x$,
+plotted below.
+```{r}
+plot(x = x,
+     y = x,
+     type = "l",
+     ylab = "y")
+abline(h = 0,
+       v = 0)
+```
+What is the integral of this function from 0 to 1?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The integral of the function is the area under the curve.
+This curve is a straight line.
+It intersects the $y$-axis at $x = 0$.
+So, the integral from 0 to 1 will be the area of the triangle
+with base 1 and height 1.
+That's $1 \times 1 / 2 = \frac{1}{2}$.
+```{r}
+plot(x = x,
+     y = x,
+     type = "l",
+     ylab = "y")
+abline(h = 0,
+       v = 0)
+polygon(x = c(x[x >= 0 & x <= 1],
+              1,
+              1,
+              0),
+        y = c(x[x >= 0 & x <= 1],
+              1,
+              0,
+              0),
+        col = "blue")
+```
+
+:::
+
+### Problem 2
+
+Consider the function $f(x) = 1$, or $y = 1$,
+plotted below.
+```{r}
+plot(x = x,
+     y = rep(x = 1,
+             times = length(x)),
+     type = "l",
+     ylab = "y",
+     ylim = c(-3,3))
+abline(h = 0,
+       v = 0)
+```
+What is the integral of this function from 0 to 1?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is a square. It has area 1.
+```{r}
+plot(x = x,
+     y = rep(x = 1,
+             times = length(x)),
+     type = "l",
+     ylab = "y",
+     ylim = c(-3,3))
+abline(h = 0,
+       v = 0)
+polygon(x = c(x[x >= 0 & x <= 1],
+              1,
+              1,
+              0),
+        y = c(rep(x = 1,
+                  times = sum(x >= 0 & x <= 1)),
+              1,
+              0,
+              0),
+        col = "blue")
+```
+
+:::
+
+
+
+
