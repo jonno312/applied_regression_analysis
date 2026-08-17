@@ -1,0 +1,159 @@
+---
+title: "Consequences of the IID Assumption"
+execute:
+  echo: false
+  warning: false
+format: html
+---
+
+```{r}
+library(scales)
+```
+
+## Learning Objective
+
+Explain the consequences of violations of the iid assumption
+of simple linear regression.
+
+
+## Lesson
+
+For our purposes, the main consequence of violations of the iid assumption
+of simple linear regression is that the standard errors will be wrong.
+
+A standard error is the standard deviation of an estimator;
+it's a measure of how variable the estimator is,
+or how much it will change from sample to sample.
+The higher the standard error,
+the less precise our estimator is;
+the lower the standard error,
+the more precise our estimator is.
+Getting a good measure of the variability of the estimator
+helps us know how wrong we might be.
+
+In simple linear regression,
+we are generally most interested in $\hat{\beta}_1$,
+the estimator of the slope.
+We often conduct a statistical test where the null hypothesis test
+is that $\beta_1 = 0$,
+i.e., that there is no (linear) relationship between the explanatory
+and outcome variables.
+The statistical test is only correct if the standard error is correct.
+
+Let's consider an example.
+Below is a plot of commute time (in minutes) as a function of commute distance
+(in miles) for a sample of 500 individuals in Atlanta.
+I've made the points partially transparent because there's so much overlap,
+so darker circles indicate more individuals with the same commute distance
+and time.
+```{r}
+d <- Lock5Data::CommuteAtlanta
+plot(x = d$Distance,
+     y = d$Time,
+     xlab = "Distance (miles)",
+     ylab = "Time (minutes)",
+     main = "Commuting in Atlanta",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 16)
+```
+
+If I run a simple linear regression with time as the outcome
+and distance as the explanatory variable,
+this is the resulting residual plot.
+```{r}
+mod_01 <- lm(formula = Time ~ Distance,
+             data = d)
+plot(x = d$Distance,
+     y = mod_01$residuals,
+     xlab = "Distance (miles)",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 16)
+abline(h = 0,
+       col = "red")
+```
+The linearity assumption appears to be met, although in a real-world setting,
+it would behoove us to look into a few of the "weird" points,
+for lack of a better word.
+Who has a five mile commute that takes two hours?
+
+Since we're focusing on the effects of violating the iid assumption of
+simple linear regression, let's take a look at the estimates and their
+standard errors.
+```{r}
+summary(mod_01)
+```
+The standard errors are in the `Coefficients` table in the 
+`Std. Error` column.
+If these commuters weren't sampled independently from the same population,
+we cannot trust these standard errors.
+For example, what if we sampled people who carpool together?
+We would have a bunch of people with similar (or even identical) commutes
+because they're in the same vehicle
+(for at least a portion of the trip).
+In that case, the standard errors presented in this table would be wrong.
+Since the `t value` column is computed from the `Std. Error` column,
+the `t value` column would be wrong,
+and since the `Pr(>|t|)` column is computed from the `t value` column,
+the `Pr(>|t|)` column would be wrong.
+
+I should say that violations of the iid assumption don't mean you can't
+do any regression at all.
+There are several subfields within statistics devoted to analyzing
+correlated data.
+For example, many statisticians focus on longitudinal data,
+where participants are observed more than once over time;
+in this case, observations within individuals are correlated with each other.
+Many educational researchers specialize in hierarchical models,
+since students are nested within classrooms, which are nested within schools,
+which are nested within districts, etc.
+
+So, what I mean to say is that, when data are correlated,
+the standard errors computed from the most straightforward version
+of simple linear regression are incorrect.
+
+## Problems
+
+### Problem 1
+
+True or false:
+If the commuters in the example above were not independent,
+the slope estimate is meaningless and uninterpretable.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False. 
+This is something that I find counterintuitive,
+but a violation of the iid assumption of simple linear regression
+doesn't imply that we have to throw out the coefficient estimates.
+So long as the linearity assumption is met,
+the coefficients are unbiased,
+meaning that their expectation is equal to the true value of the population
+parameter.
+This is a very powerful result in statistics.
+
+:::
+
+### Problem 2
+
+True or false:
+If the iid assumption of simple linear regression is not met,
+we cannot trust the confidence intervals computed for the coefficients.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+The confidence interval formula (which we haven't seen)
+uses the standard error,
+so if the standard error is wrong,
+the confidence interval is wrong.
+
+
+
+:::
+
+
+
+
