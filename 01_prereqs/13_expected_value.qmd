@@ -1,0 +1,184 @@
+---
+title: "Expected Value"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the term "expected value"
+in the context of random variables.
+
+
+## Lesson
+
+### Notation
+
+We use $E(X)$ to represent the expected value of $X$.
+You might see "expectation" instead of "expected value".
+
+### Visual Representation
+
+The expected value of a random variable is where you would have to place
+a fulcrum to get it to balance.
+Let's look at a few examples.
+
+This is a standard normal distribution.
+It's expected value is 0.
+```{r}
+curve(expr = dnorm,
+      from = -3,
+      to = 3,
+      xlab = "x",
+      ylab = "f(x)",
+      ylim = c(-0.05,0.4))
+abline(h = 0)
+polygon(x = c(0,0.2,-0.2),
+        y = c(0,-0.05,-0.05),
+        col = "black")
+```
+
+This is a uniform distribution from 0 to 1.
+It's expected value is 0.5.
+```{r}
+plot(x = c(-0.5,0,0,1,1,1.5),
+     y = c(0,0,1,1,0,0),
+     type = "l",
+     xlab = "x",
+     ylab = "f(x)",
+     ylim = c(-0.05,1))
+abline(h = 0)
+polygon(x = c(0.5,0.6,0.4),
+        y = c(0,-0.05,-0.05),
+        col = "black")
+```
+
+This is an exponential distribution with expected value equal to 1.
+```{r}
+curve(expr = dexp,
+      from = 0,
+      to = 6,
+      xlab = "x",
+      ylab = "f(x)",
+      ylim = c(-0.05,1))
+abline(h = 0,
+       v = 0)
+polygon(x = c(1,1.1,0.9),
+        y = c(0,-0.05,-0.05),
+        col = "black")
+```
+
+This is a Bernoulli distribution with $P(X = 1) = 0.75$.
+It's expected value is 0.75.
+```{r}
+x_B <- c(-0.5,-0.5,0.5,0.5,1.5,1.5)
+y_B <- c(0,0.25,0.25,0.75,0.75,0)
+plot(x = x_B,
+     y = y_B,
+     type = "l",
+     xlab = "x",
+     ylab = "P(X = x)",
+     ylim = c(-0.05,1))
+segments(x0 = 0.5,
+         y0 = 0,
+         x1 = 0.5,
+         y1 = 0.25)
+abline(h = 0)
+polygon(x = c(0.75,0.85,0.65),
+        y = c(0,-0.05,-0.05),
+        col = "black")
+```
+This example shows that the expected value of a random variable
+doesn't need to be in its support.
+$E(X)$ can be a value that $X$ can't take.
+
+
+### Verbal Description
+
+The expected value is a weighted average.
+Each possible value of $X$ is weighted by its probability
+(or density--a technical term that you don't have to memorize,
+but that I can't, in good conscience, not use),
+and then these weighted values are summed.
+
+
+Consider this image.
+```{r}
+plot(x = c(-5,-5,-5,-3,-1,-1,2,2,2,2,2,3),
+     y = c(0.1,0.3,0.5,0.1,0.1,0.3,0.1,0.3,0.5,0.7,0.9,0.1),
+     pch = 19,
+     ylim = c(-0.05,1),
+     cex = 7,
+     xlab = "x",
+     ylab = "")
+abline(h = 0)
+```
+I'm going to take each value and weight it by it's relative frequency.
+
+| Value | Relative Frequency | Product |
+|-:|-:|-:|
+| -5 | 3/12 | -15/12 |
+| -3 | 1/12 | -3/12 |
+| -1 | 2/12 | -2/12 |
+| 2 | 5/12 | 10/12 |
+| 3 | 1/12 | 3/12 |
+
+The sum of the weighted values is
+```{r}
+#| echo: true
+
+sum(c(-15 / 12,
+      -3 / 12,
+      -2 / 12,
+      10 / 12,
+      3 / 12))
+```
+This is the expected value of this distribution.
+
+### Math
+
+For a continuous random variable, the expected value is
+$$
+E(X) = \int_{-\infty}^\infty x f(x)\,dx \text{.}
+$$
+For a discrete random variable, the expected value is
+$$
+E(X) = \sum_x x P(X = x) \text{.}
+$$
+
+## Problems
+
+### Problem 1
+
+True or false:
+The expected value is the most commonly occurring value in a data set.
+That's why it's the "expected" value;
+it's the one you most expect to see.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+We reserve "expected value" for random variables,
+not for data sets.
+The most commonly occurring value in a data set is the mode
+of that data set.
+The expected value may not even be a value that the random variable can take.
+
+:::
+
+### Problem 2
+
+True or false:
+$P(X > E(X))$ is always 0.5.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False. This is only true when $E(X)$ is the median of the distribution,
+which is not always the case.
+
+:::
+
+
+
+
