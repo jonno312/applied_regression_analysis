@@ -1,0 +1,300 @@
+---
+title: "Graphical Representations of Probability"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Create, use, and interpret graphical representations of probability.
+
+
+## Lesson
+
+In statistics, we often want to represent probability visually.
+This is especially common when talking about distributions.
+In previous statistics courses, you probably used graphical representations
+of probability when talking about p-values.
+
+The shortest summary is that we tend to use surface area,
+especially area under the curve, to represent
+probability.
+(This is consistent with the
+[principle of proportional ink](https://callingbullshit.org/tools/tools_proportional_ink.html).)
+Let's consider the normal distribution to demonstrate this idea,
+since many people are familiar with the normal distribution.
+
+Here is a plot of the standard normal distribution,
+which has mean 0 and variance 1.
+```{r}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- dnorm(x)
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+```
+
+The area under the entire curve is 1, since the probability
+of a standard normal random variable taking on any value is 1.
+```{r}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- dnorm(x)
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+polygon(x = c(x,
+              x[length(x)],
+              x[1]),
+        y = c(y,
+              0,
+              0),
+        col = "blue")
+```
+
+The area under the curve for $x \le 0$ is 0.5, since the probability
+of a standard normal random variable being less than or equal to 0 is 0.5.
+```{r}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- dnorm(x)
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+polygon(x = c(x[x <= 0],
+              0,
+              0,
+              x[1]),
+        y = c(y[x <= 0],
+              dnorm(0),
+              0,
+              0),
+        col = "blue")
+```
+
+The area under the curve for $x \ge 1.96$ or $x \le -1.96$ is 0.05, since the probability
+of a standard normal random variable being greater than or equal to 1.96
+or less than or equal to -1.96 is 0.05.
+```{r}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- dnorm(x)
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+polygon(x = c(x[x <= -1.96],
+              -1.96,
+              -1.96,
+              x[1]),
+        y = c(y[x <= -1.96],
+              dnorm(-1.96),
+              0,
+              0),
+        col = "blue")
+polygon(x = c(x[x >= 1.96],
+              x[length(x)],
+              1.96,
+              1.96),
+        y = c(y[x >= 1.96],
+              0,
+              0,
+              dnorm(1.96)),
+        col = "blue")
+```
+
+What this implies is that values near 0 are more likely than values far
+from 0,
+because integrating under $f(x)$ near 0 produces a larger area
+than integrating under $f(x)$ far from 0.
+
+::: {.callout-note collapse="true"}
+
+The function that I've labeled $f$ in the graphs above is called
+a "probability density function".
+You don't need to memorize this.
+
+:::
+
+The normal distribution is a continuous distribution, but the principle
+is the same for discrete distributions.
+Let's consider the Bernoulli distribution.
+In the plot below, I've drawn a Bernoulli distribution
+where $P(X = 1) = 0.75$.
+```{r}
+x_B <- c(-0.5,-0.5,0.5,0.5,1.5,1.5)
+y_B <- c(0,0.25,0.25,0.75,0.75,0)
+plot(x = x_B,
+     y = y_B,
+     type = "l",
+     xlab = "x",
+     ylab = "P(X = x)")
+segments(x0 = 0.5,
+         y0 = 0,
+         x1 = 0.5,
+         y1 = 0.25)
+abline(h = 0)
+```
+
+The area of the bar over $x = 1$ is equal to 0.75,
+because $P(X = 1) = 0.75$.
+```{r}
+x_B <- c(-0.5,-0.5,0.5,0.5,1.5,1.5)
+y_B <- c(0,0.25,0.25,0.75,0.75,0)
+plot(x = x_B,
+     y = y_B,
+     type = "l",
+     xlab = "x",
+     ylab = "P(X = x)")
+segments(x0 = 0.5,
+         y0 = 0,
+         x1 = 0.5,
+         y1 = 0.25)
+abline(h = 0)
+polygon(x = c(0.5,0.5,1.5,1.5),
+        y = c(0,0.75,0.75,0),
+        col = "blue")
+```
+
+The area of the bar over $x = 0$ is equal to 0.25,
+because $P(X = 0) = 0.25$.
+```{r}
+x_B <- c(-0.5,-0.5,0.5,0.5,1.5,1.5)
+y_B <- c(0,0.25,0.25,0.75,0.75,0)
+plot(x = x_B,
+     y = y_B,
+     type = "l",
+     xlab = "x",
+     ylab = "P(X = x)")
+segments(x0 = 0.5,
+         y0 = 0,
+         x1 = 0.5,
+         y1 = 0.25)
+abline(h = 0)
+polygon(x = c(-0.5,-0.5,0.5,0.5),
+        y = c(0,0.25,0.25,0),
+        col = "blue")
+```
+
+::: {.callout-note collapse="true"}
+
+The function that I've labeled $P(X = x)$ in the graphs above is called
+a "probability mass function".
+You don't need to memorize this.
+
+:::
+
+Why does any of this matter?
+We often use probability distributions to represent real-world quantities.
+It's important to be able to evaluate whether a distribution is an accurate
+representation of a real-world quantity.
+For example, suppose I said that I wanted to use this distribution
+to represent $T$, the time from birth to death for a randomly-selected
+American.
+```{r}
+temp <- function(x){
+  dgamma(x = x,
+         shape = 18,
+         rate = 1)
+}
+curve(expr = temp,
+      from = 0,
+      to = 100,
+      ylab = "f(x)")
+```
+Does that make sense? No!
+It would mean that the chance of death is highest around age 18
+and lowest around age 0 and after age 40.
+That's not an accurate representation of the real world.
+
+At this point, I should point out an exception to the rule stated above.
+Although we often use area under the curve to represent probability,
+there is one domain in which we commonly use the height of the curve
+to represent probability.
+That domain is survival analysis.
+When the outcome is time to an event (e.g.,
+heart attack, death, progression),
+we often plot the probability of surviving past a certain time.
+It looks something like this:
+```{r}
+temp <- function(x){
+  1 - pexp(q = x)
+}
+curve(expr = temp,
+      from = 0,
+      to = 1,
+      ylim = c(0,1),
+      xlab = "t",
+      ylab = "P(T > t)")
+```
+
+Sometimes we use $S(t)$ instead of $P(T > t)$, but the meaning is the same.
+In this situation, the height of the curve is a probability,
+not the area under the curve.
+This is why it's always very important to read the axis labels on a plot,
+and to include axis labels when creating a plot.
+
+## Problems
+
+### Problem 1
+
+Would it make sense to use this distribution to represent time from birth
+until death?
+Why or why not?
+```{r}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- 0.5 * exp(-abs(x))
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It would not make sense to use this distribution to represent time from birth
+until death.
+Time from birth until death is positive,
+but this distribution places positive probability over negative numbers.
+
+:::
+
+### Problem 2
+
+Would it make sense to use this distribution to represent death
+at 1 year post chemotherapy for breast cancer?
+Why or why not?
+```{r}
+x <- seq(from = -3,
+         to = 3,
+         length.out = 500)
+y <- 0.5 * exp(-abs(x))
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It would not make sense.
+Death at 1 year post chemotherapy for breast cancer can only take on
+two values, death or no death,
+whereas with this distribution, any number is possible.
+
+:::
+
+
+
+
