@@ -1,0 +1,82 @@
+---
+title: "Parameter and Statistic"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Compare and contrast the terms "parameter" and "statistic".
+- Determine whether a quantity is a parameter or statistic.
+
+
+## Lesson
+
+A parameter is a function of a population.
+For example, the expected value is a parameter.
+A statistic is a function of a sample.
+For example, the sample average is a statistic.
+
+Unfortunately, it is often the case that the same word could be a parameter
+or statistic depending on context.
+Consider the median.
+Every population distribution has a median.
+For a continuous random variable,
+the area under the curve to the right of the median is 0.5.
+(The definition of the median for a discrete random variable
+is more complicated,
+so I'm just going to avoid it for now.)
+
+Every sample has a median, too.
+To get the sample median, you line up all the values in the sample
+from smallest to largest.
+If there are $n$ observations, and $n$ is odd,
+the median is the $\frac{n+1}{2}$th value in the list.
+For example, in the data set $\{0,3,4,5,15\}$,
+the median is 4.
+If there are $n$ observations, and $n$ is even,
+the median is the average of the $\frac{n}{2}$th
+and $\left(\frac{n}{2}+1\right)$th values in the list.
+For example, in the data set $\{0,3,4,5,15,24\}$,
+the median is
+$$
+\frac{4 + 5}{2} = 4.5 \text{.}
+$$
+
+
+
+
+## Problems
+
+### Problem 1
+
+Is the maximum value in my sample a parameter or a statistic?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It's a statistic, because it's something you computed from your data.
+
+:::
+
+### Problem 2
+
+In clinical trials, we often want to know the expected difference
+in some outcome (e.g., blood pressure, risk of death)
+between people who take a drug and people who don't
+Is this a parameter or a statistic?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is a parameter.
+If we randomly assign some people to receive a drug and some people to
+receive a placebo,
+and then compute the difference between the averages of the outcome
+across the groups,
+that would be a statistic.
+
+:::
+
+
+
+
