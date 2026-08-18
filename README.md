@@ -6,31 +6,21 @@ This is a (bare-bones, first-draft) textbook on applied regression analysis.
 It's for a course I teach at a school of public health.
 Many of the students are clinicians and haven't done math in a while.
 Last year, I got the sense that many of my students wanted an organized,
-"Just the facts, ma'am"-style treatment of the material.
-
-## License
-
-This work is licensed under a Creative Commons
-Attribution-NonCommercial-ShareAlike 4.0 International license
-([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)).
+"Just the facts, ma'am"-style treatment of the material that focused
+more on concepts and less on math.
+So, this is that treatment.
 
 ## Using the Textbook
 
 ### Software
 
-In order to use the textbook, you will need
-[RStudio](https://posit.co/downloads)
-or [Positron](https://positron.posit.co/).
-
-### Packages
-
-If you haven't already, you'll need to install the following R packages:
-
-- Lock5Data (I used Version 4.0.1)
+In order to use the textbook, I recommend that you download
+[R](https://lib.stat.cmu.edu/R/CRAN/) and
+[RStudio](https://posit.co/downloads).
 
 ### Cloning This Repository
 
-If you choose RStudio, you can follow
+Follow
 [these instructions](https://happygitwithr.com/new-github-first#rstudio-ide)
 to clone the repository.
 
@@ -41,6 +31,14 @@ Once you've cloned the repo, you'll have to render the Quarto documents
 to HTML.
 There should be a "Render" button at the top of the window when you
 open each Quarto document.
+If you need to install any packages,
+RStudio should tell you.
+
+## License
+
+This work is licensed under a Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International license
+([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)).
 
 ## AI
 
