@@ -1,0 +1,50 @@
+---
+title: "Sample Average"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define and compute a sample average.
+
+
+## Lesson
+
+The sample average is probably what you've been taught an average is.
+It's what you get when you add up all your values and then
+divide by the number of values you have.
+We usually use $\bar{X}$, read "X bar",
+to denote the sample average.
+We can write the formula like so:
+$$
+\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i \text{.}
+$$
+
+The sample average is itself a random variable.
+Even if you're sampling from the same population,
+every time you draw a new sample,
+you will probably get a different sample average.
+This is in contrast to the expected value,
+which is always the same for the same population.
+
+
+## Problems
+
+### Problem 1
+
+What is the average of these numbers:
+3, 2, 4, 6, and 5?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\frac{3 + 2 + 4 + 6 + 5}{5} = \frac{20}{5} = 4
+$$
+
+:::
+
+
+
+
