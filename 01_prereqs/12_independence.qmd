@@ -1,0 +1,93 @@
+---
+title: "Independence"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the term "independent".
+
+
+## Lesson
+
+Two events are independent if the occurrence of one has no effect
+on the probability of the occurrence of another.
+In symbols,
+$A$ and $B$ are independent if $P(A|B) = P(A)$.
+
+An example of independent events is me choosing to wear a red shirt
+to work
+and someone in Mozambique choosing to wear a red shirt to work.
+I don't know anyone in Mozambique,
+and I don't coordinate my outfit with anyone,
+so one event has no influence on the other.
+An example of non-independent events is me choosing to take the bus to work
+and it raining in Boston.
+I am far more likely to take the bus to work if it's raining than
+if it's clear.
+So, if you know the weather in Boston,
+you can do a better job predicting whether I will take the bus or walk.
+
+Two random variables are independent if knowing the value of one
+doesn't change the distribution of the other.
+For discrete random variables $X$ and $Y$,
+we might write independence as $P(X = x|Y = y) = P(X = x)$.
+For continuous random variables $X$ and $Y$,
+we might write independence as $f(x|y) = f(x)$.
+
+An example of independent random variables is
+the speed of the northbound Vermonter Amtrak train between Northampton
+and Greenfield on September 5, 2027,
+and the speed of an ant crawling on a leaf in Topeka, Kansas,
+on the same day.
+These things have nothing to do with each other.
+Knowing one will not help you predict the other.
+An example of non-independent random variables
+is the outdoor temperature in Burlington, Vermont,
+and the rate at which a maple creemee will melt.
+("[Creemee](https://www.helloburlingtonvt.com/blog/post/what-is-a-creemee/)"
+is the Vermont word for soft serve ice cream.
+Not frozen yogurt, just soft serve ice cream.)
+The hotter it is outside, the faster creemees melt.
+
+Why do we care about this?
+It's often (in fact, almost always)
+a requirement that we assume independence at some point in a statistical
+analysis.
+So, we have to know when our observational units are and are not
+independent.
+
+## Problems
+
+### Problem 1
+
+Suppose $X$ is my LDL cholesterol level
+and $Y$ is my dad's LDL cholesterol level.
+Are $X$ and $Y$ independent?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No, these two variables are related.
+The higher my dad's LDL cholesterol,
+the higher mine is likely to be.
+
+:::
+
+### Problem 2
+
+Suppose $X$ is my LDL cholesterol level
+and $Y$ is the LDL cholesterol level of a randomly-selected
+person in Ohio.
+Are $X$ and $Y$ independent?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Yes. These two values are not related to each other.
+
+:::
+
+
+
+
