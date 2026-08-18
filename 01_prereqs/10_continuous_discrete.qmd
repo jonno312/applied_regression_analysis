@@ -1,0 +1,78 @@
+---
+title: "Continuous and Discrete Random Variables"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the terms "continuous random variable"
+and "discrete random variable".
+
+
+## Lesson
+
+A continuous random variable is a random variable whose support
+is an interval.
+For example, the a normally distributed random variable is continuous
+because it can take on any value between $-\infty$ and $+\infty$.
+An exponential random variable is continuous because
+it can take on any value between 0 and $+\infty$.
+A continuous uniform random variable is continuous because
+it can take on any value between two points,
+$a$ and $b$.
+
+In contrast, a discrete random variable is a random variable whose support
+is separated values.
+For example, a Bernoulli random variable is discrete because it can only
+take on two values, 0 and 1.
+A binomial random variable is discrete because it can be any whole number
+between 0 and $n$.
+A Poisson random variable is discrete because it can be any whole number
+between 0 and $+\infty$.
+
+Why does this matter?
+We often use a certain distribution to represent, or model,
+our outcome.
+It's important to be able to evaluate the appropriateness of that distribution
+as a model for our outcome.
+If the distribution is continuous but the outcome can only take on discrete
+values, the distribution may not be appropriate.
+
+## Problems
+
+### Problem 1
+
+When thought of as a random variable,
+is height continuous or discrete?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Height is continuous, because it can be any value between 0 and 10 feet or so.
+People are not required to be a whole number of inches tall.
+
+Of course, you could argue that when measuring height,
+people only use the gradations that are marked on the measuring tool,
+leading to a finite number of possible heights.
+That's a fair argument for why height could be thought of as discrete.
+However, tools for measuring height often have markings that are fine enough
+for height to be modeled by a continuous random variable.
+
+:::
+
+### Problem 2
+
+When thought of as a random variable,
+is the number of new cases of measles in Massachusetts in 2025
+continuous or discrete?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This has to be a whole number, so it's discrete.
+
+:::
+
+
+
+
