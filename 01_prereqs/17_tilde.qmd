@@ -1,0 +1,45 @@
+---
+title: "Tilde"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Use and interpret the "~" symbol in the context of random variables.
+
+
+## Lesson
+
+When we're talking about random variables,
+the "~" symbol can be read as "is distributed as".
+For example, $X\sim N(0,1)$
+means that $X$ is a normal random variable with expected value (mean) 0 and variance 1.
+The mean and variance are the parameters of the normal distribution.
+
+Similarly, $X\sim\text{Poisson}(\mu)$ means that $X$ is a Poisson random
+variable with mean $\mu$.
+The mean is the only parameter of the Poisson distribution.
+
+## Problems
+
+### Problem 1
+
+How do you interpret $X\sim\text{Bernoulli}(p)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$X$ is a Bernoulli random variable with parameter $p$.
+You may not have learned this yet,
+but $p = P(X = 1)$.
+The important thing is just to recognize what $\sim$ means
+and to recognize that $p$ is a parameter.
+
+:::
+
+
+
+
+
+
