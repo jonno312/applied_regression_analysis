@@ -1,0 +1,100 @@
+---
+title: "Population and Sample"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Compare and contrast "population" and "sample".
+- Identify the population for an analysis.
+
+
+## Lesson
+
+### Practical Definitions
+
+Very generally,
+the goal of statistics is to use a sample to make inferences
+about a population.
+The population is broad group that you want to know something about.
+It's generally impossible to investigate every member of a population,
+so instead we draw some members of the population and investigate them.
+This smaller group is called a sample.
+
+Suppose I want to know the relationship between frequency of indoor cooking
+and lung capacity.
+Before collecting any data,
+I should decide what my population is.
+Am I concerned about the lung capacity of humans or pets?
+If I'm concerned about humans,
+are there any age restrictions?
+Am I only concerned about people who cook with gas, coal, or wood,
+but not electric stoves?
+Do I only want to know about this relationship in people with lung problems
+like asthma?
+
+Once I've decided what my population is,
+I need to recruit participants from that population.
+How I do that recruitment affects what statistical analysis I can do;
+for now, we'll assume that I can recruit participants in such a way
+that they are independent from each other and,
+together,
+they are representative of the population.
+This group of participants is now my sample.
+
+
+### Unobserved vs. Observed
+
+We often think of the population as being a sort of "Platonic ideal".
+It's not something we observe directly.
+It's almost a theoretical concept.
+The sample is something we can observe.
+We collect data and analyze them.
+
+
+
+
+
+## Problems
+
+### Problem 1
+
+Suppose I want to conduct a political opinion poll,
+so I go to Jamaica Pond at 6am on a Tuesday
+and ask people questions.
+I analyze the data,
+write up my results, and submit a manuscript titled
+"80% of Americans support Candidate X".
+What's wrong with my claim?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The claim is about "Americans", but my sample is not representative
+of all Americans.
+People at Jamaica Pond at 6am on a weekday probably don't work three jobs,
+they probably value green space and exercise,
+and they can afford to live near Jamaica Pond.
+The population in the claim doesn't match the population from which
+the participants were sampled.
+
+:::
+
+### Problem 2
+
+Is the expected value a function of the population or the sample?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The expected value is a function of the population.
+The expected value is fixed, i.e., non-random.
+The sample is random.
+If you drew a second sample,
+it would look different.
+
+:::
+
+
+
+
