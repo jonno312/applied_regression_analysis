@@ -1,0 +1,99 @@
+---
+title: "Accuracy and Precision"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain accuracy and precision in statistics.
+
+
+## Lesson
+
+When discussing accuracy and precision,
+I'm legally obligated to show you the following figures.
+```{r}
+titles <- c("Accurate, Precise",
+            "Accurate, Not Precise",
+            "Not Accurate, Precise",
+            "Not Accurate, Not Precise")
+for(j in 1:4){
+  plot(x = 0,
+       y = 0,
+       axes = FALSE,
+       frame.plot = TRUE,
+       xlab = "",
+       ylab = "",
+       main = titles[j])
+  Axis(side = 1,
+       labels = FALSE)
+  Axis(side = 2,
+       labels = FALSE)
+  for(i in 1:5){
+    points(x = 0,
+           y = 0,
+           cex = 7 * i)
+  }
+  if(j == 1){
+    points(x = c(0.1,0,0.05,0,-0.05,0.05,-0.03),
+           y = c(0.1,0.05,-0.1,-0.05,0,0,-0.03),
+           pch = 4)
+  } else if(j == 2){
+    points(x = c(0.3,0,0.25,0,-0.35,0.25,-0.15),
+           y = c(0.5,0.25,-0.5,-0.25,0,0,-0.15),
+           pch = 4)
+  } else if(j == 3){
+    points(x = c(0.6,0.5,0.55,0.5,0.45,0.55,0.47),
+           y = c(0.1,0.05,-0.1,-0.05,0,0,-0.15),
+           pch = 4)
+  } else if(j == 4){
+    points(x = c(0.8,0.5,0.75,0.5,0.15,0.75,0.35),
+           y = c(0.5,0.25,-0.5,-0.25,0,0,-0.15),
+           pch = 4)
+  }
+}
+```
+
+Accuracy is a concept that is measured by bias;
+it's about how far away from the target you are, on average.
+Precision is a concept that is measured by variance;
+it's about how widely dispersed your shots are.
+
+Ideally, we would like to be both accurate (low bias)
+and precise (low variance).
+Sometimes, however, we can only increase one by decreasing the other.
+This is called the bias-variance tradeoff.
+
+## Problems
+
+### Problem 1
+
+If I say an estimator is biased, what does that imply about its variance?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Nothing. You can't infer anything about an estimator's variance
+from its bias.
+
+:::
+
+### Problem 2
+
+Suppose I want to estimate the ratio of wingspan to height
+among HSPH graduate students.
+Propose an estimator that has zero variance (perfect precision).
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+You can pick a number, like 1.
+This won't ever change, no matter how many samples you collect,
+so its variance will be zero.
+Of course, we don't know what its bias will be.
+
+:::
+
+
+
+
