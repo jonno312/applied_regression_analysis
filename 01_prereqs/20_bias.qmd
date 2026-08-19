@@ -1,0 +1,90 @@
+---
+title: "Bias"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the term "bias".
+
+
+## Lesson
+
+Suppose $\theta$ is an estimand and $\hat{\theta}$ is an estimator of $\theta$.
+We define bias as
+$$
+\text{bias}\left(\hat{\theta}\right) = E\left(\hat{\theta}\right) - \theta \text{.}
+$$
+Bias is how far off your estimator is from the estimand, on average.
+
+It is perfectly equivalent to say
+$$
+\text{bias}\left(\hat{\theta}\right) = E\left(\hat{\theta}  - \theta\right) \text{.}
+$$
+Writing it this way, you can say that bias is the average error.
+
+If bias is positive, your estimator is, on average, too high.
+If bias is negative, your estimator is, on average, too low.
+If bias is zero, your estimator is, on average, just right.
+
+In the real world, statistical bias appears when your estimator
+is consistently off by a certain amount.
+For example,
+imagine the scale at your doctor's office always says people are one pound
+heavier than they are.
+That would be analogous to positive bias.
+(Strictly, this is not bias,
+and is more of a measurement error issue.
+I'm using it because I think it conveys the big idea of bias.)
+
+You may have noticed that we define population variance as
+$$
+Var(X) = E\left(\left(X - E(X)\right)^2\right)
+$$
+and measure it with
+$$
+\hat{\sigma}^2 = \frac{1}{n-1} \sum_{i=1}^n \left(X_i - \bar{X}\right)^2 \text{.}
+$$
+Bias is the reason for using $n - 1$ in the denominator of $\hat{\sigma}^2$
+rather than $n$.
+If we used $n$, the estimator would be biased;
+it would be just a little too low, on average.
+When we use $n - 1$, the estimator is unbiased,
+meaning its bias is zero.
+
+## Problems
+
+### Problem 1
+
+Suppose I'm trying to estimate the prevalence of the BRCA1 gene
+in America.
+My estimator has a bias of two percentage points.
+What does that mean?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+If the estimator has a bias of two percentage points,
+it overestimates the prevalence by two percentage points,
+on average.
+
+:::
+
+### Problem 2
+
+Suppose I'm trying to estimate the change in respiratory mortality
+associated with a $10 \mu g / m^3$ increase in PM10
+(particulate matter that are ten micrometers or less across).
+My estimator is unbiased.
+What does that mean?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Your estimator, on average, accurately estimates the change.
+
+:::
+
+
+
+
