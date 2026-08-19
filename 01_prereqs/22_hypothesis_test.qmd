@@ -1,0 +1,123 @@
+---
+title: "Hypothesis Test"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- State the steps of a hypothesis test.
+- Propose null and alternative hypotheses for a real research question.
+- Interpret a p-value.
+
+## Lesson
+
+### Steps
+
+Hypothesis testing is a method for making claims about an unobserved
+population based on an observed sample.
+It consists of the following steps:
+
+1. State the null and alternative hypotheses.
+2. Compute a test statistic.
+3. Compute the p-value.
+4. State the conclusion.
+
+### Null and Alternative Hypotheses
+
+The null and alternative hypotheses are statements about the population.
+We often denote the null hypothesis with $H_0$ and the alternative
+hypothesis with $H_1$ or $H_A$.
+So, for example, if we are comparing two groups,
+we might use $H_0 : \mu_1 = \mu_2$ to indicate that the null
+hypothesis is that the mean of group 1 is equal to the mean of group 2.
+Then we might use $H_1 : \mu_1 \ne \mu_2$
+to indicate that the alternative hypothesis is that the mean of group 1
+is not equal to the mean of group 2.
+
+The null hypothesis is always the uninteresting thing,
+for example, there is no difference between two groups,
+there is no change in the outcome associated
+with a change in the predictor,
+there is no correlation between two variables, etc.
+The alternative hypothesis is usually the complement
+of the null hypothesis,
+e.g. there is a difference between two groups,
+there is a change in the outcome associated with a change
+in the predictor,
+there is a correlation between two variables, etc.
+
+The null and alternative hypotheses are not statements about statistics.
+It's not correct to write something like $H_0 : \bar{X} = 0$.
+This is because our goal is to make claims about the population,
+not a specific sample.
+
+### Test Statistic
+
+Since we cannot observe the population directly,
+we draw a sample and then compute a test statistic.
+The test statistic has a known distribution "under the null".
+This means that if the null hypothesis is true,
+we know the distribution of the test statistic.
+
+### P-Value
+
+The p-value is the probability of the test statistic being at least
+as extreme as was observed,
+if the null is true.
+Since we know the distribution of the test statistic under the null,
+we can compute the probability of different scenarios assuming the null
+hypothesis is true.
+So, we look at the observed value of the test statistic and ask,
+"What's the probability of observing something at least as extreme
+as this,
+assuming the null hypothesis is true?"
+The answer to that question is the p-value.
+
+
+
+
+
+## Problems
+
+### Problem 1
+
+Suppose I am conducting a study to determine if a new drug
+decreases blood pressure.
+State the null and alternative hypotheses.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+We can define $\Delta$ as the change in blood pressure,
+with $\Delta > 0$ indicating an increase and $\Delta < 0$ indicating
+a decrease.
+The null hypothesis would then be $H_0 : \Delta \ge 0$
+and the alternative hypothesis would be $H_1 : \Delta < 0$.
+
+In practice, we almost always use two-sided tests,
+meaning we would use $H_0 : \Delta = 0$
+and $H_1 : \Delta \ne 0$.
+
+:::
+
+### Problem 2
+
+True or false:
+The p-value is the probability the null hypothesis is true.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+The null hypothesis is either true or it isn't.
+It's not an event that may or may not happen.
+
+In Bayesian statistics, the probability of the null hypothesis can be
+computed,
+but we are not covering Bayesian statistics here.
+
+:::
+
+
+
+
