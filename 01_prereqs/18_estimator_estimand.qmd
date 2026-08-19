@@ -48,6 +48,29 @@ So perhaps the way to think about the estimator is that
 it's the output from the function before you've observed any data.
 You don't know what value you'll get, so it's random.
 
+## Observed vs. Unobserved
+
+The heart of statistics is making inferences about unobserved quantities
+based on observed data.
+Here's an example:
+Suppose we are conducting a randomized clinical trial of a new treatment
+for cancer.
+We recruit 200 people with the cancer of interest
+and randomly assign half to the drug;
+the other half gets a placebo.
+For all participants, we measure the time until death.
+We want to measure the effect of the drug,
+i.e., how much longer, on average, people live on the drug versus on placebo.
+This difference is unobserved and fixed.
+What we observe are the individual survival times of the participants
+in the study.
+
+In this class, it's very common that we will make inferences
+about fixed, unobserved quantities based on random, observed quantities.
+If you take a course in longitudinal data analysis
+or Bayesian statistics,
+you will spend a lot of time working with random, unobserved quantities.
+
 ### Notation
 
 It's very common in statistics to use Greek letters to represent
