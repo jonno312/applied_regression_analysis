@@ -13,27 +13,116 @@ of simple linear regression.
 
 ## Lesson
 
+If the homoscedasticity assumption of simple linear regression is violated,
+the standard errors will be wrong.
+
+Consider the following example.
+Each observation is a forest fire in Montesinho Park (Portugal)
+between January 2000 and December 2003
+where at least 0.01 hectare (100 square meters) was burned.
+In the figure below,
+I've plotted $\log_{10}(\text{area burned})$ as a function of the outside
+temperature.
+```{r}
+d <- Lock5Data::ForestFires
+d$Area_No_0 <- d$Area
+d$Area_No_0[d$Area_No_0 == 0] <- NA
+d$Log10_Area_No_0 <- log10(d$Area_No_0)
+plot(x = d$Temp,
+     y = d$Log10_Area_No_0,
+     xlab = "Outside Temperature (degrees Celsius)",
+     ylab = "Log10(Total Burned Area) (log hectares)")
+```
+
+If I regress $\log_{10}(\text{area burned})$ on temperature,
+this is the resulting residual plot:
+```{r}
+mod_01 <- lm(formula = Log10_Area_No_0 ~ Temp,
+             data = d)
+plot(x = mod_01$model$Temp,
+     y = mod_01$residuals,
+     xlab = "Outside Temperature (degrees Celsius)",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+Note that the variance of the residuals is greater when the outside
+temperature is 20-25 degrees than when the outside temperature
+is 5-10 degrees.
+
+This doesn't appear to be due to the fact that there are more
+observations between 20 and 25 degrees than between 5 and 10 degrees.
+If we look at vertical slices with approximately equal numbers
+of observations, the variance is greater
+for higher temperatures.
+For example, there are 16 observations with temperature less than 7.5:
+```{r}
+#| echo: true
+sum(mod_01$model$Temp < 7.5)
+```
+This is a histogram of the residuals for those points:
+```{r}
+hist(mod_01$residuals[mod_01$model$Temp < 7.5],
+     xlab = "Residuals",
+     main = "")
+```
+There are 19 observations with temperature between 25 and 27.5:
+```{r}
+#| echo: true
+sum(mod_01$model$Temp < 27.5 & mod_01$model$Temp >= 25)
+```
+This is a histogram of the residuals for those points:
+```{r}
+hist(mod_01$residuals[mod_01$model$Temp < 27.5 & mod_01$model$Temp >= 25],
+     xlab = "Residuals",
+     main = "")
+```
+
+Now let's take a look at the regression results.
+```{r}
+summary(mod_01)
+```
+Because of the heteroscedasticity,
+we can't trust the values in the `Std. Error` column.
+The values in the `t value` column are based on the standard errors,
+so those will also be wrong;
+and the values in the last column, the p-values,
+are based on the $t$ values,
+so those will be wrong.
 
 
 ## Problems
 
 ### Problem 1
 
-
+True or false:
+In the presence of heteroscedasticity, the estimated coefficients
+are biased.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+False.
+Heteroscedasticity does not cause bias.
+As long as the first assumption is met,
+the regression coefficients will be unbiased.
+Heteroscedasticity only affects the standard errors
+(and anything calculated from the standard errors,
+like the p-values).
 
 :::
 
 ### Problem 2
 
-
+True or false:
+If the homoscedasticity assumption is met,
+the standard errors are guaranteed to be correct.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+False.
+Remember that the iid assumption is also necessary for the standard
+errors to be correct.
 
 :::
 
