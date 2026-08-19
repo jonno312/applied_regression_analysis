@@ -1,0 +1,109 @@
+---
+title: "Checking the Homoscedasticity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(scales)
+```
+
+## Learning Objective
+
+Evaluate the validity of the homoscedasticity assumption of simple linear regression
+in a data set.
+
+
+## Lesson
+
+In order to evaluate the validity of the homoscedasticity assumption
+of simple linear regression,
+we plot the residuals as function of the explanatory variable.
+If the vertical spread of the residuals varies as a function of $X$,
+we have heteroscedasticity.
+Let's consider a couple examples.
+
+### Fire Ants
+
+The red imported fire ant has invaded some of the
+habitats of fence lizards (e.g., southern Alabama),
+but not all (e.g., eastern Arkansas).
+The venom from the fire ant can kill a lizard,
+whether the ants are attacking the lizard or the lizard
+has eaten some ants.
+In 2009, Tracy Langkilde published a [study](https://doi.org/10.1890/08-0355.1)
+in which she exposed lizards from invaded and uninvaded habitats
+to fire ants and counted the number of times the lizards twitched.
+Here are side-by-side boxplots of the data:
+```{r}
+d <- Lock5Data::FireAnts
+boxplot(formula = Twitches ~ Habitat,
+        data = d)
+```
+
+You might be thinking, "How can we do regression with these data?
+The outcome is quantitative, but the explanatory variable is
+categorical."
+It turns out that you can do simple linear regression with a categorical
+explanatory variable that only has two levels.
+You just have to recode the levels as 0 and 1.
+I'll change every "Uninvaded" to a 0,
+and every "Invaded" to a 1,
+then regress the number of twitches on the new habitat variable.
+Here's a plot of the data and the fitted regression line:
+```{r}
+d$Habitat_01 <- 0
+d$Habitat_01[d$Habitat == "Invaded"] <- 1
+mod_01 <- lm(formula = Twitches ~ Habitat_01,
+             data = d)
+plot(x = d$Habitat_01,
+     y = d$Twitches,
+     xlab = "Habitat",
+     ylab = "Twitches",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 19)
+abline(mod_01,
+       col = "blue")
+```
+
+Let's look at boxplots of the residuals:
+```{r}
+boxplot(formula = mod_01$residuals ~ d$Habitat,
+        xlab = "Habitat",
+        ylab = "Residuals")
+```
+It seems like the variability of the residuals is greater for invaded
+than uninvaded lizards.
+So, I'm not convinced we've satisfied the homoscedasticity assumption
+of simple linear regression.
+
+### 
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
