@@ -1,0 +1,94 @@
+---
+title: "Estimator and Estimand"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the terms "estimator" and "estimand".
+
+
+## Lesson
+
+### Definitions
+
+In statistics, there are usually things that we don't know
+but want to find out.
+Things things are often quantities that we want to estimate,
+like the prevalence of cystic fibrosis in the US,
+or the mean duration of flu symptoms in winter 2026-2027.
+If we are trying to estimate something, it is an estimand.
+
+Usually, we cannot observe the estimand directly.
+We cannot observe every single person who is infected with influenza
+in the winter of 2026-2027.
+So, we collect data (we take a sample),
+apply some function to the data,
+and get an estimate of our estimand.
+If we were to take a different sample
+and apply the same function,
+we would get a different estimate.
+Although the function doesn't change,
+the sample is random, so the data change,
+and then the estimate changes as a result.
+
+We use the term "estimator" to refer to the outcome of this function
+we're using to estimate the estimand.
+The estimator is a random variable because it changes with each new sample.
+
+There's something very tricky about defining the estimator.
+Once we collect a sample and feed our data into our function,
+we get an estimate.
+That's not random.
+The function itself is not random, because it's the same no matter
+what data we have.
+So perhaps the way to think about the estimator is that
+it's the output from the function before you've observed any data.
+You don't know what value you'll get, so it's random.
+
+### Notation
+
+It's very common in statistics to use Greek letters to represent
+parameters and estimands.
+For example, we usually use the Greek letter $\mu$ ("mu")
+to represent the expected value of a distribution,
+and $\sigma^2$ ("sigma-squared") to represent the variance.
+
+It's also very common to add a hat to an estimand to indicate the estimator.
+So, $\hat{\mu}$ is an estimator of $\mu$
+and $\hat{\sigma}^2$ is an estimator of $\hat{\sigma}^2$.
+
+## Problems
+
+### Problem 1
+
+Suppose $\lambda$ is the number of late departures per day from Boston Logan
+International Airport.
+I select 10 days uniformly at random from 2027 and divide the number
+of late departures on those days by the total number of departures
+on those days.
+I call this $\hat{\lambda}$.
+What's the estimand and what's the estimator?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$\lambda$ is the estimand and $\hat{\lambda}$ is the estimator.
+
+:::
+
+### Problem 2
+
+Which is a function of the population, the estimand or the estimator?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The estimand is a function of the population.
+The estimator is a function of the sample.
+
+:::
+
+
+
+
