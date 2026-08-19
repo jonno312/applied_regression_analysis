@@ -1,0 +1,119 @@
+---
+title: "Variance"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Explain the underlying concept of variance and standard deviation.
+- State the units of variance and standard deviation.
+- Interpret the terms "variance", "standard deviation", and "standard error".
+
+
+## Lesson
+
+Variance is a measure of the spread of a random variable,
+with higher variance meaning more spread.
+I'm going to show you the definition,
+but you don't need to memorize it.
+We define variance as
+$$
+Var(X) = E\left(\left(X - E(X)\right)^2\right) \text{.}
+$$
+Variance is the expected squared deviation of a random variable from its mean.
+There are math reasons for using this particular method of measuring
+the spread of a random variable.
+I recognize that it might not be what you would choose if you wanted
+to communicate how spread out a distribution is.
+
+$Var(X)$ is a parameter.
+Sometimes we want to estimate it, making it an estimand.
+The most commonly used estimator of $Var(X)$ is
+$$
+\hat{\sigma}^2 = \frac{1}{n-1} \sum_{i=1}^n \left(X_i - \bar{X}\right)^2 \text{.}
+$$
+
+One issue with variance is that its units are the square of the original
+units of $X_1,\dotsc,X_n$.
+If you're studying heart rate in beats per minute,
+then the unit for the variance is squared beats per minute.
+This is usually not useful.
+So, we often work with the standard deviation,
+which is the square root of the variance.
+$$
+\begin{align*}
+SD(X) &= \sqrt{E\left(\left(X - E(X)\right)^2\right)} \\
+\hat{\sigma} &= \sqrt{\frac{1}{n-1} \sum_{i=1}^n \left(X_i - \bar{X}\right)^2}
+\end{align*}
+$$
+The standard deviation has the same units as the original variable.
+Again, if you're studying heart rate in beats per minute,
+the standard deviation is in beats per minute.
+
+The standard error is the standard deviation of an estimator.
+I'm not entirely sure why it gets a special name,
+but I have a guess.
+Suppose your data are $X_1,\dotsc,X_n$.
+We can use $\sigma$ to represent the standard deviation of $X_1$.
+If the data are iid, then
+$$
+\begin{align*}
+SD(X_1) &= \sigma \\
+SD(\bar{X}) &= \frac{\sigma}{\sqrt{n}} \text{.}
+\end{align*}
+$$
+The standard deviation of the data is different from the standard deviation
+of the sample average.
+So, we use standard deviation to clarify that we're talking about
+the standard deviation of the data
+and standard error to talk about the standard deviation of the sample average.
+
+Why do we care about this?
+"Standard error" often shows up in the output from statistical programming
+languages, so it's important to know what it means.
+
+
+## Problems
+
+### Problem 1
+
+Which of the following distributions has higher variance,
+the one with a dashed line or the one with a solid line?
+
+```{r}
+curve(expr = dnorm,
+      from = -3,
+      to = 3,
+      ylab = "f(x)")
+temp <- function(x){
+  dnorm(x = x,
+        sd = 2)
+}
+curve(expr = temp,
+      add = TRUE,
+      lty = 2)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The distribution with a dashed line has higher variance.
+You can tell because it's more spread out.
+
+:::
+
+### Problem 2
+
+If I say that $X$ is more variable or dispersed than $Y$,
+what does that imply about $Var(X)$ and $Var(Y)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$Var(X) > Var(Y)$
+
+:::
+
+
+
+
