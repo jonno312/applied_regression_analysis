@@ -1,0 +1,94 @@
+---
+title: "Normality Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the normality assumption of simple linear regression.
+
+
+## Lesson
+
+The final assumption of simple linear regression is that the random errors
+are normally distributed.
+In symbols, we assume $\epsilon_i|X_i$ is normally distributed.
+Equivalently, we can say that we assume
+$Y_i|X_i$ is normally distributed.
+
+In this plot, all four assumptions are met.
+```{r}
+set.seed(11)
+n <- 1e3
+x <- rnorm(n = n,
+           sd = 2)
+epsilon <- rnorm(n = n,
+                 sd = 2)
+beta_0 <- 1
+beta_1 <- 1
+y <- beta_0 + beta_1 * x + epsilon
+plot(x = x,
+     y = y)
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+```
+
+In the next three plots, the first three assumptions are met,
+but not the fourth.
+I've used three non-normal distributions for the random errors.
+```{r}
+# Uniform
+epsilon_unif <- runif(n = n,
+                      min = -2,
+                      max = 2)
+y_unif <- beta_0 + beta_1 * x + epsilon_unif
+plot(x = x,
+     y = y_unif,
+     ylab = "y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+
+# Shifted exponential
+epsilon_exp <- rexp(n) - 1
+y_exp <- beta_0 + beta_1 * x + epsilon_exp
+plot(x = x,
+     y = y_exp,
+     ylab = "y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+
+# Shifted Poisson
+epsilon_pois <- rpois(n = n,
+                      lambda = 5) - 5
+y_pois <- beta_0 + beta_1 * x + epsilon_pois
+plot(x = x,
+     y = y_pois,
+     ylab = "y")
+abline(a = beta_0,
+       b = beta_1,
+       col = "blue")
+```
+
+## Problems
+
+### Problem 1
+
+If the errors are Laplace distributed, does that satisfy
+the normality assumption of simple linear regression?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. The normality assumption is that the errors are normally distributed.
+
+:::
+
+
+
+
+
+
