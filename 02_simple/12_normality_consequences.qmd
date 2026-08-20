@@ -1,0 +1,222 @@
+---
+title: "Consequences of the Normality Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the consequences of violations of the normality assumption
+of simple linear regression.
+
+
+## Lesson
+
+### Consequence
+
+If the normality assumption of simple linear regression is not satisfied,
+the test statistic for each coefficient will not be $t$-distributed,
+so the p-value in the output will be wrong.
+
+Let's return to the example where we regressed red blood cell density
+on weight in mice.
+As before, I'm going to remove the five anomalous mice with very low weights.
+```{r}
+d2 <- Lock5Data::DrugResistance
+d2 <- d2[d2$Weight >= 5, ]
+plot(x = d2$Weight,
+     y = d2$RBC,
+     xlab = "Weight (g)",
+     ylab = "Red Blood Cell Density",
+     main = "Mice")
+```
+
+If I regress red blood cell density on weight,
+these are the results.
+```{r}
+mod_02 <- lm(RBC ~ Weight,
+             data = d2)
+summary(mod_02)
+```
+The values in the `Pr(>|t|)` column are p-values.
+For them to be correct, all four assumptions must be true.
+
+Let's go a little deeper and look at how the p-values are computed.
+
+Each value in the `t value` column is computed by taking the corresponding
+value in the `Estimate` column and dividing it by the corresponding
+value in the `Std. Error` column.
+So,
+$$
+\begin{align*}
+-\frac{0.57833}{0.66632} &= -0.868 \\
+\frac{0.35342}{0.03194} &= 11.066 \text{.}
+\end{align*}
+$$
+
+These are the test statistics.
+If all four assumptions are met, each should follow a $t$ distribution
+with $n - 2$ degrees of freedom.
+In this example, $n = 67$, so $n - 2 = 65$.
+
+Each value in the `Pr(>|t|)` is computed by integrating under the 
+probability density function of a $t_{n-2}$ distribution
+from $|\texttt{t value}|$ to $+\infty$ and from
+$-|\texttt{t value}|$ to $-\infty$.
+I can show this visually for the `(Intercept)` row
+of the `Coefficients:` table.
+```{r}
+x <- seq(from = -3.5,
+         to = 3.5,
+         length.out = 500)
+y <- dt(x = x,
+        df = 65)
+plot(x = x,
+     y = y,
+     ylab = "f(x)",
+     type = "l")
+abline(h = 0)
+polygon(x = c(x[x >= 0.868],
+              x[length(x)],
+              0.868,
+              0.868),
+        y = c(y[x >= 0.868],
+              0,
+              0,
+              dt(x = 0.868,
+                 df = 65)),
+        col = "blue")
+polygon(x = c(x[x <= -0.868],
+              -0.868,
+              -0.868,
+              x[1]),
+        y = c(y[x <= -0.868],
+              dt(x = -0.868,
+                 df = 65),
+              0,
+              0),
+        col = "blue")
+```
+
+I can also directly compute the p-value.
+```{r}
+#| echo: true
+
+2 * pt(q = -0.868,
+       df = 65)
+```
+
+If the random errors are not normally distributed,
+the test statistics will not be $t$ distributed,
+so the p-values won't be correct.
+
+### Qualification
+
+If the first three assumptions are met (linearity, iid, homoscedasticity)
+and the sample size is large,
+the test statistics will be approximately normally distributed,
+with mean 0 and variance 1.
+As the sample size gets larger, this approximation gets better.
+
+You may have noticed that the $t_{65}$ distribution looks basically normal.
+I'll plot a $t_{65}$ distribution and a standard normal distribution
+over each other so you can compare.
+```{r}
+temp <- function(x){
+  dt(x = x,
+     df = 65)
+}
+curve(expr = dnorm,
+      from = -3.5,
+      to = 3.5,
+      ylab = "f(x)")
+curve(expr = temp,
+      from = -3.5,
+      to = 3.5,
+      add = TRUE,
+      lty = 2)
+legend(x = "topright",
+       lty = c(1,2),
+       legend = c("N(0,1)",
+                  "t, df = 65"))
+```
+Can you tell the difference?
+They're nearly identical.
+
+As $n$ increases, $t_{n-2}$ gets closer and closer to $N(0,1)$.
+I'll plot a bunch of $t$ distributions with increasing degrees of freedom
+so you can see how they change.
+```{r}
+temp <- function(x){
+  dt(x = x,
+     df = 5)
+}
+curve(expr = temp,
+      from = -3.5,
+      to = 3.5,
+      ylab = "f(x)")
+for(i in 4:1){
+  temp <- function(x){
+    dt(x = x,
+       df = i)
+  }
+  curve(expr = temp,
+        from = -3.5,
+        to = 3.5,
+        add = TRUE)
+}
+```
+As the degrees of freedom increases,
+the peak rises and the tails flatten.
+(Since the tails flatten, and p-values are tail areas,
+this means p-values decrease as degrees of freedom increases.)
+
+To summarize:
+If the first three assumptions are met and the sample size is large,
+the test statistics will be approximately normal.
+If the sample size is large, the corresponding $t$ distribution
+will be approximately normal.
+So, if the first three assumptions are met and the sample size is large,
+you can use the p-values in the output,
+regardless of whether the random errors are normal or not.
+
+### What's "Large"?
+
+You might be wondering what sample size is large enough for the test
+statistics to be approximately normal.
+This depends.
+Very asymmetric random errors will require a larger sample size
+for the test statistic to be approximately normal.
+I recommend you consult a statistician.
+
+## Problems
+
+### Problem 1
+
+If the random errors are not normally distributed,
+can we trust the p-values?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It depends. The more symmetric the random errors are,
+and the larger the sample size,
+the more trustworthy the p-values become.
+
+:::
+
+### Problem 2
+
+If the random errors are not normally distributed,
+can we trust the standard errors?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It depends on whether or not the first three assumptions are met.
+If yes, then yes.
+
+:::
+
+
+
+
