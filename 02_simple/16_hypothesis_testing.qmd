@@ -1,0 +1,64 @@
+---
+title: "Hypothesis Testing"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the results of a hypothesis test in the context of simple linear
+regression.
+
+
+## Lesson
+
+### Overview
+
+When conducting simple linear regression in R,
+R will automatically compute p-values for each of the two coefficients.
+For each coefficient,
+the null hypothesis is that the coefficient is zero,
+and the alternative hypothesis is that the coefficient is not zero.
+In symbols, the two hypothesis tests are
+$$
+\begin{align*}
+H_0 &: \beta_0 = 0 \\
+H_1 &: \beta_0 \ne 0
+\end{align*}
+$$
+and
+$$
+\begin{align*}
+H_0 &: \beta_1 = 0 \\
+H_1 &: \beta_1 \ne 0 \text{.}
+\end{align*}
+$$
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
