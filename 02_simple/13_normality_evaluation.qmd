@@ -1,0 +1,206 @@
+---
+title: "Checking the Normality Assumption"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(scales)
+```
+
+## Learning Objective
+
+Evaluate the validity of the normality assumption of simple linear regression
+in a data set.
+
+
+## Lesson
+
+### Three Plots
+
+I like to use three plots to evaluate the validity of the normality assumption.
+For each plot, you use the residuals as input.
+
+The first plot is a histogram.
+Here is what a histogram looks like when the underlying data are normal.
+```{r}
+set.seed(13)
+n <- 1e3
+x <- rnorm(n)
+hist(x = x,
+     main = "Normal Data")
+```
+
+The second plot is a boxplot.
+In actuality, I really only use this to check if the data are symmetric or not.
+Here is what a boxplot looks like when the underlying data are normal.
+```{r}
+boxplot(x = x,
+        main = "Normal Data")
+```
+
+The third plot is a q-q plot.
+If the data are normal, the points on the q-q plot will follow the
+reference line.
+This is what a q-q plot looks like when the underlying data are normal.
+```{r}
+qqnorm(x)
+qqline(x)
+```
+
+### Mice Example
+
+Let's return to the example where we regressed red blood cell density
+on weight in mice.
+As before, I'm going to remove the five anomalous mice with very low weights.
+We already know the relationship is linear and the variance is constant.
+I'm going to assume the mice are independent.
+All we have to check is normality.
+Here's the histogram of the residuals.
+```{r}
+d2 <- Lock5Data::DrugResistance
+d2 <- d2[d2$Weight >= 5, ]
+mod_02 <- lm(formula = RBC ~ Weight,
+             data = d2)
+hist(x = mod_02$residuals,
+     xlab = "Residuals",
+     main = "")
+```
+This is left skewed, but other than that, it's approximately normal.
+
+Let's check the boxplot.
+```{r}
+boxplot(x = mod_02$residuals)
+```
+The asymmetry seems less pronounced than in the histogram,
+but it's still present.
+The median sits more than halfway up the box, and the bottom whisker is
+slightly longer than the top whisker.
+
+Now let's check the q-q plot.
+```{r}
+qqnorm(mod_02$residuals)
+qqline(mod_02$residuals)
+```
+Most of the points follow the reference line;
+it's only when the theoretical quantiles get below about -0.75
+that the points diverge from the line.
+
+Ultimately, I would say these residuals are more left-skewed than you
+would expect from a normal distribution.
+So, I wouldn't say the normality assumption is categorically met.
+But, since the sample size is relatively large,
+and the residuals are close to normal,
+I would trust the p-values.
+
+### Atlanta Commutes
+
+Let's return to the data about commuting in Atlanta.
+```{r}
+d <- Lock5Data::CommuteAtlanta
+plot(x = d$Distance,
+     y = d$Time,
+     xlab = "Distance (miles)",
+     ylab = "Time (minutes)",
+     main = "Commuting in Atlanta",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 16)
+```
+
+If we regress time on distance, here is the residual scatter plot.
+```{r}
+mod_01 <- lm(formula = Time ~ Distance,
+             data = d)
+plot(x = mod_01$model$Distance,
+     y = mod_01$residuals,
+     xlab = "Distance",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 16)
+abline(h = 0,
+       col = "red")
+```
+It's hard for me to assess the variance.
+It's possible that there's heteroscedasticity.
+Let's check the normality assumption anyway.
+
+Here's a histogram, boxplot, and q-q plot of the residuals.
+```{r}
+hist(x = mod_01$residuals,
+     main = "",
+     xlab = "Residuals")
+boxplot(mod_01$residuals)
+qqnorm(mod_01$residuals)
+qqline(mod_01$residuals)
+```
+These residuals are very right-skewed.
+I would say the linearity and iid assumptions are met,
+but the homoscedasticity and normality assumptions are not.
+So, the estimators of the coefficients are unbiased,
+but I wouldn't trust the standard errors and p-values.
+
+This is not directly relevant to assumption-checking,
+but I want to know why there seems to be a hard line
+below which we don't see any points.
+I'll plot the line $y = x$ to show what I mean.
+```{r}
+plot(x = d$Distance,
+     y = d$Time,
+     xlab = "Distance (miles)",
+     ylab = "Time (minutes)",
+     main = "Commuting in Atlanta",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 16)
+abline(a = 0,
+       b = 1)
+```
+What's going on here?
+
+## Problems
+
+### Problem 1
+
+Do these residuals satisfy the normality assumption?
+Why or why not?
+```{r}
+z <- rexp(n) - 1
+qqnorm(z)
+qqline(z)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Absolutely not. Those points don't follow the reference line at all.
+
+:::
+
+### Problem 2
+
+Do these residuals satisfy the normal assumption?
+Why or why not?
+```{r}
+w <- rexp(n) * (2 * rbinom(n = n,
+                           size = 1,
+                           prob = 0.5) - 1)
+boxplot(w)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+I'd like to see a histogram and q-q plot before making a decision,
+but it seems like this distribution is too peaked and heavy-tailed
+to be normal.
+I say that it's peaked because the box is so small
+and I say it's heavy-tailed because there are so many dots beyond
+the whiskers.
+
+:::
+
+
+
+
