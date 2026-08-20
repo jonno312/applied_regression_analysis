@@ -80,27 +80,122 @@ than uninvaded lizards.
 So, I'm not convinced we've satisfied the homoscedasticity assumption
 of simple linear regression.
 
-### 
+### Weight and Red Blood Cell Density in Mice
+
+
+Below are data on weight (in grams) and red blood cell density
+(I couldn't find the units) for 72 mice.
+```{r}
+d2 <- Lock5Data::DrugResistance
+plot(x = d2$Weight,
+     y = d2$RBC,
+     xlab = "Weight (g)",
+     ylab = "Red Blood Cell Density",
+     main = "Mice")
+```
+Only 5 mice (6.94%) have weights under 5 grams.
+```{r}
+sum(d2$Weight < 5)
+sum(d2$Weight < 5) / nrow(d2) * 100
+```
+
+I'm going to remove those mice, because I think they are so different
+from the other mice as to represent a different population.
+
+Here is the scatterplot again, without the five tiny mice.
+```{r}
+d2 <- d2[d2$Weight >= 5, ]
+plot(x = d2$Weight,
+     y = d2$RBC,
+     xlab = "Weight (g)",
+     ylab = "Red Blood Cell Density",
+     main = "Mice")
+```
+
+If I regress red blood cell density on weight,
+this is the residual scatter plot.
+```{r}
+mod_02 <- lm(RBC ~ Weight,
+             data = d2)
+plot(x = mod_02$model$Weight,
+     y = mod_02$residuals,
+     xlab = "Weight (g)",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+The vertical spread of the residuals is fairly constant across all weights.
+So, the homoscedasticity assumption is met.
 
 ## Problems
 
 ### Problem 1
 
-
+In the residual plot below, is the homoscedasticity assumption met?
+```{r}
+set.seed(10)
+n <- 1e3
+x <- runif(n = n,
+           min = -1,
+           max = 1)
+y <- runif(n = n,
+           min = -abs(sin(acos(x))),
+           max = abs(sin(acos(x))))
+plot(x = x,
+     y = y,
+     xlab = "x",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.3),
+     pch = 19)
+abline(h = 0,
+       col = "red")
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+It is not met. Variance is highest when $X$ is around 0
+and lowest when $|X|$ is around 1.
+This is not due to there just being fewer points with $|X|$ around 1.
+The points are partially transparent,
+so the darker shading at the left and right of the plot means
+there are lots of points there.
 
 :::
 
 ### Problem 2
 
-
+In the residual plot below, is the homoscedasticity assumption met?
+```{r}
+x <- rexp(n)
+neg <- rbinom(n = n,
+              size = 1,
+              prob = 0.5) > 0
+x[neg] <- -x[neg]
+y <- rexp(n)
+neg <- rbinom(n = n,
+              size = 1,
+              prob = 0.5) > 0
+y[neg] <- -y[neg]
+plot(x = x,
+     y = y,
+     xlab = "x",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.2),
+     pch = 19)
+abline(h = 0,
+       col = "red")
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Yes, the homoscedasticity assumption is met.
+It might look like the variance is lower at the far left and far right,
+but that's because there are fewer points there,
+and points closer to the regression line are more likely than points
+far away.
 
 :::
 
