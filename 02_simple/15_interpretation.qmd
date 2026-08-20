@@ -1,0 +1,135 @@
+---
+title: "Interpretation"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients in simple linear regression.
+
+
+## Lesson
+
+### Overview
+
+Simple linear regression has two coefficients:
+the intercept ($\beta_0$) and slope ($\beta_1$).
+The intercept is the expected value of the outcome when the explanatory
+variable is zero.
+The slope is the expected change in the outcome associated with
+a one-unit increase in the explanatory variable.
+
+Note that I used the word "expected" in interpreting both coefficients.
+We're working with random variables, so we can't guarantee
+that the outcome will take on a certain value when the explanatory
+variable takes on a certain value.
+We can only speak in means and averages.
+
+Also, note that I used "associated with" in the interpretation
+of the slope.
+In many situations, we do not know if the explanatory variable
+causes a change in the outcome variable.
+We don't want to make any causal claims unless we're sure they're warranted.
+
+### Atlanta Commutes
+
+Consider the data on commuting in Atlanta.
+Although the assumptions of homoscedasticity and normality were not satisfied,
+the assumption of linearity was, meaning the coefficient estimates
+are unbiased.
+So, we can interpret them.
+```{r}
+d <- Lock5Data::CommuteAtlanta
+mod_01 <- lm(formula = Time ~ Distance,
+             data = d)
+summary(mod_01)
+```
+
+Recall that the units for distance were miles and the units
+for time were minutes.
+So, an intercept estimate of 7.1 means that we would expect
+a commute of 7.1 minutes for a distance of zero miles.
+Does that sound reasonable? I'm not sure.
+Were there any observed commutes of zero miles?
+```{r}
+#| echo: true
+sum(d$Distance == 0)
+sort(d$Time[d$Distance == 0])
+```
+Apparently there were 11 commutes of zero miles,
+two of which took ten minutes.
+I'm curious how these data were collected . . .
+
+Moving on to the slope, there is an expected increase of 1.2 minutes
+associated with each additional mile in the commute.
+Does that sound reasonable?
+Sure.
+
+
+### Fire Ants
+
+Recall the fire ants example.
+There were two groups of lizards,
+those whose habitats had been invaded by fire ants
+and those whose habitats had not.
+The outcome was the number of twitches a lizard exhibited when exposed
+to fire ants.
+
+In the output below, `Habitat_01` is the recoded habitat variable.
+It equals 1 if the habitat is invaded and 0 if the habitat is uninvaded.
+```{r}
+d2 <- Lock5Data::FireAnts
+d2$Habitat_01 <- 0
+d2$Habitat_01[d2$Habitat == "Invaded"] <- 1
+mod_02 <- lm(formula = Twitches ~ Habitat_01,
+             data = d2)
+summary(mod_02)
+```
+
+The intercept is the expected value of the outcome when
+the explanatory variable equals zero.
+When the explanatory variable is zero (in this example),
+that means the habitat is uninvaded.
+So, for lizards whose habitat has not been invaded by fire ants,
+we would expect 1.1 twitches when exposed to fire ants.
+
+The slope is the expected change in the outcome variable associated
+with a one-unit increase in the explanatory variable.
+The only way for the explanatory variable to increase by one unit
+is to change from uninvaded to invaded.
+So, when the habitat changes from uninvaded to invaded,
+we would expect an increase of 1.65 twitches.
+
+## Problems
+
+### Problem 1
+
+Below are the results of regressing red blood cell density on
+weight for 67 mice.
+I'm not sure what the units were for red blood cell density,
+but weight was measured in grams.
+Interpret the intercept and slope.
+```{r}
+d3 <- Lock5Data::DrugResistance
+d3 <- d3[d3$Weight >= 5, ]
+mod_03 <- lm(formula = RBC ~ Weight,
+             data = d3)
+summary(mod_03)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+We would expect a mouse weighing zero grams
+to have a red blood cell density of -0.58.
+Each additional gram of weight is associated with a 0.35-unit increase
+in red blood cell density.
+
+:::
+
+
+
+
+
+
