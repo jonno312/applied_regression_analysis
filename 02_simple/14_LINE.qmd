@@ -1,0 +1,136 @@
+---
+title: "Probability"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(scales)
+```
+
+## Learning Objectives
+
+- State and recognize an acronym for the four assumptions.
+- Synthesize the four assumptions, their consequences,
+and how to check them.
+
+
+## Lesson
+
+The four assumptions are commonly organized into the acronym "LINE":
+
+- Linearity
+- Independence (other texts commonly leave out the assumption of identical
+distributions)
+- Normality
+- Equal variance
+
+When I presented the four assumptions, I put them in descending order
+from most to least catastrophic when not met.
+Unfortunately, that spells "LIEN", which is harder to remember.
+
+In each of the following plots,
+the title contains a letter if it meets the corresponding assumption.
+
+```{r}
+set.seed(14)
+n <- 1e3
+x <- rnorm(n = n,
+           sd = 2)
+beta_0 <- 1
+beta_1 <- 1
+group_means <- rep(x = rnorm(n = n / 5),
+                   each = 5)
+epsilon <- rnorm(n)
+epsilon_exp <- rexp(n) - 1
+plot_title <- ""
+for(i in c(FALSE,TRUE)){
+  for(j in c(FALSE,TRUE)){
+    for(k in c(FALSE,TRUE)){
+      for(l in c(FALSE,TRUE)){
+        # Linearity
+        if(i){
+          y <- beta_0 + beta_1 * x
+          plot_title <- paste0(plot_title,"L")
+        } else {
+          y <- beta_0 + beta_1 / 2 * x^2
+        }
+        # Independence
+        if(j){
+          plot_title <- paste0(plot_title,"I")
+        } else {
+          y <- y + group_means
+        }
+        # Homoscedasticity and Normality
+        if(k & l){
+          y <- y + epsilon
+          plot_title <- paste0(plot_title,"NE")
+        } else if(k){
+          y <- y + epsilon_exp
+          plot_title <- paste0(plot_title,"E")
+        } else if(l){
+          y <- y + x * epsilon
+          plot_title <- paste0(plot_title,"N")
+        } else {
+          y <- y + x * epsilon_exp
+        }
+        plot(x = x,
+             y = y,
+             main = plot_title,
+             col = alpha(colour = "black",
+                         alpha = 0.2),
+             pch = 16)
+        plot_title <- ""
+      }
+    }
+  }
+}
+```
+
+## Problems
+
+For each problem below,
+assume an assumption is met if its corresponding letter
+from the acronym is present.
+What are the consequences for the analysis?
+
+### Problem 1
+
+IN
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Since the linearity assumption is not met,
+you need to fix your underlying model before doing anything else
+
+:::
+
+### Problem 2
+
+LE
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+If the independence assumption is not met, you need other tools
+besides simple linear regression.
+
+:::
+
+### Problem 3
+
+LI
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The coefficients are unbiased but the standard errors,
+test statistics, and p-values are untrustworthy.
+
+:::
+
+
+
+
+
+
