@@ -147,6 +147,25 @@ $$
 E(X) = \sum_x x P(X = x) \text{.}
 $$
 
+### Example
+
+Let's consider the simplest (non-degenerate) distribution possible,
+the Bernoulli distribution.
+Suppose $P(X = 1) = p$ and $P(X = 0) = 1 - p$, with $0 < p < 1$.
+What is $E(X)$?
+$$
+\begin{align*}
+E(X) &= \sum_x x P(X = x) \\
+&= 0 P(X = 0) + 1 P(X = 1) \\
+&= P(X = 1) \\
+&= p
+\end{align*}
+$$
+It may be counterintuitive that a probability could be an expected value,
+but it's true.
+If $X$ can only be 0 or 1,
+then $E(X) = P(X = 1)$.
+
 ## Problems
 
 ### Problem 1
