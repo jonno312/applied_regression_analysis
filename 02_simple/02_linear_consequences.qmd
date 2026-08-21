@@ -13,6 +13,8 @@ of simple linear regression.
 
 ## Lesson
 
+### Intuition
+
 If the first assumption of simple linear regression is not met,
 the results are basically meaningless.
 Consider an example.
@@ -51,6 +53,14 @@ That's clearly not true.
 Simple linear regression is the most basic form of regression,
 and it's only appropriate when you have a clear linear relationship
 between two variables.
+
+### Bias
+
+In technical terms, we say that if the linearity assumption is not met,
+the estimators are biased.
+On average, they don't equal the estimand they're estimating.
+If the linearity assumption is met,
+the estimators are unbiased.
 
 ## Problems
 
