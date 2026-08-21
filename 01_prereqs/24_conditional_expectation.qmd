@@ -1,0 +1,81 @@
+---
+title: "Conditional Expectation"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the term "conditional expectation".
+
+
+## Lesson
+
+Conditional expectation is the expected value of one random variable,
+conditional on the value of some other random variable.
+We use $E(Y|X)$ to denote "the expected value of $Y$ conditional on $X$",
+or "the expected value of $Y$ given $X$".
+We use $E(Y|X = x)$ to denote "the expected value of $Y$ conditional
+on $X = x$",
+or "the expected value of $Y$ given $X = x$".
+
+As an example, consider the World Population Review's
+[Average Height by Country 2026](https://worldpopulationreview.com/country-rankings/average-height-by-country).
+The unconditional average height for a boy, age 19, in 2019,
+was 163.1 cm, or 5 ft 4 in.
+If $Y$ is the height of a 19-year-old boy in 2019 (in cm),
+then $E(Y) = 163.1$.
+The average height for a 19-year-old boy in the Netherlands in 2019,
+though, was 183.78 cm, or 6 ft.
+If we put the countries in alphabetical order,
+the Netherlands is the 123rd country in the list.
+If we let $X$ equal the country number in that list,
+we could say $E(Y|X = 123) = 183.78$.
+Timor-Leste is 175th in the list;
+there, boys have an average height of 160.13 cm.
+So, $E(Y|X = 175) = 160.13$.
+
+This example highlights that marginal and conditional are relative.
+I used $E(Y)$ to denote a marginal expectation,
+but it was still the expectation of a random variable that had a lot
+of qualifiers (boy, age 19, in 2019).
+So, conditioning on country makes $E(Y|X)$ conditional relative to $E(Y)$.
+
+## Problems
+
+### Problem 1
+
+According to
+[NerdWallet](https://www.nerdwallet.com/retirement/learn/the-average-retirement-savings-by-age-and-why-you-need-more),
+the average retirement savings for people under age 35
+is $49,130;
+the average retirement savings for people age 35-44
+is $141,520;
+and the average retirement savings for people age 45-54
+is $313,220.
+Are these marginal or conditional expectations?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+These are conditional expectations.
+They are conditional on age.
+
+:::
+
+### Problem 2
+
+If $X$ and $Y$ are independent,
+what will be the relationship between $E(Y)$ and $E(Y|X)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+If $X$ and $Y$ are independent,
+having information about one doesn't change the distribution of the other.
+So, $E(Y)$ will be equal to $E(Y|X)$.
+
+:::
+
+
+
+
