@@ -3,12 +3,8 @@
 ## Description
 
 This is a (bare-bones, first-draft) textbook on applied regression analysis.
-It's for a course I teach at a school of public health.
-Many of the students are clinicians and haven't done math in a while.
-Last year, I got the sense that many of my students wanted an organized,
-"Just the facts, ma'am"-style treatment of the material that focused
+It's a "Just the facts, ma'am"-style treatment of the material that focuses
 more on concepts and less on math.
-So, this is that treatment.
 
 ## Using the Textbook
 
