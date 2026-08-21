@@ -1,0 +1,92 @@
+---
+title: "Marginal and Conditional Distributions"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the terms "marginal distribution"
+and "conditional distribution".
+
+
+## Lesson
+
+According to the American Cancer Society's
+[Key Statistics for Breast Cancer](https://www.cancer.org/cancer/types/breast-cancer/key-statistics.html),
+"Overall, the average risk that a woman in the US will develop breast cancer
+sometime in her life is about 13%."
+This is a marginal probability,
+meaning that it's an overall probability.
+It doesn't take into account any risk factors.
+Since the only two outcomes are breast cancer or no breast cancer,
+this single marginal probability determines the entire marginal
+distribution.
+If "the average risk that a woman in the US will develop breast cancer
+sometime in her life is about 13%",
+then the probability that a woman in the US *won't* develop breast cancer
+sometime in her life is about 87%.
+
+According to the American Cancer Society's
+[Breast Cancer Risk and Prevention](https://www.cancer.org/cancer/types/breast-cancer/risk-and-prevention.html)
+site,
+"About 1 in 2 women with changes in these genes [BRCA1 and BRCA2] will
+develop breast cancer".
+This is a conditional probability;
+it's a probability based on knowing other information
+(in this case, gene status).
+Again, since there are only two outcomes, this single conditional probability
+determines the entire conditional distribution.
+About 1 in 2 women with changes in BRCA1 or BRCA2 *won't* develop breast cancer.
+
+### Example
+
+## Problems
+
+### Problem 1
+
+Take a look at
+[Figure 4A](https://www.ncbi.nlm.nih.gov/core/lw/2.0/html/tileshop_pmc/tileshop_pmc_inline.html?title=Click%20on%20image%20to%20zoom&p=PMC3&id=11851546_animals-15-00572-g004.jpg)
+in
+[Effects of Temperature on the Thermal Biology and Locomotor Performance of Two Sympatric Extreme Desert Lizards](https://doi.org/10.3390/ani15040572).
+It shows the distribution of sprint speeds of lizards as a function of
+species and environmental temperature.
+Are these marginal or conditional distributions?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is a bit of an  unfair question because "marginal" and "conditional"
+are relative terms.
+In the breast cancer example above,
+the overall risks could be considered conditional because they're conditional
+on female sex.
+
+Having said that, I think it's reasonable to consider the distributions
+in this problem as conditional,
+since they are conditional on two obvious factors,
+namely species and environmental temperature.
+
+:::
+
+### Problem 2
+
+According to
+[Regional variations and trends in hemophilia prevalence: A global analysis with future projection](https://doi.org/10.1371/journal.pgph.0006098),
+the global prevalence of hemophilia is 3.75 per 100,000 people.
+The prevalence in the Americas is 6.03 per 100,000 people.
+Which of these is a marginal rate,
+and which is a conditional rate?
+Justify your response.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The global prevalence is marginal because it doesn't take into account location.
+The prevalence in the Americas is conditional because it takes into
+account location.
+
+:::
+
+
+
+
