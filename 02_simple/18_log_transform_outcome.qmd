@@ -16,22 +16,46 @@ Interpret the coefficients when the outcome has been logged.
 
 Suppose we change our model to
 $$
-E\left(\log Y_i\middle|X_i\right) = \beta_0 + \beta_1 X_i \text{.}
+\log_a Y_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right) \text{.}
 $$
 How do we interpret the coefficients then?
 
 $\beta_0$ is the expected value of the log of the outcome
 when $X_i = 0$:
 $$
-E\left(\log Y_i\middle|X_i = 0\right) = \beta_0 \text{.}
+E\left(\log_a Y_i\middle|X_i = 0\right) = \beta_0 \text{.}
 $$
 
 ::: {.callout-caution collapse="true"}
 ## Caution: Math
 
+Define $Z_i = \log_a Y_i$.
+Then 
+$$
+Z_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right)
+$$
+and
+$$
+f(z|x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(z - \beta_0 - \beta_1 x\right)^2}{2\sigma^2}\right) \text{.}
+$$
+Further,
+$$
+Y_i = a^{Z_i}
+$$
+and
 $$
 \begin{align*}
-E\left(\log Y_i\middle|X_i\right) = \beta_0 + \beta_1 X_i
+E\left(Y_i\middle|X_i = x\right) &= E\left(a^{Z_i}\middle|X_i = x\right) \\
+&= \int_{-\infty}^\infty a^z f(z|x)\,dz \\
+&= \int_{-\infty}^\infty a^z \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(z - \beta_0 - \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+\end{align*}
+$$
+
+If $\log_a Y_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right)$
+then
+$$
+\begin{align*}
+E\left(Y_i\middle|X_i\right) &=
 \end{align*}
 $$
 
