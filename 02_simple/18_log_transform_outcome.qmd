@@ -1,0 +1,91 @@
+---
+title: "Log-Transformed Outcomes"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients when the outcome has been logged.
+
+
+## Lesson
+
+### Math
+
+Suppose we change our model to
+$$
+E\left(\log Y_i\middle|X_i\right) = \beta_0 + \beta_1 X_i \text{.}
+$$
+How do we interpret the coefficients then?
+
+$\beta_0$ is the expected value of the log of the outcome
+when $X_i = 0$:
+$$
+E\left(\log Y_i\middle|X_i = 0\right) = \beta_0 \text{.}
+$$
+
+::: {.callout-caution collapse="true"}
+## Caution: Math
+
+$$
+\begin{align*}
+E\left(\log Y_i\middle|X_i\right) = \beta_0 + \beta_1 X_i
+\end{align*}
+$$
+
+:::
+
+### Forest Fire Example
+
+Each observation is a forest fire in Montesinho Park (Portugal)
+between January 2000 and December 2003
+where at least 0.01 hectare (100 square meters) was burned.
+In the figure below,
+I've plotted $\log_{10}(\text{area burned})$ as a function of the outside
+temperature.
+```{r}
+d <- Lock5Data::ForestFires
+d$Area_No_0 <- d$Area
+d$Area_No_0[d$Area_No_0 == 0] <- NA
+d$Log10_Area_No_0 <- log10(d$Area_No_0)
+plot(x = d$Temp,
+     y = d$Log10_Area_No_0,
+     xlab = "Outside Temperature (degrees Celsius)",
+     ylab = "Log10(Total Burned Area) (log hectares)")
+mod_01 <- lm(formula = Log10_Area_No_0 ~ Temp,
+             data = d)
+plot(x = mod_01$model$Temp,
+     y = mod_01$residuals,
+     xlab = "Outside Temperature (degrees Celsius)",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
