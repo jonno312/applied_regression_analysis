@@ -20,6 +20,10 @@ The intercept is the expected value of the outcome when the explanatory
 variable is zero.
 The slope is the expected change in the outcome associated with
 a one-unit increase in the explanatory variable.
+We can also interpret the slope as the expected difference in the outcome
+between two populations,
+one with the explanatory variable equal to $x$ and the other
+with the explanatory variable equal to $x + 1$.
 
 Note that I used the word "expected" in interpreting both coefficients.
 We're working with random variables, so we can't guarantee
@@ -64,6 +68,9 @@ I'm curious how these data were collected . . .
 
 Moving on to the slope, there is an expected increase of 1.2 minutes
 associated with each additional mile in the commute.
+(Alternatively, we could say that we would expect Atlantans
+with a commute of $x + 1$ miles to have a commute that is 1.2 minutes
+longer than Atlantans with a commute of $x$ miles.)
 Does that sound reasonable?
 Sure.
 
@@ -90,8 +97,8 @@ summary(mod_02)
 
 The intercept is the expected value of the outcome when
 the explanatory variable equals zero.
-When the explanatory variable is zero (in this example),
-that means the habitat is uninvaded.
+When the explanatory variable is zero,
+that means the habitat is uninvaded (in this example).
 So, for lizards whose habitat has not been invaded by fire ants,
 we would expect 1.1 twitches when exposed to fire ants.
 
@@ -101,6 +108,8 @@ The only way for the explanatory variable to increase by one unit
 is to change from uninvaded to invaded.
 So, when the habitat changes from uninvaded to invaded,
 we would expect an increase of 1.65 twitches.
+In other words, we expect lizards from invaded habitats to exhibit
+1.65 more twitches than lizards from uninvaded habitats.
 
 ## Problems
 
@@ -125,6 +134,9 @@ We would expect a mouse weighing zero grams
 to have a red blood cell density of -0.58.
 Each additional gram of weight is associated with a 0.35-unit increase
 in red blood cell density.
+Alternatively,
+we would expect mice weighing $x + 1$ grams to have a red blood cell density
+that is 0.35 units greater than mice weighting $x$ grams.
 
 :::
 
