@@ -35,16 +35,76 @@ H_1 &: \beta_1 \ne 0 \text{.}
 \end{align*}
 $$
 
+### Red Blood Cell Density and Weight in Mice
 
+Below are the results of regressing red blood cell density on
+weight for 67 mice.
+Enough of our assumptions were satisfied for these data
+that I feel comfortable interpreting the p-values.
+```{r}
+d3 <- Lock5Data::DrugResistance
+d3 <- d3[d3$Weight >= 5, ]
+mod_03 <- lm(formula = RBC ~ Weight,
+             data = d3)
+summary(mod_03)
+```
+
+The p-value for the `(Intercept)` line of the `Coefficients` table is 0.389.
+This is above any reasonable cutoff we would use in hypothesis testing.
+So, we fail to reject the null hypothesis that $\beta_0 = 0$.
+This makes sense;
+we wouldn't want the expected red blood cell density for a mice weighing
+zero grams to be anything other than zero.
+
+The p-value for the `Weight` line of the `Coefficients` table is `<2e-16`,
+which means $< 2\times 10^{-16}$.
+This is below any reasonable cutoff we would use in hypothesis testing,
+so we reject the null hypothesis that $\beta_1 = 0$
+and conclude $\beta_1 \ne 0$.
+In real-world terms, this means that the expected change in red blood cell
+density associated with a one-gram increase in weight
+is greater than zero.
+We could also say that the increase in red blood cell density
+associated with a one-gram increase in weight
+is significantly different from zero.
+
+You may have noticed that when I said "significantly different",
+I dropped "expected".
+This is because I'm describing the statistical significance of an observed
+change.
+If I'm talking about the population, either the change is zero or it isn't,
+so it doesn't make sense to talk about statistical significance.
+If I'm talking about the observed change in the sample,
+it will almost always be different from zero;
+the question, then, is whether that difference is statistically significant.
+This is getting deeper into semantics than is practically necessary
+(probably).
 
 ## Problems
 
 ### Problem 1
 
-
+One hundred men had their neck circumference (in cm)
+and biceps circumference (extended, in cm) measured.
+Below, I've regressed neck circumference on biceps circumference.
+Assuming all necessary assumptions are met,
+interpret the results of the hypothesis tests relating to the coefficients.
+Use a cutoff of $\alpha = 0.05$.
+```{r}
+d <- Lock5Data::BodyFat
+mod_01 <- lm(formula = Neck ~ Biceps,
+             data = d)
+summary(mod_01)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+Both p-values are much lower than 0.05,
+so we reject the null hypotheses that $\beta_0 = 0$ and $\beta_1 = 0$.
+So, we conclude that the expected neck circumference for a man with
+a biceps circumference of 0 cm is different from 0,
+and that the expected increase in neck circumference associated
+with a one-cm increase in biceps circumference is greater than zero.
 
 
 :::
@@ -52,10 +112,27 @@ $$
 ### Problem 2
 
 
+Below, I've regressed neck circumference (in cm) on age (in years)
+for the same 100 men as above.
+Assuming all necessary assumptions are met,
+interpret the results of the hypothesis tests relating to the coefficients.
+Use a cutoff of $\alpha = 0.05$.
+```{r}
+mod_02 <- lm(formula = Neck ~ Age,
+             data = d)
+summary(mod_02)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+The p-value for the intercept is far less than 0.05,
+so we reject the null hypothesis that $\beta_0 = 0$
+and conclude that the expected neck circumference for a man age 0
+is different from zero.
 
+The p-value for age is $0.704 > 0.05$,
+so we fail to reject the null hypothesis that $\beta_1 = 0$.
+We cannot conclude that neck circumference changes linearly with age.
 
 :::
 
