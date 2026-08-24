@@ -1,0 +1,111 @@
+---
+title: "Robust Standard Errors"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+# Load packages
+library(lmtest)
+library(sandwich)
+```
+
+## Learning Objective
+
+Use robust standard errors in the presence of heteroscedasticity.
+
+
+## Lesson
+
+If the linearity and iid assumptions of simple linear regression are met,
+and if you have a large sample size,
+but your residuals are heteroscedastic,
+you can compute robust standard errors.
+"Robust" in statistics typically means "correct even when assumptions
+are violated".
+You'll need two packages, `lmtest` and `sandwich`.
+("Sandwich" comes from the form for the standard errors when
+expressed in linear algebra.)
+
+Let's take a look at an example that met the linearity and iid assumptions,
+had a large sample size, and had heteroscedastic residuals.
+The forest fire example fits these requirements.
+Each observation is a forest fire in Montesinho Park (Portugal)
+between January 2000 and December 2003
+where at least 0.01 hectare (100 square meters) was burned.
+In the figure below,
+I've plotted $\log_{10}(\text{area burned})$ as a function of the outside
+temperature.
+```{r}
+d <- Lock5Data::ForestFires
+d$Area_No_0 <- d$Area
+d$Area_No_0[d$Area_No_0 == 0] <- NA
+d$Log10_Area_No_0 <- log10(d$Area_No_0)
+plot(x = d$Temp,
+     y = d$Log10_Area_No_0,
+     xlab = "Outside Temperature (degrees Celsius)",
+     ylab = "Log10(Total Burned Area) (log hectares)")
+```
+
+If I regress $\log_{10}(\text{area burned})$ on temperature,
+this is the resulting residual plot:
+```{r}
+mod_01 <- lm(formula = Log10_Area_No_0 ~ Temp,
+             data = d)
+plot(x = mod_01$model$Temp,
+     y = mod_01$residuals,
+     xlab = "Outside Temperature (degrees Celsius)",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+Here's the regression results without robust standard errors:
+```{r}
+summary(mod_01)
+```
+
+And here are the results with the robust standard errors.
+```{r}
+#| echo: true
+coeftest(x = mod_01,
+         vcov = vcovHC(x = mod_01,
+                       type = "HC0"))
+```
+
+You can see that the `Estimate` column hasn't changed,
+but the remaining columns have.
+This is because the standard errors have been re-computed,
+and the $t$-values and p-values depend on the standard errors.
+In this example, the conclusions drawn from the p-values have not changed.
+The intercept is still significantly different from zero and
+the slope is not.
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
