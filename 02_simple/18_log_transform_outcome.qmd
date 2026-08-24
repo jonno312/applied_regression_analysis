@@ -5,6 +5,11 @@ execute:
 format: html
 ---
 
+```{r}
+#| warning: false
+library(scales)
+```
+
 ## Learning Objective
 
 Interpret the coefficients when the outcome has been logged.
@@ -12,24 +17,75 @@ Interpret the coefficients when the outcome has been logged.
 
 ## Lesson
 
-### Math
+### Problem
+
+When we log the outcome, the linearity assumption becomes
+$$
+E\left(\log Y_i \middle| X_i\right) = \beta_0 + \beta_1 X_i \text{.}
+$$
+This poses problems for interpretation; we'd like to talk about
+the untransformed outcome, but
+$$
+E\left(\log Y_i \middle| X_i\right) \ne \log E\left(Y_i \middle| X_i\right) \text{.}
+$$
+So, for example, our interpretation of $\beta_0$ is "the expected value
+of the log of the outcome when $X_i = 0$."
+That's not very useful.
+Also,
+$$
+\begin{align*}
+\beta_1 &= \beta_0 + \beta_1(x+1) - \left(\beta_0 + \beta_1 x\right) \\
+&= E\left(\log Y_i \middle| X_i = x + 1\right) - E\left(\log Y_i \middle| X_i = x\right) \text{,}
+\end{align*}
+$$
+which isn't very useful, either.
+
+### More Assumptions
 
 Suppose we change our model to
 $$
-\log_a Y_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right) \text{.}
+\log Y_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right) \text{.}
 $$
-How do we interpret the coefficients then?
+Then the coefficients are more interpretable.
+Specifically,
+$$
+\begin{align*}
+E\left(Y_i\middle|X_i = 0\right) &= \exp\left(\beta_0 + \frac{\sigma^2}{2}\right) \\
+\frac{E\left(Y_i\middle|X_i = x+1\right)}{E\left(Y_i\middle|X_i = x\right)} &= \exp\left(\beta_1\right) \text{.}
+\end{align*}
+$$
+In words, when the explanatory variable equals 0, we would expect
+the outcome variable to equal
+$$
+\exp\left(\beta_0 + \frac{\sigma^2}{2}\right) \text{.}
+$$
+An increase of one unit in the explanatory variable is associated with a
+$$
+\left(\exp\left(\beta_1\right) - 1\right) \times 100\%
+$$
+increase in the outcome variable.
+(If this is negative, it's a decrease.)
+Another way of phrasing this is that a population with the explanatory
+variable equal to $x + 1$ is expected to have an outcome $\exp(\beta_1)$
+times that of a population with the explanatory variable equal to $x$.
 
-$\beta_0$ is the expected value of the log of the outcome
-when $X_i = 0$:
-$$
-E\left(\log_a Y_i\middle|X_i = 0\right) = \beta_0 \text{.}
-$$
+Note that, in order to interpret the coefficients this way,
+all four assumptions need to be met in the data.
+Also, you need to have used the natural log (base $e$) in order to transform
+the outcome.
+If you use any other base, the interpretation above is not justified.
+
+### Math
+
+I have a tendency to forget the math behind these interpretations,
+so I'm going to store it here.
+You don't need to know it;
+it's more for me.
 
 ::: {.callout-caution collapse="true"}
 ## Caution: Math
 
-Define $Z_i = \log_a Y_i$.
+Define $Z_i = \log Y_i$.
 Then 
 $$
 Z_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right)
@@ -40,22 +96,35 @@ f(z|x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(z - \beta_0 - \bet
 $$
 Further,
 $$
-Y_i = a^{Z_i}
+Y_i = \exp\left(Z_i\right)
 $$
 and
 $$
 \begin{align*}
-E\left(Y_i\middle|X_i = x\right) &= E\left(a^{Z_i}\middle|X_i = x\right) \\
-&= \int_{-\infty}^\infty a^z f(z|x)\,dz \\
-&= \int_{-\infty}^\infty a^z \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(z - \beta_0 - \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+E\left(Y_i\middle|X_i = x\right) &= E\left(\exp\left(Z_i\right)\middle|X_i = x\right) \\
+&= \int_{-\infty}^\infty \exp\left(z\right) f(z|x)\,dz \\
+&= \int_{-\infty}^\infty \exp\left(z\right) \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(z - \beta_0 - \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+&= \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(z-\frac{\left(z - \beta_0 - \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+&= \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(z-\frac{z^2 - 2z\left(\beta_0 + \beta_1 x\right) + \left(\beta_0 + \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+&= \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{z^2 - 2z\left(\beta_0 + \beta_1 x\right) - 2z\sigma^2 + \left(\beta_0 + \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+&= \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{z^2 - 2z\left(\beta_0 + \beta_1 x+\sigma^2\right)  + \left(\beta_0 + \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+&= \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{z^2 - 2z\left(\beta_0 + \beta_1 x+\sigma^2\right) + \left(\beta_0 + \beta_1 x + \sigma^2\right)^2 - \left(\beta_0 + \beta_1 x + \sigma^2\right)^2 + \left(\beta_0 + \beta_1 x\right)^2}{2\sigma^2}\right) \,dz \\
+&= \exp\left(\frac{\left(\beta_0 + \beta_1 x + \sigma^2\right)^2 - \left(\beta_0 + \beta_1 x\right)^2}{2\sigma^2}\right) \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{z^2 - 2z\left(\beta_0 + \beta_1 x+\sigma^2\right) + \left(\beta_0 + \beta_1 x + \sigma^2\right)^2 }{2\sigma^2}\right) \,dz \\
+&= \exp\left(\frac{2\left(\beta_0 + \beta_1 x\right)\sigma^2 + \sigma^4}{2\sigma^2}\right) \int_{-\infty}^\infty \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(z - \beta_0 - \beta_1 x - \sigma^2\right)^2 }{2\sigma^2}\right) \,dz \\
+&= \exp\left(\frac{2\left(\beta_0 + \beta_1 x\right)\sigma^2 + \sigma^4}{2\sigma^2}\right)  \\
+&= \exp\left(\beta_0 + \beta_1 x + \frac{\sigma^2}{2}\right) \text{.} \\
 \end{align*}
 $$
 
-If $\log_a Y_i|X_i \sim N\left(\beta_0 + \beta_1 X_i,\sigma^2\right)$
-then
+Thus,
+$$
+E\left(Y_i\middle|X_i = 0\right) = \exp\left(\beta_0 + \frac{\sigma^2}{2}\right)
+$$
+and
 $$
 \begin{align*}
-E\left(Y_i\middle|X_i\right) &=
+\frac{E\left(Y_i\middle|X_i = x+1\right)}{E\left(Y_i\middle|X_i = x\right)} &= \frac{\exp\left(\beta_0 + \beta_1 (x+1) + \frac{\sigma^2}{2}\right)}{\exp\left(\beta_0 + \beta_1 x + \frac{\sigma^2}{2}\right)} \\
+&= \exp\left(\beta_1\right) \text{.}
 \end{align*}
 $$
 
@@ -63,52 +132,267 @@ $$
 
 ### Forest Fire Example
 
+Let's return to the forest fire example.
 Each observation is a forest fire in Montesinho Park (Portugal)
-between January 2000 and December 2003
-where at least 0.01 hectare (100 square meters) was burned.
-In the figure below,
-I've plotted $\log_{10}(\text{area burned})$ as a function of the outside
-temperature.
+between January 2000 and December 2003.
+In the scatterplot below, I've plotted total burned area (in hectares)
+as a function of relative humidity (%).
 ```{r}
 d <- Lock5Data::ForestFires
+plot(x = d$RH,
+     y = d$Area,
+     xlab = "Relative Humidity (%)",
+     ylab = "Total Burned Area (hectares)",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+```
+It's hard to detect a relationship between the two variables.
+This might be easier if we log the outcome.
+However, we can't take the log of zero,
+and 4.7% of the observations have zero as the outcome.
+```{r}
+#| echo: true
+sum(d$Area == 0)
+sum(d$Area == 0) / nrow(d)
+```
+According to the description of the data, a zero indicates that
+less than 0.01 hectare (100 square meters) was burned.
+So, we can remove the zeros and take the natural log of the outcome.
+```{r}
 d$Area_No_0 <- d$Area
 d$Area_No_0[d$Area_No_0 == 0] <- NA
-d$Log10_Area_No_0 <- log10(d$Area_No_0)
-plot(x = d$Temp,
-     y = d$Log10_Area_No_0,
-     xlab = "Outside Temperature (degrees Celsius)",
-     ylab = "Log10(Total Burned Area) (log hectares)")
-mod_01 <- lm(formula = Log10_Area_No_0 ~ Temp,
+d$Log_Area_No_0 <- log(d$Area_No_0)
+plot(x = d$RH,
+     y = d$Log_Area_No_0,
+     xlab = "Relative Humidity (%)",
+     ylab = "Log(Total Burned Area) (log hectares)",
+     col = alpha(colour = "black",
+                 alpha = 0.3),
+     pch = 19)
+```
+This scatterplot is easier to interpret.
+If we regress the log-transformed total burned area on relative humidity,
+we get this residual scatterplot:
+```{r}
+mod_01 <- lm(formula = Log_Area_No_0 ~ RH,
              data = d)
-plot(x = mod_01$model$Temp,
+plot(x = mod_01$model$RH,
      y = mod_01$residuals,
-     xlab = "Outside Temperature (degrees Celsius)",
-     ylab = "Residuals")
+     xlab = "Relative Humidity (%)",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.3),
+     pch = 19)
 abline(h = 0,
        col = "red")
 ```
+It appears that the linearity assumption is met,
+and I'm willing to assume that the data are iid
+(even though it's possible that one forest fire changes the probability
+of another).
+It appears that there is lower variability in the residuals for higher
+relative humidities,
+but that may be because there are just fewer observations at
+the higher relative humidities.
+Let's check the distribution of the residuals.
+```{r}
+boxplot(x = mod_01$residuals,
+        ylab = "Residuals")
+hist(x = mod_01$residuals,
+     main = "",
+     xlab = "Residuals")
+qqnorm(mod_01$residuals)
+qqline(mod_01$residuals)
+```
+These look (mostly) normal to me.
+So, we can interpret the coefficients.
+
+Here's the output from the regression analysis:
+```{r}
+summary(mod_01)
+```
+Note that
+$$
+\begin{align*}
+\hat{\beta}_0 &= 2.064810 \\
+\hat{\beta}_1 &= -0.005030 \\
+\hat{\sigma} &= 1.528 \text{,}
+\end{align*}
+$$
+so
+```{r}
+#| include: false
+
+exp(mod_01$coefficients[1] + summary(mod_01)$sigma^2 / 2)
+exp(mod_01$coefficients[2])
+```
+$$
+\begin{align*}
+\hat{E}\left(Y_i\middle|X_i = 0\right) &= \exp\left(\hat{\beta}_0 + \frac{\sigma^2}{2}\right) \\
+&= \exp\left(2.064810 + \frac{1.528^2}{2}\right) \\
+&= 25.3 \\
+\frac{\hat{E}\left(Y_i\middle|X_i = x+1\right)}{\hat{E}\left(Y_i\middle|X_i = x\right)} &= \exp\left(\hat{\beta}_1\right) \\
+&= \exp\left(-0.005030 \right) \\
+&= 0.995 \text{.}
+\end{align*}
+$$
+This means that, when the relative humidity is 0%,
+we would expect 25.3 hectares to burn.
+For each additional percentage point of relative humidity,
+we would expect a decrease of 0.5% in total area burned.
 
 ## Problems
 
+In the past, when I've forgotten how to interpret regression coefficients
+with a log-transformed outcome,
+I've found my way to this page from the UCLA Statistical Consulting Group:
+[How do I interpret a regression model when some variables are log transformed?](https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-do-i-interpret-a-regression-model-when-some-variables-are-log-transformed/).
+They recommend using the geometric mean in your interpretations.
+I don't think this is a good idea,
+since (almost) nobody understands the geometric mean.
+
+There are six variables in this data set:
+reading, writing, and math scores;
+log math and writing scores;
+and gender (or maybe sex).
+```{r}
+d2 <- read.csv(file = "https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv")
+```
+
+
 ### Problem 1
 
-
+One of the first things they do is regress the log of the writing score
+on gender.
+Based on the following two boxplots,
+what is the impact of logging the writing score?
+```{r}
+boxplot(formula = write ~ female,
+        data = d2,
+        xlab = "Gender",
+        ylab = "Writing Score")
+boxplot(formula = lgwrite ~ female,
+        data = d2,
+        xlab = "Gender",
+        ylab = "Log Writing Score")
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Logging the writing score makes the distribution of the outcome
+more skewed!
+Also, whether you log the outcome or not,
+the variability of the outcome is different for males and for females,
+so we're violating the assumption of homoscedasticity.
 
 :::
 
 ### Problem 2
 
-
+Below are the results of a simple linear regression with log math score
+as the outcome and reading score as the explanatory variable.
+```{r}
+mod_02 <- lm(formula = lgmath ~ read,
+             data = d2)
+summary(mod_02)
+```
+How would you interpret the coefficients?
+Assume all necessary assumptions have been met.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+```{r}
+#| echo: true
+exp(mod_02$coefficients[1] + summary(mod_02)$sigma^2 / 2)
+exp(mod_02$coefficients[2])
+```
+When the reading score is zero, we would expect the math score to be 28.8.
+With each one-unit increase in reading score,
+we would expect the math score to increase by 1%.
 
 :::
+
+### Problem 3
+
+Below are the results of a simple linear regression with math score
+as the outcome and reading score as the explanatory variable.
+```{r}
+mod_03 <- lm(formula = math ~ read,
+             data = d2)
+summary(mod_03)
+```
+How would you interpret the coefficients?
+Assume all necessary assumptions have been met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+When the reading score is zero, we would expect the math score to be 21.
+With each one-unit increase in reading score,
+we would expect the math score to increase by 0.6 units.
+
+:::
+
+### Problem 4
+
+Below are the diagnostic plots for the model with reading score
+as the explanatory variable and log math score as the outcome variable.
+```{r}
+plot(x = mod_02$model$read,
+     y = mod_02$residuals,
+     xlab = "Reading Score",
+     ylab = "Residual",
+     main = "Outcome is Log-Transformed",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+boxplot(x = mod_02$residuals,
+        ylab = "Residual",
+        main = "Outcome is Log-Transformed")
+hist(x = mod_02$residuals,
+     xlab = "Residual",
+     main = "Outcome is Log-Transformed")
+qqnorm(mod_02$residuals)
+qqline(mod_02$residuals)
+```
+
+Below are the diagnostic plots for the model with reading score
+as the explanatory variable and math score as the outcome variable.
+```{r}
+plot(x = mod_03$model$read,
+     y = mod_03$residuals,
+     xlab = "Reading Score",
+     ylab = "Residual",
+     main = "Outcome is Not Transformed",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+boxplot(x = mod_03$residuals,
+        ylab = "Residual",
+        main = "Outcome is Not Transformed")
+hist(x = mod_03$residuals,
+     xlab = "Residual",
+     main = "Outcome is Not Transformed")
+qqnorm(mod_03$residuals)
+qqline(mod_03$residuals)
+```
+
+Do you think it's better to log-transform this outcome or not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The diagnostic plots are nearly identical whether the outcome is
+transformed or not.
+I might go with the untransformed outcome just because it's easier to interpret.
+
+:::
+
+
+
 
 
 
