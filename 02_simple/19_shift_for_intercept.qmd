@@ -1,0 +1,154 @@
+---
+title: "Shifting the Data to Make the Intercept Interpretable"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Shift the data to make the intercept interpretable.
+- Interpret the intercept for the shifted data.
+
+
+## Lesson
+
+You may have noticed that in some of the examples I've used,
+the intercept has not made sense.
+For example, when I regressed red blood cell density on weight in mice,
+I said,
+"We would expect a mouse weighing zero grams
+to have a red blood cell density of -0.58."
+That was based on these results:
+```{r}
+d <- Lock5Data::DrugResistance
+d <- d[d$Weight >= 5, ]
+mod_01 <- lm(formula = RBC ~ Weight,
+             data = d)
+summary(mod_01)
+```
+Even though I don't know the units for red blood cell density,
+I doubt they can be negative.
+Perhaps more important,
+among the 67 mice in the data set I used,
+none had weight lower than 17.725 grams.
+```{r}
+#| echo: true
+range(d$Weight)
+```
+Estimating the red blood cell density for a mouse weighing less than
+that is extrapolating beyond the data, which is never a good idea.
+This may be why the intercept was so weird.
+
+What should we do in this case?
+Typically, we subtract the same value
+(we can call it $c$)
+from the explanatory variable
+for every observation.
+Then, we refit the model with the new explanatory variable.
+The new intercept is the expected value of the outcome
+when the new explanatory variable is zero,
+which happens when the old explanatory variable is equal to $c$.
+
+Let's look at the math, and then apply it to the mice example.
+Suppose $X_i$ is the value of the explanatory variable for the $i$th
+observation and $Y_i$ is the value of the explanatory variable for the $i$th
+observation.
+Define $Z_i = X_i - c$.
+Then
+$$
+\begin{align*}
+E\left(Y_i \middle| Z_i = 0\right) &= E\left(Y_i \middle| X_i - c = 0\right) \\
+&= E\left(Y_i \middle| X_i = c\right) \text{.}
+\end{align*}
+$$
+
+Since all the mice in my data set weigh between 17.725 and 23.219 grams,
+I'm going to choose $c = 20$.
+This is a bit arbitrary,
+but it's a round number in the range of my data.
+```{r}
+#| echo: true
+d$Weight_20 <- d$Weight - 20
+```
+
+Now I'm going to re-do the regression, but with the new explanatory variable.
+```{r}
+#| echo: true
+mod_02 <- lm(formula = RBC ~ Weight_20,
+             data = d)
+summary(mod_02)
+```
+The new intercept is about 6.5.
+So, we would expect a red blood cell density of 6.5 for a mouse
+weighing 20 grams.
+This is far more trustworthy than the original intercept because
+we observed mice weighing around 20 grams,
+but no mice weighing about 0 grams.
+
+Note that the slope didn't change.
+If we shift the explanatory variable to the left or right,
+the slope of the line should not change.
+Only the intercept should change.
+
+How do you decide what to subtract?
+It should be a value in the range of your data,
+or not too far from it.
+It should be meaningful to your scientific question.
+Some people recommend using the sample average of the explanatory variable,
+but I don't like to do that because
+the sample average changes with every sample.
+
+## Problems
+
+One hundred men had their neck circumference (in cm)
+and biceps circumference (extended, in cm) measured.
+
+### Problem 1
+
+
+Below, I've regressed neck circumference on biceps circumference.
+```{r}
+d2 <- Lock5Data::BodyFat
+mod_03 <- lm(formula = Neck ~ Biceps,
+             data = d2)
+summary(mod_03)
+```
+Assuming the necessary assumptions are met,
+interpret the intercept and slope.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+A man with zero biceps circumference would be expected to have
+a neck circumference of 20.9 cm.
+Each additional cm in biceps circumference is associated with a
+0.5-cm increase in neck circumference.
+
+:::
+
+### Problem 2
+
+Below, I've regressed neck circumference on biceps circumference
+after subtracting 25 cm from each biceps measurement.
+```{r}
+range(d2$Biceps)
+d2$Biceps_25 <- d2$Biceps - 25
+mod_04 <- lm(formula = Neck ~ Biceps_25,
+             data = d2)
+summary(mod_04)
+```
+Assuming the necessary assumptions are met,
+interpret the intercept and slope.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+A man with 25 cm biceps circumference would be expected to have
+a neck circumference of 34 cm.
+Each additional cm in biceps circumference is associated with a
+0.5-cm increase in neck circumference.
+
+:::
+
+
+
+
