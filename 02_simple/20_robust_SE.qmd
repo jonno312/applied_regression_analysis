@@ -6,6 +6,7 @@ format: html
 ---
 
 ```{r}
+#| warning: false
 # Load packages
 library(lmtest)
 library(sandwich)
@@ -17,6 +18,8 @@ Use robust standard errors in the presence of heteroscedasticity.
 
 
 ## Lesson
+
+### Overview and Example
 
 If the linearity and iid assumptions of simple linear regression are met,
 and if you have a large sample size,
@@ -68,7 +71,6 @@ summary(mod_01)
 
 And here are the results with the robust standard errors.
 ```{r}
-#| echo: true
 coeftest(x = mod_01,
          vcov = vcovHC(x = mod_01,
                        type = "HC0"))
@@ -82,27 +84,131 @@ In this example, the conclusions drawn from the p-values have not changed.
 The intercept is still significantly different from zero and
 the slope is not.
 
+### Simulation Study
+
+In the example above,
+the conclusions didn't change after using robust standard errors.
+How heteroscedastic do the errors have to be for the robust standard errors
+to make a difference?
+Let's conduct a simulation study to find out.
+
+I'm going to generate 500 observations where all the assumptions are met
+except homoscedasticity.
+Then I'll keep increasing the heteroscedasticity until the robust
+standard errors yield a different conclusion than the regular standard
+errors.
+
+```{r}
+set.seed(20)
+n <- 500
+x <- rnorm(n = n,
+           sd = 2)
+beta_0 <- 1
+beta_1 <- 1
+epsilon <- rnorm(n)
+for(i in 1:5){
+  y <- beta_0 + beta_1 * x + epsilon * x * i
+  plot(x = x,
+       y = y)
+  mod_03 <- lm(y ~ x)
+  print(summary(mod_03))
+  print(coeftest(x = mod_03,
+                 vcov = vcovHC(x = mod_03,
+                               type = "HC0")))
+}
+```
+It took pretty severe heteroscedasticity for the robust standard errors
+to yield a different result than the regular standard errors.
+Of course, we might get a different pattern with a small sample size
+or different parameters.
 
 
 ## Problems
 
 ### Problem 1
 
+Let's return to the lizard and ant study,
+in which lizards from invaded and uninvaded habitats were exposed
+to fire ants.
+The outcome variable is the number of times the lizards twitched.
+I changed every "Uninvaded" to a 0,
+and every "Invaded" to a 1,
+then regressed the number of twitches on the new habitat variable.
+Here are boxplots of the residuals in each group:
+```{r}
+d2 <- Lock5Data::FireAnts
+d2$Habitat_01 <- 0
+d2$Habitat_01[d2$Habitat == "Invaded"] <- 1
+mod_02 <- lm(formula = Twitches ~ Habitat_01,
+             data = d2)
+boxplot(formula = mod_02$residuals ~ d2$Habitat,
+        xlab = "Habitat",
+        ylab = "Residuals")
+```
+These are the results without robust standard errors:
+```{r}
+summary(mod_02)
+```
 
+These are the results with robust standard errors:
+```{r}
+coeftest(x = mod_02,
+         vcov = vcovHC(x = mod_02,
+                       type = "HC0"))
+```
+
+Interpret the hypothesis tests for the coefficients
+when robust standard errors were used.
+Use $\alpha = 0.05$.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+Both p-values are far below 0.05,
+so in each case we reject the null hypothesis.
+We can conclude that the expected number of twitches among lizards
+from uninvaded habitats is not equal to zero
+and that there is a statistically significant difference
+between the average number of twitches by lizards from uninvaded habitats
+and lizards from invaded habitats.
 
+Another way of phrasing the conclusion about the slope
+is that the expected number of twitches among lizards from uninvaded habitats
+is different from the expected number of twitches among lizards
+from invaded habitats.
 
 :::
 
 ### Problem 2
 
+Let's return to the data about commuting in Atlanta.
+Each observation is a single commuter.
+If we regress time (in minutes) on distance (in miles), these are the results:
+```{r}
+d3 <- Lock5Data::CommuteAtlanta
+mod_04 <- lm(formula = Time ~ Distance,
+             data = d3)
+summary(mod_04)
+```
 
+These are the results with robust standard errors:
+```{r}
+coeftest(x = mod_04,
+         vcov = vcovHC(x = mod_04,
+                       type = "HC0"))
+```
+
+Interpret the hypothesis tests for the coefficients
+when robust standard errors were used.
+Use $\alpha = 0.05$.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Both p-values are well below 0.05,
+so in each case we reject the null hypothesis.
+We can conclude that, for a commute of zero miles,
+we would expect the time to be different from zero.
+Further, we can conclude that the expected change in time associated
+with a one-mile change in distance is different from zero.
 
 :::
 
