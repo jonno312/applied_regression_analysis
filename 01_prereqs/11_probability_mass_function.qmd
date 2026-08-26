@@ -1,0 +1,41 @@
+---
+title: "Probability Mass Function"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+
+
+
+## Lesson
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
