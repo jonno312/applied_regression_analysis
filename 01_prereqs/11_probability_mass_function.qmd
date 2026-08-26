@@ -7,34 +7,72 @@ format: html
 
 ## Learning Objective
 
-
+Explain what a probability mass function (PMF) is.
 
 
 ## Lesson
 
+### Overview
 
+Every discrete random variable has a probability mass function (PMF),
+which is a function telling you the probability it will take on each value 
+in its support.
+Suppose $X$ is a discrete random variable.
+I would generally write the probability mass function as
+$P(X = x)$, where $x$ is some value in the support of $X$.
+If $x$ is not in the support of $X$,
+then $P(X = x) = 0$.
+
+We call this a probability mass function because we use "mass" to refer
+to a positive probability.
+The PMF tells you how much mass to place on each number.
+You can think of a dump truck depositing piles of dirt on different
+values along the number line.
+
+### Bernoulli Example
+
+If $X$ is Bernoulli distributed then $P(X = 1) = p$ and
+$P(X = 0) = 1 - p$.
+We can write this concisely as $P(X = x) = p^x (1-p)^{1-x}$.
+
+### Poisson Example
+
+The Poisson PMF is
+$$
+P(X = x) = e^{-\mu} \frac{\mu^x}{x!} \text{,}
+$$
+where $\mu$ is the expected value (which must be positive)
+and $x$ is any non-negative whole number (0, 1, 2, 3, etc.).
+
+Here are plots of the Poisson PMF for various values of $\mu$:
+```{r}
+for(mu in 1:7){
+  plot(x = 0:15,
+       y = dpois(x = 0:15,
+                 lambda = mu),
+       type = "h",
+       xlab = "x",
+       ylab = "P(X = x)",
+       main = paste0("mu = ",
+                     mu))
+}
+```
 
 ## Problems
 
 ### Problem 1
 
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
-
-### Problem 2
-
-
+True or false:
+Continuous random variables have probability mass functions.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+False.
+Only discrete random variables have probability mass functions.
 
 :::
+
+
 
 
 
