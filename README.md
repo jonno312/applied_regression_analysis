@@ -65,9 +65,32 @@ In order to use the textbook, I recommend that you download
 
 ### Cloning This Repository
 
-Follow
-[these instructions](https://happygitwithr.com/new-github-first#rstudio-ide)
-to clone the repository.
+The first time you use this textbook, you will have to clone the GitHub
+repository.
+To do so, follow these instructions:
+
+1. Open RStudio.
+2. In the upper right-hand corner of your screen, look for an R inside
+a blue cube. It should be next to the words "Project: (None)".
+Click here.
+3. Click "New Project..."
+4. Click "Version Control".
+5. Click "Git".
+6. Under "Repository URL:", enter
+`https://github.com/jonno312/applied_regression_analysis`.
+7. Click "Browse..." to tell RStudio where to put the clone on your computer.
+8. Click "Create Project".
+
+### Updating Your Clone
+
+Each time you use the textbook, you should check for updates.
+You can do so by following these instructions:
+
+1. At the top of your screen, look for an icon consisting of "GIt"
+written vertically, with the "G" in gray, the "I" in red,
+and the "t" in green.
+Click this icon.
+2. Click "Pull Branches" next to the blue arrow pointing down.
 
 
 ### Rendering to HTML
@@ -78,6 +101,13 @@ There should be a "Render" button at the top of the window when you
 open each Quarto document.
 If you need to install any packages,
 RStudio should tell you.
+
+### Closing the Project
+
+When you're done using the textbook, you should close the project in R.
+
+1. Click the R in the blue cube next to "applied_regression_analysis".
+2. Click "Close Project".
 
 ## License
 
