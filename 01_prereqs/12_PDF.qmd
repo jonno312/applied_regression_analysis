@@ -1,0 +1,83 @@
+---
+title: "Probability Density Function"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain what a probability density function is.
+
+
+## Lesson
+
+### Overview
+
+Continuous random variables do not have probability mass functions.
+In fact, for any continuous random variable $X$ and any real number $x$,
+$P(X = x) = 0$.
+This is because, if $X$ is a continuous random variable,
+it can take on any value in an interval.
+So, if $P(X = x) > 0$ for the values in that interval,
+then the probability that $X$ equals anything will exceed 1,
+which is impossible.
+I will return to this idea later,
+so if it doesn't make sense now, hold tight.
+
+If $X$ is continuous, it has a probability density function (PDF).
+I will usually use $f(x)$ to denote the PDF of a continuous random variable $X$.
+In order to compute probabilities for continuous random variables,
+we integrate under the PDF.
+So, for example,
+$$
+P(a \le X \le b) = \int_a^b f(x)\,dx \text{.}
+$$
+
+This is why $P(X = x) = 0$ for continuous random variables.
+If you integrate under a single point, you get zero:
+$$
+P(X = x) = \int_x^x f(u)\,du = 0 \text{.}
+$$
+An integral is the area under a curve.
+If the area is zero, the integral is zero.
+
+"Density" here means mass per unit length (or mass per unit distance).
+So in order to get a probability mass (i.e., a positive probability),
+we have to integrate over a positive length.
+
+This might seem too mathematical to be relevant,
+but it will come up again when we encounter hazard rates.
+
+### Normal Example
+
+A normal distribution with expected value $\mu$ and variance $\sigma^2$
+has PDF
+$$
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{\left(x-\mu\right)^2}{2\sigma^2}\right) \text{,}
+$$
+where $\mu$ can be any real number, $\sigma^2 > 0$,
+and $x$ can be any real number.
+
+
+## Problems
+
+### Problem 1
+
+Suppose $Y$ is a continuous random variable with
+$f(y) = \lambda \exp(-\lambda y)$,
+where $\lambda > 0$ and $y > 0$.
+What is $P(Y = 4)?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Zero. It's a continuous random variable, so the probability it equals
+any single number is 0.
+
+:::
+
+
+
+
+
+
