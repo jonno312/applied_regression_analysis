@@ -88,6 +88,18 @@ $$
 e^{a+bx} = \exp(a+bx) \text{.}
 $$
 
+### Special Exponents
+
+Anything to the zeroth power is equal to 1:
+$$
+a^0 = 1 \text{.}
+$$
+
+Anything to the power of 1 is equal to itself:
+$$
+a^1 = a \text{.}
+$$
+
 ## Problems
 
 ### Problem 1
