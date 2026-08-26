@@ -117,13 +117,7 @@ from 0,
 because integrating under $f(x)$ near 0 produces a larger area
 than integrating under $f(x)$ far from 0.
 
-::: {.callout-note collapse="true"}
 
-The function that I've labeled $f$ in the graphs above is called
-a "probability density function".
-You don't need to memorize this.
-
-:::
 
 The normal distribution is a continuous distribution, but the principle
 is the same for discrete distributions.
@@ -185,13 +179,7 @@ polygon(x = c(-0.5,-0.5,0.5,0.5),
         col = "blue")
 ```
 
-::: {.callout-note collapse="true"}
 
-The function that I've labeled $P(X = x)$ in the graphs above is called
-a "probability mass function".
-You don't need to memorize this.
-
-:::
 
 Why does any of this matter?
 We often use probability distributions to represent real-world quantities.
