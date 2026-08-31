@@ -98,6 +98,32 @@ you're very clear about what population you're trying to generalize to.
 If that population changes over time,
 you need to make sure you account for that.
 
+### Sampling
+
+Note the importance of sampling to this assumption.
+Ideally, we want to conduct a "simple random sample",
+where each member of the population has an equal chance
+of being included in the sample.
+At least for now, we want to avoid a situation
+where sampling is clustered.
+
+In some situations, clustered sampling is unavoidable.
+For example, consider dentistry.
+We generally don't sample teeth independently from the population
+of all human teeth.
+Instead, we sample individual people,
+and then look at all the teeth in their mouths.
+Since teeth in the same mouth are more similar to each other
+than teeth in different mouths,
+sampling people rather than teeth induces correlation.
+
+Sorry to use such an unsettling example!
+It comes up a lot, though.
+Consider an ophthalmologist studying eyes,
+or an oncologist studying breast, kidney, or lung cancer.
+In each of these examples, it probably makes the most sense
+to sample individuals and not individual organs.
+
 
 ## Problems
 
