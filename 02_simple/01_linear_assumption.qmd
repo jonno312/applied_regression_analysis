@@ -177,6 +177,21 @@ we won't have any epsilons.
 They're nice for visualizing what's going on and understanding the procedure,
 but they cease to be relevant once we depart linear regression.
 
+### Note
+
+Strictly, the linearity assumption is
+$$
+E(Y_i|X_1,\dotsc,X_n) = \beta_0 + \beta_1 X_i \text{,}
+$$
+but that's very cumbersome to write,
+and it will be more cumbersome once we get to multiple linear regression.
+So, I'm simplifying the notation a bit to
+$$
+E(Y_i|X_i) = \beta_0 + \beta_1 X_i \text{.}
+$$
+This first assumption is much easier to write with linear algebra,
+but linear algebra is not a prerequisite for this course.
+
 ## Problems
 
 ### Problem 1
