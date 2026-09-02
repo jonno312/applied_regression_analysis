@@ -198,6 +198,98 @@ which is not always the case.
 
 :::
 
+### Problem 3
+
+Suppose $Y$ is the (eventual) age at death for a (living) human being selected uniformly at random
+from the earth in 2021.
+
+#### Part (a)
+
+A colleague wants to estimate $P(Y = y)$ for various values of $y$.
+He finds this graph: [Probability of dying, by age, World, 2021](https://ourworldindata.org/grapher/probability-of-dying-by-age).
+Explain to your colleague why that graph is or is not an estimate
+of $P(Y = y)$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This graph is not an estimate of $P(Y = y)$,
+for at least the following reasons:
+
+- The area under the curve of a distribution needs to integrate or sum to 1.
+This is the graphical analogue to the fact
+that $P(Y = \text{anything}) = 1$.
+In this graph, the bars  sum to a value greater than 1.
+If you just add up the top six bars,
+moving from the top of the page down,
+you get 1.02, which is greater than 1.
+- The subtitle of the graph is,
+"The annual probability of death among people in a given age group, expressed as a fraction."
+So, each bar represents the probability of death
+for someone selected from a given age group;
+for $Y$, we are sampling someone from the earth at large,
+so they could be from any age group.
+
+:::
+
+#### Part (b)
+
+Another colleague wants to estimate $E(Y)$
+She finds this graph:
+[Life expectancy at birth, total (years)](https://data.worldbank.org/indicator/SP.DYN.LE00.IN).
+Explain to your colleague why that graph can or cannot
+provide an estimate of $E(Y)$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This graph cannot be used to estimate $E(Y)$.
+The title of the graph is "Life expectancy at birth",
+so the population is restricted to newborns.
+$Y$ is the life expectancy for someone
+selected uniformly at random,
+so the population includes anyone of any age.
+$E(Y)$ should be higher than the life expectancy
+for 2021 in this graph;
+someone who has already lived to age 10
+is going to have a higher life expectancy than
+someone who hasn't yet reached age 1.
+
+:::
+
+#### Part (c)
+
+What is the support of $Y$?
+Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+I would say that the support of $Y$
+is the interval $(0,\infty)$.
+You could select someone of any age,
+no matter how close to birth, which is why my interval
+goes all the way down to zero.
+I didn't include zero because no one can be alive
+and dead at the same time.
+My interval goes all the way up to infinity because,
+even though no one has lived past 122
+([Guinness](https://www.guinnessworldrecords.com/world-records/oldest-person)),
+we don't know if someone born in 2021 will live longer.
+
+By the way, here is an explanation of the notation I used above.
+
+- $(a,b)$ is the line segment containing all points
+between $a$ and $b$, but not $a$ and $b$ themselves.
+- $[a,b]$ is the line segment containing all points
+between $a$ and $b$, and also $a$ and $b$ themselves.
+- $\{a,b\}$ is the set containing only the points
+$a$ and $b$.
+
+It's not important that you learn to use this notation for this class.
+You can use words instead of symbols to communicate
+the support of a random variable.
+
+:::
+
+
 
 
 

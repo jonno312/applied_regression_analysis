@@ -77,6 +77,108 @@ that would be a statistic.
 
 :::
 
+### Problem 3
+
+Suppose $X_1,\dotsc,X_n$ are iid random variables.
+Suppose also that $Var(X_1) > 0$.
+
+#### Part (a)
+
+Is $X_1 = X_2$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It's impossible to know ahead of time.
+These are random variables, so they could have the same value,
+or they could have different values.
+We won't know until we collect our data.
+Also, if $X_1$ is a continuous random variable,
+then $P(X_1 = X_2) = 0$.
+
+:::
+
+#### Part (b)
+
+Is $E(X_1) = E(X_2)$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Yes. Because these random variables have the same distributions,
+they must have the same expected values.
+The expected value is a parameter of the distribution;
+it is fixed.
+
+:::
+
+#### Part (c)
+
+Is $E(X_1) = \frac{1}{n} \sum_{i=1}^n X_i$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It's impossible to know beforehand.
+This could happen by chance,
+but if $X_1$ is a continuous random variable,
+it has probability zero of occurring.
+
+:::
+
+#### Part (d)
+
+Is $E(X_1)$ a parameter, a statistic, both, or neither?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Parameter.
+
+:::
+
+#### Part (e)
+
+Is $\frac{1}{n} \sum_{i=1}^n X_i$ a parameter, a statistic, both, or neither?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Statistic.
+
+:::
+
+### Problem 4
+
+You are the statistical consultant for doctoral students
+in another department.
+One of these students interviewed 33 teenage girls
+for her dissertation.
+She had recruited them from Boston Latin School,
+near HSPH.
+Of these 33 teenage girls,
+22 said they had been bullied.
+The doctoral student includes this line in her dissertation:
+"Sixty-seven percent of teenage girls have experienced bullying."
+What feedback/advice would you give her about this line?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Sixty-seven percent of the girls in the sample have experienced bullying,
+but that doesn't necessarily imply that sixty-seven percent of
+all teenage girls have experienced bullying.
+Sixty-seven percent is a statistic computed from the sample,
+not the parameter for the population.
+Also, the sample may not be representative of the whole population.
+Boston Latin School requires applicants to take an exam
+in order to qualify for admission,
+so its students are very high-achieving.
+Finally, 33 observations is a pretty small sample size.
+In order to make more reliable claims about the population
+of teenage girls,
+we should probably collect more data.
+
+:::
+
+
+
+
+
 
 
 
