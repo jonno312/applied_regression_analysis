@@ -57,6 +57,10 @@ more on concepts and less on math.
     19. [Shifting the Data to Make the Intercept Interpretable](02_simple/19_shift_for_intercept.qmd)
     20. [Robust Standard Errors](02_simple/20_robust_SE.qmd)
 
+Appendices
+
+A. [Problems with Coding](A_problems_with_coding/)
+
 ## Using the Textbook
 
 ### Software
