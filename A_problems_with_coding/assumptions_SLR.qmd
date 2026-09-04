@@ -1,0 +1,187 @@
+---
+title: "Assumptions of Simple Linear Regression"
+format: html
+---
+
+Each problem below has a different data set. 
+Each part of each problem specifies a
+different subset of the data, a different explanatory variable, and a different
+outcome variable. For each part of each problem, do the following:
+
+- Evaluate the validity of each assumption of simple linear regression.
+- If appropriate (based on your assumption checking), interpret the coefficients
+in real-world terms.
+- If appropriate (based on your assumption checking), interpret the results
+of the hypothesis tests associated with the coefficients. Use an $\alpha$-level
+of 0.05.
+
+You might find these R functions/expressions useful:
+
+- `data[row,col]`: This is one way to do subsetting. If you want only certain
+rows of `data`, you can replace `row` with a vector of the row indices you
+want to keep. Or, you can replace `row` with a vector of `TRUE`s and `FALSE`s,
+and R will return only those rows with indices corresponding to the `TRUE`s.
+You can do similar things with `col`. The way to keep all rows is to leave
+`row` blank. Similarly, the way to keep all columns is to leave `col` blank.
+- `is.na`: This function will return a vector of `TRUE`s and `FALSE`s,
+where `TRUE` indicates a missing value.
+
+For economy of language, I've used the following numbering for the assumptions:
+
+1. Linearity
+2. IID
+3. Homoscedasticity
+4. Normality
+
+## Problem 1
+
+Please go to the Zenodo page
+[TIHM: An open dataset for remote healthcare monitoring in dementia](https://zenodo.org/records/7622128)
+and download `Sleep.csv`.
+You should save the data set in the same folder as this Quarto file.
+If you run this chunk, R will load the data into memory.
+
+```{r}
+sleep <- read.csv("Sleep.csv")
+```
+
+If it doesn't work, the most likely problem is that the CSV file is
+not in your working directory.
+You can find the file in the lower right-hand window of RStudio
+(click on the "Files" tab)
+and then set its location as the working directory by clicking on
+"More" and then "Set As Working Directory".
+To avoid having to do this each time you open this document,
+make sure the CSV is in the same folder as this Quarto file.
+
+This data set comes from
+[TIHM: An open dataset for remote healthcare monitoring in dementia](https://www.nature.com/articles/s41597-023-02519-y>),
+a paper in *Scientific Data*.
+The participants were people over 50 years old who had been
+diagnosed with dementia or mild cognitive impairment.
+The researchers describe the Sleep data set as follows:
+"The Sleep table includes sleep data collected using sleep tracking mats. This data includes four sleep states (i.e., awake, light, deep, REM), as well as information on snoring, heart rate, and respiratory rate reported by the sleep-mat device. The temporal resolution of the heart rate, breathing rate, and sleep state data is per minute, whilst a PLWD is in bed, on top of the device."
+
+
+
+### Part (a)
+
+Subset: Observations taken when the person was awake
+
+Explanatory variable: Respiratory rate
+
+Outcome variable: Heart rate
+
+```{r}
+
+```
+
+
+
+
+
+
+### Part (b)
+
+Subset: Observations taken when the person was in deep sleep
+
+Explanatory variable: Snoring
+
+Outcome variable: Respiratory rate
+
+```{r}
+
+```
+
+
+
+
+
+## Problem 2
+
+The subparts of this problem are based on data from
+[The association of estimated salt intake with blood pressure in a Viet Nam national survey](https://doi.org/10.1371/journal.pone.0191437).
+The participants are a nationally representative sample of Vietnamese adults.
+
+```{r}
+d <- read.csv("https://doi.org/10.1371/journal.pone.0191437.s008")
+```
+
+
+
+
+### Part (a)
+
+Subset: Entire data set
+
+Explanatory variable: Height
+
+Outcome variable: Weight
+
+```{r}
+
+```
+
+
+
+
+
+
+### Part (b)
+
+Before proceeding with this subpart, I want to justify the subset of the data
+that I want you to use. So, first, plot a histogram of total cholesterol
+(`chol`).
+
+```{r}
+
+```
+
+This distribution is suspicious to me. It becomes even more suspicious
+when we look at a scatterplot. So, plot a scatterplot of diastolic blood pressure
+as a function of total cholesterol.
+
+```{r}
+
+```
+
+I'm not sure what's going on, but we're only going to look at participants
+with total cholesterol of at least 150.
+
+Subset: Only participants with non-missing cholesterol values of at least 150
+
+Explanatory variable: Total cholesterol
+
+Outcome variable: Diastolic blood pressure
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

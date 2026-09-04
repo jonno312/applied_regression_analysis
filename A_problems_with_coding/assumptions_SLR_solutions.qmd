@@ -1,0 +1,426 @@
+---
+title: "Assumptions of Simple Linear Regression (Solutions)"
+format: html
+---
+
+Each problem below has a different data set. 
+Each part of each problem specifies a
+different subset of the data, a different explanatory variable, and a different
+outcome variable. For each part of each problem, do the following:
+
+- Evaluate the validity of each assumption of simple linear regression.
+- If appropriate (based on your assumption checking), interpret the coefficients
+in real-world terms.
+- If appropriate (based on your assumption checking), interpret the results
+of the hypothesis tests associated with the coefficients. Use an $\alpha$-level
+of 0.05.
+
+You might find these R functions/expressions useful:
+
+- `data[row,col]`: This is one way to do subsetting. If you want only certain
+rows of `data`, you can replace `row` with a vector of the row indices you
+want to keep. Or, you can replace `row` with a vector of `TRUE`s and `FALSE`s,
+and R will return only those rows with indices corresponding to the `TRUE`s.
+You can do similar things with `col`. The way to keep all rows is to leave
+`row` blank. Similarly, the way to keep all columns is to leave `col` blank.
+- `is.na`: This function will return a vector of `TRUE`s and `FALSE`s,
+where `TRUE` indicates a missing value.
+
+For economy of language, I've used the following numbering for the assumptions:
+
+1. Linearity
+2. IID
+3. Homoscedasticity
+4. Normality
+
+## Problem 1
+
+Please go to the Zenodo page
+[TIHM: An open dataset for remote healthcare monitoring in dementia](https://zenodo.org/records/7622128)
+and download `Sleep.csv`.
+You should save the data set in the same folder as this Quarto file.
+If you run this chunk, R will load the data into memory.
+
+```{r}
+sleep <- read.csv("Sleep.csv")
+```
+
+If it doesn't work, the most likely problem is that the CSV file is
+not in your working directory.
+You can find the file in the lower right-hand window of RStudio
+(click on the "Files" tab)
+and then set its location as the working directory by clicking on
+"More" and then "Set As Working Directory".
+To avoid having to do this each time you open this document,
+make sure the CSV is in the same folder as this Quarto file.
+
+This data set comes from
+[TIHM: An open dataset for remote healthcare monitoring in dementia](https://www.nature.com/articles/s41597-023-02519-y>),
+a paper in *Scientific Data*.
+The participants were people over 50 years old who had been
+diagnosed with dementia or mild cognitive impairment.
+The researchers describe the Sleep data set as follows:
+"The Sleep table includes sleep data collected using sleep tracking mats. This data includes four sleep states (i.e., awake, light, deep, REM), as well as information on snoring, heart rate, and respiratory rate reported by the sleep-mat device. The temporal resolution of the heart rate, breathing rate, and sleep state data is per minute, whilst a PLWD is in bed, on top of the device."
+
+
+
+### Part (a)
+
+Subset: Observations taken when the person was awake
+
+Explanatory variable: Respiratory rate
+
+Outcome variable: Heart rate
+
+```{r}
+# Load ggplot
+library(ggplot2)
+
+# Subset data
+awake <- sleep[sleep$state == "AWAKE", ]
+
+# Run model
+mod_01 <- lm(formula = heart_rate ~ respiratory_rate,
+             data = awake)
+
+# Check assumptions
+ggplot(mapping = aes(x = awake$respiratory_rate,
+                     y = mod_01$residuals)) +
+  geom_point(alpha = 0.1) +
+  geom_hline(yintercept = 0,
+             colour = "red") +
+  xlab("Respiratory Rate") +
+  ylab("Residual") +
+  ggtitle("Awake")
+boxplot(x = mod_01$residuals,
+        ylab = "Residuals",
+        main = "Awake")
+hist(x = mod_01$residuals,
+     xlab = "Residual Value",
+     main = "Awake")
+qqnorm(mod_01$residuals)
+qqline(mod_01$residuals)
+
+# Interpret coefficients
+summary(mod_01)
+```
+
+**Assumptions**
+
+- It appears to me that Assumption 1 is met for these data.
+The horizontal line in the residual scatterplot goes essentially
+through the center of the points.
+- Assumption 2 is not met. We have multiple observations for each
+individual; these observations are more similar to each other than to
+observations for other individuals. Thus, the data are correlated, i.e.,
+not independent.
+- There does appear to be an equal vertical spread of the residuals,
+no matter the value of the respiratory rate.
+- The residuals are approximately normally distributed.
+
+**Interpretation**
+
+Both of the following interpretations only apply to people who are awake,
+since that's the subset of the data we used.
+
+- Among people taking zero breaths per minute, we would expect a heartrate
+of about 56 beats per minute.
+- An increase of one breath per minute is associate with an increase
+in heartrate of 0.6 beats per minute, on average.
+Alternatively, we could say that we would expect two populations of people
+who differ in their respiratory rate by one breath per minute to differ
+in their heart rate by 0.6 beats per minute, on average.
+
+**Hypothesis Testing**
+
+Since Assumption 2 is not met, the p-values are not valid,
+so we cannot interpret the hypothesis tests.
+
+
+
+
+### Part (b)
+
+Subset: Observations taken when the person was in deep sleep
+
+Explanatory variable: Snoring
+
+Outcome variable: Respiratory rate
+
+```{r}
+# Subset data
+deep <- sleep[sleep$state == "DEEP", ]
+
+# Run model
+mod_02 <- lm(formula = respiratory_rate ~ snoring,
+             data = deep)
+
+# Check assumptions
+mean(mod_02$residuals[deep$snoring == "True"])
+mean(mod_02$residuals[deep$snoring == "False"])
+boxplot(formula = mod_02$residuals ~ deep$snoring,
+        xlab = "Snoring",
+        ylab = "Residual",
+        main = "Deep Sleep")
+abline(h = 0,
+       col = "red")
+boxplot(x = mod_02$residuals,
+        ylab = "Residuals",
+        main = "Deep Sleep")
+hist(x = mod_02$residuals,
+     xlab = "Residual Value",
+     main = "Deep Sleep")
+qqnorm(mod_02$residuals)
+qqline(mod_02$residuals)
+
+# Interpretation
+summary(mod_02)
+```
+
+**Assumptions**
+
+- With a single dichotomous explanatory variable, the model is ``saturated.''
+This means that we are using regression to estimate group means;
+the fitted value for an observation will be the mean of whatever group it's in.
+Because of this, the mean of the residuals in any group will be zero.
+In the code above, you'll see that the means of the residuals in the two 
+groups is slightly off from zero; this is essentially rounding error.
+So, for a saturated model, we don't really need to check Assumption 1.
+- For the same reason as in Problem 1, these data are not independent.
+- It appears that the variance of the residuals for people who are not
+snoring is greater than the variance of the residuals for people who are
+snoring. So, the third assumption is not met.
+- The residuals are definitely not normally distributed.
+
+**Interpretation**
+
+
+Both of the following interpretations only apply to people in a deep sleep,
+since that's the subset of the data we used.
+
+- Among people who are not snoring, we would expect a respiratory rate
+of about 15 breaths per minute.
+- On average, we would expect people who are snoring to take about 1.7
+fewer breaths per minute than people who are not snoring.
+
+**Hypothesis Testing**
+
+Since Assumptions 2 through 4 are not met, the p-values are not valid
+and we cannot interpret the hypothesis tests.
+
+
+
+## Problem 2
+
+The subparts of this problem are based on data from
+[The association of estimated salt intake with blood pressure in a Viet Nam national survey](https://doi.org/10.1371/journal.pone.0191437).
+The participants are a nationally representative sample of Vietnamese adults.
+
+```{r}
+d <- read.csv("https://doi.org/10.1371/journal.pone.0191437.s008")
+```
+
+
+
+
+### Part (a)
+
+Subset: Entire data set
+
+Explanatory variable: Height
+
+Outcome variable: Weight
+
+```{r}
+# Run model
+mod_03 <- lm(formula = weight ~ height,
+             data = d)
+
+# Check assumptions
+ggplot(mapping = aes(x = d$height,
+                     y = mod_03$residuals)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0,
+             colour = "red") +
+  xlab("Height") +
+  ylab("Residual")
+boxplot(x = mod_03$residuals,
+        main = "Residuals")
+hist(x = mod_03$residuals,
+     xlab = "Residual Value",
+     main = "")
+qqnorm(mod_03$residuals)
+qqline(mod_03$residuals)
+
+# Test height, weight, and BMI
+test <- d$weight / (d$height / 100)^2
+head(test)
+head(d$bmi)
+
+# Interpretation and hypothesis testing
+summary(mod_03)
+```
+
+**Assumptions**
+
+- It appears like the red reference line at zero is going straight through
+the center of our cloud of residuals, so Assumption 1 is met.
+- These participants were selected independently of each other,
+from the same population. So, Assumption 2 is met.
+- The vertical spread of the residuals appears to the same for any value
+of $X$, so Assumption 3 is met.
+- The histogram of the residuals is bell-shaped, but it's slightly
+right-skewed. So, I wouldn't say that Assumption 4 is met.
+
+**Interpretation**
+
+I could not find a statement in the paper about the units for height and weight.
+I hypothesized that height was in centimeters and weight was in kilograms.
+I used the formula for BMI (kg/m$^2$) to check my hypothesis.
+
+- We would expect someone who is zero meters tall to weigh about -59 kilograms.
+This makes no sense.
+- Each additional centimeter of height is associated with about 0.7
+additional kilograms of weight, on average.
+
+**Hypothesis Testing**
+
+Since the first three assumptions are met and we have a large sample size,
+the p-values are valid.
+
+- Since the first p-value is smaller than 0.05, we can conclude
+that the intercept is not equal to zero. This is not something we really
+care about.
+- Since the second p-value is smaller than 0.05, we can conclude
+that the slope is not equal to zero. This means that there is a linear relationship
+between height and weight. This is not surprising; we would expect larger people
+to weigh more.
+
+
+
+
+### Part (b)
+
+Before proceeding with this subpart, I want to justify the subset of the data
+that I want you to use. So, first, plot a histogram of total cholesterol
+(`chol`).
+
+```{r}
+hist(x = d$chol,
+     xlab = "Total Cholesterol",
+     main = "")
+```
+
+This distribution is suspicious to me. It becomes even more suspicious
+when we look at a scatterplot. So, plot a scatterplot of diastolic blood pressure
+as a function of total cholesterol.
+
+```{r}
+ggplot(data = d,
+       mapping = aes(x = chol,
+                     y = diastolic)) +
+  geom_point(alpha = 0.3) +
+  xlab("Total Cholesterol") +
+  ylab("Diastolic Blood Pressure")
+```
+
+I'm not sure what's going on, but we're only going to look at participants
+with total cholesterol of at least 150.
+
+Subset: Only participants with non-missing cholesterol values of at least 150
+
+Explanatory variable: Total cholesterol
+
+Outcome variable: Diastolic blood pressure
+
+```{r}
+# Subset data
+d_sub <- d[!is.na(d$chol) & d$chol >= 150, ]
+
+# Run model
+mod_04 <- lm(formula = diastolic ~ chol,
+             data = d_sub)
+
+# Check assumptions
+ggplot(mapping = aes(x = d_sub$chol,
+                     y = mod_04$residuals)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0,
+             colour = "red") +
+  xlab("Total Cholesterol") +
+  ylab("Residual")
+boxplot(x = mod_04$residuals,
+        main = "Residuals")
+hist(x = mod_04$residuals,
+     xlab = "Residual Value",
+     main = "")
+qqnorm(mod_04$residuals)
+qqline(mod_04$residuals)
+
+# Interpretation and hypothesis testing
+summary(mod_04)
+```
+
+**Assumptions**
+
+- It appears like the red reference line at zero is going straight through
+the center of our cloud of residuals, so Assumption 1 is met.
+There are a few high residuals at lower cholesterol levels, but not many.
+- These participants were selected independently of each other,
+from the same population. So, Assumption 2 is met.
+- The vertical spread of the residuals appears to the same for any value
+of $X$, so Assumption 3 is met. You might argue that the variance of the residuals
+for high cholesterol is smaller than the variance of the residuals for low
+cholesterol, but there are also far more observations that have low cholesterol.
+So, it could be that we're seeing greater variance where there are more points
+simply because with more points, you're more likely to see extreme points.
+- The histogram of the residuals is bell-shaped, but it's slightly
+right-skewed. So, I wouldn't say that Assumption 4 is met.
+
+**Interpretation**
+
+These interpretations are only for people with total cholesterol of at least 150.
+
+- We would expect someone with zero total cholesterol to have a diastolic
+blood pressure of about 65. This doesn't really make sense,
+since no one has zero total cholesterol.
+- We would expect an increase of about 0.05 mm Hg in diastolic blood pressure
+for each increase of 1 mg/dL of total cholesterol.
+
+**Hypothesis Testing**
+
+Since the first three assumptions are met and we have a large sample size,
+the p-values are valid.
+
+- Since the first p-value is smaller than 0.05, we can conclude
+that the intercept is not equal to zero. This is not something we really
+care about.
+- Since the second p-value is smaller than 0.05, we can conclude
+that the slope is not equal to zero. This means that there is a linear relationship
+between cholesterol and diastolic blood pressure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
