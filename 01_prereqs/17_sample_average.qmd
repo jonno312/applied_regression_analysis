@@ -45,6 +45,27 @@ $$
 
 :::
 
+### Problem 2
+
+Suppose $n$ people use the restroom in the lobby of a hospital.
+Let $X_i = 1$ if the $i$th person washed their hands afterward
+and let $X_i = 0$ if they didn't.
+Let $\hat{p}$ denote the proportion of people who washed their hands.
+What's the relationship between $\hat{p}$ and $\bar{X}$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+They are the same.
+Note that $\sum_{i=1}^n X_i$ is a count of the number of people who
+washed their hands.
+When we divide that by the number of people who used the restroom in total,
+we get the proportion of people who washed their hands.
+We also get the sample average of the $X_i$'s.
+
+:::
+
+
+
 
 
 

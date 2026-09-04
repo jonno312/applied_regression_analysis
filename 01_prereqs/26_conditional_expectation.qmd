@@ -76,6 +76,31 @@ So, $E(Y)$ will be equal to $E(Y|X)$.
 
 :::
 
+### Problem 3
+
+True or false:
+$E(Z|X,Y)$ is always equal to $E(Z|Y)$.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+This is probably easier to see with a real-world example.
+Suppose
+
+- $Z$ is the weight of a dog in pounds.
+- $X = 1$ if the dog is a chihuahua and $X = 0$ if the dog is a Great Dane.
+- $Y$ is the age of the dog in years.
+
+$E(Z|X,Y)$ would the be expected weight of a dog, conditional on its
+breed and age
+$E(Z|Y)$ would be the expected weight a dog, conditional on just its age.
+It's reasonable to assume there would be a difference between these,
+since chihuahuas and Great Danes are of vastly different sizes,
+even when age is held constant.
+
+:::
+
 
 
 

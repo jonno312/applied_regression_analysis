@@ -77,6 +77,48 @@ simple linear regression anymore.
 
 :::
 
+### Problem 3
+
+#### Part (a)
+
+Suppose we have a regression line
+$\hat{E}(Y_i|X_i) = \hat{\beta}_0 + \hat{\beta}_1 X_i$.
+Suppose we want to estimate the mean outcome value
+when the explanatory variable is equal to $z$,
+but no observation in the data set has its explanatory variable
+equal to $z$.
+What should we do?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+We can just plug $z$ into the formula:
+$\hat{E}(Y_i|X_i = z) = \hat{\beta}_0 + \hat{\beta}_1 z$.
+Even if there's no $i$ such that $X_i = z$,
+we can still use the regression line to estimate
+the expected value of the outcome if we were to observe
+the explanatory variable equal to $z$.
+
+:::
+
+
+#### Part (b)
+
+
+Are there any restrictions to your proposed answer to Part (a)?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Yes. If $z$ is very far away from all the observed values
+of the explanatory variable,
+we wouldn't want to just plug it into our formula.
+This would be extrapolating beyond our data.
+
+
+:::
+
+
+
 
 
 

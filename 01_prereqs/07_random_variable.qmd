@@ -109,6 +109,27 @@ and will not change if we collect new data.
 
 :::
 
+### Problem 3
+
+True or false:
+The sample average, $\frac{1}{n}\sum_{i=1}^n X_i$,
+is a random variable.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True, assuming $X_1,\dotsc,X_n$ are also proper random variables.
+The same average is a function of the data,
+and we don't know what the data will be until we collect them.
+So, the data are random,
+and, as a result, the sample average is random.
+
+:::
+
+
+
+
+
+
 
 
 
