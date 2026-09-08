@@ -1,0 +1,114 @@
+---
+title: "IID Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+
+- Explain the iid assumption of multiple linear regression.
+- Explain the consequences of violations of the iid assumption
+of multiple linear regression.
+- Evaluate the validity of the iid assumption of multiple linear regression
+in a data set.
+
+## Lesson
+
+### Assumption
+
+This assumption is identical to the iid assumption of simple linear regression.
+We assume that the observations were drawn independently from
+the same population.
+
+### Note
+
+We assume that the *observations* are independent;
+it's okay if the explanatory variables are correlated.
+For example, suppose an instructor wants to know how performance on the final exam
+is associated with performance on the two midterms.
+Scores on the two midterms are probably positively correlated with each other;
+students who performed well on the first midterm are more likely
+to do well on the second midterm
+than students who performed poorly on the first midterm.
+The iid assumption doesn't mean we can't include both midterms as explanatory
+variables.
+In this example, the iid assumption seems to be met;
+our observations are drawn independently from the population of students
+of this one instructor for this one class.
+(In fact, if the instructor uses every student from this class in their analysis,
+they have a census.)
+
+### Consequences
+
+For our purposes, the consequence of this assumption not being met
+is that the standard errors of the coefficient estimates will not be accurate.
+This means that our test statistics and p-values will not be accurate, either,
+since both are computed from the standard errors.
+
+### Evaluation
+
+As with simple linear regression, we can't check this assumption
+by looking at a plot.
+We have to examine how the data were collected.
+Ideally, the observations should be sampled uniformly at random
+from some population.
+Common data types that violate this assumption,
+and thus require different methods, are:
+
+- Longitudinal data, where the same unit (i.e., person, country, mouse)
+is observed more than once over time.
+- Hierarchical data, where units are organized into groups.
+This often includes educational data, where students are grouped within
+classrooms, which are grouped within schools, which are grouped
+within districts, and so forth.
+- Respondent-driven sampling, where participants refer their contacts
+into the study.
+
+
+## Problems
+
+### Problem 1
+
+Suppose a researcher wants to examine factors that influence visual acuity
+after laser eye surgery.
+The researcher recruits patients from several surgeons across Montreal
+and measures visual acuity in each eye,
+both before and after surgery.
+Would these data satisfy the iid assumption?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Probably not.
+For these data, the unit of observation is eye,
+which is clustered within individual,
+which is clustered within surgeon.
+We would need special techniques to analyze these data.
+
+:::
+
+### Problem 2
+
+Suppose a researcher wants to examine factors that influence voice quality
+after vocal node removal.
+The researcher recruits patients seeing a single surgeon in New York City.
+Vocal quality (as measured by the harmonics-to-noise ratio)
+is measured before and after the surgery,
+and the before measurement is used as an explanatory variable.
+Would these data satisfy the iid assumption?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It sounds like it, yes.
+Each participant only has one voice and there's only one surgeon.
+Although multiple measurements are taken over time,
+the pre-surgery measurement is used an explanatory variable, 
+not as an outcome variable.
+So, it seems like the observations are iid.
+
+:::
+
+
+
+
