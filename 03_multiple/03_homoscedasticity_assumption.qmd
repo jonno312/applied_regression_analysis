@@ -1,0 +1,73 @@
+---
+title: "Homoscedasticity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+- Explain the homoscedasticity assumption of multiple linear regression.
+- Explain the consequences of violations of the homoscedasticity assumption
+of multiple linear regression.
+- Evaluate the validity of the homoscedasticity assumption of multiple linear regression
+in a data set.
+
+
+## Lesson
+
+### Assumption
+
+The homoscedasticity assumption of multiple linear regression
+can be written in at least two ways.
+First, we assume
+$$
+Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \cdots + \beta_p X_{ip} + \epsilon_i
+$$
+and
+$$
+Var\left(\epsilon_i\middle|X_{i1},\dotsc,X_{ip}\right) = \sigma^2 \text{.}
+$$
+Note that $\sigma^2$ doesn't depend on $i$ or any of the $X_{ij}$'s;
+it's a constant.
+As in simple linear regression, "homoscedasticity" means "constant (or same) variance".
+
+The other way of writing this assumption is
+$$
+Var\left(Y_i\middle|X_{i1},\dotsc,X_{ip}\right) = \sigma^2 \text{.}
+$$
+
+
+### Consequences
+
+We need this
+
+### Evaluation
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
