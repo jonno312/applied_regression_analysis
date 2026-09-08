@@ -1,0 +1,442 @@
+---
+title: "Linearity Assumption"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+
+# Load packages
+library(scales)
+
+# Set seed
+set.seed(1)
+```
+
+## Learning Objective
+
+- Explain the linearity assumption of multiple linear regression.
+- Explain the consequences of violations of the linearity assumption
+of multiple linear regression.
+- Evaluate the validity of the linearity assumption of multiple linear regression
+in a data set.
+
+
+## Lesson
+
+### Assumption
+
+I'm going to express the linearity assumption of multiple linear regression
+in two ways.
+The first is with $\epsilon_i$ denoting the random error.
+In multiple linear regression, we assume
+$$
+Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \cdots + \beta_p X_{ip} + \epsilon_i
+$$
+and
+$$
+E\left(\epsilon_i\middle|X_{i1},\dotsc,X_{ip}\right) = 0 \text{.}
+$$
+In simple linear regression, we had one explanatory variable.
+In multiple linear regression, we have $p$ explanatory variables,
+where $p \ge 2$.
+We use $X_{ij}$ to denote the value of the $j$th explanatory variable
+for the $i$th observation.
+We still just have one random error for the $i$th observation,
+denoted $\epsilon_i$.
+We assume this random error has mean zero,
+conditional on the explanatory variables.
+
+The second way to denote the linearity assumption of multiple linear
+regression is
+$$
+E\left(Y_i\middle|X_{i1},\dotsc,X_{ip}\right) = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \cdots + \beta_p X_{ip} \text{.}
+$$
+I find this representation to be less intuitive, but it will be useful
+later, when we encounter logistic regression and Poisson regression.
+
+
+### Note
+
+Strictly, the linearity assumption is
+$$
+E(Y_i|X_{11},\dotsc,X_{1p},\dotsc,X_{n1},\dotsc,X_{np}) = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \cdots + \beta_p X_{ip} \text{,}
+$$
+but that's very cumbersome to write.
+It's far simpler using linear algebra:
+$$
+E\left(\mathbf{Y}\middle|\mathbf{X}\right) = \mathbf{X}\mathbf{\beta} \text{.}
+$$
+Since linear algebra is not required for this course,
+I'll stick to the simpler notation used in the previous section.
+
+### Consequences
+
+If the linearity assumption is met, then the coefficient estimates
+(i.e., $\hat{\beta}_0$, $\hat{\beta}_1$, $\hat{\beta}_2$, etc.)
+are unbiased.
+This means we can interpret them.
+
+
+### Evaluation
+
+The best and most comprehensive way to check the linearity assumption
+of multiple linear regression is to make scatterplots.
+In each one, the residuals will be on the vertical axis and a different
+explanatory variable will be on the horizontal axis.
+We can also make a scatterplot with the residuals on the vertical axis
+and the fitted values on the horizontal axis.
+
+Let's look at some examples.
+
+#### Example 1: Not met in either variable
+
+In this example, the outcome doesn't have a linear relationship with
+either explanatory variable.
+The underlying regression equation is
+$$
+E\left(Y_i\middle|X_{i1},\dotsc,X_{ip}\right) = 1 + X_{i1}^2 + X_{i2}^2 \text{.}
+$$
+Note that $\beta_0 = \beta_1 = \beta_2 = 1$.
+Let's look at the resulting plots.
+
+```{r}
+# Parameters
+n <- 1e3
+beta_0 <- 1
+beta_1 <- 1
+beta_2 <- 1
+
+# Generate data
+x_1 <- rnorm(n = n,
+             sd = 2)
+x_2 <- rnorm(n = n,
+             sd = 2)
+epsilon <- rnorm(n)
+y_neither <- beta_0 + beta_1 * x_1^2 + beta_2 * x_2^2 + epsilon
+
+# Fit model
+mod_01 <- lm(y_neither ~ x_1 + x_2)
+
+# Plots
+plot(x = mod_01$model$x_1,
+     y = mod_01$residuals,
+     xlab = expression(X[1]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_01$model$x_2,
+     y = mod_01$residuals,
+     xlab = expression(X[2]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_01$fitted.values,
+     y = mod_01$residuals,
+     xlab = expression(hat(Y)),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+```
+In each plot, there is a non-linear relationship between the mean of the
+residuals and the variable on the horizontal axis.
+
+#### Example 2: Met in one variable
+
+In this example, the outcome doesn't have a linear relationship with
+one explanatory variable,
+but it does with the other.
+The underlying regression equation is
+$$
+E\left(Y_i\middle|X_{i1},\dotsc,X_{ip}\right) = 1 + X_{i1} + X_{i2}^2 \text{.}
+$$
+Note that $\beta_0 = \beta_1 = \beta_2 = 1$.
+Let's look at the resulting plots.
+
+```{r}
+# Generate data
+y_one <- beta_0 + beta_1 * x_1 + beta_2 * x_2^2 + epsilon
+
+# Fit model
+mod_02 <- lm(y_one ~ x_1 + x_2)
+
+# Plots
+plot(x = mod_02$model$x_1,
+     y = mod_02$residuals,
+     xlab = expression(X[1]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_02$model$x_2,
+     y = mod_02$residuals,
+     xlab = expression(X[2]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_02$fitted.values,
+     y = mod_02$residuals,
+     xlab = expression(hat(Y)),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+```
+For two of the plots (the one with $X_1$ on the horizontal axis
+and the one with $\hat{Y}$ on the horizontal axis),
+it appears that the residuals have mean 0 regardless of the value
+of the variable on the horizontal axis.
+For one of the plots (the one with $X_2$ on the horizontal axis),
+there is a clear non-linear relationship between the mean of the residuals
+and the variable on the horizontal axis.
+
+There are a couple important things to note here.
+The first is that in practice, many people only look at a plot of the
+residuals as a function of the fitted values.
+This saves time, especially if you have many explanatory variables.
+However, as shown in this example, if you do this you may not catch
+a non-linearity.
+
+Second, it may appear as though the mean of the residuals is not 0
+for all values of $X_1$ (or for all fitted values)
+since so many of the points lie below the horizontal line at 0.
+Recall that the mean of the residuals needs to be 0 throughout the plot,
+not the median.
+If we look at a histogram of the residuals, we see that they are right-skewed.
+
+```{r}
+hist(x = mod_02$residuals,
+     xlab = "Residuals",
+     main = "")
+abline(v = mean(mod_02$residuals),
+       col = "blue")
+abline(v = median(mod_02$residuals),
+       col = "purple")
+```
+I put a vertical blue line at the mean (which is equal to zero)
+and a vertical purple line at the median.
+If you can't distinguish blue from purple,
+just know that the mean is the right-most vertical line.
+Since the residuals are right-skewed,
+and the mean is sensitive to outliers,
+the mean is greater than the median.
+
+So, in the scatterplots above, the median may lie below the red horizontal line,
+but the mean is approximately at the red horizontal line,
+no matter the value of $X_1$ or $\hat{Y}$.
+
+#### Example 3: Met in both variables
+
+In this example, the outcome has a linear relationship with
+both explanatory variables.
+The underlying regression equation is
+$$
+E\left(Y_i\middle|X_{i1},\dotsc,X_{ip}\right) = 1 + X_{i1} + X_{i2} \text{.}
+$$
+Note that $\beta_0 = \beta_1 = \beta_2 = 1$.
+Let's look at the resulting plots.
+
+```{r}
+# Generate data
+y_both <- beta_0 + beta_1 * x_1 + beta_2 * x_2 + epsilon
+
+# Fit model
+mod_03 <- lm(y_both ~ x_1 + x_2)
+
+# Plots
+plot(x = mod_03$model$x_1,
+     y = mod_03$residuals,
+     xlab = expression(X[1]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_03$model$x_2,
+     y = mod_03$residuals,
+     xlab = expression(X[2]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_03$fitted.values,
+     y = mod_03$residuals,
+     xlab = expression(hat(Y)),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+```
+In all three plots, the mean of the residuals is approximately zero,
+no matter the value of the variable on the horizontal axis.
+
+#### Note
+
+Note that it's not necessarily a problem if
+the underlying regression equation is
+$$
+E\left(Y_i\middle|X_{i1},\dotsc,X_{ip}\right) = 1 + X_{i1}^2 + X_{i2}^2 \text{.}
+$$
+We can just treat $X_{i1}^2$ and $X_{i2}^2$ as the explanatory variables
+instead of $X_{i1}$ and $X_{i2}$.
+For the plots below, I've fit this model.
+
+```{r}
+# New explanatory variables
+x_1_2 <- x_1^2
+x_2_2 <- x_2^2
+
+# Fit model
+mod_04 <- lm(y_neither ~ x_1_2 + x_2_2)
+
+# Plots
+plot(x = mod_04$model$x_1_2,
+     y = mod_04$residuals,
+     xlab = expression(X[1]^2),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_04$model$x_2_2,
+     y = mod_04$residuals,
+     xlab = expression(X[2]^2),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_04$fitted.values,
+     y = mod_04$residuals,
+     xlab = expression(hat(Y)),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+```
+Note that, no matter the value of the variable on the horizontal axis,
+the mean of the residuals is approximately zero.
+
+If you're curious about why the residuals are bunched up to the left,
+it's because $X_1,X_2\overset{\text{iid}}{\sim}N(0,4)$.
+Most of the values of $X_1$ and $X_2$ are thus close to zero.
+When they get squared, we double up on the values that are close to zero
+but positive.
+Recall that $(-x)^2 = x^2 \ge 0$.
+
+## Problems
+
+### Problem 1
+
+According to the following scatterplots,
+is the linearity assumption of multiple linear regression met
+for these data?
+
+```{r}
+# Generate data
+y_exp <- beta_0 + beta_1 * x_1 + beta_2 * 1.55^x_2 + epsilon
+
+# Fit model
+mod_05 <- lm(y_exp ~ x_1 + x_2)
+
+# Plots
+plot(x = mod_05$model$x_1,
+     y = mod_05$residuals,
+     xlab = expression(X[1]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_05$model$x_2,
+     y = mod_05$residuals,
+     xlab = expression(X[2]),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+
+plot(x = mod_05$fitted.values,
+     y = mod_05$residuals,
+     xlab = expression(hat(Y)),
+     ylab = "Residuals",
+     pch = 19,
+     col = alpha(colour = "black",
+                 alpha = 0.2))
+abline(h = 0,
+       col = "red")
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The linearity assumption is not met for these data.
+Although the residuals have approximate mean zero for any value of $X_1$
+and $\hat{Y}$,
+their mean has a non-linear relationship with $X_2$.
+The mean of the residuals is above zero when $|X_2| \ge 3$,
+and the man of the residuals is below zero when $0 \le X_2 \le 2$.
+
+:::
+
+### Problem 2
+
+Given your answer to Problem 1,
+should you interpret the estimated coefficients in that model?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No.
+Since the linearity assumption was not met,
+we should not interpret the coefficient estimates.
+
+Some might argue that even when the linearity assumption is not met
+for some of the explanatory variables,
+you can interpret the coefficient estimates for the other explanatory
+variables.
+My suggestion is that you leave this judgment up to a statistician,
+at least at this stage in your training.
+
+:::
+
+
+
+
