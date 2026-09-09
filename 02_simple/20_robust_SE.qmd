@@ -122,6 +122,63 @@ to yield a different result than the regular standard errors.
 Of course, we might get a different pattern with a small sample size
 or different parameters.
 
+### Math
+
+If you're curious about how the robust standard errors are computed,
+click on the button below.
+
+::: {.callout-caution collapse="true"}
+## Caution: Math
+
+I'm going to explain this as though we're talking about multiple linear
+regression rather than simple linear regression, because it's more general.
+In multiple linear regression, we have $p$ explanatory variables.
+In simple linear regression, we have one explanatory variable.
+
+Our estimator is
+$$
+\mathbf{\hat{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y} \text{,}
+$$
+where
+
+- $\mathbf{\hat{\beta}}$ is the $(p+1)\times 1$ column vector of coefficient estimates;
+- $\mathbf{X}$ is the $n\times(p+1)$ matrix of covariate values; and
+- $\mathbf{Y}$ is the $n\times 1$ column vector of outcome variable values.
+
+We have
+$$
+\begin{align*}
+Cov\left(\mathbf{\hat{\beta}}\middle|\mathbf{X}\right) &= Cov\left(\left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Y}\middle|\mathbf{X}\right) \\
+&= \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top Cov\left(\mathbf{Y}\middle|\mathbf{X}\right) \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \text{.} \\
+\end{align*}
+$$
+If the iid and homoscedasticity assumptions are true then
+$$
+\begin{align*}
+Cov\left(\mathbf{\hat{\beta}}\middle|\mathbf{X}\right) &= \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top Cov\left(\mathbf{Y}\middle|\mathbf{X}\right) \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \\
+&= \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \left(\sigma^2 \mathbf{I}_n\right) \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \\
+&= \sigma^2 \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \ \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \\
+&= \sigma^2 \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \text{.} \\
+\end{align*}
+$$
+The standard errors you see in the output from `lm` are the square root
+of the diagonal of
+$$
+\widehat{Cov}\left(\mathbf{\hat{\beta}}\middle|\mathbf{X}\right) = \hat{\sigma}^2 \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \text{.}
+$$
+
+If the iid and/or homoscedasticity assumptions are not met,
+then you have to use
+$$
+\begin{align*}
+\widehat{Cov}\left(\mathbf{\hat{\beta}}\middle|\mathbf{X}\right) &= \left(\mathbf{X}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \widehat{Cov}\left(\mathbf{Y}\middle|\mathbf{X}\right) \mathbf{X} \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}  \text{.} \\
+\end{align*}
+$$
+This is what's used to get the robust/sandwich standard errors.
+The word "sandwich" is used because you have a symmetric expression
+with two similar things enclosing a different thing.
+
+:::
 
 ## Problems
 
