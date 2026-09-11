@@ -124,6 +124,12 @@ or an oncologist studying breast, kidney, or lung cancer.
 In each of these examples, it probably makes the most sense
 to sample individuals and not individual organs.
 
+Another place where sampling interacts with the iid assumption
+is when the population is finite and the sample is a large percentage of that
+finite population.
+If I deal you five cards and four of them are aces,
+you know there are no more aces in the deck.
+
 
 ## Problems
 
@@ -180,6 +186,27 @@ This would require some other analysis besides simple linear regression.
 By the way, this form of recruitment is a version of
 [respondent-driven sampling](www.publichealth.columbia.edu/research/population-health-methods/respondent-driven-sampling),
 which is a method for finding hard-to-reach or stigmatized populations.
+
+It's worth pointing out that,
+if there is a relationship between a player's responses and their group membership,
+it would exist irrespective of the sampling mechanism.
+The sampling mechanism will influence how many players with shared
+group membership are in the sample; with respondent-driven sampling,
+you're virtually guaranteeing that no participant in the sample will be
+the only member of their D&D group in the sample.
+With a simple random sample, you might get a few participants with shared
+group membership, but you might get a lot of singletons.
+
+The number of players in the sample with shared group membership,
+along with the strength of the relationship between the individual
+responses and group membership, will affect the variance of our estimators.
+For example, suppose that within each group, the baseline approval of the movie
+is highly correlated, such that people of the same age in the same group have
+nearly identical approval ratings. If people in the same group also have
+similar ages, then recruiting lots of people from the same group will not
+be as informative as recruiting lots of people from different groups.
+Normally, increasing the sample size increases our precision,
+but with highly correlated data, it depends on how we increase the sample size.
 
 :::
 
