@@ -104,8 +104,8 @@ Note the importance of sampling to this assumption.
 Ideally, we want to conduct a "simple random sample",
 where each member of the population has an equal chance
 of being included in the sample.
-At least for now, we want to avoid a situation
-where sampling is clustered.
+If we do that, there's a low probability that any two members of our sample
+will belong to the same natural cluster, like household.
 
 In some situations, clustered sampling is unavoidable.
 For example, consider dentistry.
@@ -144,13 +144,27 @@ So, the observation are not independent.
 
 ### Problem 2
 
+Suppose you want to investigate the relationship between number of hours
+worked per week and job satisfaction.
+You randomly select 5,000 US workers.
+Have you satisfied the iid assumption of simple linear regression?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Probably.
+You should still check to see how many workers in the sample have the same
+employer, but it might be low enough to be ignorable.
+
+:::
+
+### Problem 3
+
 Suppose you are studying the relationship between age and approval
 of the new Spider-Man movie.
 So, you survey the members of your D&D (Dungeons and Dragons) group;
 then you ask them to recruit the members of their other D&D groups;
 then you ask *them* to recruit the members of *their* other D&D groups;
-and so forth, until you've surveyed every D&D player in the tri-state
-area.
+and so forth, until you've surveyed 100 D&D players.
 Have you satisfied the iid assumption of simple linear regression?
 
 ::: {.callout-tip title="Solution" collapse="true"}
