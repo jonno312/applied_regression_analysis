@@ -1,0 +1,122 @@
+---
+title: "Categorical Explanatory Variables"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain how R handles categorical explanatory variables.
+
+
+## Lesson
+
+The math underlying regression requires that all the variables be numeric,
+but it's often desirable to use non-numeric data,
+especially as an explanatory variable.
+For example, you might want to investigate the relationship between stove type
+(e.g., gas, electric, coal, wood) and lung function.
+The different types of stove don't fall along the number line;
+they can't even really be ordered.
+So, if you pass a categorical variable (also called a polytomous variable)
+as an explanatory variable,
+what does R do?
+
+Suppose your categorical variable is `stove_type`,
+and it has four levels: `gas`, `electric`, `coal`, and `wood`.
+R will choose one of the levels as a reference level (or reference group).
+If `stove_type` is a character vector,
+R will choose the first level in alphabetical order
+(in this case, `coal`).
+If `stove_type` is a factor vector,
+R will choose the first level.
+You can set the order of the levels using the `factor` function
+and you can change the reference level of a factor vector
+using the `relevel` function.
+
+For every level that isn't the reference, R will create a binary variable,
+meaning it only contains 0's and 1's.
+These new variables are called dummy variables.
+(R doesn't actually add them to your data frame, it just creates them
+for the purposes of the regression.)
+In the example above, the new dummy variables would be
+`stove_typegas`, `stove_typeelectric`, and `stove_typewood`.
+The following table shows how the old levels
+would be coded for the new dummy variables.
+
+| Original Level | `stove_typegas` | `stove_typeelectric` | `stove_typewood` |
+|:---------------|----------------:|---------------------:|-----------------:|
+| `gas`          | 1               | 0                    | 0                |
+| `electric`     | 0               | 1                    | 0                |
+| `coal`         | 0               | 0                    | 0                |
+| `wood`         | 0               | 0                    | 1                |
+
+
+
+## Problems
+
+As stated in the
+[manual](https://cran.r-project.org/web/packages/Lock5Data/Lock5Data.pdf)
+for the `Lock5Data` package,
+"The California Department of Developmental Services (DDS) allocates funds to
+support developmentally disabled California residents
+(such as those with autism, cerebral palsy, or intellectual
+disabilities) and their families.
+We refer to those supported by DDS as DDS consumers. The
+dataset DDS includes data on annual expenditure (in $), ethnicity, age, and
+gender for 1000 DDS consumers.
+[. . .]
+The dataset has been altered slightly for
+privacy reasons, but is based on actual DDS consumers."
+
+In order to create the output below,
+I used annual expenditure as the outcome
+and ethnicity (Hispanic, White not Hispanic, Multi Race,
+Asian, Black, Other, American Indian, Native Hawaiian),
+age cohort (0-5, 6-12, 13-17, 18-21, 22-50, 51 and above),
+and gender (male, female) as explanatory variables.
+
+```{r}
+d <- Lock5Data::DDS
+mod_02 <- lm(formula = Expenditures ~ AgeCohort + Gender + Ethnicity,
+             data = d)
+summary(mod_02)
+```
+
+### Problem 1
+
+What is the reference level for `AgeCohort`?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The reference level for `AgeCohort` is 0-5,
+since it doesn't have a dummy variable associated with it.
+
+:::
+
+### Problem 2
+
+What is the reference level for `Gender`?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The reference level for `Gender` is Female,
+since it doesn't have a dummy variable associated with it.
+
+:::
+
+### Problem 3
+
+What is the reference level for `Ethnicity`?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The reference level for `Ethnicity` is American Indian,
+since it doesn't have a dummy variable associated with it.
+
+:::
+
+
+
+
