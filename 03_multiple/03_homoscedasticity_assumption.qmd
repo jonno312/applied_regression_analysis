@@ -2,8 +2,13 @@
 title: "Homoscedasticity Assumption"
 execute:
   echo: false
+  warning: false
 format: html
 ---
+
+```{r}
+library(ggplot2)
+```
 
 ## Learning Objective
 
@@ -40,33 +45,192 @@ $$
 
 ### Consequences
 
-We need this
+We need this assumption for our standard errors to be correct.
+If this assumption is not met (but the linearity and iid assumptions are
+and either the normality assumption is met or the sample size is large),
+we can use robust standard errors to get valid p-values.
+The code is the same as for simple linear regression.
 
 ### Evaluation
 
+Typically, to evaluate this assumption,
+we look at a scatterplot with the residuals on the vertical axis
+and the fitted values on the horizontal axis.
+What we want to see is constant vertical spread throughout the plot.
+This is similar to the evaluation of this assumption for simple linear regression,
+except for simple linear regression, we put the explanatory variable
+on the horizontal axis.
+With multiple linear regression, we have multiple explanatory variables,
+so to efficiently check the assumption we put the fitted value on
+the horizontal axis.
 
+I don't know of anyone who, in practice, checks for heteroscedasticity
+by plotting the residuals against each covariate.
+It's good to plot the residuals against each covariate to check
+for non-linearity;
+if you did this and noticed that some of the plots had non-constant variance
+and some didn't,
+it would be worth investigating.
+
+One situation that would lead to this happening is if one variable
+had no relationship with the outcome.
+To make the plots below,
+I generated $X$ and $Y$ independently from each other,
+then generated $Z$ from the model
+$$
+Z_i = X_i + X_i \epsilon_i \text{.}
+$$
+In other symbols,
+$$
+E(Z_i|X_i) = X_i
+$$
+but 
+$$
+Var(Z_i|X_i) = X_i^2 \sigma^2 \text{.}
+$$
+$Y$ is totally independent of $Z$.
+
+```{r}
+# Set seed
+set.seed(3)
+
+# Set parameters
+n <- 1e2
+
+# Generate data
+X <- rnorm(n = n,
+           sd = 2)
+Y <- rnorm(n = n,
+           sd = 2)
+epsilon <- rnorm(n)
+Z <- X + X * epsilon
+
+# Plots
+pairs(data.frame(X,Y,Z))
+```
+
+If we make three residual scatterplots, each of which has something different
+on the horizontal axis,
+we see heteroscedasticity in some of them but not all.
+
+```{r}
+mod_01 <- lm(Z ~ X + Y)
+plot(x = mod_01$fitted.values,
+     y = mod_01$residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+plot(x = mod_01$model$X,
+     y = mod_01$residuals,
+     xlab = "X",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+plot(x = mod_01$model$Y,
+     y = mod_01$residuals,
+     xlab = "Y",
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
 
 ## Problems
 
 ### Problem 1
 
+As stated in the
+[manual](https://cran.r-project.org/web/packages/Lock5Data/Lock5Data.pdf)
+for the `Lock5Data` package,
+"The California Department of Developmental Services (DDS) allocates funds to
+support developmentally disabled California residents
+(such as those with autism, cerebral palsy, or intellectual
+disabilities) and their families.
+We refer to those supported by DDS as DDS consumers. The
+dataset DDS includes data on annual expenditure (in $), ethnicity, age, and
+gender for 1000 DDS consumers.
+[. . .]
+The dataset has been altered slightly for
+privacy reasons, but is based on actual DDS consumers."
 
+In order to create the plots below,
+I used annual expenditure as the outcome
+and ethnicity (Hispanic, White not Hispanic Multi Race,
+Asian, Black, Other, American Indian, Native Hawaiian),
+age cohort (0-5, 6-12, 13-17, 18-21, 22-50, 51 and above),
+and gender (male, female) as explanatory variables.
+
+```{r}
+d <- Lock5Data::DDS
+mod_02 <- lm(formula = Expenditures ~ AgeCohort + Gender + Ethnicity,
+             data = d)
+ggplot(mapping = aes(x = mod_02$fitted.values,
+                     y = mod_02$residuals)) +
+  geom_point(alpha = 0.2) +
+  geom_hline(yintercept = 0,
+             colour = "red") +
+  theme_bw() +
+  xlab("Fitted Values") +
+  ylab("Residuals")
+boxplot(formula = mod_02$residuals ~ mod_02$model$Ethnicity,
+        xlab = "Ethnicity",
+        ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+boxplot(formula = mod_02$residuals ~ mod_02$model$AgeCohort,
+        xlab = "Age Cohort",
+        ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+boxplot(formula = mod_02$residuals ~ mod_02$model$Gender,
+        xlab = "Gender",
+        ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+
+
+Is the homoscedasticity assumption met for this model?
+Justify your answer.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+The homoscedasticity assumption is not met for this model.
+In the plot of the residuals as a function of the fitted values,
+we see far lower variability for lower fitted values than
+for higher fitted values.
 
+This example is interesting because it's a real-world example where
+there's heteroscedasticity for some variables but not others.
+When ethnicity and age cohort are on the horizontal axis,
+we see non-constant variance;
+when gender is on the horizontal axis,
+we see equal variance in males and females.
+I'm not sure why this is,
+but practically, because there's such obvious heteroscedasticity
+in the fitted value plot,
+we would need to use the robust (sandwich) standard errors.
+
+If we look at the results from the model,
+we see that the p-value for Gender is very small,
+indicating that there is a statistically significant difference in expenditures
+between males and females,
+holding all else constant.
+So, this example doesn't appear to be the same as the simulated data above.
+```{r}
+summary(mod_02)
+```
+
+Also, sorry that the ethnic groups are not displaying properly
+in the boxplot above.
+I'll fix that eventually, but it's not a high priority right now.
+Even without all the group names displayed, you can tell there's
+heteroscedasticity.
 
 :::
 
-### Problem 2
 
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
 
 
 
