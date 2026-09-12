@@ -52,7 +52,16 @@ would be coded for the new dummy variables.
 | `coal`         | 0               | 0                    | 0                |
 | `wood`         | 0               | 0                    | 1                |
 
-
+Which level should you choose to be the reference level?
+If all you care about is statistics,
+you should make the most common level the reference level.
+This will result in smaller standard errors for the coefficient estimates.
+If you care about interpretation,
+you should choose the level that you most want to compare to the other
+levels.
+As you'll see in the section on interpretation,
+the coefficients for the dummy variables are interpreted as comparisons
+to the reference level.
 
 ## Problems
 
