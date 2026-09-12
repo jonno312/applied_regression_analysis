@@ -82,21 +82,7 @@ comatose patients, holding all else equal.
 so patients in a deep stupor do not have a different expected heart rate
 than comatose patients, holding all else equal.
 
-### Conditional vs. Marginal Parameters
 
-Note that all these coefficients are conditional parameters.
-If you were to run simple linear regression with just one
-of the explanatory variables above,
-the slope would be a marginal parameter.
-You can get different results for hypothesis tests with conditional
-and marginal parameters.
-For example,
-it may turn out that when you don't include age,
-visit type, and consciousness in the model,
-there is a statistically significant difference in heart rate
-between males and females.
-But the coefficients mean different things,
-so the hypothesis tests mean different things.
 
 
 ## Problems
