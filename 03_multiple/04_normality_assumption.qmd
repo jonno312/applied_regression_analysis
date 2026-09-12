@@ -49,47 +49,7 @@ regression:
 we check if the residuals are normal.
 I like to use a boxplot, histogram, and q-q plot to check this.
 
-### Simulation
 
-```{r}
-# Set seed
-set.seed(4)
-
-# Parameters
-n <- 20
-
-# Generate data
-x <- rnorm(n)
-y <- rnorm(n)
-epsilon_nor <- rnorm(n)
-epsilon_exp <- rexp(n) - 1
-z_nor <- x + y + epsilon_nor
-z_exp <- x + y + epsilon_exp
-
-# Run regression
-mod_nor <- lm(z_nor ~ x + y)
-mod_exp <- lm(z_exp ~ x + y)
-
-# Residual Plots
-boxplot(x = mod_nor$residuals,
-        ylab = "Residuals",
-        main = "Normal Errors")
-hist(x = mod_nor$residuals,
-     xlab = "Residuals",
-     main = "Normal Errors")
-qqnorm(y = mod_nor$residuals,
-       main = "Normal Errors")
-qqline(mod_nor$residuals)
-boxplot(x = mod_exp$residuals,
-        ylab = "Residuals",
-        main = "Exponential Errors")
-hist(x = mod_exp$residuals,
-     xlab = "Residuals",
-     main = "Exponential Errors")
-qqnorm(y = mod_exp$residuals,
-       main = "Exponential Errors")
-qqline(mod_exp$residuals)
-```
 
 ## Problems
 
