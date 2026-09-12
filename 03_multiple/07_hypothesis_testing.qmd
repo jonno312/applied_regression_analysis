@@ -1,0 +1,128 @@
+---
+title: "Hypothesis Testing"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the results of a hypothesis test in the context of multiple linear
+regression.
+
+
+## Lesson
+
+### Overview
+
+When conducting simple linear regression in R,
+R will automatically compute p-values for each of the coefficients.
+For each coefficient,
+the null hypothesis is that the coefficient is zero,
+and the alternative hypothesis is that the coefficient is not zero.
+In symbols, each hypothesis test is
+$$
+\begin{align*}
+H_0 &: \beta_j = 0 \\
+H_1 &: \beta_j \ne 0
+\end{align*}
+$$
+where $0 \le j \le p$.
+
+### Example
+
+Let's return to the ICU admissions data.
+The outcome is heart rate
+(in beats per minute)
+and the explanatory variables are
+age minus 20 (in years), sex (male or female), admission type (elective or emergency),
+and consciousness (conscious, deep stupor, or coma).
+The participants were 200 patients admitted to an adult
+intensive care unit (ICU).
+I subtracted 20 from age because the range of ages in the data set is
+16 to 92, with first, second, and third quartiles at
+46.75, 63, and 57.55.
+
+```{r}
+d <- Lock5Data::ICUAdmissions
+# sum(complete.cases(d))
+d$sex <- "Male"
+d$sex[d$Sex == 1] <- "Female"
+d$type <- "Elective"
+d$type[d$Type == 1] <- "Emergency"
+d$consciousness <- "Conscious"
+d$age_20 <- d$Age - 20
+d$consciousness[d$Consciousness == 1] <- "Deep Stupor"
+d$consciousness[d$Consciousness == 2] <- "Coma"
+mod_01 <- lm(formula = HeartRate ~ age_20 + sex + type + consciousness,
+             data = d)
+summary(mod_01)
+```
+How do we interpret the hypothesis test results?
+Let's use $\alpha = 0.05$ as our threshold for significance.
+
+- The p-value for the intercept is less than 0.05,
+so we conclude that the expected heart rate for a twenty-year-old female
+who came to the the ICU in a non-urgent coma is not equal to zero.
+- The p-value for `age_20` is greater than 0.05,
+so we fail to reject the null hypothesis that this coefficient is equal to zero.
+There is no linear relationship between age and heart rate,
+holding all else constant.
+- The p-value for `sexMale` is greater than 0.05,
+so there is no difference between the expected heart rate for males and females,
+holding all else constant.
+- The p-value for `typeEmergency` is less than 0.05,
+so the expected heart rate for emergent patients is different
+from the expected heart rate for elective patients,
+holding all else equal.
+- The p-value for `consciousnessConscious` is greater than 0.05,
+so conscious patients do not have a different expected heart rate than
+comatose patients, holding all else equal.
+- The p-value for `consciousnessDeep Stupor` is greater than 0.05,
+so patients in a deep stupor do not have a different expected heart rate
+than comatose patients, holding all else equal.
+
+### Conditional vs. Marginal Parameters
+
+Note that all these coefficients are conditional parameters.
+If you were to run simple linear regression with just one
+of the explanatory variables above,
+the slope would be a marginal parameter.
+You can get different results for hypothesis tests with conditional
+and marginal parameters.
+For example,
+it may turn out that when you don't include age,
+visit type, and consciousness in the model,
+there is a statistically significant difference in heart rate
+between males and females.
+But the coefficients mean different things,
+so the hypothesis tests mean different things.
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+
+:::
+
+### Problem 2
+
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
