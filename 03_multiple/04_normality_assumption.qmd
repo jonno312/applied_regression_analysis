@@ -1,0 +1,118 @@
+---
+title: "Normality Assumption"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+- Explain the normality assumption of multiple linear regression.
+- Explain the consequences of violations of the normality assumption
+of multiple linear regression.
+- Evaluate the validity of the homoscedasticity assumption of multiple linear regression
+in a data set.
+
+
+## Lesson
+
+### Assumption
+
+We can write this assumption in a couple ways.
+The first is
+$$
+Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \cdots + \beta_p X_{ip} + \epsilon_i
+$$
+and $\epsilon_i|X_{i1},\dotsc,X_{ip}$ is normally distributed.
+In words, we're assuming that the random error that gets added to
+our linear function is normally distributed.
+The second is that $Y_i|X_{i1},\dotsc,X_{ip}$ is normally distributed.
+
+### Consequences
+
+If this assumption is not met, and you have a small sample size,
+the p-values that R outputs are not trustworthy.
+If this assumption is not met, but you have a large sample size
+and the linearity, iid, and homoscedasticity assumptions are met,
+you can still trust the default p-values in R output.
+
+How large of a sample is large enough?
+This depends on how many covariates are in your model (how large $p$ is)
+and how asymmetric your residuals are.
+It's hard to give a single rule,
+so when in doubt, consult a statistician.
+
+### Evaluation
+
+The way we check this assumption is exactly the same as for simple linear
+regression:
+we check if the residuals are normal.
+I like to use a boxplot, histogram, and q-q plot to check this.
+
+### Simulation
+
+```{r}
+# Set seed
+set.seed(4)
+
+# Parameters
+n <- 20
+
+# Generate data
+x <- rnorm(n)
+y <- rnorm(n)
+epsilon_nor <- rnorm(n)
+epsilon_exp <- rexp(n) - 1
+z_nor <- x + y + epsilon_nor
+z_exp <- x + y + epsilon_exp
+
+# Run regression
+mod_nor <- lm(z_nor ~ x + y)
+mod_exp <- lm(z_exp ~ x + y)
+
+# Residual Plots
+boxplot(x = mod_nor$residuals,
+        ylab = "Residuals",
+        main = "Normal Errors")
+hist(x = mod_nor$residuals,
+     xlab = "Residuals",
+     main = "Normal Errors")
+qqnorm(y = mod_nor$residuals,
+       main = "Normal Errors")
+qqline(mod_nor$residuals)
+boxplot(x = mod_exp$residuals,
+        ylab = "Residuals",
+        main = "Exponential Errors")
+hist(x = mod_exp$residuals,
+     xlab = "Residuals",
+     main = "Exponential Errors")
+qqnorm(y = mod_exp$residuals,
+       main = "Exponential Errors")
+qqline(mod_exp$residuals)
+```
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
