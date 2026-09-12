@@ -64,7 +64,15 @@ intensive care unit (ICU).
 
 ```{r}
 d <- Lock5Data::ICUAdmissions
-mod_01 <- lm(formula = HeartRate ~ Age + Sex + Type + Consciousness,
+# sum(complete.cases(d))
+d$sex <- "Male"
+d$sex[d$Sex == 1] <- "Female"
+d$type <- "Elective"
+d$type[d$Type == 1] <- "Emergency"
+d$consciousness <- "Conscious"
+d$consciousness[d$Consciousness == 1] <- "Deep Stupor"
+d$consciousness[d$Consciousness == 2] <- "Coma"
+mod_01 <- lm(formula = HeartRate ~ Age + sex + type + consciousness,
              data = d)
 boxplot(x = mod_01$residuals,
         ylab = "Residuals")
