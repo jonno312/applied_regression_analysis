@@ -1,0 +1,173 @@
+---
+title: "Interpretation"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients in multiple linear regression.
+
+
+## Lesson
+
+### General Interpretation
+
+The interpretation of coefficients in multiple linear regression
+is very similar to the interpretation of coefficients in simple linear
+regression,
+with one added detail.
+The intercept ($\beta_0$) is still the expected value of the outcome
+when all the explanatory variables equal 0.
+The coefficient corresponding to the $j$th explanatory variable,
+denoted $\beta_j$,
+is the expected change in the outcome associated with a one-unit increase
+in the $j$th explanatory variable,
+*holding all else constant*.
+If $\beta_j > 0$, the expected change is an increase;
+if $\beta_j < 0$, the expected change is a decrease.
+The "else" in "holding all else constant" refers to the other explanatory variables.
+Another way of interpreting $\beta_j$ is as the expected difference in the outcome
+between two populations that differ by one unit on the $j$th explanatory variable
+and have identical values for the other explanatory variables.
+
+### Math
+
+$$
+\begin{align*}
+& E\left(Y_i\middle|X_{i1},\dotsc,X_{ij} = x + 1,\dotsc,X_{ip}\right) - E\left(Y_i\middle|X_{i1},\dotsc,X_{ij} = x ,\dotsc,X_{ip}\right) \\
+&= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_j (x+1) + \cdots + \beta_p X_{ip} - \left(\beta_0 + \beta_1 X_{i1} + \cdots + \beta_j x + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_j x + \beta_j + \cdots + \beta_p X_{ip} - \beta_0 - \beta_1 X_{i1} - \cdots - \beta_j x - \cdots - \beta_p X_{ip} \\
+&= \beta_j
+\end{align*}
+$$
+
+
+### Example
+
+The following output comes from a regression of heart rate
+(in beats per minute)
+on age (in years), sex (male or female), admission type (elective or emergency),
+and consciousness (conscious, deep stupor, or coma).
+The participants were 200 patients admitted to an adult
+intensive care unit (ICU).
+
+```{r}
+d <- Lock5Data::ICUAdmissions
+# sum(complete.cases(d))
+d$sex <- "Male"
+d$sex[d$Sex == 1] <- "Female"
+d$type <- "Elective"
+d$type[d$Type == 1] <- "Emergency"
+d$consciousness <- "Conscious"
+d$consciousness[d$Consciousness == 1] <- "Deep Stupor"
+d$consciousness[d$Consciousness == 2] <- "Coma"
+mod_01 <- lm(formula = HeartRate ~ Age + sex + type + consciousness,
+             data = d)
+summary(mod_01)
+```
+
+Let's interpret each estimate.
+
+#### Intercept
+
+The estimated mean heart rate among female patients aged zero,
+who elected to come to the ICU, and who are in a coma,
+is about 72 beats per minute.
+Note that this intercept doesn't make sense.
+How could a newborn in a coma elect to come to the adult ICU?
+Even if a newborn in a coma went to the ICU for a non-urgent reason,
+her heart rate wouldn't be 72 beats per minute.
+That's way too low.
+
+#### Continuous Explanatory Variable
+
+The estimated mean increase in heart rate associated with a one-year increase
+in age, holding all else constant,
+is 0.1 beats per minute.
+
+#### Binary Explanatory Variable
+
+The estimated mean difference in heart rate between males and females,
+holding all else constant,
+is 0.7 beats per minute, with men having the lower estimated mean heart rate.
+How did I know that men had the lower estimated mean heart rate?
+This coefficient is the expected increase in heart rate associated
+with a one-unit increase in the explanatory variable,
+holding all else constant.
+This particular explanatory variable only has two possible values:
+0 (for females) and 1 (for males).
+So, a one-unit increase corresponds to a change from female to male.
+Since the coefficient estimate is negative, males have a lower estimated
+mean heart rate, holding all else constant.
+
+Patients coming to the ICU for an emergency are expected to have
+a heart rate 12 beats per minute faster than patients electing
+to come to the ICU, holding all else constant.
+
+#### Categorical Explanatory Variable
+
+Conscious patients are expected to have a heart rate that is 1 beat per minute
+higher than comatose patients, holding all else equal.
+Why did I compare conscious patients to comatose patients?
+The dummy variable `consciousnessConscious` has two possible values, 0 and 1.
+A 1 can only mean one thing: that patient was conscious.
+A 0 can mean one of two things: either that patient was comatose
+or that patient was in a deep stupor.
+So why is it that the estimated coefficient associated with
+`consciousnessConscious` doesn't compare comatose and deep stupor patients
+to conscious patients?
+
+Recall that when interpreting a coefficient in multiple linear regression,
+we increase the corresponding covariate value by one unit
+and hold all other covariate values constant.
+So, when interpreting the coefficient estimate for `consciousnessConscious`,
+we have to increase `consciousnessConscious` by one unit
+and hold `consciousnessDeep Stupor` constant.
+As the following table shows,
+the only way to increase `consciousnessConscious` by one unit
+and hold `consciousnessDeep Stupor` constant
+is to increase `consciousnessConscious` by one unit
+and hold `consciousnessDeep Stupor` at 0.
+This means we compare comatose patients to conscious patients.
+ 
+
+| Original Level | `consciousnessConscious` | `consciousnessDeep Stupor` |
+|:-|-:|-:|
+| Coma | 0 | 0 |
+| Conscious | 1 | 0 |
+| Deep Stupor | 0 | 1 |
+
+We can use the same logic to interpret the last coefficient estimate
+in the table.
+Patients in a deep stupor are expected to have a heart rate that is
+13 beats per minute higher than comatose patients,
+all else equal.
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
