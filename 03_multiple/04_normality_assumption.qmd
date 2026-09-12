@@ -55,23 +55,39 @@ I like to use a boxplot, histogram, and q-q plot to check this.
 
 ### Problem 1
 
+The following plots are of residuals from a regression of heart rate
+(in beats per minute)
+on age (in years), sex (male or female), admission type (elective or emergency),
+and consciousness (conscious, deep stupor, or coma).
+The participants were 200 patients admitted to an adult
+intensive care unit (ICU).
 
+```{r}
+d <- Lock5Data::ICUAdmissions
+mod_01 <- lm(formula = HeartRate ~ Age + Sex + Type + Consciousness,
+             data = d)
+boxplot(x = mod_01$residuals,
+        ylab = "Residuals")
+hist(x = mod_01$residuals,
+     xlab = "Residuals")
+qqnorm(mod_01$residuals)
+qqline(mod_01$residuals)
+```
+
+Does this model satisfy the normality assumption?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
-
-:::
-
-### Problem 2
-
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
+Yes. From the boxplot, we see the residuals are symmetric;
+the histogram shows the residuals have a bell shape
+(with maybe a slight right skew);
+and in the q-q plot the points mostly follow the reference line.
+So, the residuals are normal,
+which is evidence that the random errors are normal.
 
 :::
+
+
 
 
 
