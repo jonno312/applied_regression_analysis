@@ -155,7 +155,7 @@ privacy reasons, but is based on actual DDS consumers."
 
 In order to create the plots below,
 I used annual expenditure as the outcome
-and ethnicity (Hispanic, White not Hispanic Multi Race,
+and ethnicity (Hispanic, White not Hispanic, Multi Race,
 Asian, Black, Other, American Indian, Native Hawaiian),
 age cohort (0-5, 6-12, 13-17, 18-21, 22-50, 51 and above),
 and gender (male, female) as explanatory variables.
