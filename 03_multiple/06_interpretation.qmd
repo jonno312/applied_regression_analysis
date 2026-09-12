@@ -150,23 +150,77 @@ all else equal.
 
 ### Problem 1
 
+In the regression below,
+each observation corresponds to a person receiving funds from
+the California Department of Developmental Services (DDS).
+I used annual expenditure (in dollars) as the outcome
+and ethnicity (Hispanic, White not Hispanic, Multi Race,
+Asian, Black, Other, American Indian, Native Hawaiian),
+age cohort (0-5, 6-12, 13-17, 18-21, 22-50, 51 and above),
+age (in years),
+and gender (male, female) as explanatory variables.
 
+
+```{r}
+d2 <- Lock5Data::DDS
+mod_02 <- lm(formula = Expenditures ~ AgeCohort + Age + Gender + Ethnicity,
+             data = d2)
+summary(mod_02)
+```
+
+Interpret each estimated coefficient.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+- The estimated mean expenditure for an American Indian newborn female
+is -\$2,083.85.
+Obviously this can't be right.
+- Holding all else constant, 13-17 year-olds are expected to receive
+\$12.56 less than 0-5 year-olds.
+Note that this is impossible while `Age` is in the model.
+You can't have a 13-17 year-old who's the same age as a 0-5 year-old.
+- Holding all else constant, 18-21 year-olds are expected to receive
+\$5,040.75 more than 0-5 year-olds.
+Again, this is impossible while `Age` is in the model.
+You can't have an 18-21 year-old who's the same age as a 0-5 year-old.
+I won't keep saying this each time.
+- Holding all else constant, 22-50 year-olds are expected to receive
+\$33,479.46 more than 0-5 year-olds.
+- Holding all else constant, people who are 51 or older are expected to receive
+\$38,202.87 more than 0-5 year-olds.
+- Holding all else constant, 6-12 year-olds are expected to receive
+\$497.84 less than 0-5 year-olds.
+- Holding all else constant, we would expect an increase of \$212.08
+with each additional year of age.
+This is possible, even with `AgeCohort` in the model.
+You can compare people within the same age cohort who differ by one year in age.
+- Holding all else constant,
+males are expected to receive \$956.76 less than females.
+- Holding all else constant,
+Asian recipients are expected to receive \$3,181.00 more than American Indian
+recipients.
+- Holding all else constant,
+Black recipients are expected to receive \$3,424.40 more than American Indian
+recipients.
+- Holding all else constant,
+Hispanic recipients are expected to receive \$3,454.99 more than American Indian
+recipients.
+- Holding all else constant,
+multi race recipients are expected to receive \$3,341.38 more than American Indian
+recipients.
+- Holding all else constant,
+Native Hawaiian recipients are expected to receive \$2,567.08 more than American Indian
+recipients.
+- Holding all else constant,
+recipients who don't fall into the other categories are expected to receive
+\$2,498.05 more than American Indian recipients.
+- Holding all else constant,
+White not Hispanic recipients are expected to receive \$3,116.09 more than American Indian
+recipients.
 
 
 :::
 
-### Problem 2
-
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
 
 
 
