@@ -87,27 +87,118 @@ than comatose patients, holding all else equal.
 
 ## Problems
 
+
+
+For the regression below, each data point corresponds to a man who had
+his percent body fat estimated by underwater weighing.
+The explanatory variables are age (in years),
+weight (in pounds),
+height (in inches),
+neck circumference (in centimeters),
+chest circumference (in centimeters),
+abdomen circumference (in centimeters),
+ankle circumference (in centimeters),
+extended biceps circumference (in centimeters),
+and wrist circumference (in centimeters).
+
+```{r}
+d2 <- Lock5Data::BodyFat
+mod_02 <- lm(formula = Bodyfat ~ Age + Weight + Height + Neck + Chest + Abdomen + Ankle + Biceps + Wrist,
+             data = d2)
+# plot(x = mod_02$fitted.values,
+#      y = mod_02$residuals)
+# abline(h = 0,
+#        col = "red")
+# hist(mod_02$residuals)
+summary(mod_02)
+```
+
+
+
+
 ### Problem 1
 
-
+Interpret the hypothesis test corresponding to each coefficient.
+Use $\alpha = 0.05$.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
 
+- The p-value for the intercept is greater than 0.05,
+so we cannot conclude that the expected body fat percentage
+for a newborn weighing zero pounds
+and having zero for all length measurements is different from zero.
+This makes sense.
+Someone who effectively doesn't exist should have zero percent body fat.
+- The p-value for `Age` is greater than 0.05,
+so there is not a linear relationship between age and the expected
+body fat percentage.
+- The p-value for `Weight` is greater than 0.05,
+so there is not a linear relationship between weight and the expected
+body fat percentage.
+- The p-value for `Height` is greater than 0.05,
+so there is not a linear relationship between height and the expected
+body fat percentage.
+- The p-value for `Neck` is greater than 0.05,
+so there is not a linear relationship between neck circumference and the expected
+body fat percentage.
+- The p-value for `Chest` is greater than 0.05,
+so there is not a linear relationship between chest circumference and the expected
+body fat percentage.
+- The p-value for `Abdomen` is less than 0.05,
+so there is a linear relationship beteen abdomen circumference and the expected
+body fat percentage.
+- The p-value for `Ankle` is greater than 0.05,
+so there is not a linear relationship between ankle circumference and the expected
+body fat percentage.
+- The p-value for `Biceps` is greater than 0.05,
+so there is not a linear relationship between biceps circumference and the expected
+body fat percentage.
+- The p-value for `Wrist` is less than 0.05,
+so there is a linear relationship beteen wrist circumference and the expected
+body fat percentage.
 
+By the way, all of these conclusions only apply to men,
+since all the participants in the study were men.
 
 :::
+
 
 ### Problem 2
 
-
-
+Why do you think height was measured in inches but 
+the circumferences were measured in centimeters?
+I don't have any special knowledge for why this was done,
+but it's worth brainstorming ideas.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+It's possible that this was done because of convention.
+Maybe body circumference measurements have traditionally been made
+by one profession that uses the metric system,
+whereas height is something everyone measures,
+and these participants came from a country that uses the imperial system.
+
+There is a computational reason why you might use different units
+for different lengths.
+Computing the coefficient estimates can get messed up when the variables
+are on wildly different units.
+(If you're curious why, look up
+[condition number](https://en.wikipedia.org/wiki/Condition_number).)
+So, if you're running a regression where one of the explanatory variables
+has very small values and another has very large values
+(like the weight of an elephant and the weight of the medicine it has been administered),
+you should consider changing the units of one or both so that the values
+are on similar scales
+(like measuring the elephant's weight in kilograms and the medicine's weight
+in milligrams).
+(Apparently,
+"[the effective dose of ibuprofen is six milligrams per kilogram of weight for Asian elephants and seven milligrams per kilogram for African elephants, given every 12 hours.](https://news.oregonstate.edu/news/osu-researchers-find-key-pachyderm-pain-relief)"
+Who knew?)
 
 
 :::
+
 
 
 
