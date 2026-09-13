@@ -1,0 +1,91 @@
+---
+title: "Confounders and Mediators"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the terms "confounder" and "mediator".
+
+
+## Lesson
+
+### Counfounder
+
+Sometimes, we think one thing causes another.
+For example, we might see that people who take a certain drug
+often die soon after,
+so we think the drug causes the death.
+
+```{mermaid}
+flowchart LR
+  A[Drug] --> B[Death]
+```
+
+Sometimes, a third thing causes both of the original events.
+In the drug/death example,
+it may be the case that only very sick people take the drug,
+so it's the underlying illness that leads people to take the drug
+and to die soon after,
+and the drug does not increase risk of death.
+
+```{mermaid}
+flowchart LR
+  C[Illness] --> A[Drug]
+  C --> B[Death]
+```
+
+This third thing, which causes (or is at least associated with)
+the two original things, is called a confounder.
+
+### Mediator
+
+Sometimes, one thing causes a second thing, which causes a third thing.
+We call the second thing a mediator.
+For example, you might take
+[calcium carbonate](https://my.clevelandclinic.org/health/drugs/20402-calcium-carbonate-chewable-tablets),
+which reduces the amount of acid in the stomach,
+which reduces
+[heartburn](https://my.clevelandclinic.org/health/diseases/9617-heartburn-overview).
+
+```{mermaid}
+flowchart LR
+  A[Calcium carbonate] --> B[Reduced Acid]
+  B --> C[Reduced Heartburn]
+```
+
+In this example, the reduced acid is a mediator.
+
+### Regression
+
+What does this have to do with regression?
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
