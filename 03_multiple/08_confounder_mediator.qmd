@@ -98,23 +98,30 @@ it is far from perfect.
 
 ### Problem 1
 
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
-
-### Problem 2
-
-
+When I was in college, my Intro Psych professor taught us about confounding
+by sharing a news headline that said something like,
+"Children in families who eat dinner together are less likely to get arrested".
+What are some potential confounders of the relationship between
+eating dinner as a family and a child getting arrested?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+- Poverty.
+If a family is very poor, the parents might have to work long hours,
+potentially at multiple jobs.
+This would prevent them from eating dinner with their children.
+The children, for their part, might not have enough money to buy the things
+they want or need,
+leading them to shoplift.
+- Intrafamilial conflict.
+If the members of a family don't get along,
+they might not want to eat dinner together,
+and they might even get into fights, leading to arrest.
+- 
 
 :::
+
+
 
 
 
