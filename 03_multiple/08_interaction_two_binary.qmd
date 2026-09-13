@@ -7,11 +7,118 @@ format: html
 
 ## Learning Objective
 
-Interpret the coefficients of a multiple linear regression model with an
+- Interpret the coefficients of a multiple linear regression model with an
 interaction between two binary explanatory variables.
+- Define, use, and interpret the terms "effect modification" and
+"moderator".
+- Interpret the results of a hypothesis test in the context of multiple linear
+regression with an interaction term.
 
 
 ## Lesson
+
+### Math
+
+Suppose our linear model is
+$$
+E(Y_i|X_{i1},X_{i2}) = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \beta_3 X_{i1} X_{i2} \text{,}
+$$
+where both $X_{i1}$ and $X_{i2}$ can only be 0 or 1.
+How do we interpret the coefficients?
+
+$\beta_0$ is still the expected value of the outcome when all the explanatory
+variables are equal to zero:
+$$
+\begin{align*}
+E(Y_i|X_{i1} = 0,X_{i2} = 0) &= \beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0) \\
+&= \beta_0 \text{.}
+\end{align*}
+$$
+
+$\beta_1$ is the expected difference in the outcome between
+observations with $X_{1} = 0$ and $X_{1} = 1$,
+holding $X_2$ constant *at zero*:
+$$
+\begin{align*}
+E(Y_i|X_{i1} = 1,X_{i2} = 0) - E(Y_i|X_{i1} = 0,X_{i2} = 0) &= \beta_0 + \beta_1 (1) + \beta_2 (0) + \beta_3 (1) (0) - \left(\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)\right) \\
+&= \beta_0 + \beta_1  - \left(\beta_0 \right) \\
+&= \beta_1 \text{.}
+\end{align*}
+$$
+Note that with the interaction term, we are not just holding the other variable
+constant in general, we are holding it constant at a specific value.
+
+$\beta_2$ is the expected difference in the outcome between
+observations with $X_{2} = 0$ and $X_{2} = 1$,
+holding $X_1$ constant at zero:
+$$
+\begin{align*}
+E(Y_i|X_{i1} = 0,X_{i2} = 1) - E(Y_i|X_{i1} = 0,X_{i2} = 0) &= \beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)\right) \\
+&= \beta_0 + \beta_2 (1)  - \left(\beta_0 \right) \\
+&= \beta_2 \text{.}
+\end{align*}
+$$
+
+$\beta_1 + \beta_3$ is the expected difference in the outcome between
+observations with $X_{1} = 0$ and $X_{1} = 1$,
+holding $X_2$ constant at 1:
+$$
+\begin{align*}
+E(Y_i|X_{i1} = 1,X_{i2} = 1) - E(Y_i|X_{i1} = 0,X_{i2} = 1) &= \beta_0 + \beta_1 (1) + \beta_2 (1) + \beta_3 (1) (1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1)\right) \\
+&= \beta_0 + \beta_1 + \beta_2 + \beta_3 - \left(\beta_0  + \beta_2 \right) \\
+&= \beta_1 + \beta_3 \text{.}
+\end{align*}
+$$
+
+
+$\beta_2 + \beta_3$ is the expected difference in the outcome between
+observations with $X_{2} = 0$ and $X_{2} = 1$,
+holding $X_1$ constant at 1:
+$$
+\begin{align*}
+E(Y_i|X_{i1} = 1,X_{i2} = 1) - E(Y_i|X_{i1} = 1,X_{i2} = 0) &= \beta_0 + \beta_1 (1) + \beta_2 (1) + \beta_3 (1) (1) - \left(\beta_0 + \beta_1 (1) + \beta_2 (0) + \beta_3 (1) (0)\right) \\
+&= \beta_0 + \beta_1 + \beta_2 + \beta_3 - \left(\beta_0 + \beta_1  \right) \\
+&= \beta_2 + \beta_3 \text{.}
+\end{align*}
+$$
+
+### Example
+
+Let's return to the ICU admissions data.
+The outcome is heart rate
+(in beats per minute).
+In the following regression analysis,
+I interacted
+sex (male or female)
+and admission type (elective or emergency).
+The participants were 200 patients admitted to an adult
+intensive care unit (ICU).
+
+
+```{r}
+d <- Lock5Data::ICUAdmissions
+# sum(complete.cases(d))
+d$sex <- "Male"
+d$sex[d$Sex == 1] <- "Female"
+d$type <- "Elective"
+d$type[d$Type == 1] <- "Emergency"
+mod_01 <- lm(formula = HeartRate ~ sex * type,
+             data = d)
+summary(mod_01)
+```
+
+How do we interpret the coefficient estimates?
+
+- The estimated mean heart rate among females who elected to come to the ICU
+is 90.4667 beats per minute.
+- The estimated mean heart rate among males who elected to come to the ICU
+is $90.4667 + 0.9018 = 91.3685$ beats per minute.
+- The estimated mean heart rate among females who came to the ICU for an emergency
+is $90.4667 + 12.2219 = 102.6886$ beats per minute.
+- The estimated mean heart rate among males who came to the ICU for an emergency
+is $90.4667 + 0.9018 + 12.2219 - 2.5205 = 101.0699$.
+
+### Effect Modification
 
 
 
