@@ -1,0 +1,42 @@
+---
+title: "Interaction of Two Binary Variables"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients of a multiple linear regression model with an
+interaction between two binary explanatory variables.
+
+
+## Lesson
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
