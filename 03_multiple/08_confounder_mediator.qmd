@@ -62,7 +62,43 @@ In this example, the reduced acid is a mediator.
 
 What does this have to do with regression?
 
+#### Confounding
 
+Suppose you are studying child health in a developing country.
+For one analysis, you use weight as the outcome,
+since it can be a proxy for child health in poor environments.
+In a simple linear regression,
+you use a binary variable as the explanatory variable,
+where the two levels are public school and private school.
+You find that, on average, private school students weigh more than
+public school students, and the difference is statistically significant.
+
+A colleague asks,
+"What is it about private school that makes students healthier?
+Are they learning about nutrition?"
+On a hunch, you decide to add an additional explanatory variable to the model.
+In your data set, you also measured how much each child's family spends on food.
+You add that to the model
+and the coefficient for school is no longer statistically significant.
+
+This is evidence that family wealth is a confounder.
+Wealthier families can afford to send their kids to private school
+and to spend more on food.
+
+I have to add a caveat here,
+which is that although this is evidence that family wealth is a confounder,
+evidence is not the same as proof.
+With each new covariate added to the model,
+you decrease the power to detect non-zero coefficients.
+So, although regression can be a tool in causal inference,
+it is far from perfect.
+
+
+#### Mediation
+
+Suppose that in the next phase of your research,
+you conduct a randomized controlled trial where you randomly assign
+some students to receive free food.
 
 ## Problems
 
