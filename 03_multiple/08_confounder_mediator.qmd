@@ -62,7 +62,7 @@ In this example, the reduced acid is a mediator.
 
 What does this have to do with regression?
 
-#### Confounding
+
 
 Suppose you are studying child health in a developing country.
 For one analysis, you use weight as the outcome,
@@ -93,12 +93,6 @@ you decrease the power to detect non-zero coefficients.
 So, although regression can be a tool in causal inference,
 it is far from perfect.
 
-
-#### Mediation
-
-Suppose that in the next phase of your research,
-you conduct a randomized controlled trial where you randomly assign
-some students to receive free food.
 
 ## Problems
 
