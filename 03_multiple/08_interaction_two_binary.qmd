@@ -9,7 +9,7 @@ format: html
 
 - Interpret the coefficients of a multiple linear regression model with an
 interaction between two binary explanatory variables.
-- Define, use, and interpret the terms "effect modification" and
+- Define, use, and interpret the terms "moderation" and
 "moderator".
 - Interpret the results of a hypothesis test in the context of multiple linear
 regression with an interaction term.
@@ -24,7 +24,9 @@ $$
 E(Y_i|X_{i1},X_{i2}) = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \beta_3 X_{i1} X_{i2} \text{,}
 $$
 where both $X_{i1}$ and $X_{i2}$ can only be 0 or 1.
-How do we interpret the coefficients?
+The product of the two explanatory variables, $X_{i1} X_{i2}$,
+is called an interaction.
+How do we interpret the coefficients when there's an interaction?
 
 $\beta_0$ is still the expected value of the outcome when all the explanatory
 variables are equal to zero:
@@ -108,19 +110,119 @@ summary(mod_01)
 ```
 
 How do we interpret the coefficient estimates?
+To make this a little more clear,
+I'm going to write the regression equation with words:
+$$
+\hat{E}\left(\texttt{HeartRate}\middle|\texttt{sexMale},\texttt{typeEmergency}\right) = 90.4667 + 0.9018 \texttt{sexMale} + 12.2219 \texttt{typeEmergency} - 2.5205 \texttt{sexMale}\times \texttt{typeEmergency} \text{.}
+$$
 
-- The estimated mean heart rate among females who elected to come to the ICU
-is 90.4667 beats per minute.
-- The estimated mean heart rate among males who elected to come to the ICU
-is $90.4667 + 0.9018 = 91.3685$ beats per minute.
-- The estimated mean heart rate among females who came to the ICU for an emergency
-is $90.4667 + 12.2219 = 102.6886$ beats per minute.
-- The estimated mean heart rate among males who came to the ICU for an emergency
-is $90.4667 + 0.9018 + 12.2219 - 2.5205 = 101.0699$.
+The estimated mean heart rate among females who elected to come to the ICU
+is 90.4667 beats per minute:
+$$
+\begin{align*}
+\hat{E}\left(\texttt{HeartRate} \middle|\texttt{sexMale}= 0,\texttt{typeEmergency}= 0\right) &= 90.4667 + 0.9018 (0) + 12.2219 (0) - 2.5205 (0)\times (0) \\
+&= 90.4667 \\
+\end{align*}
+$$
 
-### Effect Modification
+The estimated mean heart rate among males who elected to come to the ICU
+is $90.4667 + 0.9018 = 91.3685$ beats per minute:
+$$
+\begin{align*}
+\hat{E}\left(\texttt{HeartRate} \middle|\texttt{sexMale}= 1,\texttt{typeEmergency}= 0\right) &= 90.4667 + 0.9018 (1) + 12.2219 (0) - 2.5205 (1)\times (0) \\
+&= 90.4667 + 0.9018 \\
+&= 91.3685 \text{.}
+\end{align*}
+$$
+
+As a result of the previous two interpretations,
+the estimated mean difference in heart rate between males and females who
+elected to come to the ICU is 0.9018 beats per minute.
 
 
+The estimated mean heart rate among females who came to the ICU for an emergency
+is $90.4667 + 12.2219 = 102.6886$ beats per minute:
+$$
+\begin{align*}
+\hat{E}\left(\texttt{HeartRate} \middle|\texttt{sexMale}= 0,\texttt{typeEmergency}= 1\right) &= 90.4667 + 0.9018 (0) + 12.2219 (1) - 2.5205 (0)\times (1) \\
+&= 90.4667 + 12.2219 \\
+&= 102.6886 \text{.}
+\end{align*}
+$$
+
+The estimated mean heart rate among males who came to the ICU for an emergency
+is $90.4667 + 0.9018 + 12.2219 - 2.5205 = 101.0699$:
+$$
+\begin{align*}
+\hat{E}\left(\texttt{HeartRate} \middle|\texttt{sexMale}= 1,\texttt{typeEmergency}= 1\right) &= 90.4667 + 0.9018 (1) + 12.2219 (1) - 2.5205 (1)\times (1) \\
+&= 90.4667 + 0.9018 + 12.2219 - 2.5205 \\
+&= 101.0699 \text{.}
+\end{align*}
+$$
+
+As a result of the previous two interpretations,
+the estimated mean difference in heart rate between males and females who
+came to the ICU for an emergency is
+$102.6886 - 101.0699 = 2.5205 - 0.9018 = 1.6187$ beats per minute.
+
+
+### Moderation
+
+An interaction is the statistical way to model moderation.
+With moderation, the association of one explanatory variable with the outcome
+is moderated by another explanatory variable.
+This second explanatory variable,
+the one that does the moderating,
+is called a moderator.
+(Some people say "effect modification" instead of "moderation",
+but I'm avoiding the word "effect" because I want to use these terms
+even for non-causal data.)
+
+In the example above, the association between coming to the ICU for an emergency
+and heart rate is modified by gender.
+For men, coming to the ICU for an emergency is associated with a
+$101.0699 - 91.3685 = 9.7014$ bpm increase in mean heart rate.
+For women, though, coming to the ICU for an emergency is associated with a
+$102.6886 - 90.4667 = 12.2219$ bmp increase in mean heart rate.
+
+It would be equivalent to say that the association between gender and heart rate
+is modified by visit type.
+For elective visits, the estimated mean difference between male and female heart rates
+is $91.3685 - 90.4667 = 0.9018$ bpm.
+For emergency visits, though, the estimated mean difference between male and female heart rates
+is $101.0699 - 102.6886 = -1.6187$ bpm.
+(I used a negative here to indicate that the direction is opposite that
+for elective visits.
+For elective visits, males have the higher estimated mean heart rate,
+but for emergency visits, females have the higher estimated mean heat rate.)
+
+
+### Hypothesis Testing
+
+Now, I've said that gender is a moderator and I've said that visit type is
+a moderator,
+but I really shouldn't be making that claim without a hypothesis test.
+Although the association between gender and heart rate is different
+for the two different visit types,
+we should check if that difference is statistically significant.
+The difference is quantified by the coefficient on the interaction term itself,
+so we should check the p-value for that coefficient.
+In the output above, we want the p-value associated with
+`sexMale:typeEmergency`.
+This p-value is 0.786,
+which is way higher than any reasonable threshold we would use.
+So, we fail to reject the hypothesis that the interaction coefficient is zero.
+We can conclude that there is no evidence for moderation of the association
+between gender and heart rate by visit type
+(or between visit type and heart rate by gender).
+For parsimony, we should re-fit the model without the interaction term,
+which is what I've done below.
+
+```{r}
+mod_02 <- lm(formula = HeartRate ~ sex + type,
+             data = d)
+summary(mod_02)
+```
 
 ## Problems
 
