@@ -248,7 +248,12 @@ the association weakens.
 
 ### Problem 2
 
-
+```{r}
+d2 <- Lock5Data::BikeCommute
+mod_03 <- lm(formula = Minutes ~ Bike * Month,
+             data = d2)
+summary(mod_03)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
