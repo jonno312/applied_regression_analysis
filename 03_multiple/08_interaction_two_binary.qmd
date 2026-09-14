@@ -228,11 +228,21 @@ summary(mod_02)
 
 ### Problem 1
 
-
+Suppose a researcher finds that suicidal ideation is a risk factor
+for attempted suicide.
+For someone who does not own a gun, exhibiting suicidal ideation
+is not associated with a large increase in risk of suicide,
+but for someone who does own a gun, exhibiting suicidal ideation
+is associated with a large increase in risk of suicide.
+What is the moderator in this example?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Gun ownership.
+For those with a gun, there is a strong association between suicidal ideation
+and suicide risk,
+but for those without a gun,
+the association weakens.
 
 :::
 
