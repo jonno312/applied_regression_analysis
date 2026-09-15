@@ -56,6 +56,14 @@ more on concepts and less on math.
     18. [Log-Transformed Outcomes](02_simple/18_log_transform_outcome.qmd)
     19. [Shifting the Data to Make the Intercept Interpretable](02_simple/19_shift_for_intercept.qmd)
     20. [Robust Standard Errors](02_simple/20_robust_SE.qmd)
+3. Multiple Linear Regression
+    1. [Linearity Assumption](03_multiple/01_linear_assumption.qmd)
+    2. [IID Assumption](03_multiple/02_iid_assumption.qmd)
+    3. [Homoscedasticity Assumption](03_multiple/03_homoscedasticity_assumption.qmd)
+    4. [Normality Assumption](03_multiple/04_normality_assumption.qmd)
+    5. [Categorical Explanatory Variables](03_multiple/05_categorical.qmd)
+    6. [Interpretation](03_multiple/06_interpretation.qmd)
+    7. [Hypothesis Testing](03_multiple/07_hypothesis_testing.qmd)
 
 Appendices
 
