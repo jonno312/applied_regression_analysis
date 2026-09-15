@@ -224,6 +224,12 @@ mod_02 <- lm(formula = HeartRate ~ sex + type,
 summary(mod_02)
 ```
 
+### Categorical Variables
+
+I'm including categorical variables in this chapter because
+they get turned into binary dummy variables when used as explanatory variables
+in regression.
+
 ## Problems
 
 ### Problem 1
