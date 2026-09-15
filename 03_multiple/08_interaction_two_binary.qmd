@@ -242,12 +242,18 @@ Gun ownership.
 For those with a gun, there is a strong association between suicidal ideation
 and suicide risk,
 but for those without a gun,
-the association weakens.
+the association is weaker.
 
 :::
 
 ### Problem 2
 
+Jeremy Groves, an anesthetist in the UK,
+timed his commute when using two different bikes.
+Below are the results of a regression of commute time in minutes
+on bike type (steel or carbon) and month of the year (January through July),
+with an interaction between the two explanatory variables.
+The distance traveled was approximately 27 miles for each commute.
 ```{r}
 d2 <- Lock5Data::BikeCommute
 mod_03 <- lm(formula = Minutes ~ Bike * Month,
@@ -255,9 +261,79 @@ mod_03 <- lm(formula = Minutes ~ Bike * Month,
 summary(mod_03)
 ```
 
+Interpret each coefficient estimate.
+
 ::: {.callout-tip title="Solution" collapse="true"}
 
+**Intercept**
 
+- The estimated mean commute time in January on a carbon bike is 114.755 minutes.
+
+**Comparing Carbon to Steel by Month**
+
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of January is 0.655 minute,
+with the steel taking longer.
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of February is
+$|0.655-5.972| = |-5.317| = 5.317$ minutes,
+with the carbon taking longer.
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of March is
+$|0.655-3.465| = |-2.81| = 2.81$ minutes,
+with the carbon taking longer.
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of April is
+$|0.655+ 5.622| = |6.277| = 6.277$ minutes,
+with the steel taking longer.
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of May is
+$|0.655-2.473| = |-1.818| = 1.818$ minutes,
+with the carbon taking longer.
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of June is
+$|0.655+3.567| = |4.222| = 4.222$ minutes,
+with the steel taking longer.
+- The estimated mean difference in commute times between carbon and steel
+bikes during the month of July is
+$|0.655+0.947| = |1.602| = 1.602$ minutes,
+with the steel taking longer.
+
+**Comparing Months on a Carbon Bike**
+
+- The estimated mean difference in commute times between January and February
+on a carbon bike is 3.588 minutes, with February taking longer.
+- The estimated mean difference in commute times between January and March
+on a carbon bike is 3.662 minutes, with January taking longer.
+- The estimated mean difference in commute times between January and April
+on a carbon bike is 11.698 minutes, with January taking longer.
+- The estimated mean difference in commute times between January and May
+on a carbon bike is 10.215 minutes, with January taking longer.
+- The estimated mean difference in commute times between January and June
+on a carbon bike is 14.375 minutes, with January taking longer.
+- The estimated mean difference in commute times between January and July
+on a carbon bike is 9.655 minutes, with January taking longer.
+
+**Comparing Months on a Steel Bike**
+
+- The estimated mean difference in commute times between January and February
+on a steel bike is $|3.588-5.972| = |-2.384| = 2.384$ minutes,
+with January taking longer.
+- The estimated mean difference in commute times between January and March
+on a steel bike is $|-3.662-3.465| = |-7.127| = 7.127$ minutes,
+with January taking longer.
+- The estimated mean difference in commute times between January and April
+on a steel bike is $|-11.698 + 5.622| = |-6.076| = 6.076$ minutes,
+with January taking longer.
+- The estimated mean difference in commute times between January and May
+on a steel bike is $|-10.215-2.473| = |-12.688| = 112.688$ minutes,
+with January taking longer.
+- The estimated mean difference in commute times between January and June
+on a steel bike is $|-14.375+3.567| = |-10.808| = 10.808$ minutes,
+with January taking longer.
+- The estimated mean difference in commute times between January and July
+on a steel bike is $|-9.655+0.947| = |-8.708| = 8.708$ minutes,
+with January taking longer.
 
 :::
 
