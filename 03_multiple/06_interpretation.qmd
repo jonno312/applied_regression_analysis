@@ -221,6 +221,333 @@ recipients.
 
 :::
 
+### Problem 2
+
+Suppose you run the following multiple linear regression
+with "country" as the unit of observation
+(i.e., each line in the data set is a country).
+
+- Outcome variable
+  - Life expectancy (in years)
+- Explanatory variables
+  - Pharmaceutical spending as a percentage of total health spending (in percentage points)
+  - Total pharmaceutical spending (in millions of USD)
+  - Pharmaceutical spending per capita (in USD)
+
+"Pharmaceutical spending" refers to spending by consumers on both prescription
+and over-the-counter medication.
+
+For the following questions, assume all relevant assumptions have been met.
+
+#### Part (a)
+
+How would you interpret the intercept for this analysis?
+Is it meaningful? Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The intercept is the expected life expectancy  for a country where consumers spend no
+money whatsoever on pharmaceuticals.
+This would make pharmaceutical spending zero as a percentage of total health spending;
+per capita; and in total.
+This is not meaningful, because such a country doesn't exist.
+Even in very poor countries, people spend money on drugs.
+
+:::
+
+#### Part (b)
+
+How would you interpret the coefficient on
+"Pharmaceutical spending as a percentage of total health spending"?
+What are the implications of "holding all else equal" for the interpretation
+of this coefficient?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in life expectancy associated
+with a one percentage point increase in pharmaceutical spending as a percentage
+of total health spending, holding all else equal.
+
+If we increase pharmaceutical spending as a percentage of total health spending
+while fixing total pharmaceutical spending,
+we must be decreasing total health spending.
+If we increase pharmaceutical spending as a percentage of total health spending
+while fixing total pharmaceutical spending and pharmaceutical spending per capita,
+we must be decreasing total health spending and fixing the population of the country.
+So, this coefficient is a measure of the effect of decreasing total health spending
+(to the extent that we can interpret this causally).
+
+Another way to interpret this coefficient is the expected difference between two countries
+that differ in their pharmaceutical spending as a percentage of total health spending
+by one percentage point,
+but that have identical total pharmaceutical spending,
+identical pharmaceutical spending per capita,
+and (as a result of the first two) identical populations.
+Even in this interpretation, one country must spend more on total health spending than the other
+in order to achieve the percentage difference,
+and the coefficient is a measure of the effect of decreasing total health spending
+(to the extent that we can interpret this causally).
+:::
+
+#### Part (c)
+
+How would you interpret the coefficient on
+"Total pharmaceutical spending"?
+What are the implications of "holding all else equal" for the interpretation
+of this coefficient?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in life expectancy associated with a
+one million USD increase in total pharmaceutical spending,
+holding all else equal.
+
+If we increase total pharmaceutical spending while fixing pharmaceutical spending
+per capita, we must be increasing the population as well.
+If we increase total pharmaceutical spending while fixing pharmaceutical spending
+as a percentage of total health spending,
+we must be increasing total health spending as well.
+So, this coefficient is measuring the expected change in life expectancy
+associated with an increase in total pharmaceutical spending,
+population, and total health spending.
+That's a lot all at once!
+:::
+
+#### Part (d)
+
+How would you interpret the coefficient on
+"Pharmaceutical spending per capita"?
+What are the implications of "holding all else equal" for the interpretation
+of this coefficient?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in life expectancy associated with a
+one USD increase in pharmaceutical spending per capita,
+holding all else equal.
+
+If we increase pharmaceutical spending per capita while fixing total
+pharmaceutical spending, we must be decreasing the population.
+If we're fixing total pharmaceutical spending and pharmaceutical spending
+as a percentage of total health spending, then we must be fixing total health spending.
+So, this coefficient is a measure of the effect of decreasing the population
+while holding total pharmaceutical spending and total health spending constant.
+        
+:::
+        
+### Problem 3
+
+Consider the paper 
+[Association between Traffic Air Pollution and Reduced Forced Vital Capacity:
+A Study Using Personal Monitors for Outdoor Workers](https://doi.org/10.1371/journal.pone.0163225).
+Suppose we run two analyses, both with forced vital capacity (FVC; in liters) as the outcome.
+The first analysis is a simple linear regression with "time in job" (in years)
+as the explanatory variable,
+and the second is a multiple linear regression with "time in job" (in years)
+and age (in years) as the explanatory variables.
+Feel free to try this in R!
+
+#### Part (a)
+
+Interpret the intercept for the simple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected FVC for an outdoor worker who just started their job.
+
+:::
+
+#### Part (b)
+
+Interpret the intercept for the multiple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected FVC for an outdoor worker who just started their job
+and is zero years old.
+
+:::
+
+#### Part (c)
+
+Interpret the coefficient on "time in job" for the simple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in FVC associated with a one-year increase in time in job.
+Alternatively, it's the expected difference in FVC between two workers who
+differ by one year in their time in the job.
+
+:::
+
+#### Part (d)
+
+Interpret the coefficient on "time in job" for the multiple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in FVC associated with a one-year increase in time in job,
+holding age constant.
+Alternatively, this is the expected difference in FVC between two workers who have the same age
+but differ by one year in their time in the job.
+
+:::
+
+#### Part (e)
+
+Interpret the coefficient on age for the multiple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in FVC associated with a one-year increase in age,
+holding time in job constant.
+Alternatively, this is the expected difference in FVC between two workers who have the same
+years of experience but who differ by one year in their age.
+        
+:::
+
+### Problem 4
+
+Suppose we run two analyses, both with prostate-specific antigen level (PSA; in ng/mL)
+as the outcome. The first analysis is a simple linear regression with smallpox vaccination
+(yes = 1, no = 0) as the explanatory variable, and the second is a multiple linear regression
+with smallpox vaccination and age (in years) as the explanatory variables.
+
+#### Part (a)
+
+Interpret the intercept for the simple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected PSA for someone who was not vaccinated against smallpox.
+
+:::
+
+#### Part (b)
+
+Interpret the intercept for the multiple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected PSA for someone who was not vaccinated against smallpox
+and is zero years old.
+
+:::
+
+#### Part (c)
+
+Interpret the coefficient on smallpox vaccination for the simple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected difference in PSA between someone who has not been vaccinated
+against smallpox and someone who has.
+
+:::
+
+#### Part (d)
+
+Interpret the coefficient on smallpox vaccination for the multiple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected difference in PSA between two people of the same age,
+one of whom has not been vaccinated against smallpox and one of whom has.
+
+:::
+
+#### Part (e)
+
+Interpret the coefficient on age in the multiple linear regression.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected increase in PSA associated with a one-year increase in age,
+holding vaccination status constant.
+Alternatively, this is the expected difference in PSA between
+people age $x$ and people age $x + 1$,
+where both groups have the same vaccination status.
+
+:::
+
+#### Part (f)
+
+According to the Mayo Clinic,
+"[PSA levels normally increase with age](https://www.mayoclinic.org/tests-procedures/psa-test/about/pac-20384731)".
+According to the CDC,
+"[Routine smallpox vaccination among the American public stopped in 1972 after the disease was eradicated in the United States](https://www.cdc.gov/smallpox/vaccines/index.html)."
+What sign (positive, negative, or zero) do you think the slope in the simple linear regression
+would have? Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+People who have been vaccinated against smallpox must be older,
+and probably have higher PSA levels.
+So, the slope in the simple linear regression should be positive.
+
+:::
+
+### Problem 5
+
+Suppose you wanted to predict weight with height.
+Could you include height in feet *and* height in meters as explanatory variables
+in the same model?
+Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. Continuing with the theme of these problems,
+we can think about what the interpretation of the coefficients would be.
+The coefficient on height in feet would be the expected increase in weight
+associated with a one-foot increase in height, holding height in meters constant.
+You can't increase height in feet while holding height in meters constant.
+Alternatively, the coefficient on height in feet would be the expected
+difference in weight between two groups of people that differ in height by one foot
+but have the same height in meters.
+That's impossible.
+
+That's not really a reason, though; as you'll see in the next question,
+it's possible to run a regression even if the coefficients are not interpretable.
+The real reason this isn't possible is mathematical.
+To summarize, one explanatory variable cannot be a linear combination
+of the others.
+Problems can even arise if one explanatory variable is close to being a linear combination
+of the others.
+If you get an error or warning about this while running multiple linear regression,
+you may need to remove one or more explanatory variables.
+Consult a statistician.
+
+:::
+
+### Problem 6
+
+Suppose you regress salary (in USD) on age (in years) and age$^2$ (in years$^2$).
+
+#### Part (a)
+
+How would you interpret the intercept?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected salary for someone who is zero years old.
+
+:::
+
+#### Part (b)
+
+How would you interpret the coefficient on age?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+You can't interpret this on its own because it's impossible to increase age by one unit
+and not change age$^2$.
+Interpreting the coefficients in a polynomial model is tricky;
+consult a statistician.
+Running this regression is possible because even though age$^2$ is a function of age,
+it's not a linear function of age.
+So, R will not complain.
+
+:::
 
 
 
