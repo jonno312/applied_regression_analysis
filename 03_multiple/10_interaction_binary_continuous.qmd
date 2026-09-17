@@ -1,0 +1,145 @@
+---
+title: "Interaction Between One Binary Variable and One Categorical Variable"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(ggplot2)
+```
+
+## Learning Objective
+
+Interpret the coefficients of a multiple linear regression model with an
+interaction between one binary variable and one continuous variable.
+
+
+## Lesson
+
+Researchers in Brazil randomly assigned 264 high school students to
+activities that involved either synchronized or non-synchronized movements.
+The researchers measured pain tolerance with a blood pressure cuff
+before and after the activity.
+In the model below, I've regressed pain tolerance after the activity
+on pain tolerance before, synchronicity (1 for synchronized,
+0 for not synchronized),
+and the interaction between the two.
+```{r}
+d <- Lock5Data::SynchronizedMovement
+d$Synchronized <- as.numeric(d$Synch == "yes")
+mod_01 <- lm(formula = PainTolerance ~ PainToleranceBefore * Synchronized,
+             data = d)
+summary(mod_01)
+```
+
+How do we interpret these coefficients?
+We can write the linear model as follows
+(please forgive the abbreviations):
+$$
+\hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef},\texttt{Syn}\right) = 50.06363 + 0.75550 \texttt{TolBef} + 38.94123 \text{Syn} - 0.08173 \texttt{TolBef}\times\texttt{Syn} \text{.}
+$$
+
+50.06363 mmHg is the estimated mean pain tolerance among people who were assigned to the
+non-synchronized activity and who had zero pain tolerance before
+the activity.
+$$
+\begin{align*}
+\hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=0,\texttt{Syn}=0\right) &= 50.06363 + 0.75550 (0) + 38.94123 (0) - 0.08173 (0)\times(0) \\
+&= 50.06363 \text{.}
+\end{align*}
+$$
+
+0.75550 mmHg is the estimated mean increase in pain tolerance
+associated with a one mmHg increase in prior pain tolerance,
+among people assigned to the non-synchronized activity.
+In other words, it is the estimated mean difference in pain tolerance
+between people with prior pain tolerance $x$ and people with prior
+pain tolerance $x + 1$,
+assuming all these people were assigned to the non-synchronized activity.
+People with higher prior pain tolerance are expected to have the higher
+pain tolerance after doing the activity.
+$$
+\begin{align*}
+&\hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=x+1,\texttt{Syn}=0\right) - \hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=x,\texttt{Syn}=0\right) \\
+&= 50.06363 + 0.75550 (x+1) + 38.94123 (0) - 0.08173 (x+1)\times(0) \\
+&\qquad - (50.06363 + 0.75550 x + 38.94123 (0) - 0.08173 x\times(0)) \\
+&= 50.06363 + 0.75550x + 0.75550 - (50.06363 + 0.75550x) \\
+&= 0.75550 \text{.}
+\end{align*}
+$$
+
+38.94123 mmHg is the estimated mean difference in pain tolerance
+between people who were assigned to the synchronized activity and people
+who were assigned to the non-synchronized activity,
+assuming all these people had prior pain tolerance of zero.
+We would expect the people assigned to the synchronized activity to
+have higher pain tolerance.
+$$
+\begin{align*}
+&\hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=0,\texttt{Syn}=1\right) - \hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=0,\texttt{Syn}=0\right) \\
+&= 50.06363 + 0.75550 (0) + 38.94123 (1) - 0.08173 (0)\times(1) \\
+&\qquad - 50.06363  \\
+&= 38.94123 \text{.}
+\end{align*}
+$$
+
+$0.75550 - 0.08173 = 0.67377$ mmHg is the estimated mean increase in pain tolerance
+associated with a one mmHg increase in prior pain tolerance,
+among people assigned to the synchronized activity.
+In other words, it is the estimated mean difference in pain tolerance
+between people with prior pain tolerance $x$ and people with prior
+pain tolerance $x + 1$,
+assuming all these people were assigned to the synchronized activity.
+People with higher prior pain tolerance are expected to have the higher
+pain tolerance after doing the activity.
+$$
+\begin{align*}
+&\hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=x+1,\texttt{Syn}=1\right) - \hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=x,\texttt{Syn}=1\right) \\
+&= 50.06363 + 0.75550 (x+1) + 38.94123 (1) - 0.08173 (x+1)\times(1) \\
+&\qquad - (50.06363 + 0.75550 x + 38.94123 (1) - 0.08173 x\times(1)) \\
+&= 50.06363 + 0.75550 x + 0.75550 + 38.94123  - 0.08173x - 0.08173 \\
+&\qquad - (50.06363 + 0.75550 x + 38.94123  - 0.08173 x) \\
+&= 0.75550 - 0.08173 \\
+&= 0.67377 \text{.}
+\end{align*}
+$$
+
+$38.94123 - 0.08173x$ mmHg is the estimated mean difference in pain tolerance
+between people who were assigned to the synchronized activity and people
+who were assigned to the non-synchronized activity,
+assuming all these people had prior pain tolerance of $x$.
+Since $x$ was only observed between 30 and 300,
+$14.42223 \le 38.94123 - 0.08173x \le 36.48933$, and
+we would expect the people assigned to the synchronized activity to
+have higher pain tolerance.
+$$
+\begin{align*}
+&\hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=x,\texttt{Syn}=1\right) - \hat{E}\left(\texttt{Tol}\middle|\texttt{TolBef}=x,\texttt{Syn}=0\right) \\
+&= 50.06363 + 0.75550 x + 38.94123 (1) - 0.08173 x\times(1) \\
+&\qquad - (50.06363 + 0.75550 x + 38.94123 (0) - 0.08173 x\times(0))  \\
+&= 38.94123 - 0.08173x \text{.}
+\end{align*}
+$$
+
+We can observe this in a plot.
+```{r}
+#| warning: false
+ggplot(data = d,
+       mapping = aes(x = PainToleranceBefore,
+                     y = PainTolerance,
+                     colour = Synch)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              se = FALSE)
+```
+If the moderation were stronger, these lines would have different slopes.
+
+
+
+
+
+
+
+
