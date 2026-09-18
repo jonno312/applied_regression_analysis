@@ -1,0 +1,240 @@
+---
+title: "R-Squared"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+- Define, use, and interpret $R^2$.
+- Explain the purpose of the adjusted $R^2$.
+- Use and interpret the adjusted $R^2$.
+
+
+## Lesson
+
+### Definition 1
+
+The coefficient of determination, denoted by $R^2$, is defined as follows:
+$$
+R^2 = 1 - \frac{\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2}{\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2} \text{.}
+$$
+As a reminder, $n$ is the sample size, $\hat{Y}_i$ is the fitted value
+for the $i$th observation, and $\bar{Y}$ is the sample average.
+
+How do we interpret this?
+Imagine that you're pitting two different prediction methods against each other.
+In the first, you're just using the sample average to predict every
+observation in the data set.
+In other words, you're ignoring all the explanatory variables.
+The denominator of the fraction,
+$$
+\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2 \text{,}
+$$
+is a measure of how wrong you are using this method.
+
+In the second prediction method, you're using the regression model.
+So, for each observation, you're using the explanatory variables
+to get a prediction of the outcome.
+This prediction is the fitted value.
+The numerator of the fraction,
+$$
+\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2 \text{,}
+$$
+is a measure of how wrong you are using this method.
+
+If the regression model performs better, i.e., if it's less wrong, then
+$$
+\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2 < \sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2 \text{.}
+$$
+This implies
+$$
+\frac{\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2}{\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2} < 1
+$$
+and
+$$
+R^2 = 1 - \frac{\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2}{\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2} > 0 \text{.}
+$$
+
+If the regression model performs a lot better then
+$$
+\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2 \ll \sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2 \text{,}
+$$
+$$
+\frac{\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2}{\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2} \ll 1 \text{,}
+$$
+and
+$$
+R^2 = 1 - \frac{\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2}{\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2} \gg 0 \text{.}
+$$
+(The symbol $\ll$ means "much less than" and the symbol $\gg$ means
+"much greater than".)
+
+All this together implies that the larger $R^2$ is,
+the better job it does of predicting the outcome within the sample.
+
+### Definition 2
+
+We can also define $R^2$ like this:
+$$
+R^2 = \frac{\sum_{i=1}^n \left(\hat{Y}_i - \bar{Y}\right)^2}{\sum_{i=1}^n \left(Y_i - \bar{Y}\right)^2} \text{.}
+$$
+This definition is mathematically equivalent to the one above,
+but it allows for a different interpretation of $R^2$.
+
+In terms of the performance of the regression model,
+the worst case scenario is that $\hat{Y}_i = \bar{Y}$,
+i.e., incorporating information about the explanatory variables
+does no good for predicting the outcome in the data set.
+In this case, the numerator of $R^2$ is zero,
+so $R^2 = 0$.
+
+The best case scenario is that $\hat{Y}_i = Y_i$,
+i.e., the regression model does a perfect job predicting the outcome
+in the data set.
+In this case, the numerator of $R^2$ is equal to the denominator,
+and $R^2 = 1$.
+
+This shows us that $R^2$ ranges from 0 to 1.
+If we think of the denominator as a measure of the total variability in the
+data set,
+we can interpret $R^2$ as the proportion of variance explained by the model.
+
+### Overfitting
+
+Note that $R^2$ is only measuring the performance of the regression model
+in the sample,
+i.e., the same sample that was used to fit the regression model.
+If we try to optimize (i.e., maximize) $R^2$, we may overfit the data.
+
+Mathematically, adding a new explanatory variable to a linear regression model
+cannot decrease the $R^2$.
+So, if we're trying to increase the $R^2$, we could just keep adding explanatory
+variables until we see improvement.
+This will probably cause overfitting because some of these explanatory
+variables will be related to the outcome in the sample just by chance.
+In the population, there may be no relationship,
+so the model will perform poorly with new data.
+
+### Adjusted R-Squared
+
+The purpose of the adjusted $R^2$ is to prevent overfitting.
+It is defined as follows:
+$$
+R^2_{\text{adj}} = 1 - (1-R^2) \frac{n - 1}{n - p - 1} \text{,}
+$$
+where $p$ is the number of explanatory variables.
+
+If we hold $R^2$ and $n$ constant while increasing $p$,
+$$
+\begin{align*}
+p\uparrow &\implies -p \downarrow \\
+&\implies n - p - 1 \downarrow \\
+&\implies \frac{n - 1}{n - p - 1} \uparrow \\
+&\implies (1-R^2) \frac{n - 1}{n - p - 1} \uparrow \\
+&\implies -(1-R^2) \frac{n - 1}{n - p - 1} \downarrow \\
+&\implies 1 -(1-R^2) \frac{n - 1}{n - p - 1} \downarrow \\
+&\implies R^2_{\text{adj}} \downarrow \text{,}
+\end{align*}
+$$
+i.e., the adjusted $R^2$ decreases.
+So, the adjusted $R^2$ penalizes adding new explanatory variables to the model
+to offset the better fit you get.
+
+### Note
+
+Although I keep saying that the fitted values come from a regression model,
+the $R^2$ is agnostic to where the fitted values are coming from.
+You could compute the $R^2$ using fitted values from a different prediction
+method.
+For these other methods, the two definitions above might not be exactly equal,
+but it would still be the case that a higher $R^2$ would be better
+than a lower $R^2$.
+
+## Problems
+
+### Problem 1
+
+I'm going to randomly generate a data set with twenty independent explanatory
+variables.
+```{r}
+#| echo: true
+set.seed(2)
+n <- 1e2
+p <- 20
+d <- matrix(data = rnorm(n = n * p),
+            nrow = n,
+            ncol = p)
+```
+Now I'm going to generate an outcome that depends on only the first two
+explanatory variables in the data set.
+```{r}
+#| echo: true
+y <- d[ ,1] + d[ ,2] + rnorm(n)
+```
+Now I'm going to run two regressions,
+first with just the first two explanatory variables and second
+with all twenty.
+```{r}
+mod_01 <- lm(y ~ d[ ,1] + d[ ,2])
+mod_02 <- lm(y ~ d)
+```
+Predict the relationships between the $R^2$ and adjusted $R^2$
+for both models.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+```{r}
+summary(mod_01)
+summary(mod_02)
+```
+
+Were your predictions right?
+
+The adjusted $R^2$ for the small model is about the same
+as the unadjusted $R^2$ for the small model.
+This is desirable;
+the small model is the correct model,
+so there's no overfitting happening and we wouldn't want to remove
+any explanatory variables.
+
+There's a bigger difference between the adjusted and unadjusted $R^2$
+for the big model.
+Again, this is desirable.
+Eighteen of the variables were generated completely independently of the
+outcome and should be removed.
+There is overfitting happening, so there should be a gap between
+the adjusted and unadjusted $R^2$.
+
+The adjusted $R^2$ for the large model is approximately equal
+to the adjusted $R^2$ for the small model.
+This means that, adjusted for their size, they're performing approximately
+equally.
+Since we often value parsimony in statistical models
+(smaller models are easier to interpret and have higher power to detect effects),
+we should probably go with the smaller model.
+This is good, since the smaller model is the correct one.
+
+
+:::
+
+### Problem 2
+
+True or false:
+The linearity assumption of multiple linear regression must be true
+in order to interpret the $R^2$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+The $R^2$ is (essentially) just a measure of how close the fitted values
+are to the observed values of the outcome.
+Even if none of the assumptions are met, you can still compute
+and interpret the $R^2$.
+
+:::
+
+
+
+
