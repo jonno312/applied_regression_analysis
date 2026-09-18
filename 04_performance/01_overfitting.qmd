@@ -1,0 +1,175 @@
+---
+title: "Overfitting"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the term "overfitting".
+
+
+## Lesson
+
+### Definition
+
+As we've discussed, we usually want to make claims about a population
+but can only observe a sample.
+It's important that the conclusions we draw from our sample are generalizable
+to the population.
+Even if our goal isn't to generalize to some larger population,
+but is instead to make predictions,
+we want to make sure that we can accurately predict new data,
+not just the data in our sample.
+"Overfitting" is what happens when you create a model that describes
+your sample really well but does a poor job of generalizing to or predicting
+new data from the same population.
+
+### Conceptual Example
+
+Suppose your roommate is from Portugal.
+You know he speaks Portuguese,
+he needs the shower at 7am, he likes to cook dinner,
+and on Saturdays he plays Frisbee with friends.
+So, you conclude that all Portuguese people speak Portuguese, shower at 7am,
+like to cook dinner,
+and play Frisbee with their friends on Saturdays.
+That's an example of overfitting.
+You've done a great job of describing (and predicting) your roommate's behavior,
+but there's no reason to believe that the same descriptions and predictions
+will work for other people from the same country.
+(At least, not all of them;
+it is reasonable to predict that other people from Portugal speak Portuguese.)
+
+### Visual Depiction
+
+Overfitting is usually depicted in the following way.
+Suppose you have these data:
+```{r}
+set.seed(1)
+n <- 20
+x <- rnorm(n)
+y <- x + rnorm(n)
+plot(x = x,
+     y = y)
+```
+
+You try fitting a simple linear regression:
+```{r}
+mod_01 <- lm(y ~ x)
+plot(x = x,
+     y = y)
+abline(mod_01,
+       col = "blue")
+```
+
+You decide that's not quite good enough.
+Although the regression line captures the general trend of the data,
+it doesn't go through enough of the points.
+So you add a quadratic term.
+Now your linear model is
+$$
+E(Y|X) = \beta_0 + \beta_1 X + \beta_2 X^2 \text{.}
+$$
+```{r}
+mod_02 <- lm(y ~ x + I(x^2))
+plot(x = x,
+     y = y)
+x_seq <- seq(from = min(x),
+             to = max(x),
+             length.out = 100)
+lines(x = x_seq,
+      y = predict(object = mod_02,
+                  newdata = data.frame(x = x_seq)),
+      col = "blue")
+```
+
+That's still not quite good enough, so you add a few more polynomial terms.
+Now your linear model is
+$$
+E(Y|X) = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3 + \beta_4 X^4 + \beta_5 X^5 + \beta_6 X^6 + \beta_7 X^7 + \beta_8 X^8 + \beta_9 X^9 + \beta_{10} X^{10} + \beta_{11} X^{11}\text{.}
+$$
+```{r}
+mod_03 <- lm(y ~ x + I(x^2) + I(x^3) + I(x^4) + I(x^5) + I(x^6) + I(x^7) + I(x^8) + I(x^9) + I(x^10) + I(x^11))
+plot(x = x,
+     y = y)
+lines(x = x_seq,
+      y = predict(object = mod_03,
+                  newdata = data.frame(x = x_seq)),
+      col = "blue")
+```
+
+This regression line goes through a lot of the points!
+But watch what happens when we collect more data:
+```{r}
+n_new <- n * 100
+x_new <- rnorm(n_new)
+y_new <- x_new + rnorm(n_new)
+```
+
+```{r}
+x_seq_new <- seq(from = min(x_new),
+                 to = max(x_new),
+                 length.out = 100)
+plot(x = x_new,
+     y = y_new,
+     xlab = "x",
+     ylab = "y")
+lines(x = x_seq_new,
+      y = predict(object = mod_03,
+                  newdata = data.frame(x = x_seq_new)),
+      col = "blue",
+      lwd = 2)
+```
+
+The eleventh-degree polynomial function, which fit the original data set
+of twenty observations really well,
+does a terrible job of describing the new data set with 2,000 observations.
+
+### Note
+
+There are lots of things that limit our ability to generalize
+from a sample to the population,
+including a small sample size or a biased sampling scheme.
+"Overfitting" is generally not used to refer to the size of the sample
+or how it was collected.
+Instead, it refers to the relationship between the model and the sample.
+When talking about overfitting,
+we're kind of taking the sample for granted.
+We can't change the sample now that we have it,
+but we can change the model,
+and we want to make sure the model isn't overfit to the data.
+
+## Problems
+
+### Problem 1
+
+Propose a method for determining whether a model is overfit to a sample.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+We could hold out some data from the sample (call this the "test set")
+and fit our model to the rest (call this the "training set").
+If the model is overfit to the training set,
+it will do a poor job of predicting the outcome
+in the test set.
+
+:::
+
+### Problem 2
+
+True or false:
+A Type II error is the same thing as overfitting.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+You can make a Type II error even when the model is perfect.
+By chance alone, there is always a non-zero chance of making a Type II error.
+
+:::
+
+
+
+
