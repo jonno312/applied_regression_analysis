@@ -64,6 +64,9 @@ more on concepts and less on math.
     5. [Categorical Explanatory Variables](03_multiple/05_categorical.qmd)
     6. [Interpretation](03_multiple/06_interpretation.qmd)
     7. [Hypothesis Testing](03_multiple/07_hypothesis_testing.qmd)
+    8. [Interaction Between Two Binary Variables](03_multiple/08_interaction_two_binary.qmd)
+    9. [Interaction Between One Binary Variable and One Categorical Variable](03_multiple/09_interaction_binary_categorical.qmd)
+    10. [Interaction Between One Binary Variable and One Categorical Variable](03_multiple/10_interaction_binary_continuous.qmd)
 
 Appendices
 
