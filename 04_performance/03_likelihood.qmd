@@ -1,0 +1,263 @@
+---
+title: "Likelihood"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+- Define "likelihood".
+- Explain why you would want to maximize the likelihood.
+- Explain when it would be inappropriate to use likelihoods to compare models.
+
+
+## Lesson
+
+### Normal Example
+
+Suppose you draw a single observation from a normal distribution
+with expected value $\mu$ and variance equal to 1.
+The value you get is $-1$.
+In symbols, $X\sim N(\mu,1)$ and you observe $X = -1$.
+
+The probability density function of $X$ is
+$$
+f(x) = \frac{1}{\sqrt{2\pi}} \exp\left(- \frac{(x - \mu)^2}{2}\right) \text{.}
+$$
+We usually think of this as a function of $x$, but it's also a function of $\mu$.
+We could write
+$$
+f(x;\mu) = \frac{1}{\sqrt{2\pi}} \exp\left(- \frac{(x - \mu)^2}{2}\right)
+$$
+to make it explicit that this function depends on $\mu$.
+
+To make this more concrete, I'm going to plot $f(x;\mu)$ for a variety
+of values of $\mu$.
+In each one, I'm going to include dotted line segments to show
+the value of $f(-1;\mu)$.
+
+```{r}
+x <- -1
+width <- 2
+for(i in (x - width):(x + width)){
+  temp <- function(x){
+    dnorm(x = x,
+          mean = i)
+  }
+  curve(expr = temp,
+        from = x - width - 2,
+        to = x + width + 2,
+        xlab = "x",
+        ylab = "f(x;mu)",
+        main = paste0("mu = ",
+                      i))
+  abline(v = 0)
+  segments(x0 = c(-1,-1),
+           y0 = c(0,temp(-1)),
+           x1 = c(-1,0),
+           y1 = c(temp(-1),temp(-1)),
+           lty = 2)
+}
+```
+
+When $\mu = -3$, $f(-1,-3)$ is pretty low;
+$f(-1,-2)$ is higher, and $f(-1,-1)$ is highest.
+As $\mu$ continues to increase,
+the output of the function decreases again;
+$f(-1,0)$ is lower and $f(-1,1)$ is lower still.
+
+The probability density function (PDF) is a measure of how likely it is to see
+certain values.
+The higher the PDF, the more likely that value.
+If we don't know the value of $\mu$,
+but we know what we observed,
+we might want to choose the value of $\mu$ that maximizes the likelihood
+of observing what we observed.
+This is a way of estimating $\mu$.
+
+In this example, setting $\mu = -1$ maximizes the PDF at $x = -1$.
+So, we could argue that $-1$ is a good estimate of $\mu$.
+
+### Definition
+
+"Likelihood" is commonly used in American English, but it has a special
+meaning in statistics.
+In statistics, the likelihood is the probability density function (PDF) or
+probability mass function (PMF), thought of as a function of the parameter(s)
+rather than the data.
+
+By fixing the input to the PDF or PMF at the data we observed,
+and changing the value(s) of the parameter(s) until we maximize the likelihood,
+we find the value(s) of the parameter(s) that maximize(s) the likelihood
+of observing what we actually observed.
+This is a method for estimating the parameter(s).
+
+### Binomial Example
+
+Suppose a magician has a special coin that lands heads with probability $p$,
+where $p \ne 0.5$.
+She flips the coin ten times and it lands heads seven times.
+
+In this case, the number of heads follows a binomial distribution;
+we can write $X\sim\text{binomial}(10,p)$.
+Below, I've plotted the probability mass function (PMF) of $X$
+for different values of $p$.
+I've included a horizontal dashed line to indicate $P(X = 7;p)$.
+
+```{r}
+x <- 7
+n <- 10
+width <- 2
+for(i in (x - width):(x + width)){
+  temp <- function(x){
+    dbinom(x = x,
+           size = n,
+           prob = i / n)
+  }
+  barplot(height = temp(0:10),
+          names.arg = 0:10,
+          xlab = "x",
+          ylab = "P(X = x;p)",
+          main = paste0("p = ",
+                        i / n),
+          ylim = c(0,0.4))
+  abline(h = temp(x),
+         lty = 2)
+}
+```
+
+I can also display $P(X = 7;p)$ in a table.
+
+| $p$ | $P(X = 7;p)$ |
+|-:|-:|
+| 0.5 | `r round(x = dbinom(x = 7,size = 10,prob = 0.5),digits = 3)` |
+| 0.6 | `r round(x = dbinom(x = 7,size = 10,prob = 0.6),digits = 3)` |
+| 0.7 | `r round(x = dbinom(x = 7,size = 10,prob = 0.7),digits = 3)` |
+| 0.8 | `r round(x = dbinom(x = 7,size = 10,prob = 0.8),digits = 3)` |
+| 0.9 | `r round(x = dbinom(x = 7,size = 10,prob = 0.9),digits = 3)` |
+
+We can see that $P(X = 7;p)$ is highest for $p = 0.7$.
+Although I didn't test all possible values of $p$,
+I can tell you that if you use calculus,
+you will find that $P(X = 7;p)$ is maximized at $p = 0.7$.
+
+### Different Sample Sizes
+
+In the coin-flipping example above, we were effectively using the likelihood
+to compare models.
+Each candidate value of $p$ was its own model,
+and we choose the one with the highest likelihood.
+
+Suppose now that the magician flipped the coin twenty times
+and it landed heads sixteen times.
+The value of $p$ that maximizes the likelihood for these twenty flips
+is $16 / 20 = 0.8$.
+Yet, the value of the likelihood at $p = 0.8$ is
+`r round(x = dbinom(x = 16,size = 20,prob = 0.8),digits = 3)`.
+This is lower than the maximized likelihood when the number of flips was ten
+and $p$ was set to 0.7.
+Does that mean we should use $p = 0.7$ instead?
+
+The answer is no.
+We can't use the likelihood to compare models that use different samples.
+One reason for this is that likelihoods tend to decrease as you add observations.
+If we flipped the coin a hundred times and observed eighty heads,
+the value of $p$ that would maximize the likelihood is $0.8$,
+even though the value of the likelihood for $p = 0.8$ is only 0.099.
+With 100 coin flips, we should have more confidence in our estimate,
+not less.
+
+By the way, if you want intuition for why the likelihood tends to decrease
+with more observations,
+it's because you keep multiplying by something less than 1.
+Suppose you flip a fair coin one time.
+The probability it lands heads is $\frac{1}{2}$.
+If you flip the coin again,
+the probability of two heads is $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$.
+If you flip the coin a third time,
+the probability of three heads is
+$\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$.
+This isn't just because three heads in a row is unlikely;
+the probability of any length-three sequence of heads and tails is $\frac{1}{8}$.
+It doesn't matter if it's heads-heads-heads,
+heads-tails-heads, tails-heads-tails, or anything else.
+
+### Model Accuracy
+
+If you're computing a likelihood for a data set, you should believe
+the likelihood is accurate.
+What I mean is,
+it wouldn't make sense to use the binomial PMF for normally distributed data,
+or the normal PDF for binomially distributed data.
+So, the likelihood should really be reserved for when you're willing to make
+the argument that you know the underlying distribution of the data.
+(Some statisticians might disagree with me on this point.)
+
+## Problems
+
+### Problem 1
+
+If all four assumptions of simple linear regression are met,
+then we can write the likelihood as
+$$
+f(y_1,\dotsc,y_n;\beta_0,\beta_1,\sigma^2) = \frac{1}{\left(\sqrt{2\pi\sigma^2}\right)^n} \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n \left(y_i - \beta_0 - \beta_1 x_i\right)^2\right) \text{.}
+$$
+(I'm treating the observed values of the explanatory variable as constants
+rather than random variables,
+which is why I didn't put them as input into the likelihood function.)
+
+Ignoring $\sigma^2$ for the moment,
+how should the maximum-likelihood estimates of $\beta_0$ and $\beta_1$
+compare to the ordinary least squares (OLS) estimates?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+They should be the same.
+Watch what happens as we decrease the sum of the squared errors:
+$$
+\begin{align*}
+\sum_{i=1}^n \left(y_i - \beta_0 - \beta_1 x_i\right)^2 \downarrow &\implies - \sum_{i=1}^n \left(y_i - \beta_0 - \beta_1 x_i\right)^2 \uparrow \\
+&\implies -\frac{1}{2\sigma^2} \sum_{i=1}^n \left(y_i - \beta_0 - \beta_1 x_i\right)^2 \uparrow \\
+&\implies \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n \left(y_i - \beta_0 - \beta_1 x_i\right)^2\right) \uparrow \\
+&\implies \frac{1}{\left(\sqrt{2\pi\sigma^2}\right)^n} \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n \left(y_i - \beta_0 - \beta_1 x_i\right)^2\right) \uparrow \\
+&\implies f(y_1,\dotsc,y_n;\beta_0,\beta_1,\sigma^2) \uparrow \text{.}
+\end{align*}
+$$
+By minimizing the sum of squared errors, we maximize the likelihood.
+The same is true of multiple linear regression.
+
+:::
+
+### Problem 2
+
+Suppose you regress depression, as measured by the Beck Depression Inventory (BDI),
+on total sleep over the last seven days.
+Call this Model 1.
+You then decide that you want to add another explanatory variable,
+namely, number of interactions with friends or family over the last seven
+days that lasted an hour or more.
+Unfortunately, not everyone in your data set has this second explanatory variable
+recorded.
+You proceed anyone,
+regression depression on sleep and social interactions for those participants
+who have data for all variables.
+Call this Model 2.
+
+Should you compare the likelihoods of Model 1 and Model 2?
+Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No.
+The models were fit on different samples.
+Model 1 was fit on the complete data set,
+and Model 2 was only fit on those participants who had all values for all
+variables.
+So, these likelihoods cannot be compared.
+
+:::
+
+
+
+
