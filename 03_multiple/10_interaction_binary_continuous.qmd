@@ -1,5 +1,5 @@
 ---
-title: "Interaction Between One Binary Variable and One Categorical Variable"
+title: "Interaction Between One Binary Variable and One Continuous Variable"
 execute:
   echo: false
 format: html
