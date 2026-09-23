@@ -1,0 +1,41 @@
+---
+title: "Likelihood Ratio Test"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the results of a likelihood ratio test.
+
+
+## Lesson
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
