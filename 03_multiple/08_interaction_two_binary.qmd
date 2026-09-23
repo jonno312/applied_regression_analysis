@@ -249,7 +249,81 @@ the association is weaker.
 
 :::
 
+### Problem 2
 
+Suppose you are conducting a clinical trial
+in which patients are randomized to drug or placebo.
+You measure the outcome before administration of the drug/placebo
+and again after.
+Define the following:
+
+- $Y_{ij}$ is the outcome for the $i$th patient
+at the $j$th time-point.
+So, $i\in\{1,2,3,\dotsc,n\}$ and $j\in\{1,2\}$.
+(If you haven't seen this notation before,
+$\in$ means "in" or "is in" or "is an element of".)
+- $D_i = 1$ if patient $i$ received the drug
+and $D_i = 0$ if patient $i$ received the placebo.
+- $A_2 = 1$ and $A_1 = 0$.
+You can think of $A$ as meaning "after".
+
+Suppose our model is
+$$
+Y_{ij} = \beta_0 + \beta_1 D_i + \beta_2 A_j + \beta_3 D_i A_j + \epsilon_{ij} \text{.}
+$$
+This is an example of non-independent data
+because we have two observations per individual.
+We can still interpret our coefficients if our first
+assumption is met, so let's assume it is.
+
+#### Part (a)
+
+What is the expected change in the outcome
+from before to after administration of the drug?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(Y_{ij}|D_i = 1,A_i = 1) - E(Y_{ij}|D_i = 1,A_i = 0) \\
+    &= \beta_0 + \beta_1 (1) + \beta_2 (1) + \beta_3 (1) (1) - (\beta_0 + \beta_1 (1) + \beta_2 (0) + \beta_3 (1) (0)) \\
+    &= \beta_0 + \beta_1  + \beta_2  + \beta_3  - (\beta_0 + \beta_1  ) \\
+    &= \beta_2 + \beta_3
+\end{align*}
+$$
+
+:::
+
+#### Part (b)
+
+What is the expected change in the outcome
+from before to after administration of the placebo?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(Y_{ij}|D_i = 0,A_i = 1) - E(Y_{ij}|D_i = 0,A_i = 0) \\
+    &= \beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1) - (\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)) \\
+    &= \beta_0  + \beta_2  - (\beta_0 ) \\
+    &= \beta_2 \\
+\end{align*}
+$$
+
+:::
+
+#### Part (c)
+
+What is the expected difference between the change in the outcome
+from before to after administration of the drug
+and the change in the outcome from before to after administration
+of the placebo?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$\beta_3$
+
+:::
 
 
 

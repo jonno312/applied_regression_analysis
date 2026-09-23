@@ -137,8 +137,201 @@ ggplot(data = d,
 If the moderation were stronger, these lines would have different slopes.
 
 
+## Problems
 
+### Problem 1
 
+Check out Figure 2 in
+"[Factors in Hand Surgery Access for Rheumatoid Arthritis Before vs After the Patient Protection and Affordable Care Act](https://jamanetwork.com/journals/jamasurgery/fullarticle/2814271)"
+(Dwivedi et al., 2024).
+This is an example of piecewise linear regression.
+For each procedure,
+the researchers
+fit a simple linear regression before the ACA
+and another one after.
+This can be achieved through interaction terms.
+
+In my opinion, linear regression was not the appropriate
+analysis for these data.
+As the authors write in the section "Outcomes of Interest",
+"Surgical incidence was defined as the number of hand surgeries performed
+each year divided by the population of each cohort."
+I think Poisson regression would be more appropriate
+for this outcome.
+We will learn about Poisson regression later in this course.
+
+For this problem, let's use an outcome that is better-suited
+for linear regression.
+Suppose our sample consists of $n$ patients who underwent
+hand surgery for rheumatoid arthritis (RA).
+Define the following:
+
+- $P_i$ is the pain level of patient $i$,
+measured on a scale from 1 to 100.
+- $Y_i$ is the number of years since 2014.
+Assume each patient was only measured once,
+so we only have one time value per person.
+- $S_i = 1$ if patient $i$ had a synovectomy
+and $S_i = 0$ otherwise.
+- $A_i = 1$ if $Y_i > 0$ and $A_i = 0$
+if $Y_i \le 0$.
+You can think of $A_i$ being an indicator
+that the observation was *after* 2014.
+
+Suppose our model is
+$$
+P_i = \beta_0 + \beta_1 Y_i + \beta_2 S_i + \beta_3 A_i + \beta_4 Y_i S_i + \beta_5 Y_i A_i + \beta_6 S_i A_i + \beta_7 Y_i S_i A_i + \epsilon_i \text{.}
+$$
+
+#### Part (a)
+
+What is the expected pain level for a patient
+who had arthrodesis
+$y$ years since 2014, where $y \le 0$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(P_i|Y_i = y,S_i = 0,A_i = 0) \\
+    &= \beta_0 + \beta_1 y + \beta_2 (0) + \beta_3 (0) + \beta_4 y (0) + \beta_5 y (0) + \beta_6 (0) (0) + \beta_7 y (0) (0) \\
+    &= \beta_0 + \beta_1 y 
+\end{align*}
+$$
+
+:::
+
+#### Part (b)
+
+What is the expected pain level for a patient
+who had denervation
+$y$ years since 2014, where $y > 0$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(P_i|Y_i = y,S_i = 0,A_i = 1) \\
+    &= \beta_0 + \beta_1 y + \beta_2 (0) + \beta_3 (1) + \beta_4 y (0) + \beta_5 y (1) + \beta_6 (0) (1) + \beta_7 y (0) (1) \\
+    &= \beta_0 + \beta_1 y  + \beta_3   + \beta_5 y   \\
+    &= (\beta_0 + \beta_3) + (\beta_1 + \beta_5) y
+\end{align*}
+$$
+
+:::
+        
+#### Part (c)
+
+What is the expected pain level for a patient
+who had a synovectomy
+$y$ years since 2014, where $y \le 0$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(P_i|Y_i = y,S_i = 1,A_i = 0) \\
+    &= \beta_0 + \beta_1 y + \beta_2 (1) + \beta_3 (0) + \beta_4 y (1) + \beta_5 y (0) + \beta_6 (1) (0) + \beta_7 y (1) (0) \\
+    &= \beta_0 + \beta_1 y + \beta_2   + \beta_4 y  \\
+    &= (\beta_0 + \beta_2) + (\beta_1 + \beta_4) y
+\end{align*}
+$$
+
+:::
+
+#### Part (d)
+
+What is the expected pain level for a patient
+who had a synovectomy
+$y$ years since 2014, where $y > 0$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(P_i|Y_i = y,S_i = 1,A_i = 1) \\
+    &= \beta_0 + \beta_1 y + \beta_2 (1) + \beta_3 (1) + \beta_4 y (1) + \beta_5 y (1) + \beta_6 (1) (1) + \beta_7 y (1) (1) \\
+    &= \beta_0 + \beta_1 y + \beta_2  + \beta_3  + \beta_4 y  + \beta_5 y  + \beta_6  + \beta_7 y  \\
+    &= (\beta_0 + \beta_2 + \beta_3 + \beta_6) + (\beta_1 + \beta_4 + \beta_5 + \beta_7) y 
+\end{align*}
+$$
+
+:::
+
+#### Part (e)
+
+What is the expected difference in pain levels
+between a patient who had a synovectomy in 2017
+and a patient who had sagittal band reconstruction,
+also in 2017?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(P_i|Y_i = 3,S_i = 1,A_i = 1) - E(P_i|Y_i = 3,S_i = 0,A_i = 1) \\
+    &= (\beta_0 + \beta_2 + \beta_3 + \beta_6) + (\beta_1 + \beta_4 + \beta_5 + \beta_7) (3) - ((\beta_0 + \beta_3) + (\beta_1 + \beta_5) (3)) \\
+    &= (\beta_2  + \beta_6) + ( \beta_4  + \beta_7) (3)  
+\end{align*}
+$$
+        
+:::
+
+### Problem 2
+
+This problem is about the study
+"[Association between Traffic Air Pollution and Reduced Forced Vital Capacity: A Study Using Personal Monitors for Outdoor Workers](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0163225)"
+(Santos et al., 2016).
+Define the following:
+
+- $F_i$ is the forced vital capacity (FVC) for the $i$th
+individual, measured in liters.
+- $D_i = 1$ if the $i$th individual was a taxi driver
+and $D_i = 0$ otherwise.
+- $C_i = 1$ if the $i$th individual was a traffic
+controller and $C_i = 0$ otherwise.
+- $Y_i$ is the number of years
+that the $i$th individual has worked in their job.
+
+Suppose our model is
+$$
+F_i = \beta_0 + \beta_1 D_i + \beta_2 C_i + \beta_3 Y_i + \beta_4 D_i Y_i + \beta_5 C_i Y_i + \epsilon_i \text{.}
+$$
+
+#### Part (a)
+
+Why don't we need terms for $D_i C_i$ and $D_i C_i Y_i$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$D_i$ and $C_i$ cannot both be 1,
+so any term with their product must be 0.
+Each individual has only one occupation
+(in this data set).
+:::
+
+#### Part (b)
+
+Interpret $\beta_2    + \beta_5  y$ in real-world terms.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is the expected difference in FVC
+between a traffic controller and a forest ranger,
+both of whom have worked in their job for $y$ years.
+
+$$
+\begin{align*}
+    &E(F_i|D_i = 0,C_i = 1,Y_i = y) - E(F_i|D_i = 0,C_i = 0,Y_i = y) \\
+    &= \beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 y + \beta_4 (0) y + \beta_5 (1) y \\
+    &\qquad - (\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 y + \beta_4 (0) y + \beta_5 (0) y) \\
+    &= \beta_0  + \beta_2  + \beta_3 y  + \beta_5  y  - (\beta_0  + \beta_3 y ) \\
+    &=  \beta_2    + \beta_5  y   \\
+\end{align*}
+$$
+
+:::
+        
 
 
 
