@@ -7,32 +7,105 @@ format: html
 
 ## Learning Objective
 
-Interpret the results of a likelihood ratio test.
+- Interpret the results of a likelihood ratio test.
+- Explain when it would be inappropriate to use a likelihood ratio test.
 
 
 ## Lesson
 
+A likelihood ratio test (LRT) is a hypothesis test that can only be used
+with nested models.
+Model A is nested within Model B if Model A estimates
+a subset of the parameters estimated by Model B.
 
+```{r}
+d <- Lock5Data::StudentSurvey
+d <- d[!is.na(d$GPA), ]
+d_complete <- d[complete.cases(d), ]
+```
+
+
+For example, `mod_02` below is nested within `mod_01`.
+This is because all the covariates in `mod_02` are also in `mod_01`.
+
+```{r}
+#| echo: true
+mod_01 <- lm(formula = GPA ~ Year + Sex + Smoke + Award + Exercise + TV +
+               Height + Weight + Siblings + BirthOrder + VerbalSAT + MathSAT +
+               Pulse + Piercings,
+             data = d_complete)
+mod_02 <- lm(formula = GPA ~ Year + VerbalSAT + MathSAT,
+             data = d_complete)
+```
+
+`mod_03` below is not nested within `mod_01` because it uses a covariate
+that isn't in `mod_01`.
+
+```{r}
+#| echo: true
+mod_03 <- lm(formula = GPA ~ Year + SAT,
+             data = d_complete)
+```
+
+The null hypothesis of the LRT is that the smaller model is the correct one,
+and any difference in fit is due to chance alone.
+The alternative hypothesis is that the fit of the larger model is better
+than can be explained by chance alone.
+
+Let's use the LRT to compare `mod_01` to `mod_02`.
+
+```{r}
+#| echo: true
+anova(mod_01,
+      mod_02,
+      test = "LRT")
+```
+
+The p-value is very small, so we can conclude that the larger model is better.
+
+What happens if we try to get R to conduct a hypothesis test with two
+non-nested models?
+
+```{r}
+#| echo: true
+anova(mod_01,
+      mod_03,
+      test = "LRT")
+```
+
+R was not able to determine that these models are not nested,
+which means *you* need to do that before trying to use this test.
 
 ## Problems
 
 ### Problem 1
 
-
+If you fail to reject the null hypothesis in an LRT,
+what should you do?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Generally you would conclude that the larger model is no better than
+the smaller one,
+and use the smaller one.
+We often prefer smaller models because they are easier to interpret
+and have greater power.
 
 :::
 
 ### Problem 2
 
-
+If I hadn't removed observations with missing data,
+and instead had fit `mod_02` on the data set with 345 observations
+instead of 331,
+could I still have used the LRT to compare the models?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+No.
+The likelihood ratio test, like its name implies,
+uses the likelihood.
+So, you can only use it to compare models that have been fit on the same data.
 
 :::
 
