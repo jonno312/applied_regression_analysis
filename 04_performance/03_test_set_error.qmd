@@ -1,0 +1,191 @@
+---
+title: "Test Set Error"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(caret)
+```
+
+## Learning Objective
+
+Define, use, and interpret the following terms:
+
+- Training set
+- Test set
+- Cross-validation
+
+
+## Lesson
+
+### Training Set and Test Set
+
+The gold standard method for checking if your model is overfit to your data
+is to measure the performance of the model on new data.
+If you see a degradation in performance between the original sample and the
+new data,
+that's evidence for overfitting.
+But what if you can't obtain new data?
+You can solve this problem by holding out a subset of the data set
+for eventual use in testing performance.
+This subset is called a "test set".
+The remaining data, which you use to fit your model,
+is called the "training set".
+
+Let's examine this in a real data set.
+The package `Lock5Data` has a data set with 362 observations from
+"an in-class survey given to introductory statistics students over several years."
+Let's try to predict GPA.
+Unfortunately, 17 students are missing GPA,
+so we'll have to remove them.
+
+```{r}
+d <- Lock5Data::StudentSurvey
+d <- d[!is.na(d$GPA), ]
+hist(x = d$GPA,
+     main = "",
+     xlab = "GPA")
+```
+
+The first thing I'm going to do is split the data into two subsets,
+the training set and the test set.
+I'm going to use the package `caret` to do this,
+because it automatically performs a stratified random split of the data.
+This ensures the training set and test set are not too dissimilar
+in terms of the outcome.
+For example, you wouldn't want (even by chance) to have the lowest GPAs
+in the training set and the highest GPAs in the test set.
+
+```{r}
+#| echo: true
+set.seed(3)
+in_train <- createDataPartition(y = d$GPA,
+                                p = 0.8,
+                                list = FALSE)
+d_train <- d[in_train, ]
+d_test <- d[-in_train, ]
+```
+
+I put 80% of the observations in the training set.
+There is not a hard-and-fast rule about what percentage of the observations
+to put in the training set.
+As the size of your original data set grows,
+you can put a smaller percentage in the test set,
+thus allowing more data for training.
+
+Now that we've split our data, I'm going to train two models.
+The first is going to contain every possible variable.
+I'm not going to think, I'm just going to throw everything in.
+
+```{r}
+#| echo: true
+mod_01 <- lm(formula = GPA ~ Year + Sex + Smoke + Award + Exercise + TV +
+               Height + Weight + Siblings + BirthOrder + VerbalSAT + MathSAT +
+               Pulse + Piercings,
+             data = d_train)
+```
+
+For the second model, I'm only going to include a couple variables that I think
+could reasonably be related to GPA.
+
+```{r}
+#| echo: true
+mod_02 <- lm(formula = GPA ~ Year + VerbalSAT + MathSAT,
+             data = d_train)
+```
+
+I'm not going to check any assumptions because I'm just pretending
+that I only care about prediction.
+I don't want to interpret any coefficients or p-values;
+I just want to measure how well the two models predict new data.
+
+As a measure of performance, I'm going to use root mean squared error (RMSE):
+$$
+\sqrt{\frac{1}{m}\sum_{j=1}^m \left(Y_j - \hat{Y}_j\right)^2} \text{.}
+$$
+Here $m$ is the number of observations in the test set
+and $\hat{Y}_j$ is the predicted outcome for the $j$th observation.
+I like the RMSE for continuous outcomes because it's in the same units
+as the outcome.
+
+```{r}
+#| echo: true
+y_hat_01 <- predict(object = mod_01,
+                    newdata = d_test)
+y_hat_02 <- predict(object = mod_02,
+                    newdata = d_test)
+RMSE_01 <- sqrt(mean(x = (d_test$GPA - y_hat_01)^2,
+                     na.rm = TRUE))
+RMSE_02 <- sqrt(mean((d_test$GPA - y_hat_02)^2))
+RMSE_01
+RMSE_02
+```
+
+The smaller model, Model 2, has slightly lower error than the larger model,
+meaning it does a slightly better job predicting new data.
+(Note that I had to remove missing values from the fitted values
+from Model 1.
+It must've been the case that some observations in the test set
+didn't have values for all the covariates used in Model 1,
+so it was impossible to obtain fitted values for them.)
+
+How did both models perform in the training set?
+
+```{r}
+#| echo: true
+sqrt(mean(x = (d_train$GPA - predict(object = mod_01,
+                                     newdata = d_train))^2,
+          na.rm = TRUE))
+sqrt(mean((d_train$GPA - mod_02$fitted.values)^2))
+```
+
+The larger model, Model 1, has slightly lower error in the training set
+than the smaller model.
+This is evidence of overfitting;
+the big model did better in the training set but worse in the test set.
+It failed to generalize to new data.
+
+### Validation Set
+
+Sometimes, people will split the data into three subsets:
+a training set, a validation set, and a test set.
+Models are fit on the training set
+and their performance is measured in the validation set.
+Then, changes are made to the models
+and they are re-fit in the training set and re-evaluated in the validation set.
+This process proceeds iteratively until a final set of models is obtained.
+The performance of these final models is then measured in the test set.
+
+### Cross-Validation
+
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
