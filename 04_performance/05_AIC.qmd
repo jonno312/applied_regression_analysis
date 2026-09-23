@@ -1,0 +1,99 @@
+---
+title: "AIC"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Use the AIC to evaluate models.
+
+
+## Lesson
+
+### Formula
+
+The Akaike information criterion (AIC) is a statistic
+that is used to compare the performance of different models.
+It is computed as follows:
+$$
+\text{AIC} = 2k - 2 \log \hat{\mathcal{L}} \text{.}
+$$
+In this formula, $k$ is the number of parameters being estimated.
+For multiple linear regression, $k = p + 2$;
+this counts the beta coefficients
+($p + 1$, for the number of covariates and the intercept)
+and $\sigma^2$.
+
+$\hat{\mathcal{L}}$ is the maximized likelihood of the data,
+i.e., the value of the likelihood when you set the paramter(s)
+equal to the MLE(s).
+
+### Interpretation
+
+A higher likelihood is better, so we want $\hat{\mathcal{L}}$
+to be big.
+Since $f(x) = \log x$ is an increasing function (see below),
+a big $\hat{\mathcal{L}}$ corresponds to a big
+$\log \hat{\mathcal{L}}$,
+so we want $\log \hat{\mathcal{L}}$ to be big.
+This means we want $- 2 \log \hat{\mathcal{L}}$
+to be very small.
+This means we want the AIC to be small.
+
+```{r}
+curve(expr = log,
+      from = 0.01,
+      to = 2)
+abline(h = 0,
+       v = 0)
+abline(v = 1,
+       lty = 2)
+```
+
+Why do we add $2k$ to the AIC?
+This is how we penalize adding covariates to the model,
+similar to with the adjusted $R^2$.
+We add $2k$ to prevent overfitting.
+
+### Example
+
+Let's return to the data set collected from introductory statistics
+students.
+
+```{r}
+#| echo: true
+d <- Lock5Data::StudentSurvey
+```
+
+I'd like to fit a large model and a small model,
+but there's a problem.
+I know some observations in this data set are missing values
+for some variables.
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
