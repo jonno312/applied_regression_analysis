@@ -161,28 +161,74 @@ The performance of these final models is then measured in the test set.
 
 ### Cross-Validation
 
+Cross-validation is another method for testing the performance of
+a model in "new" data.
+In $k$-fold cross-validation,
+the original data set is split into $k$ subsets.
+Then, the model is fit $k$ times.
+In the first iteration,
+the model is fit on folds 2 through $k$ and tested on fold 1.
+In the second iteration,
+the model is fit on fold 1 and folds 3 through $k$ and tested on fold 2.
+After $k$ iterations, the test error is summed (or averaged).
+The table below depicts this process for $k = 5$.
 
+| Iteration | Fold 1 | Fold 2 | Fold 3 | Fold 4 | Fold 5 |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | [Test]{style="color: red;"} | Train | Train | Train | Train |
+| 2 | Train | [Test]{style="color: red;"} | Train | Train | Train |
+| 3 | Train | Train | [Test]{style="color: red;"} | Train | Train |
+| 4 | Train | Train | Train | [Test]{style="color: red;"} | Train |
+| 5 | Train | Train | Train | Train | [Test]{style="color: red;"} |
 
+Just a quick note:
+If you're using RMSE as your measure of error
+and you're doing cross-validation,
+you shouldn't add the $k$ RMSEs directly.
+Instead, you should add the sums of squared error
+and only take a square root after.
+
+Sometimes, people will split the original data set into 
+a training set and a test set
+and then do cross-validation on the training set.
+This is common for regularized regression (LASSO and ridge),
+where you have to choose a penalty parameter,
+and ensemble methods, where you have to choose model weights.
 
 ## Problems
 
 ### Problem 1
 
-
+When you split your data into a training set and a test set,
+which plays the role of "new" data?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+The test set.
+You don't use it to fit the model(s),
+only to test the performance of the model(s).
 
 :::
 
 ### Problem 2
 
-
+In $k$-fold cross validation, how many times does each observation
+get used for testing?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+Once.
 
+:::
+
+### Problem 2
+
+In $k$-fold cross validation, how many times does each observation
+get used for training?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$k - 1$ times.
 
 :::
 
