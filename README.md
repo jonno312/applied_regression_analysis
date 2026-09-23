@@ -72,6 +72,8 @@ more on concepts and less on math.
     2. [R-Squared](04_performance/02_r2.qmd)
     3. [Test Set Error](04_performance/03_test_set_error.qmd)
     4. [Likelihood](04_performance/04_likelihood.qmd)
+    5. [AIC](04_performance/05_AIC.qmd)
+    6. [Likelihood Ratio Test](04_performance/06_LRT.qmd)
 
 Appendices
 
