@@ -65,6 +65,7 @@ students.
 ```{r}
 #| echo: true
 d <- Lock5Data::StudentSurvey
+d <- d[!is.na(d$GPA), ]
 ```
 
 I'd like to fit a large model and a small model,
@@ -72,25 +73,160 @@ but there's a problem.
 I know some observations in this data set are missing values
 for some variables.
 
+```{r}
+#| echo: true
+colSums(is.na(d))
+```
+
+If I fit a model with `Year`, `VerbalSAT`, and `MathSAT`,
+I can use all 345 observations.
+If I fit a model with `Height`,
+the maximum number of observations I can use is $345 - 7 = 338$.
+The two models will be based on two different samples,
+meaning I can't compare their likelihoods,
+meaning I can't compare their AICs.
+So, if I want to use the AIC to compare two models, I have to make sure
+they are fit on exactly the same samples first.
+In order to achieve this for this example,
+I'm going to first create a new data set with complete cases,
+i.e., observations with no missing values.
+
+```{r}
+#| echo: true
+d_complete <- d[complete.cases(d), ]
+```
+
+Now I can fit my two models.
+
+```{r}
+#| echo: true
+mod_01 <- lm(formula = GPA ~ Year + Sex + Smoke + Award + Exercise + TV +
+               Height + Weight + Siblings + BirthOrder + VerbalSAT + MathSAT +
+               Pulse + Piercings,
+             data = d_complete)
+mod_02 <- lm(formula = GPA ~ Year + VerbalSAT + MathSAT,
+             data = d_complete)
+```
+
+Before looking at their AICs, I'm going to look at their
+log-likelihooods.
+The log-likelihood is just the log of the likelihood;
+in this case, it's the log of the maximized likelihood.
+Statisticians often prefer the log-likelihood over the likelihood
+for reasons that I won't go into here.
+
+```{r}
+logLik(mod_01)
+logLik(mod_02)
+```
+
+Note that the larger model, Model 1, has the higher log likelihood.
+
+Now let's look at the AICs.
+
+```{r}
+AIC(mod_01)
+AIC(mod_02)
+```
+
+Model 1 has the lower AIC!
+This is a surprise to me.
+It means that, according to the AIC,
+the improvement in fit for the larger model is "worth" all those extra variables.
+This contrasts with the conclusion from the test set error.
+
+### Warnings
+
+The help file for the R function `AIC`, accessible with the command `?AIC`,
+has some helpful warnings:
+
+- "The theory of AIC requires that the log-likelihood
+has been maximized:
+whereas AIC can be computed for models not fitted by maximum likelihood,
+their AIC values should not be compared."
+- "Examples of models not 'fitted to the same data' are where the response
+is transformed (accelerated-life models are fitted to log-times)
+and where contingency tables have been used to summarize data."
+
+I'm not sure whether the first point will come up in this class,
+but it's worth keeping in mind when you reach more advanced analyses.
+The second point is very important for this class;
+when using the AIC to compare models,
+make sure those models have the same outcome.
+If you transform your outcome, for example, by logging it,
+you shouldn't use the AIC to compare the model with the transformed outcome
+to the model with the untransformed outcome.
+
 ## Problems
 
 ### Problem 1
 
-
+In the example above, I didn't check any assumptions for the two models.
+Should I have? Why or why  not?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+Yes, I should've.
+The AIC is based on the likelihood, which is based on all of our
+assumptions being met.
+So, I should've checked the assumptions for both models.
 
+```{r}
+# Model 1
+plot(x = mod_01$fitted.values,
+     y = mod_01$residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Model 1")
+abline(h = 0,
+       col = "red")
+boxplot(x = mod_01$residuals,
+        ylab = "Residuals",
+        main = "Model 1")
+hist(x = mod_01$residuals,
+     xlab = "Residuals",
+     main = "Model 1")
+qqnorm(y = mod_01$residuals,
+       main = "Model 1")
+qqline(mod_01$residuals)
+
+# Model 2
+plot(x = mod_02$fitted.values,
+     y = mod_02$residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     main = "Model 2")
+abline(h = 0,
+       col = "red")
+boxplot(x = mod_02$residuals,
+        ylab = "Residuals",
+        main = "Model 2")
+hist(x = mod_02$residuals,
+     xlab = "Residuals",
+     main = "Model 2")
+qqnorm(y = mod_02$residuals,
+       main = "Model 2")
+qqline(mod_02$residuals)
+
+```
+
+Based on the plots, it seems like the linearity, homoscedasticity,
+and normality assumptions are met for both models.
+I don't know much about how the data were collected,
+but I'm willing to go along with the assumption that the observations
+are independent.
 
 :::
 
 ### Problem 2
 
-
+If Model A has an AIC of 400 and Model B has an AIC of 405,
+which is better?
+Assume all relevant assumptions have been met.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Model A is better because it has the lower AIC.
 
 :::
 
