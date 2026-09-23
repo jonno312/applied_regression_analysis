@@ -194,6 +194,13 @@ So, the likelihood should really be reserved for when you're willing to make
 the argument that you know the underlying distribution of the data.
 (Some statisticians might disagree with me on this point.)
 
+### Maximum-Likelihood Estimator (MLE)
+
+The value of the parameter that maximizes the likelihood for a given data set
+is called the maximum-likelihood estimator (MLE).
+There is a ton of statistical theory around MLEs.
+They have a lot of convenient and desirable properties.
+
 ## Problems
 
 ### Problem 1
