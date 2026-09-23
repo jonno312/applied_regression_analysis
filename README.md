@@ -70,6 +70,8 @@ more on concepts and less on math.
 4. Model Performance
     1. [Overfitting](04_performance/01_overfitting.qmd)
     2. [R-Squared](04_performance/02_r2.qmd)
+    3. [Test Set Error](04_performance/03_test_set_error.qmd)
+    4. [Likelihood](04_performance/04_likelihood.qmd)
 
 Appendices
 
