@@ -105,10 +105,8 @@ but `mod_02` is a continuous function of these two variables.
 
 :::
 
-The null hypothesis of the LRT is that the smaller model is the correct one,
-and any difference in fit is due to chance alone.
-The alternative hypothesis is that the fit of the larger model is better
-than can be explained by chance alone.
+The null hypothesis of the LRT is that the smaller model is the correct one.
+The alternative hypothesis is that the larger model is the correct one.
 
 Let's use the LRT to compare `mod_01` to `mod_02`.
 
