@@ -99,12 +99,20 @@ $$
 \log (ab) = \log a + \log b \text{.}
 $$
 
+
 The second property is that
 $$
 a \log b = \log b^a \text{.}
 $$
 
-
+Note that, together, these imply that
+$$
+\begin{align*}
+\log \frac{a}{b} &= \log (a b^{-1}) \\
+&= \log a + \log b^{-1} \\
+&= \log a - \log b \text{.}
+\end{align*}
+$$
 
 ### Arguments for Why the Properties Are True
 
