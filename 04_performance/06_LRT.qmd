@@ -5,6 +5,7 @@ execute:
 format: html
 ---
 
+
 ## Learning Objective
 
 - Interpret the results of a likelihood ratio test.
@@ -15,11 +16,15 @@ format: html
 
 A likelihood ratio test (LRT) is a hypothesis test that can only be used
 with nested models.
-Model A is nested within Model B if Model A estimates
-a subset of the parameters estimated by Model B.
+Nesting can get somewhat technical,
+but this statement will get you pretty far:
+If Model A estimates
+a subset of the parameters estimated by Model B,
+then Model A is nested within Model B.
 
 ```{r}
 d <- Lock5Data::StudentSurvey
+d$MathSATHigher <- as.integer(d$MathSAT > d$VerbalSAT)
 d <- d[!is.na(d$GPA), ]
 d_complete <- d[complete.cases(d), ]
 ```
@@ -30,22 +35,75 @@ This is because all the covariates in `mod_02` are also in `mod_01`.
 
 ```{r}
 #| echo: true
-mod_01 <- lm(formula = GPA ~ Year + Sex + Smoke + Award + Exercise + TV +
+mod_01 <- lm(formula = GPA ~ Sex + Smoke + Award + Exercise + TV +
                Height + Weight + Siblings + BirthOrder + VerbalSAT + MathSAT +
                Pulse + Piercings,
              data = d_complete)
-mod_02 <- lm(formula = GPA ~ Year + VerbalSAT + MathSAT,
+mod_02 <- lm(formula = GPA ~ VerbalSAT + MathSAT,
              data = d_complete)
 ```
 
-`mod_03` below is not nested within `mod_01` because it uses a covariate
-that isn't in `mod_01`.
+`mod_03` below is not nested within `mod_01`.
+`MathSATHigher` is a variable I created that equals 1 if the Math SAT score
+is higher than the Verbal SAT score and 0 otherwise.
 
 ```{r}
 #| echo: true
-mod_03 <- lm(formula = GPA ~ Year + SAT,
+mod_03 <- lm(formula = GPA ~ MathSATHigher,
              data = d_complete)
 ```
+
+If you want to know what I mean by "Nesting can get somewhat technical,"
+click on the callout below.
+
+::: {.callout-caution collapse="true"}
+## Caution: Math
+
+`mod_04`, below, is nested within `mod_01` and `mod_02`,
+even though it contains a covariate (`SAT`) that isn't in `mod_01` or `mod_02`.
+
+```{r}
+#| echo: true
+mod_04 <- lm(formula = GPA ~ SAT,
+             data = d_complete)
+```
+
+This is because `SAT = VerbalSAT + MathSAT`,
+and both `mod_01` and `mod_02` contain `VerbalSAT` and `MathSAT`.
+
+In order to explain this further, I'm going to use `mod_02` instead
+of `mod_01` because `mod_02` is simpler.
+`mod_02` is this:
+$$
+E\left(\texttt{GPA}\middle|\texttt{VerbalSAT},\texttt{MathSAT}\right) = \beta_0 + \beta_1 \texttt{VerbalSAT} + \beta_2 \texttt{MathSAT} \text{.}
+$$
+
+`mod_04` is this:
+$$
+\begin{align*}
+E\left(\texttt{GPA}\middle|\texttt{SAT}\right) &= \beta_0 + \beta_3 \texttt{SAT} \\
+&= \beta_0 + \beta_3 \left(\texttt{VerbalSAT} + \texttt{MathSAT}\right) \\
+&= \beta_0 + \beta_3 \texttt{VerbalSAT} + \beta_3 \texttt{MathSAT} \text{.} \\
+\end{align*}
+$$
+
+So, `mod_04` is `mod_02` but with the additional constraint that $\beta_1 = \beta_2$.
+This counts as nesting.
+
+What about `mod_03`?
+`mod_03` is
+$$
+\begin{align*}
+E\left(\texttt{GPA}\middle|\texttt{MathSATHigher}\right) &= \beta_0 + \beta_4  \texttt{MathSATHigher.} \\
+\end{align*}
+$$
+
+There's no way to write `mod_03` as a version of `mod_2`,
+but with some additional constraint.
+`mod_03` is a discontinuous function of `VerbalSAT` and `MathSAT`,
+but `mod_02` is a continuous function of these two variables.
+
+:::
 
 The null hypothesis of the LRT is that the smaller model is the correct one,
 and any difference in fit is due to chance alone.
