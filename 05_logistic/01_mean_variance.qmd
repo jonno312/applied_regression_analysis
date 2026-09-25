@@ -1,0 +1,106 @@
+---
+title: "Mean and Variance of a Bernoulli Random Variable"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+State the mean and variance of a Bernoulli random variable.
+
+
+## Lesson
+
+A Bernoulli random variable is a random variable that can only take on
+two possible values: 0 and 1.
+You may have heard this described as a binomial random variable with one trial,
+and that's correct.
+The binomial distribution is an extension of the Bernoulli;
+if you added a bunch of independent Bernoulli random variables together,
+the result would follow a binomial distribution.
+
+The Bernoulli distribution has one parameter: $p$.
+It's the probability that the Bernoulli random variable equals 1.
+To reiterate, if $X\sim\text{Bernoulli}(p)$ then
+$$
+\begin{align*}
+P(X = 1) &= p \\
+P(X = 0) &= 1 - p \text{.}
+\end{align*}
+$$
+
+Let's compute the mean:
+$$
+\begin{align*}
+E(X) &= \sum_{x=0}^1 x P(X = x) \\
+&= 0 P(X = 0) + 1 P(X = 1) \\
+&= P(X = 1) \\
+&= p \text{.}
+\end{align*}
+$$
+So, the Bernoulli distribution's sole parameter is also its expected value.
+
+Now let's compute the variance:
+$$
+\begin{align*}
+Var(X) &= E\left(\left(X - E(X)\right)^2\right) \\
+&= \sum_{x=0}^1 \left(x - p\right)^2 P(X = x) \\
+&= (0 - p)^2 P(X = 0) + (1 - p)^2 P(X = 1) \\
+&= p^2 (1-p) + (1-p)^2 p \\
+&= p(1-p)(p + 1-p) \\
+&= p(1-p) \text{.}
+\end{align*}
+$$
+
+Note that there's a relationship between the mean and variance.
+Let's plot the variance as a function of the mean.
+
+```{r}
+temp <- function(x){
+  x * (1 - x)
+}
+curve(expr = temp,
+      from = 0,
+      to = 1,
+      xlab = "p",
+      ylab = "p(1-p)")
+```
+
+This plot is telling us that the variability in the outcome will be highest
+when $p = 0.5$ and lowest when $p = 0$ or $p = 1$.
+Does this make sense intuitively?
+
+When $p$ is near 0, the outcome will almost certainly be 0.
+If we have a sample of real data,
+almost all of the observations will be 0.
+So, the variability will be low.
+Similarly, if $p$ is near 1, the outcome will almost certainly be 1.
+In a sample of real data,
+almost all the observations will be 1.
+So, again, the variability will be low.
+If $p = 0.5$, each observation is equally likely to be 0 or 1.
+In a real data set, about half of the observations should be 0
+and about half should be 1. This is the most possible variance you could have.
+
+## Problems
+
+### Problem 1
+
+If $X\sim\text{Bernoulli}(p)$,
+is it possible for $X$ to equal its own expected value?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Only in the trivial case where $p = 0$,
+meaning it's impossible to observe a 1,
+or $p = 1$, meaning it's impossible to observe a 0.
+So long as $0 < p < 1$, $X \ne E(X)$.
+
+:::
+
+
+
+
+
+
