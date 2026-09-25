@@ -1,0 +1,151 @@
+---
+title: "Odds"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Define odds.
+- Compare and contrast odds and probability.
+- Explain why odds ratios might be useful in case-control studies.
+
+
+## Lesson
+
+### Definition
+
+If $p$ is a probability (also called a risk or chance), then
+$$
+\frac{p}{1-p}
+$$
+is an odds.
+
+Odds are often used in betting.
+For example, someone might say, "Odds are 3-to-1 that this horse will win
+the race on Sunday."
+If a horse has 3-to-1 odds of winning, then
+$$
+\begin{align*}
+\frac{p}{1-p} &= \frac{3}{1} \\
+p &= 3(1-p) \\
+p &= 3 - 3p \\
+4p &= 3 \\
+p &= \frac{3}{4} \text{,}
+\end{align*}
+$$
+and the horse's probability of winning is $0.75$.
+
+As you can see, the odds is not equal to the probability;
+3 is not the same as 3/4.
+There is, however, a case where the two are approximately the same.
+This happens when the probability is very small.
+If $p$ is near zero, then
+$$
+\frac{p}{1-p} \approx \frac{p}{1} = p \text{.}
+$$
+So, for rare events, the odds is a not-bad approximation of the risk.
+
+### Case-Control Studies
+
+In public health, we often want to estimate the probability of a disease
+given some risk factor.
+Let's call this probability $P(D = 1|F)$.
+For simplicity, let's assume both $D$ and $F$ are binary;
+either you have the disease or you don't,
+and either you have the risk factor or you don't.
+
+It's often desirable to estimate a risk ratio, i.e.,
+$$
+\frac{P(D = 1|F = 1)}{P(D = 1|F = 0)} \text{.}
+$$
+This allows us to compare the probability of disease for people who have the
+risk factor to the probability of disease for people who don't
+have the risk factor.
+If the risk ratio above is 1.5,
+then people who have the risk factor are 50% more likely to get the disease
+than people who don't have the risk factor.
+
+In a case-control study, we can't estimate the risk ratio.
+This is because, in a case-control study, people are recruited conditional
+on their disease status.
+Then we estimate the probability of the risk factor, conditional on disease status.
+In other words, we estimate $P(F = 1|D = 1)$,
+which is not equal to $P(D = 1|F = 1)$.
+
+This is where odds come in.
+Suppose the disease is very rare, so
+$$
+\begin{align*}
+P(D = 1|F = 1) &\approx 0 \\
+P(D = 1|F = 0) &\approx 0 \text{.}
+\end{align*}
+$$
+Then the probabilities are approximately equal to the corresponding odds, i.e.,
+$$
+\begin{align*}
+P(D = 1|F = 1) &\approx \frac{P(D = 1|F = 1)}{1 - P(D = 1|F = 1)} \\
+&= \frac{P(D = 1|F = 1)}{P(D = 0|F = 1)} \\
+P(D = 1|F = 0) &\approx \frac{P(D = 1|F = 0)}{1 - P(D = 1|F = 0)} \\
+&= \frac{P(D = 1|F = 0)}{P(D = 0|F = 0)} \text{.}
+\end{align*}
+$$
+Then the risk ratio is
+$$
+\begin{align*}
+\frac{P(D = 1|F = 1)}{P(D = 1|F = 0)} &\approx \frac{\frac{P(D = 1|F = 1)}{P(D = 0|F = 1)}}{\frac{P(D = 1|F = 0)}{P(D = 0|F = 0)}} \\
+&= \frac{\frac{P(D = 1,F = 1)/P(F = 1)}{P(D = 0,F = 1)/P(F = 1)}}{\frac{P(D = 1,F = 0)/P(F = 0)}{P(D = 0,F = 0)/P(F = 0)}} \\
+&= \frac{\frac{P(D = 1,F = 1)}{P(D = 0,F = 1)}}{\frac{P(D = 1,F = 0)}{P(D = 0,F = 0)}} \\
+&= \frac{P(D = 1,F = 1)}{P(D = 0,F = 1)} \frac{P(D = 0,F = 0)}{P(D = 1,F = 0)} \\
+&= \frac{P(D = 1,F = 1)}{P(D = 1,F = 0)} \frac{P(D = 0,F = 0)}{P(D = 0,F = 1)} \\
+&= \frac{\frac{P(D = 1,F = 1)}{P(D = 1,F = 0)}}{\frac{P(D = 0,F = 1)}{P(D = 0,F = 0)}}  \\
+&= \frac{\frac{P(D = 1,F = 1)/P(D = 1)}{P(D = 1,F = 0)/P(D = 1)}}{\frac{P(D = 0,F = 1)/P(D = 0)}{P(D = 0,F = 0)/P(D = 0)}}  \\
+&= \frac{\frac{P(F=1|D=1)}{P(F=0|D=1)}}{\frac{P(F =1|D=0)}{P(F=0|D=0)}} \text{.}  \\
+\end{align*}
+$$
+
+All that is to say that we can approximate the relative risk,
+which we can't estimate directly,
+with an odds ratio, which we can estimate directly.
+
+## Problems
+
+### Problem 1
+
+Can we use odds to approximate this risk difference:
+$$
+P(D = 1|F = 1) - P(D = 1|F = 0) \text{?}
+$$
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No. Even if the disease is rare, this is as far as we can get:
+$$
+\begin{align*}
+P(D = 1|F = 1) - P(D = 1|F = 0) &\approx \frac{P(D = 1|F = 1)}{P(D = 0|F = 1)} - \frac{P(D = 1|F = 0)}{P(D = 0|F = 0)} \\
+&= \frac{P(D = 1,F = 1)}{P(D = 0,F = 1)} - \frac{P(D = 1,F = 0)}{P(D = 0,F = 0)} \\
+&= \frac{P(D = 1,F = 1)P(D = 0,F = 0) - P(D = 1,F = 0)P(D = 0,F = 1)}{P(D = 0,F = 1) P(D = 0,F = 0)} \text{.}
+\end{align*}
+$$
+
+:::
+
+### Problem 2
+
+If $p = 0.5$, what is the odds?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+\frac{0.5}{1 - 0.5} &= \frac{0.5}{0.5} \\
+&= 1
+\end{align*}
+$$
+
+:::
+
+
+
+

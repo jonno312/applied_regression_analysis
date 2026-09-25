@@ -1,0 +1,143 @@
+---
+title: "Assumptions of Logistic Regression"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the assumptions of logistic regression.
+
+
+## Lesson
+
+### Assumptions
+
+Logistic regression has the following assumptions:
+
+1. $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{Bernoulli}(p_i)$.
+2. $\log\frac{p_i}{1-p_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+3. The observations are iid.
+
+We've already talked about the Bernoulli distribution
+and what it means for observations to be iid,
+but the weird function merits some unpacking.
+
+### Logit Function
+
+The function
+$$
+f(p) = \log\frac{p}{1-p}
+$$
+is called the logit or log-odds function.
+A graph is below.
+
+```{r}
+curve(expr = qlogis,
+      from = 0.001,
+      to = 0.999,
+      xlab = "p",
+      ylab = "logit(p)")
+abline(h = 0,
+       v = 0)
+```
+
+It's probably more illuminating if we look at the inverse function,
+known as the "expit" function.
+
+### Expit Function
+
+The expit function is the inverse of the logit function:
+$$
+g(q) = \frac{\exp(q)}{1 + \exp(q)} \text{.}
+$$
+Here's the work if you're curious:
+$$
+\begin{align*}
+q &= \log \frac{p}{1-p} \\
+\exp(q) &= \frac{p}{1-p} \\
+\exp(q) (1-p) &= p \\
+\exp(q) - p \exp(q) &= p \\
+\exp(q) &= p\exp(q) + p \\
+\exp(q) &= p\left(\exp(q) + 1\right) \\
+\frac{\exp(q)}{1 + \exp(q)} &= p \text{.}
+\end{align*}
+$$
+
+You might also see the expit function written in a different but equivalent
+manner:
+$$
+\begin{align*}
+g(q) &= \frac{\exp(q)}{1 + \exp(q)} \\
+&= \frac{\exp(q)}{1 + \exp(q)} \frac{\exp(-q)}{\exp(-q)} \\
+&= \frac{1}{\exp(-q) + 1} \text{.}
+\end{align*}
+$$
+
+Again, we can look at a graph:
+```{r}
+curve(expr = plogis,
+      from = -6,
+      to = 6,
+      xlab = "q",
+      ylab = "expit(q)")
+```
+
+So, the assumption
+$$
+\log\frac{p_i}{1-p_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}
+$$
+can also be written as
+$$
+p_i = \frac{1}{1 + \exp\left(-\left(\beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}\right)\right)} \text{.}
+$$
+
+Why do we do this?
+There are a few reasons.
+First, note that the expit function can take in any value
+between $-\infty$ and $+\infty$ (exclusive).
+This means that
+$\beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$
+can be any number, positive or negative.
+Second, the output of the expit function is between 0 and 1.
+
+If we were to use linear regression
+and assume $E(Y_i|X_{i1},\dotsc,X_{ip}) = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$,
+we might find that
+$\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_{i1} + \cdots + \hat{\beta}_p X_{ip}$
+is below zero or above one,
+which doesn't make sense,
+since $\hat{Y}_i = \hat{E}(Y_i|X_{i1},\dotsc,X_{ip})$ should be a probability.
+
+There are other reasons to use this weird function,
+which we will get to later.
+
+## Problems
+
+### Problem 1
+
+In the logit function, what is the base of the logarithm?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The special number $e$.
+The logarithm with base $e$ is sometimes called the natural logarithm.
+
+:::
+
+### Problem 2
+
+What are the possible values the logit function can produce?
+You might remember this as the "range" of the function.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Any real number, i.e., any positive or negative number,
+even those that can't be represented by fractions.
+
+:::
+
+
+
+
