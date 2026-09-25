@@ -1,0 +1,142 @@
+---
+title: "Violated Assumptions of Linear Regression"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Identify which of the four assumptions of linear regression
+are automatically violated when the outcome is Bernoulli.
+
+
+## Lesson
+
+If our outcome variable is Bernoulli,
+some (but not all) of the assumptions of linear regression are automatically
+violated.
+
+### Linearity
+
+The linearity assumption of linear regression is not automatically violated
+when we have a binary outcome.
+Consider this example:
+I can simulate $X_1,\dotsc,X_{100}\overset{\text{iid}}{\sim}\text{uniform}(0,1)$
+and then simulate
+Bernoulli random variables $Y_1,\dotsc,Y_{100}$
+such that $E(Y_i|X_i = x) = x$.
+In this case, the mean of the outcome is a linear function
+of the explanatory variable, which is exactly the linearity assumption.
+
+```{r}
+#| echo: true
+set.seed(2)
+n <- 1e2
+x <- runif(n)
+y <- rbinom(n = n,
+            size = 1,
+            prob = x)
+mod_01 <- lm(y ~ x)
+plot(x = x,
+     y = y)
+abline(mod_01,
+       col = "blue")
+summary(mod_01)
+```
+
+
+I admit the residual scatterplot looks weird, but I know from having simulated
+the data that the linearity assumption is met.
+
+```{r}
+plot(x = x,
+     y = mod_01$residuals,
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+### IID
+
+There's nothing about a binary outcome that makes iid data impossible.
+In fact, the type of outcome has nothing to do with whether the data
+are iid or not.
+
+### Homoscedasticity
+
+Recall that if $Y\sim\text{Bernoulli}(p)$ then $E(Y) = p$ and $Var(Y) = p(1-p)$.
+So, if $Y\in\{0,1\}$ and $E(Y|X)$ is a function of $X$,
+then $Var(Y|X) = E(Y|X)\left(1 - E(Y|X)\right)$ will be a function of $X$.
+This is a violation of homoscedasticity or equal variance.
+If the variance depends on the explanatory variable(s),
+then the variance is not constant.
+The only way the homoscedasticity assumption would not be violated
+is if $X$ was not actually random and could only take on one value,
+or if $Y$ and $X$ had no relationship.
+
+### Normality
+
+If $Y$ is Bernoulli, it can only take on the values of 0 or 1.
+If $Y = \beta_0 + \beta_1 X_{1} + \cdots + \beta_p X_{p} + \epsilon$,
+$\epsilon$ can only take on two values.
+Either
+$$
+\epsilon = 1 - \left(\beta_0 + \beta_1 X_{1} + \cdots + \beta_p X_{p}\right)
+$$
+or
+$$
+\epsilon = 0 - \left(\beta_0 + \beta_1 X_{1} + \cdots + \beta_p X_{p}\right) \text{.}
+$$
+So, obviously $\epsilon$ cannot be normal.
+
+
+
+## Problems
+
+### Problem 1
+
+If you perform linear regression with a binary outcome,
+are the coefficient estimates unbiased?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This depends.
+The linearity assumption would have to be met.
+As seen in the residual scatterplot above,
+this is kind of difficult to check with a residual scatterplot.
+You could try checking this with a calibration plot,
+which we'll talk about in a later section.
+
+:::
+
+### Problem 2
+
+If you perform linear regression with a binary outcome,
+are the standard errors correct?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No the default standard errors, because the homoscedasticity assumption is violated.
+You could use robust/sandwich standard errors instead.
+
+:::
+
+### Problem 3
+
+If you perform linear regression with a binary outcome,
+are the p-values correct?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Not the default p-values, because they're computed assuming homoscedasticity,
+which is violated.
+If you used robust/sandwich standard errors and had a large sample size
+(and if the linearity and iid assumptions were met),
+you could trust the p-values.
+
+:::
+
+
+
+
