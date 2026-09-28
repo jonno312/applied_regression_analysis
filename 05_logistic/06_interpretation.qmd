@@ -1,0 +1,256 @@
+---
+title: "Interpretation"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients in logistic regression.
+
+
+## Lesson
+
+### Intercept
+
+Recall that, in logistic regression, we assume
+$$
+\log\frac{p_i}{1-p_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
+$$
+
+What happens when all the covariates equal zero?
+$$
+\begin{align*}
+\log\frac{p_i}{1-p_i} &= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \\
+\log\frac{p_i}{1-p_i} &= \beta_0 + \beta_1 (0) + \cdots + \beta_p (0) \\
+\log\frac{p_i}{1-p_i} &= \beta_0 \\
+\frac{p_i}{1-p_i} &= \exp(\beta_0) \\
+\end{align*}
+$$
+
+So, $\exp(\beta_0)$ is the odds of the outcome being 1 when all the covariates
+equal zero.
+
+### Non-Intercept Coefficients
+
+How do we interpret the non-intercept coefficients?
+Suppose observation $i$ has $X_{i1} = x$ and observation $j$ has $X_{j1} = x + 1$.
+For each $k \ne 1$, $X_{ik} = X_{jk}$.
+In words, the two observations are identical except for the first covariate,
+where the $j$th observation exceeds the $i$th observation by one unit.
+Then
+$$
+\begin{align*}
+\log \frac{\frac{p_j}{1-p_j}}{\frac{p_i}{1-p_i}} &= \log \frac{p_j}{1-p_j} - \log \frac{p_i}{1-p_i} \\
+&= \beta_0 + \beta_1 X_{j1} + \cdots + \beta_p X_{jp} - \left(\beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_0 + \beta_1 (x+1) + \cdots + \beta_p X_{jp} - \left(\beta_0 + \beta_1 x + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_0 + \beta_1 x + \beta_1 + \cdots + \beta_p X_{jp} - \left(\beta_0 + \beta_1 x + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_1 \text{.}
+\end{align*}
+$$
+By exponentiating both sides of this equation, we see
+$$
+\begin{align*}
+\log \frac{\frac{p_j}{1-p_j}}{\frac{p_i}{1-p_i}} &= \beta_1 \\
+\frac{\frac{p_j}{1-p_j}}{\frac{p_i}{1-p_i}} &= \exp(\beta_1) \text{.} \\
+\end{align*}
+$$
+
+In words, $\exp(\beta_1)$ is the odds ratio comparing two populations
+that are identical except that one exceeds the other by one unit
+on the first covariate.
+If $\exp(\beta_1) > 1$,
+the odds that the outcome equals 1 is greater in the population
+with the higher value of the first covariate;
+if $\exp(\beta_1) < 1$,
+the odds that the outcome equals 1 is lesser in the population
+with the higher value of the first covariate;
+if $\exp(\beta_1) = 1$,
+the odds that the outcome equals 1 is the same in both populations.
+
+### Example
+
+```{r}
+d <- Lock5Data::NutritionStudy
+d$SmokeYes <- ifelse(test = d$Smoke == "Yes",
+                     yes = 1,
+                     no = 0)
+d$YearsSince40 <- d$Age - 40
+```
+
+In this data set, "Study subjects were patients who had an elective surgical
+procedure during a three-year period to biopsy or
+remove a lesion of the lung, colon, breast, skin,
+ovary or uterus that was found to be non-cancerous."
+([Lock5Data Package](https://cran.r-project.org/web/packages/Lock5Data/Lock5Data.pdf))
+Let's regress smoking on years since age 40,
+vitamin use (no, occasional, or regular),
+and sex (male or female).
+I'm using "years since age 40" instead of age directly
+so we can get a more meaningful intercept
+
+```{r}
+#| echo: true
+mod_01 <- glm(formula = SmokeYes ~ YearsSince40 + VitaminUse + Sex,
+              family = binomial,
+              data = d)
+summary(mod_01)
+```
+
+How do we interpret these coefficients?
+They're actually meaningless in their current form.
+We need to exponentiate them first.
+
+```{r}
+#| echo: true
+exp(mod_01$coefficients)
+```
+
+Now we can interpret them.
+
+- The odds of smoking among 40-year-old females who don't use vitamins
+is `r exp(mod_01$coefficients[1])`.
+This corresponds to a probability of
+```{r}
+#| echo: true
+exp(mod_01$coefficients[1]) / (1 + exp(mod_01$coefficients[1]))
+```
+
+- The odds of smoking among people age $x + 1$ is 4% lower
+than the odds of smoking among people age $x$,
+holding vitamin use and sex constant.
+- The odds of smoking among people who occasionally use vitamins
+is 36% lower than the odds of smoking among people who don't use vitamins,
+holding age and sex constant.
+- The odds of smoking among people who regularly use vitamins
+is 62% lower than the odds of smoking among people who don't use vitamins,
+holding age and sex constant.
+- The odds of smoking among males is 95% higher
+than the odds of smoking among females,
+holding age and vitamin use constant.
+
+### Note
+
+We don't have to explicitly state that we're talking about expected values
+or means.
+When the outcome is a 1 or 0,
+the expected value is a probability,
+so just by talking about probabilities and odds,
+we know we're talking about expected values.
+
+
+## Problems
+
+### Problem 1
+
+```{r}
+d2 <- Lock5Data::NHANES
+d2$OrganicYes <- ifelse(test = d2$Organic == "Yes",
+                        yes = 1,
+                        no = 0)
+d2$Income1000 <- d2$Income / 1e3
+```
+
+As described in the [Lock5Data package manual](https://cran.r-project.org/web/packages/Lock5Data/Lock5Data.pdf)
+"This dataset is a subset of the 2009-2010 National Health and Nutrition Examination Survey (NHANES).
+NHANES is a national survey conducted by the Centers for Disease Control and Prevention (CDC)
+on a random sample of Americans. This subset contains data on select variables for the subset of
+people with responses to the questions about buying organic food and self-reported health status."
+
+The outcome is a 1 if the respondent bought any food labeled organic
+in the past 30 days,
+and 0 otherwise.
+I've regressed this on self-rated health (excellent, very good,
+good, fair, and poor)
+and monthly income (in thousands of dollars).
+
+```{r}
+mod_02 <- glm(formula = OrganicYes ~ Health + Income1000,
+              family = binomial,
+              data = d2)
+summary(mod_02)
+```
+
+Interpret the exponentiated coefficients.
+```{r}
+#| echo: true
+exp(mod_02$coefficients)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- The odds of having bought organic in the past 30 days
+among people who make \$0/month and rate their own health as excellent
+is `r exp(mod_02$coefficients[1])`.
+- The odds of having bought organic in the past 30 days
+among people who rate their health as fair
+is 52% lower than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- The odds of having bought organic in the past 30 days
+among people who rate their health as good
+is 27% lower than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- The odds of having bought organic in the past 30 days
+among people who rate their health as poor
+is 44% lower than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- The odds of having bought organic in the past 30 days
+among people who rate their health as very good
+is 6% lower than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- The odds of having bought organic in the past 30 days
+among people who make $x + 1000$ dollars per month
+is 15% greater than the odds of having bought organice in the past 30 days
+among people who make $x$ dollars per month,
+holding self-rated health constant.
+
+
+:::
+
+### Problem 2
+
+```{r}
+d3 <- Lock5Data::ICUAdmissions
+d3$Died <- d3$Status
+d3$YearsSince20 <- d3$Age - 20
+```
+
+Let's return to our ICU admissions data set.
+Our outcome will be 1 if the patient died and 0 otherwise.
+We'll use two covariates:
+years since age 20
+and whether or not the patient got CPR prior to admission (1 = yes, 0 = no).
+
+```{r}
+mod_03 <- glm(formula = Died ~ YearsSince20 + CPR,
+              family = binomial,
+              data = d3)
+summary(mod_03)
+```
+
+Intepret the exponentiated coefficients.
+```{r}
+#| echo: true
+exp(mod_03$coefficients)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- The odds of death for a 20-year-old who did not receive CPR prior to admission
+to the ICU is 0.06.
+- The odds of death for someone age $x + 1$ is 3% greater than
+the odds of death for someone age $x$, holding CPR status constant.
+- People who received CPR prior to admission have 5.95 times the odds
+of death as people who did not receive CPR prior to admission,
+holding age constant.
+
+:::
+
+
+
+
