@@ -1,0 +1,62 @@
+---
+title: "Calibration"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+- Explain calibration in logistic regression.
+- Interpret a calibration plot.
+
+
+## Lesson
+
+```{r}
+library(caret)
+d <- Lock5Data::NutritionStudy
+d$SmokeYes <- ifelse(test = d$Smoke == "Yes",
+                     yes = 1,
+                     no = 0)
+d$YearsSince40 <- d$Age - 40
+mod_01 <- glm(formula = SmokeYes ~ YearsSince40 + VitaminUse + Sex,
+              family = binomial,
+              data = d)
+cal_obj <- calibration(x = as.factor(d$SmokeYes) ~ mod_01$fitted.values,
+                       class = "1")
+plot(cal_obj)
+
+library(probably)
+cal_plot_breaks(.data = data.frame(truth = as.factor(mod_01$model$SmokeYes),
+                                   estimate = mod_01$fitted.values),
+                truth = truth,
+                estimate = estimate,
+                event_level = "second")
+```
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
