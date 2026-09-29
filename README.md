@@ -74,6 +74,12 @@ more on concepts and less on math.
     4. [Likelihood](04_performance/04_likelihood.qmd)
     5. [AIC](04_performance/05_AIC.qmd)
     6. [Likelihood Ratio Test](04_performance/06_LRT.qmd)
+5. Logistic Regression
+    1. [Mean and Variance of a Bernoulli Random Variable](05_logistic/01_mean_variance.qmd)
+    2. [Violated Assumptions of Linear Regression](05_logistic/02_violated_assumptions.qmd)
+    3. [Assumptions of Logistic Regression](05_logistic/03_logistic_assumptions.qmd)
+    4. [Odds](05_logistic/04_odds.qmd)
+    5. [Interpretation](05_logistic/05_interpretation.qmd)
 
 Appendices
 
