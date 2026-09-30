@@ -13,20 +13,217 @@ format: html
 
 ## Lesson
 
+### Assumption-Checking
+
+How do we check the assumptions of logistic regression?
+
+1. $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{Bernoulli}(p_i)$.
+2. $\log\frac{p_i}{1-p_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+3. The observations are iid.
+
+One of them is easy to check:
+We just have to look at the outcome and make sure it's binary.
+One of them we've checked before:
+We can look at how the data were collected to determine if there
+is any dependency between observations.
+But what about that weird logistic function?
+
+One way to check the second assumption above is to see if the model
+is well-calibrated.
+In a well-calibrated model, the fitted values are close to the observed
+values.
+But how do we know if this is the case?
+The fitted values will be probabilities,
+but the observed values are 0s and 1s
+
+We can group observations with similar fitted values together,
+then compute the proportion of 1s in each group.
+The observed proportion of 1s should be close to the
+median fitted value in the group.
+If we do this, and plot the observed proportion as a function
+of the median fitted value, we get a calibration plot.
+
+### Calibration Plot
+
 ```{r}
-library(caret)
 d <- Lock5Data::NutritionStudy
 d$SmokeYes <- ifelse(test = d$Smoke == "Yes",
                      yes = 1,
                      no = 0)
 d$YearsSince40 <- d$Age - 40
+```
+
+Let's walk through an example.
+Let's return to the nutrition study,
+where we regressed smoking on years since age 40,
+vitamin use (no, occasional, or regular),
+and sex (male or female).
+
+```{r}
+#| echo: true
 mod_01 <- glm(formula = SmokeYes ~ YearsSince40 + VitaminUse + Sex,
               family = binomial,
               data = d)
+summary(mod_01)
+```
+
+The fitted values are obtained like so:
+$$
+\hat{Y}_i = \frac{1}{1 + \exp\left(-\left(\hat{\beta}_0 + \hat{\beta}_1 X_{i1} + \cdots + \hat{\beta}_p X_{ip}\right)\right)} \text{.}
+$$
+Of course, we don't have to do that computation by hand.
+We can do either of the following:
+```{r}
+#| echo: true
+y_hat_option_1 <- mod_01$fitted.values
+y_hat_option_2 <- predict(object = mod_01,
+                          newdata = d,
+                          type = "response")
+all.equal(target = y_hat_option_1,
+          current = y_hat_option_2)
+```
+
+I'm going to make a new data frame that contains two columns:
+the fitted values and the observed outcomes.
+```{r}
+#| echo: true
+cal_data <- data.frame(truth = mod_01$model$SmokeYes,
+                       estimate = mod_01$fitted.values)
+```
+
+Next, I'm going to sort this data set from lowest to highest fitted value.
+```{r}
+#| echo: true
+cal_data <- cal_data[order(cal_data$estimate), ]
+```
+
+Now I'm going to put the rows into ten groups with approximately the same
+number of observations.
+The number ten is arbitrary;
+you can choose a different number for your own data in the future.
+```{r}
+#| echo: true
+cal_bins <- list()
+n_bins <- 10
+n_obs_per_bin <- floor(nrow(cal_data) / n_bins)
+for(i in 1:(n_bins - 1)){
+  cal_bins[[i]] <- cal_data[((i - 1) * n_obs_per_bin + 1):(i * n_obs_per_bin), ]
+}
+cal_bins[[n_bins]] <- cal_data[((n_bins - 1) * n_obs_per_bin + 1):nrow(cal_data), ]
+```
+
+Now I'm going to compute the proportion of 1s in each bin
+and the median fitted value in each bin.
+```{r}
+#| echo: true
+cal_plot_data <- matrix(data = as.numeric(NA),
+                        nrow = n_bins,
+                        ncol = 2)
+for(i in 1:n_bins){
+  cal_plot_data[i,1] <- median(cal_bins[[i]]$estimate)
+  cal_plot_data[i,2] <- mean(cal_bins[[i]]$truth)
+}
+```
+
+Finally, I can plot my results.
+```{r}
+#| echo: true
+plot(x = cal_plot_data[ ,1],
+     y = cal_plot_data[ ,2],
+     type = "b",
+     main = "Calibration Plot",
+     xlab = "Median Fitted Value in Bin",
+     ylab = "Proportion of 1s in Bin",
+     pch = 19)
+grid()
+abline(a = 0,
+       b = 1,
+       lty = 2)
+```
+
+In a perfectly-calibrated model, the points would fall on the dashed line
+because the proportion of 1s in each bin would be exactly equal
+to the median fitted value in each bin.
+For the most part, the dots on this plot follow the reference line,
+with exception of the sixth bin.
+I'm not sure what's going on there.
+I'm going to try five bins instead of ten.
+I've written a function to automate the process.
+
+```{r}
+#| echo: true
+#' Make a calibration plot.
+#' 
+#' @param mod The logistic regression model, obtained using the glm function.
+#' @param n_bins The number of bins to use.
+#' @returns Doesn't return anything; draws a plot.
+draw_cal_plot <- function(mod,n_bins){
+  cal_data <- data.frame(truth = mod$y,
+                         estimate = mod$fitted.values)
+  cal_data <- cal_data[order(cal_data$estimate), ]
+  cal_bins <- list()
+  n_obs_per_bin <- floor(nrow(cal_data) / n_bins)
+  for(i in 1:(n_bins - 1)){
+    cal_bins[[i]] <- cal_data[((i - 1) * n_obs_per_bin + 1):(i * n_obs_per_bin), ]
+  }
+  cal_bins[[n_bins]] <- cal_data[((n_bins - 1) * n_obs_per_bin + 1):nrow(cal_data), ]
+  cal_plot_data <- matrix(data = as.numeric(NA),
+                          nrow = n_bins,
+                          ncol = 2)
+  for(i in 1:n_bins){
+    cal_plot_data[i,1] <- median(cal_bins[[i]]$estimate)
+    cal_plot_data[i,2] <- mean(cal_bins[[i]]$truth)
+  }
+  plot(x = cal_plot_data[ ,1],
+       y = cal_plot_data[ ,2],
+       type = "b",
+       main = "Calibration Plot",
+       xlab = "Median Fitted Value in Bin",
+       ylab = "Proportion of 1s in Bin",
+       pch = 19)
+  grid()
+  abline(a = 0,
+         b = 1,
+         lty = 2)
+}
+```
+
+```{r}
+#| echo: true
+draw_cal_plot(mod = mod_01,
+              n_bins = 5)
+```
+
+The bump in the plot doesn't smooth out when using fewer bins.
+This tells us that when the model predicts a probability between 0.1 and 0.15,
+it's an underestimate.
+We should probably find a different model with better calibration.
+
+### Other Plotting Functions
+
+There are packages that have built-in functions for drawing calibration plots.
+I'll demonstrate two here.
+
+The first package is `caret`, which has a function `calibration` that you
+can use.
+
+```{r}
+#| echo: true
+library(caret)
 cal_obj <- calibration(x = as.factor(d$SmokeYes) ~ mod_01$fitted.values,
                        class = "1")
 plot(cal_obj)
+```
 
+You can see that this function plots a line all the way above 90%,
+even though there aren't any observations with fitted values above 90%.
+So, it's a little misleading.
+
+Another function is `cal_plot_breaks` in the package `probably`.
+
+
+```{r}
+#| echo: true
 library(probably)
 cal_plot_breaks(.data = data.frame(truth = as.factor(mod_01$model$SmokeYes),
                                    estimate = mod_01$fitted.values),
@@ -34,14 +231,50 @@ cal_plot_breaks(.data = data.frame(truth = as.factor(mod_01$model$SmokeYes),
                 estimate = estimate,
                 event_level = "second")
 ```
+Whereas I made bins with equal numbers of observations in each,
+this function makes bins that are of equal width on the horizontal axis.
+You can see here that the fourth bin has fewer observations
+than the other bins,
+because the confidence band around its point on the graph is way larger
+than the confidence band around other points.
+The tick marks on the top of the plot denote observed 1s;
+the tick marks on the bottom of the plot denote observed 0s.
 
 ## Problems
 
 ### Problem 1
 
+```{r}
+d2 <- Lock5Data::NHANES
+d2$OrganicYes <- ifelse(test = d2$Organic == "Yes",
+                        yes = 1,
+                        no = 0)
+d2$Income1000 <- d2$Income / 1e3
+```
 
+Let's return to the NHANES data set.
+The outcome is a 1 if the respondent bought any food labeled organic
+in the past 30 days,
+and 0 otherwise.
+I've regressed this on self-rated health (excellent, very good,
+good, fair, and poor)
+and monthly income (in thousands of dollars).
+
+```{r}
+mod_02 <- glm(formula = OrganicYes ~ Health + Income1000,
+              family = binomial,
+              data = d2)
+summary(mod_02)
+```
+
+Interpret the calibration plot.
+```{r}
+draw_cal_plot(mod = mod_02,
+              n_bins = 10)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
+
 
 
 
@@ -49,7 +282,30 @@ cal_plot_breaks(.data = data.frame(truth = as.factor(mod_01$model$SmokeYes),
 
 ### Problem 2
 
+```{r}
+d3 <- Lock5Data::ICUAdmissions
+d3$Died <- d3$Status
+d3$YearsSince20 <- d3$Age - 20
+```
 
+Let's return to our ICU admissions data set.
+Our outcome will be 1 if the patient died and 0 otherwise.
+We'll use two covariates:
+years since age 20
+and whether or not the patient got CPR prior to admission (1 = yes, 0 = no).
+
+```{r}
+mod_03 <- glm(formula = Died ~ YearsSince20 + CPR,
+              family = binomial,
+              data = d3)
+summary(mod_03)
+```
+
+Interpret the calibration plot.
+```{r}
+draw_cal_plot(mod = mod_03,
+              n_bins = 10)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
