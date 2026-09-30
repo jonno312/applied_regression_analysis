@@ -275,7 +275,26 @@ draw_cal_plot(mod = mod_02,
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+This looks great!
+The points follow the reference line almost exactly
+for fitted values between 0.2 and 0.35 or so.
+There are a couple deviations from the fitted line
+for fitted values between 0.35 and 0.45,
+but these deviations are not big.
+This model is well-calibrated.
 
+Aside from determining how well-calibrated the model is,
+we can see something else in this plot.
+I used my own function to create it,
+and with my function,
+the bins have (approximately) equal numbers of observations.
+The points on the plot with fitted values between 0.25
+and 0.35 are very close together,
+but the points on the plot with fitted values between
+0.4 and 0.6 are farther apart.
+This means there must be a lot of observations
+with fitted values between 0.25 and 0.35,
+and fewer
 
 
 :::
