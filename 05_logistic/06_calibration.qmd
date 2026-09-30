@@ -240,6 +240,83 @@ than the confidence band around other points.
 The tick marks on the top of the plot denote observed 1s;
 the tick marks on the bottom of the plot denote observed 0s.
 
+### Simulation
+
+I'm going to simulate data
+to see a calibration plot for a model where the assumptions
+are known to be met,
+and another plot for a model where the assumptions are known to not be met.
+
+```{r}
+# Set seed
+set.seed(6)
+
+# Define parameters
+n <- 1e3
+beta_0 <- 1
+beta_1 <- 2
+beta_2 <- 1
+
+# Generate x
+x <- rnorm(n = n)
+```
+
+I'm going to generate the outcome according to the model
+$$
+P(Y_i = 1|X_i) = \frac{1}{1 + \exp\left(-\left(\beta_0 + \beta_1 X_i + \beta_2 X_i^2\right)\right)} \text{.}
+$$
+
+```{r}
+# Generate y
+y <- rbinom(n = n,
+            size = 1,
+            prob = plogis(beta_0 + beta_1 * x + beta_2 * x^2))
+```
+
+Next, I'm going to run logistic regression according to the true model
+and make a calibration plot.
+
+```{r}
+#| echo: true
+mod_02 <- glm(formula = y ~ x + I(x^2),
+              family = binomial)
+summary(mod_02)
+draw_cal_plot(mod = mod_02,
+              n_bins = 10)
+cal_plot_breaks(.data = data.frame(truth = as.factor(mod_02$y),
+                                   estimate = mod_02$fitted.values),
+                truth = truth,
+                estimate = estimate,
+                event_level = "second")
+```
+
+This model is well-calibrated.
+For the most part, the points follow the reference line.
+
+What if our assumption is bad? Let's run a regression without the squared term.
+
+```{r}
+#| echo: true
+mod_03 <- glm(formula = y ~ x,
+              family = binomial)
+summary(mod_03)
+draw_cal_plot(mod = mod_03,
+              n_bins = 10)
+cal_plot_breaks(.data = data.frame(truth = as.factor(mod_03$y),
+                                   estimate = mod_03$fitted.values),
+                truth = truth,
+                estimate = estimate,
+                event_level = "second")
+```
+
+This very clearly does not follow the reference line.
+What it's saying is that 100% of observations with fitted values between
+0.2 and 0.3 have an outcome of 1. So, our fitted values are very inaccurate!
+Somewhere between 80% and 90% of the observations with fitted values
+between 0.3 and 0.4 have an outcome of 1.
+Our predictions are only accurate for fitted values between about
+0.8 and 1.0.
+
 ## Problems
 
 ### Problem 1
@@ -283,19 +360,6 @@ for fitted values between 0.35 and 0.45,
 but these deviations are not big.
 This model is well-calibrated.
 
-Aside from determining how well-calibrated the model is,
-we can see something else in this plot.
-I used my own function to create it,
-and with my function,
-the bins have (approximately) equal numbers of observations.
-The points on the plot with fitted values between 0.25
-and 0.35 are very close together,
-but the points on the plot with fitted values between
-0.4 and 0.6 are farther apart.
-This means there must be a lot of observations
-with fitted values between 0.25 and 0.35,
-and fewer
-
 
 :::
 
@@ -328,7 +392,8 @@ draw_cal_plot(mod = mod_03,
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+This looks pretty good. The points bounce around the line,
+but in general, they follow it.
 
 :::
 
