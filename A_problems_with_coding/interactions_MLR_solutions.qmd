@@ -1,0 +1,493 @@
+---
+title: "Interactions in Multiple Linear Regression (Solutions)"
+format: html
+---
+
+```{r}
+# Load packages
+library(readxl)
+library(scales)
+library(emmeans)
+```
+
+## Problem 1
+
+This problem uses data from the Heart and Estrogen/progestin Replacement
+Study (HERS). You can
+[download the data here](https://regression.ucsf.edu/sites/g/files/tkssra16191/files/wysiwyg/home/data/excel/hersdata.xls).
+
+
+```{r}
+# Load data
+d <- read_xls(path = "hersdata.xls")
+```
+
+In the chunk below, I've regressed `LDL` on `statins` and `exercise`,
+with an interaction. I'll call this Model 2.
+
+```{r}
+mod_02 <- lm(formula = LDL ~ statins * exercise,
+             data = d)
+summary(mod_02)
+```
+
+
+
+### Part (a)
+
+Create a scatter plot of the residuals as a function of the fitted values.
+Include a horizontal line at zero.
+
+```{r}
+plot(x = mod_02$fitted.values,
+     y = mod_02$residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.3))
+abline(h = 0,
+       col = "red")
+```
+
+What do you conclude?
+
+
+It appears that for each fitted value, the residuals average out to zero.
+This is actually guaranteed to be the case, because we have a
+"saturated" model.
+
+It also appears that there is relatively constant vertical spread
+of the residuals throughout the plot, which means the assumption of constant
+variance is met.
+
+Note that there are only four possible fitted values.
+This is because there are two binary explanatory variables, yielding
+four possible combinations of values, i.e., $(0,0)$, $(0,1)$, $(1,0)$,
+and $(1,1)$.
+
+Below, I've plotted a boxplot of the residuals for each possible combination
+of the explanatory variables. I haven't changed the labeling of the axes
+so that you can see what R does by default. This plot also supports
+our assumptions of linearity and equal variance.
+
+
+
+
+```{r}
+boxplot(formula = mod_02$residuals ~ mod_02$model$statins * mod_02$model$exercise)
+```
+
+### Part (b)
+
+Plot a boxplot, histogram, and q-q plot of the residuals.
+
+```{r}
+boxplot(x = mod_02$residuals,
+        ylab = "Residuals")
+hist(x = mod_02$residuals,
+     xlab = "Residuals",
+     main = "")
+qqnorm(mod_02$residuals)
+qqline(mod_02$residuals)
+```
+
+What do you conclude?
+
+
+Based on the histogram, the residuals are approximately bell-shaped.
+The boxplot reveals that the residuals are right-skewed, and the q-q plot
+seems to show that the residuals deviate from normal in their right tail.
+Still, the sample size is large, and my understanding is that the observations
+are independent (and identically distributed), so I'm not super concerned
+about this last assumption being met. Even if it isn't,
+we can still interpret the p-values.
+
+
+
+### Part (c)
+
+Interpret the intercept in real-world terms.
+
+
+This is the expected LDL cholesterol for someone who is not on statins
+and who does not exercise.
+
+
+### Part (d)
+
+Interpret the estimate for `statinsyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+This is the expected difference in LDL cholesterol between someone who
+does use statins and someone who doesn't, where neither of these people
+exercise. The fact that it's negative means that we would expect
+someone who uses statins to have lower LDL cholesterol than someone who doesn't
+(again, assuming neither of these people exercise).
+
+How did I arrive at that interpretation?
+Define:
+
+- $L_i$ is the LDL cholesterol for the $i$th individual.
+- $S_i = 1$ if the $i$th person uses statins and $S_i = 0$ otherwise.
+- $E_i = 1$ if the $i$th person exercises and $E_i = 0$ otherwise.
+
+Our model is
+$$
+L_i = \beta_0 + \beta_1 S_i + \beta_2 E_i + \beta_3 S_i E_i + \epsilon_i \text{.}
+$$
+We're trying to interpret $\beta_1$, which is
+$$
+\begin{align*}
+&E\left(L_i\middle|S_i = 1,E_i = 0\right) - E\left(L_i\middle|S_i = 0,E_i = 0\right) \\
+&= \beta_0 + \beta_1 (1) + \beta_2 (0) + \beta_3 (1) (0) - \left(\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)\right) \\
+&= \beta_0 + \beta_1  - \left(\beta_0 \right) \\
+&= \beta_1 \text{.}
+\end{align*}
+$$
+
+The p-value for this coefficient is less than 0.05, so we reject the null
+hypothesis and conclude it's not zero.
+(I didn't tell you what alpha level to use, but 0.05 is a reasonable one.)
+Thus, we can conclude that there is a statistically significant difference
+in LDL cholesterol between people who use statins and people who don't,
+assuming all of these people don't exercise.
+
+
+### Part (e)
+
+Interpret the estimate for `exerciseyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+This is the expected difference in LDL cholesterol between someone who
+does exercises and someone who doesn't, where neither of these people
+use statins. The fact that it's negative means that we would expect
+someone who exercises to have lower LDL cholesterol than someone who doesn't
+(again, assuming neither of these people use statins).
+
+We're trying to interpret $\beta_2$, which is
+$$
+\begin{align*}
+&E\left(L_i\middle|S_i = 0,E_i = 1\right) - E\left(L_i\middle|S_i = 0,E_i = 0\right) \\
+&= \beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)\right) \\
+&= \beta_0 + \beta_2  - \left(\beta_0 \right) \\
+&= \beta_2 \text{.}
+\end{align*}
+$$
+
+The p-value for this coefficient is less than 0.05, so we reject the null
+hypothesis and conclude it's not zero.
+Thus, we can conclude that there is a statistically significant difference
+in LDL cholesterol between people who exercise and people who don't,
+assuming all of these people don't use statins.
+
+
+
+### Part (f)
+
+Interpret the estimate for `statinsyes:exerciseyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+This is the expected difference in the expected change in LDL cholesterol
+associated with using statins between people who exercise and people who don't.
+Because it has the opposite sign of `statinsyes`,
+we would expect the effect of statins among people who exercise to be
+closer to zero than the effect of statins among people who don't exercise.
+
+We're trying to interpret $\beta_3$, which is
+$$
+\begin{align*}
+&E\left(L_i\middle|S_i = 1,E_i = 1\right) - E\left(L_i\middle|S_i = 0,E_i = 1\right) - \left(E\left(L_i\middle|S_i = 1,E_i = 0\right) - E\left(L_i\middle|S_i = 0,E_i = 0\right)\right) \\
+&= \beta_0 + \beta_1 (1) + \beta_2 (1) + \beta_3 (1) (1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1)\right) - \beta_1 \\
+&= \beta_0 + \beta_1  + \beta_2  + \beta_3  - \left(\beta_0 + \beta_2 \right) - \beta_1 \\
+&= \beta_3 \text{.}
+\end{align*}
+$$
+
+The p-value is high, so we fail to reject the null hypothesis,
+i.e., that this coefficient is zero. This tells us that the effect of statins
+is the same regardless of exercise status.
+
+
+### Part (g)
+
+Fit a new model (I'll call this Model 3) that's the same as Model 2
+but does not have the interaction term.
+
+```{r}
+mod_03 <- lm(formula = LDL ~ statins + exercise,
+             data = d)
+summary(mod_03)
+```
+
+### Part (h)
+
+Run this chunk. You'll need to (install and) load the package `emmeans`
+for it to work.
+
+```{r}
+emmip(object = mod_02,
+      formula = exercise ~ statins,
+      CIs = TRUE)
+emmip(object = mod_03,
+      formula = exercise ~ statins,
+      CIs = TRUE)
+```
+Compare and contrast the two plots.
+
+
+They're basically the same. In the plot for Model 2, the slopes are different
+because of the interaction term. Since the interaction term is close to zero,
+the slopes are not that different.
+
+In the plot for Model 3,
+the slopes are identical because there's no interaction term.
+
+
+
+## Problem 2
+
+This problem also uses the HERS data.
+
+
+### Part (a)
+
+Regress `LDL` on `statins` and `nonwhite`, with an interaction.
+This will be Model 4.
+Create a scatter plot of the residuals as a function of the fitted values.
+Include a horizontal line at zero.
+
+```{r}
+mod_04 <- lm(formula = LDL ~ statins * nonwhite,
+             data = d)
+summary(mod_04)
+plot(x = mod_04$fitted.values,
+     y = mod_04$residuals,
+     xlab = "Fitted Values",
+     ylab = "Residuals",
+     col = alpha(colour = "black",
+                 alpha = 0.3))
+abline(h = 0,
+       col = "red")
+```
+
+What do you conclude?
+
+
+It appears that for each fitted value, the residuals average out to zero.
+Again, this is guaranteed because the model is saturated.
+
+It also appears that there is relatively constant vertical spread
+of the residuals throughout the plot, which means the assumption of constant
+variance is met. You could argue that there is lower variance for
+the fitted value between 145 and 150, but there are also fewer points
+with this fitted value. If points near zero are more likely than points
+far from zero, then with fewer observations we would expect to see
+fewer points far from zero.
+
+Below, I've plotted a boxplot of the residuals for each possible combination
+of the explanatory variables. This plot also supports
+our assumptions of linearity and equal variance.
+
+
+
+
+```{r}
+boxplot(formula = mod_04$residuals ~ mod_04$model$statins * mod_04$model$nonwhite)
+```
+
+### Part (b)
+
+Plot a boxplot, histogram, and q-q plot of the residuals.
+
+```{r}
+boxplot(x = mod_04$residuals,
+        ylab = "Residuals")
+hist(x = mod_04$residuals,
+     xlab = "Residuals",
+     main = "")
+qqnorm(mod_04$residuals)
+qqline(mod_04$residuals)
+```
+
+What do you conclude?
+
+
+Based on the histogram, the residuals are approximately bell-shaped.
+The boxplot reveals that the residuals are right-skewed, and the q-q plot
+seems to show that the residuals deviate from normal in their right tail.
+Still, the sample size is large, and the observations
+are independent (and identically distributed), so
+we can still interpret the p-values.
+
+
+
+### Part (c)
+
+Interpret the intercept in real-world terms.
+
+
+This is the expected LDL cholesterol for someone who is not on statins
+and who does is white.
+
+
+### Part (d)
+
+Interpret the estimate for `statinsyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+This is the expected difference in LDL cholesterol between someone who
+does use statins and someone who doesn't, where both of these people are white.
+The fact that it's negative means that we would expect
+someone who uses statins to have lower LDL cholesterol than someone who doesn't
+(again, assuming both of these people are white).
+
+Define:
+
+- $N_i = 1$ if the $i$th person is non-white and $N_i = 0$ otherwise.
+
+Our model is
+$$
+L_i = \beta_0 + \beta_1 S_i + \beta_2 N_i + \beta_3 S_i N_i + \epsilon_i \text{.}
+$$
+We're trying to interpret $\beta_1$, which is
+$$
+\begin{align*}
+&E\left(L_i\middle|S_i = 1,N_i = 0\right) - E\left(L_i\middle|S_i = 0,N_i = 0\right) \\
+&= \beta_0 + \beta_1 (1) + \beta_2 (0) + \beta_3 (1) (0) - \left(\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)\right) \\
+&= \beta_0 + \beta_1  - \left(\beta_0 \right) \\
+&= \beta_1 \text{.}
+\end{align*}
+$$
+
+The p-value for this coefficient is less than 0.05, so we reject the null
+hypothesis and conclude it's not zero.
+Thus, we can conclude that there is a statistically significant difference
+in LDL cholesterol between people who use statins and people who don't,
+among white people.
+
+
+### Part (e)
+
+Interpret the estimate for `nonwhiteyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+This is the expected difference in LDL cholesterol between someone who
+does is not white and someone who is, where neither of these people
+use statins. The fact that it's positive means that we would expect
+someone who is not white to have higher LDL cholesterol than someone who is white
+(again, assuming neither of these people use statins).
+
+We're trying to interpret $\beta_2$, which is
+$$
+\begin{align*}
+&E\left(L_i\middle|S_i = 0,N_i = 1\right) - E\left(L_i\middle|S_i = 0,N_i = 0\right) \\
+&= \beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (0) + \beta_3 (0) (0)\right) \\
+&= \beta_0 + \beta_2  - \left(\beta_0 \right) \\
+&= \beta_2 \text{.}
+\end{align*}
+$$
+
+The p-value for this coefficient is greater than 0.05, so we cannot reject the null
+hypothesis.
+Thus, there is not a statistically significant difference
+in LDL cholesterol between people who are not white and people who are,
+assuming all of these people don't use statins.
+
+
+
+### Part (f)
+
+Interpret the estimate for `statinsyes:nonwhiteyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+This is the expected difference in the expected change in LDL cholesterol
+associated with using statins between people who are not white and people who are.
+Because it has the opposite sign of \verb|statinsyes|,
+we would expect the effect of statins among nonwhite people to be
+closer to zero than the effect of statins among people who are white.
+
+We're trying to interpret $\beta_3$, which is
+$$
+\begin{align*}
+&E\left(L_i\middle|S_i = 1,N_i = 1\right) - E\left(L_i\middle|S_i = 0,N_i = 1\right) - \left(E\left(L_i\middle|S_i = 1,N_i = 0\right) - E\left(L_i\middle|S_i = 0,N_i = 0\right)\right) \\
+&= \beta_0 + \beta_1 (1) + \beta_2 (1) + \beta_3 (1) (1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (1) + \beta_3 (0) (1)\right) - \beta_1 \\
+&= \beta_0 + \beta_1  + \beta_2  + \beta_3  - \left(\beta_0 + \beta_2 \right) - \beta_1 \\
+&= \beta_3 \text{.}
+\end{align*}
+$$
+
+The p-value is low, so we reject the null hypothesis,
+i.e., that this coefficient is zero. This tells us that the effect of statins
+depends on race.
+
+
+### Part (g)
+
+Fit a new model (I'll call this Model 5) that's the same as Model 4
+but does not have the interaction term.
+
+```{r}
+mod_05 <- lm(formula = LDL ~ statins + nonwhite,
+             data = d)
+summary(mod_05)
+```
+
+### Part (h)
+
+Run this chunk.
+
+```{r}
+emmip(object = mod_04,
+      formula = nonwhite ~ statins,
+      CIs = TRUE)
+emmip(object = mod_05,
+      formula = nonwhite ~ statins,
+      CIs = TRUE)
+```
+Compare and contrast the two plots.
+
+
+In the plot for Model 4, the slopes are different
+because of the interaction term.
+
+In the plot for Model 5,
+the slopes are identical because there's no interaction term.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

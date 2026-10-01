@@ -1,0 +1,256 @@
+---
+title: "Interactions in Multiple Linear Regression"
+format: html
+---
+
+```{r}
+# Load packages
+library(readxl)
+library(emmeans)
+```
+
+## Problem 1
+
+This problem uses data from the Heart and Estrogen/progestin Replacement
+Study (HERS). You can
+[download the data here](https://regression.ucsf.edu/sites/g/files/tkssra16191/files/wysiwyg/home/data/excel/hersdata.xls).
+
+
+```{r}
+# Load data
+d <- read_xls(path = "hersdata.xls")
+```
+
+In the chunk below, I've regressed `LDL` on `statins` and `exercise`,
+with an interaction. I'll call this Model 2.
+
+```{r}
+mod_02 <- lm(formula = LDL ~ statins * exercise,
+             data = d)
+summary(mod_02)
+```
+
+
+
+### Part (a)
+
+Create a scatter plot of the residuals as a function of the fitted values.
+Include a horizontal line at zero.
+
+```{r}
+
+```
+
+What do you conclude?
+
+
+
+
+### Part (b)
+
+Plot a boxplot, histogram, and q-q plot of the residuals.
+
+```{r}
+
+```
+
+What do you conclude?
+
+
+
+
+
+
+### Part (c)
+
+Interpret the intercept in real-world terms.
+
+
+
+
+
+### Part (d)
+
+Interpret the estimate for `statinsyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+
+
+
+### Part (e)
+
+Interpret the estimate for `exerciseyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+
+
+
+
+### Part (f)
+
+Interpret the estimate for `statinsyes:exerciseyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+
+
+
+### Part (g)
+
+Fit a new model (I'll call this Model 3) that's the same as Model 2
+but does not have the interaction term.
+
+```{r}
+
+```
+
+### Part (h)
+
+Run this chunk. You'll need to (install and) load the package `emmeans`
+for it to work.
+
+```{r}
+# emmip(object = mod_02,
+#       formula = exercise ~ statins,
+#       CIs = TRUE)
+# emmip(object = mod_03,
+#       formula = exercise ~ statins,
+#       CIs = TRUE)
+```
+Compare and contrast the two plots.
+
+
+
+
+
+
+## Problem 2
+
+This problem also uses the HERS data.
+
+
+### Part (a)
+
+Regress `LDL` on `statins` and `nonwhite`, with an interaction.
+This will be Model 4.
+Create a scatter plot of the residuals as a function of the fitted values.
+Include a horizontal line at zero.
+
+```{r}
+
+```
+
+What do you conclude?
+
+
+
+### Part (b)
+
+Plot a boxplot, histogram, and q-q plot of the residuals.
+
+```{r}
+
+```
+
+What do you conclude?
+
+
+
+
+
+
+### Part (c)
+
+Interpret the intercept in real-world terms.
+
+
+
+
+### Part (d)
+
+Interpret the estimate for `statinsyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+
+
+
+### Part (e)
+
+Interpret the estimate for `nonwhiteyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+
+
+
+
+### Part (f)
+
+Interpret the estimate for `statinsyes:nonwhiteyes` in real-world terms.
+Interpret the results of the hypothesis test associated with this coefficient
+as well.
+
+
+
+
+
+### Part (g)
+
+Fit a new model (I'll call this Model 5) that's the same as Model 4
+but does not have the interaction term.
+
+```{r}
+
+```
+
+### Part (h)
+
+Run this chunk.
+
+```{r}
+# emmip(object = mod_04,
+#       formula = nonwhite ~ statins,
+#       CIs = TRUE)
+# emmip(object = mod_05,
+#       formula = nonwhite ~ statins,
+#       CIs = TRUE)
+```
+Compare and contrast the two plots.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
