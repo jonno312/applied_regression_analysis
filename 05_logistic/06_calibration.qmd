@@ -7,7 +7,7 @@ format: html
 
 ## Learning Objective
 
-- Explain calibration in logistic regression.
+- Explain calibration.
 - Interpret a calibration plot.
 
 
@@ -16,14 +16,15 @@ format: html
 ### Assumption-Checking
 
 How do we check the assumptions of logistic regression?
+As a reminder, here they are:
 
 1. $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{Bernoulli}(p_i)$.
 2. $\log\frac{p_i}{1-p_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
 3. The observations are iid.
 
-One of them is easy to check:
+The first one is easy to check:
 We just have to look at the outcome and make sure it's binary.
-One of them we've checked before:
+The third one we've checked before:
 We can look at how the data were collected to determine if there
 is any dependency between observations.
 But what about that weird logistic function?
@@ -34,14 +35,14 @@ In a well-calibrated model, the fitted values are close to the observed
 values.
 But how do we know if this is the case?
 The fitted values will be probabilities,
-but the observed values are 0s and 1s
+but the observed values are 0s and 1s.
 
 We can group observations with similar fitted values together,
 then compute the proportion of 1s in each group.
 The observed proportion of 1s should be close to the
-median fitted value in the group.
+average fitted value in the group.
 If we do this, and plot the observed proportion as a function
-of the median fitted value, we get a calibration plot.
+of the average fitted value, we get a calibration plot.
 
 ### Calibration Plot
 
@@ -113,14 +114,14 @@ cal_bins[[n_bins]] <- cal_data[((n_bins - 1) * n_obs_per_bin + 1):nrow(cal_data)
 ```
 
 Now I'm going to compute the proportion of 1s in each bin
-and the median fitted value in each bin.
+and the average fitted value in each bin.
 ```{r}
 #| echo: true
 cal_plot_data <- matrix(data = as.numeric(NA),
                         nrow = n_bins,
                         ncol = 2)
 for(i in 1:n_bins){
-  cal_plot_data[i,1] <- median(cal_bins[[i]]$estimate)
+  cal_plot_data[i,1] <- mean(cal_bins[[i]]$estimate)
   cal_plot_data[i,2] <- mean(cal_bins[[i]]$truth)
 }
 ```
@@ -132,7 +133,7 @@ plot(x = cal_plot_data[ ,1],
      y = cal_plot_data[ ,2],
      type = "b",
      main = "Calibration Plot",
-     xlab = "Median Fitted Value in Bin",
+     xlab = "Average Fitted Value in Bin",
      ylab = "Proportion of 1s in Bin",
      pch = 19)
 grid()
@@ -143,7 +144,7 @@ abline(a = 0,
 
 In a perfectly-calibrated model, the points would fall on the dashed line
 because the proportion of 1s in each bin would be exactly equal
-to the median fitted value in each bin.
+to the average fitted value in each bin.
 For the most part, the dots on this plot follow the reference line,
 with exception of the sixth bin.
 I'm not sure what's going on there.
@@ -171,14 +172,14 @@ draw_cal_plot <- function(mod,n_bins){
                           nrow = n_bins,
                           ncol = 2)
   for(i in 1:n_bins){
-    cal_plot_data[i,1] <- median(cal_bins[[i]]$estimate)
+    cal_plot_data[i,1] <- mean(cal_bins[[i]]$estimate)
     cal_plot_data[i,2] <- mean(cal_bins[[i]]$truth)
   }
   plot(x = cal_plot_data[ ,1],
        y = cal_plot_data[ ,2],
        type = "b",
        main = "Calibration Plot",
-       xlab = "Median Fitted Value in Bin",
+       xlab = "Average Fitted Value in Bin",
        ylab = "Proportion of 1s in Bin",
        pch = 19)
   grid()
@@ -211,7 +212,8 @@ can use.
 #| echo: true
 library(caret)
 cal_obj <- calibration(x = as.factor(d$SmokeYes) ~ mod_01$fitted.values,
-                       class = "1")
+                       class = "1",
+                       cuts = 10)
 plot(cal_obj)
 ```
 
