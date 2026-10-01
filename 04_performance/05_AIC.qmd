@@ -230,6 +230,27 @@ Model A is better because it has the lower AIC.
 
 :::
 
+### Problem 3
+
+If $k$ is the number of parameters estimated
+and $\hat{\mathcal{L}}$ is the maximized log-likelihood then the Bayesian
+Information Criterion (BIC) is $k \log n - 2 \log \hat{\mathcal{L}}$.
+What are the consequences for using the BIC instead of the AIC?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+If $\log n > 2$, i.e., if $n > e^2 \approx 7.4$, then the BIC will apply
+a bigger penalty to the size of the model than the AIC.
+Thus, for large sample size, the BIC will favor smaller models than the AIC.
+
+:::
+
+
+
+
+
+
+
 
 
 
