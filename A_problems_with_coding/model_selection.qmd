@@ -1,5 +1,5 @@
 ---
-title: "Model Selection (Solutions)"
+title: "Model Selection"
 format: html
 ---
 
