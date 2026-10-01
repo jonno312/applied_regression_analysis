@@ -1,0 +1,45 @@
+---
+title: "Consequences of Poor Calibration"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the consequences of poor calibration in a logistic regression model.
+
+
+## Lesson
+
+Calibration is a measure of the model's ability to estimate the outcome.
+If the model isn't estimating the outcome well,
+you should be skeptical of the accuracy of the coefficients.
+
+As we saw in the examples, 
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
