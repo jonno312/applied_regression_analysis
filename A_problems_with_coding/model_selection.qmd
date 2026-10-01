@@ -1,0 +1,139 @@
+---
+title: "Model Selection (Solutions)"
+format: html
+---
+
+```{r}
+# Load packages
+library(readxl)
+```
+
+This problem uses data from
+"[Association between particulate air pollution exposure during pregnancy and postpartum maternal psychological functioning](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0195267)"
+(Sheffield et al., 2018).
+[This is a direct link to the data](https://doi.org/10.1371/journal.pone.0195267.s001).
+Download the data and put the file in the same folder as this Quarto document.
+
+```{r}
+# Load data
+a <- read_xls("pone.0195267.s001.xls")
+
+# Remove the first column that R added for some unknown reason
+a$...1 <- NULL
+```
+
+The purpose of this problem is to demonstrate model selection when the goal
+is prediction. We will try to predict `pmw1`, which is the "particulate matter
+(PM2.5) weekly average from" week 1 of gestation.
+(I'm quoting the Data Dictionary in sheet 2 of the Excel file.)
+We'll allow ourselves to use any variable in the data set from
+`mat_age` through `lookfwd612`. In other words, we're excluding from
+consideration `random_id` and all the `pmw` variables.
+Just to make that more clear, I'm going to remove anything that's not our outcome
+or an eligible explanatory variable.
+
+```{r}
+a$randomid <- NULL
+exclude <- paste0("pmw",
+                  2:40)
+a <- a[ ,!(colnames(a) %in% exclude)]
+```
+
+
+### Part (a)
+
+If our goal is prediction, we should evaluate our model based on how well
+it predicts new data. So, we should randomly split our data into a training
+set and a test set. We can fit our models on the training set and test
+them on the test set.
+
+Randomly select 80% of the data set and store it
+as a training set. Store the remaining 20% as a test set.
+
+```{r}
+
+```
+
+
+### Part (b)
+
+Use the training set to regress the outcome on only those variables
+that you think would be predictive. Note that "predictive" is not the same
+as "causal". Many of the explanatory variables were measured after
+the outcome, so they could not have caused the outcome. However, they still
+might be predictive.
+
+I'll call this model the "judicious" model.
+
+```{r}
+
+```
+
+### Part (c)
+
+Use the training set to regress the outcome on all candidate variables.
+I'll call this the "full" model.
+
+```{r}
+
+```
+
+### Part (d)
+
+For this part of the problem, I'd like you to use backward selection.
+If you try to do this with the full model, R will protest once it removes
+a couple variables and realizes that it can include more rows for smaller
+models. This is because some of the rows are missing data, so they can't
+be included in the full model, but can be included in any model that doesn't
+use the variables for which they're missing values.
+
+So, regress the outcome on all possible explanatory variables in the training
+set *after removing all rows with missing data*. Then, run backward selection.
+I'll call this the "backward" model.
+
+You might want to use `trace = 0` to prevent R from printing out all the
+intermediate models in the backward selection process.
+
+```{r}
+
+```
+
+### Part (e)
+
+Order the three models (full, judicious, and backward) from best to worst
+using the adjusted $R^2$.
+
+```{r}
+
+```
+
+
+
+Do the same using the AIC.
+
+```{r}
+
+```
+
+
+
+
+### Part (f)
+
+Use `predict` to get predictions of the outcome for the test set.
+Then, find the root mean squared error for each model in the test set.
+Rank the models from best to worst using the RMSE.
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
