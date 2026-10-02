@@ -205,7 +205,7 @@ among people who rate their health as excellent,
 holding income constant.
 - The odds of having bought organic in the past 30 days
 among people who make $x + 1000$ dollars per month
-is 15% greater than the odds of having bought organice in the past 30 days
+is 15% greater than the odds of having bought organic in the past 30 days
 among people who make $x$ dollars per month,
 holding self-rated health constant.
 
