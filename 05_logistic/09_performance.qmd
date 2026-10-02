@@ -1,0 +1,423 @@
+---
+title: "Performance"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(pROC)
+```
+
+## Learning Objectives
+
+- Define, compute, and interpret sensitivity and specificity.
+- Interpret an ROC curve.
+- Define, use, and interpret the area under the curve.
+
+
+## Lesson
+
+### Discrimination
+
+One measure of the performance of a logistic regression model
+is how well it discriminates between observed 0s and observed 1s.
+Each observation gets a fitted value;
+you can choose some cutoff such that any observation with a fitted value
+below the cutoff gets a predicted outcome of 0
+and any observation with a fitted value above the cutoff gets
+a predicted outcome of 1.
+Then you can compare the predicted outcome to the observed outcome.
+There are a couple ways to make this comparison.
+In order to talk about them,
+it might be useful to use the terminology in the following table.
+Here, "positive" means a 1 and "negative" means a 0.
+
+| | Predicted Positive | Predicted Negative | Total |
+|:-|:-:|:-:|:-:|
+| Observed Positive | True Positive (TP) | False Negative (FN) | P |
+| Observed Negative | False Positive (FP) | True Negative (TN) | N |
+
+
+### Sensitivity
+
+Sensitivity is the probability that an observed 1 will have a fitted value above
+the cutoff, and thus receive a predicted outcome of 1.
+Using the table above, we can compute the sensitivity as
+$$
+\frac{TP}{P} = \frac{TP}{TP + FN} \text{.}
+$$
+Sensitivity is also known as the true positive rate or the recall.
+
+Sensitivity is often used in medical testing.
+In that context, it's the probability that someone who actually has a disease
+will test positive for it.
+
+### Specificity
+
+Specificity is the probability that an observed 0 will have a fitted value
+below the cutoff,
+and thus receive a predicted outcome of 0.
+Using the table above, we can compute the specificity as
+$$
+\frac{TN}{N} = \frac{TN}{TN + FP} \text{.}
+$$
+Specificity is also known as the true negative rate.
+
+Specificity is often used in medical testing.
+In that context, it's the probability that someone who does not have a disease
+will test negative for it.
+
+### ROC Curve
+
+In order to compute the sensitivity and specificity,
+we need a cutoff to separate the predicted 1s from the predicted 0s.
+Different cutoffs yield different sensitivities and specificities.
+If we make a receiver operating characteristic (ROC) curve,
+we can look at all these sensitivities and specificities at once.
+
+Let's walk through the creation of an ROC curve for a specific example.
+In the future, you will just use an R package to create the ROC curve,
+but making one (or at least going through a few of the steps)
+helps with understanding how to interpret it.
+
+```{r}
+d <- Lock5Data::NutritionStudy
+d$SmokeYes <- ifelse(test = d$Smoke == "Yes",
+                     yes = 1,
+                     no = 0)
+d$YearsSince40 <- d$Age - 40
+```
+
+Let's return to the nutrition study.
+We regressed smoking on years since age 40,
+vitamin use (no, occasional, or regular),
+and sex (male or female).
+
+```{r}
+#| echo: true
+mod_01 <- glm(formula = SmokeYes ~ YearsSince40 + VitaminUse + Sex,
+              family = binomial,
+              data = d)
+summary(mod_01)
+```
+
+Let's start with an empty plot.
+On the horizontal axis, we'll put one minus the specificity
+($1 - \text{specificity}$).
+I don't know why we use one minus the specificity instead of the specificity
+itself, but that's the way it is.
+On the vertical axis, we'll put the sensitivity.
+
+```{r}
+plot(x = c(0,1),
+     y = c(0,1),
+     xlab = "1 - Specificity",
+     ylab = "Sensitivity",
+     main = "ROC Curve",
+     type = "l",
+     lty = 2)
+grid()
+```
+
+Next, I'm going to choose the lowest possible cutoff: 0.
+Because all the fitted values are above 0,
+every observation will get a predicted value of 1.
+What are the sensitivity and specificity for this cutoff?
+```{r}
+#| echo: true
+sensitivity <- sum(mod_01$fitted.values > 0 & mod_01$model$SmokeYes == 1) / sum(mod_01$model$SmokeYes == 1)
+sensitivity
+specificity <- sum(mod_01$fitted.values <= 0 & mod_01$model$SmokeYes == 0) / sum(mod_01$model$SmokeYes == 0)
+specificity
+```
+The sensitivity is 1 because all the observed 1s received predicted a predicted
+value of 1,
+because *every observation* received a predicted value of 1.
+This would be like opening and searching every single bag at the airport;
+you wouldn't miss any dangerous objects, but you'd have to search every bag.
+The specificity, on the other hand, is 0.
+Since every observation received a predicted value of 1,
+no observed 0s were correctly categorized as 0s.
+In the airport example,
+you didn't correctly identify any safe bags as safe.
+
+Anyway, we can add this point to our plot.
+```{r}
+plot(x = c(0,1),
+     y = c(0,1),
+     xlab = "1 - Specificity",
+     ylab = "Sensitivity",
+     main = "ROC Curve",
+     type = "l",
+     lty = 2)
+grid()
+points(x = 1 - specificity,
+       y = sensitivity,
+       pch = 19)
+```
+
+
+Okay, let's do a different cutoff.
+I'm going to choose the lowest fitted value.
+```{r}
+#| echo: true
+# Get cutoff
+sorted_unique_fitted <- sort(unique(mod_01$fitted.values))
+cutoff <- sorted_unique_fitted[1]
+
+# Sensitivity
+numerator <- sum(mod_01$fitted.values > cutoff & mod_01$model$SmokeYes == 1)
+denominator <- sum(mod_01$model$SmokeYes == 1)
+sensitivity <- c(sensitivity,
+                 numerator / denominator)
+sensitivity[2]
+
+# Specificity
+numerator <- sum(mod_01$fitted.values <= cutoff & mod_01$model$SmokeYes == 0)
+denominator <- sum(mod_01$model$SmokeYes == 0)
+specificity <- c(specificity,
+                 numerator / denominator)
+specificity[2]
+```
+
+By increasing the cutoff, we slightly increased the specificity.
+It must be the case that the observation with the lowest fitted value
+had an observed outcome of 0.
+Let's check:
+```{r}
+#| echo: true
+mod_01$model$SmokeYes[mod_01$fitted.values == cutoff]
+```
+Yep! So by increasing the cutoff slightly,
+we correctly categorized one observed 0 as a predicted 0,
+increasing our specificity.
+Because all observed 1s remained categorized as predicted 1s,
+we didn't decrease our sensitivity.
+
+We can add this new point to our plot.
+```{r}
+plot(x = c(0,1),
+     y = c(0,1),
+     xlab = "1 - Specificity",
+     ylab = "Sensitivity",
+     main = "ROC Curve",
+     type = "l",
+     lty = 2)
+grid()
+points(x = 1 - specificity,
+       y = sensitivity,
+       pch = 19)
+```
+
+You can't really tell there's even a new point on the plot,
+because it's so close to the first one.
+
+Let's skip ahead and just have R draw the entire ROC curve for us.
+There are many packages with functions that do this.
+I tend to use the package `pROC`.
+
+```{r}
+#| echo: true
+mod_01_roc <- roc(response = mod_01$model$SmokeYes,
+                  predictor = mod_01$fitted.values)
+plot(mod_01_roc)
+```
+
+Now that it's plotted, how do we interpret it?
+Well, we want specificity and sensitivity to both be high.
+So, ideally, we'd like the dark black line to go all the way to the
+upper left-hand corner of the plot.
+The closer we get to this ideal,
+the better the model performs at discriminating 0s and 1s.
+
+What's the worst we could do?
+You might think the worst possible ROC curve would be one that
+goes all the way to the lower right-hand corner of the plot.
+However, if it did,
+that would mean that the model does a perfectly bad job of discriminating
+0s and 1s.
+In other words, it categorizes all observed 0s as predicted 1s
+and all observed 1s as predicted 0s.
+In that case, you could just flip the predicted labels and do a perfectly
+good job.
+
+You may have noticed the following message that the function sent:
+```
+Setting levels: control = 0, case = 1
+Setting direction: controls < cases
+```
+The `controls < cases` message means that fitted values below
+each cutoff were categorized as predicted 0s.
+If the function detected that it could perform better
+by categorizing fitted values above each cutoff as predicted 0s,
+it would do that.
+It would tell the user `controls > cases` as well.
+In order to prevent this gaming of the system,
+you can use the `direction` parameter of the `roc` function.
+
+So, what's the worst you can do?
+The worst ROC curve is one that follows the reference line.
+it's exactly between perfectly bad and perfectly good.
+
+For the model above, the AUC is:
+```{r}
+auc(mod_01_roc)
+```
+This is better than chance.
+It's hard to say how good or bad this is without knowing how well
+other models perform.
+
+### Area Under the Curve
+
+The area under the curve (AUC) is a single value that summarizes
+the ROC curve.
+It's literally the area under the ROC curve.
+The highest it can be is 1,
+and the lowest (assuming you haven't changed the `direction` parameter) is 0.5.
+So, a higher AUC is better.
+
+Surprisingly, the AUC has a more intuitive interpretation
+than just `high = good` and `low = bad`.
+The AUC is the probability that a randomly-selected observed 1
+will have a higher fitted value than a randomly-selected observed 0.
+This is sometimes called the "probability of superiority"
+or the "common language effect size".
+This interpretation might make it easier to understand why 0.5
+is the worst you can do.
+An AUC of 0.5 means that a randomly-selected observed 1
+is equally likely to have a fitted value above or below
+the fitted value of a randomly-selected
+observed 0.
+
+
+## Problems
+
+### Problem 1
+
+```{r}
+# Set seed
+set.seed(9)
+
+# Parameters
+n <- 1e3
+beta_1 <- 2
+
+# Generate x's
+x_a <- rnorm(n = n,
+             mean = -2.5)
+x_b <- rnorm(n)
+x_c <- rnorm(n = n,
+             mean = 2.5)
+
+# Generate y's
+y_a <- rbinom(n = n,
+              size = 1,
+              prob = plogis(beta_1 * x_a))
+y_b <- rbinom(n = n,
+              size = 1,
+              prob = plogis(beta_1 * x_b))
+y_c <- rbinom(n = n,
+              size = 1,
+              prob = plogis(beta_1 * x_c))
+
+# Fit models
+mod_a <- glm(formula = y_a ~ x_a,
+             family = binomial)
+mod_b <- glm(formula = y_b ~ x_b,
+             family = binomial)
+mod_c <- glm(formula = y_c ~ x_c,
+             family = binomial)
+```
+
+Below are three ROC curves.
+Each was created from a different simulated data set.
+I'll call the data sets A, B, and C,
+and I'll describe how they differ.
+Your job is to match the data set to the correct plot.
+
+Each data set was simulated according to the model
+$$
+p_i = \frac{1}{1 + \exp\left(-2 X_i\right)} \text{.}
+$$
+The three data sets differ only in the distribution of the explanatory variable.
+
+- In data set A,
+the explanatory variable is normally distributed with mean -2.5
+and variance 1.
+This means there are `r sum(y_a == 1)` observations where the outcome is 1
+and `r sum(y_a == 0)` observations where the outcome is 0.
+- In data set B,
+the explanatory variable is normally distributed with mean 0
+and variance 1.
+This means there are `r sum(y_b == 1)` observations where the outcome is 1
+and `r sum(y_b == 0)` observations where the outcome is 0.
+- In data set A,
+the explanatory variable is normally distributed with mean 2.5
+and variance 1.
+This means there are `r sum(y_c == 1)` observations where the outcome is 1
+and `r sum(y_c == 0)` observations where the outcome is 0.
+
+Simple linear regression was used to estimate the coefficients
+and obtain fitted values.
+
+Which plot corresponds to which data set?
+
+
+```{r}
+# Plot ROC curves
+plot(roc(response = mod_c$model$y_c,
+         predictor = mod_c$fitted.values),
+     main = "Plot 1")
+plot(roc(response = mod_a$model$y_a,
+         predictor = mod_a$fitted.values),
+     main = "Plot 2")
+plot(roc(response = mod_b$model$y_b,
+         predictor = mod_b$fitted.values),
+     main = "Plot 3")
+```
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+- Plot 1 used data set C.
+- Plot 2 used data set A.
+- Plot 3 used data set B.
+
+Recall that when we made our ROC curve, we started with a cutoff of 0,
+which led to perfect sensitivity and perfectly bad specificity.
+When we raised the cutoff slightly,
+one observed 0 got correctly categorized as a predicted 0.
+This increased the specificity but did not decrease the sensitivity.
+If we had a bunch of 0s with low fitted values,
+we would continue to see increases in specificity with no corresponding
+drops in sensitivity.
+Data set A has lots of 0s,
+and it's probably the case that a lot of those 0s had low fitted values,
+since there was nothing wrong about how we fit the logistic regression.
+(For example, we didn't include any unnecessary explanatory variables
+or leave out an necessary explanatory variables.)
+So, it's reasonable to assume that data set A corresponds to Plot 2,
+which has a long, flat line at the top,
+indicating increases in specificity without drops in sensitivity.
+And this is correct.
+
+If a data set has lots of observed 1s with high fitted values,
+then once you reach a certain cutoff,
+additional increases in the cutoff will categorize additional observed 1s
+as predicted 0s,
+decreasing the sensitivity without decreasing the specificity.
+This describes data set C and plot 1.
+
+By process of elimination,
+the remaining data set matches the remaining plot.
+
+:::
+
+
+
+
+
+
