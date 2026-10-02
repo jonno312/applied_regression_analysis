@@ -1,0 +1,241 @@
+---
+title: "Hypothesis Testing"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the results of a hypothesis test in the context of logistic
+regression.
+
+
+## Lesson
+
+### Interpretation in General
+
+As in linear regression, R will conduct a hypothesis test
+for each coefficient estimated in logistic regression.
+The null hypothesis for each coefficient is that that coefficient is zero,
+and the alternative hypothesis is that the coefficient is not zero.
+It's always a two-sided test.
+
+What does it mean if the coefficient is zero?
+The answer to this is different if we're talking about the intercept
+versus a non-intercept coefficient.
+Let's start with the intercept.
+Recall that $\exp(\beta_0)$ is the odds that the outcome equals 1
+when all the covariates are equal to zero.
+If $\beta_0 = 0$, then $\exp(\beta_0) = 1$.
+What does an odds of 1 mean?
+$$
+\begin{align*}
+\frac{p}{1-p} &= 1 \\
+p &= 1 - p \\
+2p &= 1 \\
+p &= \frac{1}{2}
+\end{align*}
+$$
+So, if $\beta_0 = 0$, then the probability that the outcome equals 1
+when all the explanatory variables equal 0 is $1/2$.
+It's a coin flip.
+If the p-value is small, we would reject this hypothesis,
+and conclude that the probability that the outcome equals 1
+when all the explanatory variables equal 0 is not $1/2$.
+Whether or not this is meaningful depends on your goals.
+
+What about for the non-intercept coefficients?
+For $j \ne 0$, $\exp(\beta_j)$ is the odds ratio comparing
+two populations that are identical except one has $X_{ij} = x + 1$
+and the other has $X_{kj} = x$.
+Again, if $\beta_j = 0$, then $\exp(\beta_j) = 1$.
+If an odds ratio is 1,
+then the two odds it's comparing are equal to each other.
+So, the null hypothesis corresponds to equal odds for these two populations.
+If the p-value is small, we reject the null
+and conclude that these two populations have different odds
+that the outcome equals 1.
+
+Note that if two odds are equal, the corresponding probabilities
+must also be equal.
+So, if an odds ratio is 1,
+the odds are equivalent,
+and the corresponding probabilities are equivalent.
+
+### Example
+
+```{r}
+d <- Lock5Data::NutritionStudy
+d$SmokeYes <- ifelse(test = d$Smoke == "Yes",
+                     yes = 1,
+                     no = 0)
+d$YearsSince40 <- d$Age - 40
+```
+
+Let's return to the nutrition study.
+We regressed smoking on years since age 40,
+vitamin use (no, occasional, or regular),
+and sex (male or female).
+
+```{r}
+#| echo: true
+mod_01 <- glm(formula = SmokeYes ~ YearsSince40 + VitaminUse + Sex,
+              family = binomial,
+              data = d)
+summary(mod_01)
+```
+
+For our hypothesis tests, let's use $\alpha = 0.05$.
+
+- The p-value for the intercept is much less than $\alpha$,
+so we can conclude that the odds of smoking
+among 40-year-old females who don't use vitamins
+is different from 1.
+In other words,
+the probability of smoking among 40-year-old females who don't use vitamins
+is different from 0.5.
+- Since the p-value for `YearsSince40` is less than 0.05,
+the odds of smoking among people age $x + 1$ is different
+than the odds of smoking among people age $x$,
+holding vitamin use and sex constant.
+- Since the p-value for `VitaminUseOccasional` is greater than 0.05,
+we cannot conclude that there is a difference between
+the odds of smoking among people who occasionally use vitamins
+the odds of smoking among people who don't use vitamins,
+holding age and sex constant.
+- Since the p-value on `VitaminUseRegular` is less than 0.05,
+we can conclude that
+the odds of smoking among people who regularly use vitamins
+is different than the odds of smoking among people who don't use vitamins,
+holding age and sex constant.
+- Since the p-value on `SexMale` is greater than 0.05, we cannot conclude that
+the odds of smoking among males is different
+than the odds of smoking among females,
+holding age and vitamin use constant.
+
+You may have noticed that I didn't use the phrase "statistically significant".
+I'm not trying to make a statement by doing that.
+For the p-values less than 0.05,
+we could conclude that the observed differences between the odds
+are statistically significant.
+For the p-values greater than 0.05,
+we could say that although we observed differences in the odds,
+those differences are not statistically significant.
+
+
+## Problems
+
+### Problem 1
+
+```{r}
+d2 <- Lock5Data::NHANES
+d2$OrganicYes <- ifelse(test = d2$Organic == "Yes",
+                        yes = 1,
+                        no = 0)
+d2$Income1000 <- d2$Income / 1e3
+```
+
+Let's return to the NHANES data.
+The outcome is a 1 if the respondent bought any food labeled organic
+in the past 30 days,
+and 0 otherwise.
+I've regressed this on self-rated health (excellent, very good,
+good, fair, and poor)
+and monthly income (in thousands of dollars).
+
+```{r}
+mod_02 <- glm(formula = OrganicYes ~ Health + Income1000,
+              family = binomial,
+              data = d2)
+summary(mod_02)
+```
+
+Interpret the hypothesis tests associated with the coefficients.
+Use $\alpha = 0.05$.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- Since the p-value on the intercept is less than 0.05,
+the odds of having bought organic in the past 30 days
+among people who make \$0/month and rate their own health as excellent
+is different from 1 (and the probability is different from 0.5).
+- Since the p-value associated with `HealthFair` is less than 0.05,
+the odds of having bought organic in the past 30 days
+among people who rate their health as fair
+is different than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- Since the p-value associated with `HealthGood` is less than 0.05,
+the odds of having bought organic in the past 30 days
+among people who rate their health as good
+is different than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- Since the p-value associated with `HealthPoor` is less than 0.05,
+the odds of having bought organic in the past 30 days
+among people who rate their health as poor
+is different than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- Since the p-value associated with `HealthVery good` is greater than 0.05,
+we cannot conclude that
+the odds of having bought organic in the past 30 days
+among people who rate their health as very good
+is different than the odds of having bought organic in the past 30 days
+among people who rate their health as excellent,
+holding income constant.
+- Since the p-value associated with `Income1000` is less than 0.05,
+the odds of having bought organic in the past 30 days
+among people who make $x + 1000$ dollars per month
+is different than the odds of having bought organic in the past 30 days
+among people who make $x$ dollars per month,
+holding self-rated health constant.
+
+
+:::
+
+### Problem 2
+
+```{r}
+d3 <- Lock5Data::ICUAdmissions
+d3$Died <- d3$Status
+d3$YearsSince20 <- d3$Age - 20
+```
+
+Let's return to our ICU admissions data set.
+Our outcome will be 1 if the patient died and 0 otherwise.
+We'll use two covariates:
+years since age 20
+and whether or not the patient got CPR prior to admission (1 = yes, 0 = no).
+
+```{r}
+mod_03 <- glm(formula = Died ~ YearsSince20 + CPR,
+              family = binomial,
+              data = d3)
+summary(mod_03)
+```
+
+Interpret the hypothesis tests associated with the coefficients.
+Use $\alpha = 0.05$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- Since the p-value associated with the intercept is less than 0.05,
+the odds of death for a 20-year-old who did not receive CPR prior to admission
+to the ICU is different than 1 (and the probability is different than 0.5).
+- Since the p-value associated with `YearsSince20` is less than 0.05,
+the odds of death for someone age $x + 1$ is different than
+the odds of death for someone age $x$, holding CPR status constant.
+- Since the p-value associated with `CPR` is less than 0.05,
+the odds of death among
+people who received CPR prior to admission is different than the odds
+of death of people who did not receive CPR prior to admission,
+holding age constant.
+
+:::
+
+
+
+
