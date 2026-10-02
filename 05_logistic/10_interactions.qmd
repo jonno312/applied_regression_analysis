@@ -1,0 +1,250 @@
+---
+title: "Interactions"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients of a logistic regression model with an interaction
+term.
+
+
+## Lesson
+
+
+
+```{r}
+d <- Lock5Data::NutritionStudy
+d$SmokeYes <- ifelse(test = d$Smoke == "Yes",
+                     yes = 1,
+                     no = 0)
+d$YearsSince40 <- d$Age - 40
+```
+
+Let's return to the nutrition data set.
+We'll regress smoking on years since age 40,
+vitamin use (no, occasional, or regular),
+and sex (male or female),
+but include an interaction between years since age 40
+and vitamin use.
+
+```{r}
+#| echo: true
+mod_01 <- glm(formula = SmokeYes ~ YearsSince40 * VitaminUse + Sex,
+              family = binomial,
+              data = d)
+summary(mod_01)
+```
+
+How do we interpret these coefficients?
+In order to save some space, I'm going to use the following notation.
+Suppose $i\in\{1,\dotsc,315\}$.
+Define:
+
+- $S_i = 1$ if the $i$th participant smokes and $S_i = 0$ otherwise.
+- $Y_i$ is years since age 40 for the $i$th participant.
+- $O_i = 1$ if the $i$th participant used vitamins occasionally
+and $O_i = 0$ otherwise.
+- $R_i = 1$ if the $i$th participant used vitamins regularly
+and $R_i = 0$ otherwise.
+- $M_i = 1$ if the $i$th participant was male and $M_i = 0$ otherwise.
+
+Recall that the $i$th participant's estimated odds of smoking can be
+computed like so:
+$$
+\widehat{\text{odds}}_i = \exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right) \text{.}
+$$
+
+**Intercept**
+
+$\exp\left(\hat{\beta}_0\right)$ is the estimated odds of smoking
+for a 40-year-old female who doesn't use vitamins.
+```{r}
+#| echo: true
+exp(mod_01$coefficients[1])
+```
+
+**Main Effects**
+
+
+- $\exp\left(\hat{\beta}_1\right)$ is the estimated odds ratio
+comparing participants who differ in age by one year,
+are the same sex,
+and don't use vitamins.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (y+1) + \hat{\beta}_2 (0) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 (y+1) (0) + \hat{\beta}_6 (y+1) (0)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (0) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (0) + \hat{\beta}_6 y (0)\right)} \\
+&= \exp\left(\hat{\beta}_1  \right) \\
+\end{align*}
+$$
+```{r}
+#| echo: true
+exp(mod_01$coefficients[2])
+```
+- $\exp\left(\hat{\beta}_2\right)$ is the estimated odds ratio
+comparing participants who use vitamins occasionally to participants
+who don't use vitamins,
+where both groups of participants are the same sex
+and are 40 years old.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (0) + \hat{\beta}_2 (1) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 (0) (1) + \hat{\beta}_6 (0) (0)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (0) + \hat{\beta}_2 (0) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 (0) (0) + \hat{\beta}_6 (0) (0)\right)} \\
+&= \exp\left(\hat{\beta}_2\right)
+\end{align*}
+$$
+```{r}
+#| echo: true
+exp(mod_01$coefficients[3])
+```
+- $\exp\left(\hat{\beta}_3\right)$ is the estimated odds ratio
+comparing participants who use vitamins regularly to participants
+who don't use vitamins,
+where both groups of participants are the same sex
+and are 40 years old.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (0) + \hat{\beta}_2 (0) + \hat{\beta}_3 (1) + \hat{\beta}_4 M_i + \hat{\beta}_5 (0) (0) + \hat{\beta}_6 (0) (1)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (0) + \hat{\beta}_2 (0) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 (0) (0) + \hat{\beta}_6 (0) (0)\right)} \\
+&= \exp\left(\hat{\beta}_3\right)
+\end{align*}
+$$
+```{r}
+#| echo: true
+exp(mod_01$coefficients[4])
+```
+- $\exp\left(\hat{\beta}_4\right)$ is the estimated odds ratio
+comparing male to non-male participants
+who are the same age and have the same vitamin use.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 (1) + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 (0) + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)} \\
+&= \exp\left(\hat{\beta}_4\right)
+\end{align*}
+$$
+```{r}
+#| echo: true
+exp(mod_01$coefficients[5])
+```
+
+**Moderation of Age by Vitamin Use**
+
+- $\exp\left(\hat{\beta}_1 + \hat{\beta}_5\right)$ is the estimated odds ratio
+comparing participants who differ in age by one year,
+are the same sex,
+and use vitamins occasionally.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (y+1) + \hat{\beta}_2 (1) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 (y+1) (1) + \hat{\beta}_6 (y+1) (0)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (1) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (1) + \hat{\beta}_6 y (0)\right)} \\
+&= \exp\left(\hat{\beta}_1 + \hat{\beta}_5\right) \\
+&= \exp\left(\hat{\beta}_1\right) \exp\left(\hat{\beta}_5\right) \\
+\end{align*}
+$$
+```{r}
+#| echo: true
+exp(mod_01$coefficients[2] + mod_01$coefficients[6])
+exp(mod_01$coefficients[2]) * exp(mod_01$coefficients[6])
+```
+- $\exp\left(\hat{\beta}_1 + \hat{\beta}_6\right)$ is the estimated odds ratio
+comparing participants who differ in age by one year,
+are the same sex,
+and use vitamins regularly.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 (y+1) + \hat{\beta}_2 (0) + \hat{\beta}_3 (1) + \hat{\beta}_4 M_i + \hat{\beta}_5 (y+1) (0) + \hat{\beta}_6 (y+1) (1)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (0) + \hat{\beta}_3 (1) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (0) + \hat{\beta}_6 y (1)\right)} \\
+&= \exp\left(\hat{\beta}_1 + \hat{\beta}_6\right) \\
+&= \exp\left(\hat{\beta}_1\right) \exp\left(\hat{\beta}_6\right) \\
+\end{align*}
+$$
+```{r}
+#| echo: true
+exp(mod_01$coefficients[2] + mod_01$coefficients[7])
+exp(mod_01$coefficients[2]) * exp(mod_01$coefficients[7])
+```
+
+**Moderation of Vitamin Use by Age**
+
+- $\exp\left(\hat{\beta}_2 + \hat{\beta}_5y\right)$ is the estimated odds ratio
+comparing participants who use vitamins occasionally
+to participants who don't use vitamins,
+where both groups are the same sex
+and were 40 years old $y$ years ago.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (1) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (1) + \hat{\beta}_6 y (0)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (0) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (0) + \hat{\beta}_6 y (0)\right)} \\
+&= \exp\left(\hat{\beta}_2 + \hat{\beta}_5 y\right) \\
+&= \exp\left(\hat{\beta}_2\right) \exp\left(\hat{\beta}_5 y\right) \\
+\end{align*}
+$$
+```{r}
+temp <- function(x){
+  exp(mod_01$coefficients[3] + mod_01$coefficients[6] * (x - 40))
+}
+curve(expr = temp,
+      from = min(d$Age),
+      to = max(d$Age),
+      xlab = "Age",
+      ylab = "Odds Ratio",
+      main = "Occasional to No Vitamin Use, Same Sex")
+```
+- $\exp\left(\hat{\beta}_3 + \hat{\beta}_6y\right)$ is the estimated odds ratio
+comparing participants who use vitamins regularly
+to participants who don't use vitamins,
+where both groups are the same sex
+and were 40 years old $y$ years ago.
+$$
+\begin{align*}
+\frac{\widehat{\text{odds}}_i}{\widehat{\text{odds}}_j} &= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_i + \hat{\beta}_2 O_i + \hat{\beta}_3 R_i + \hat{\beta}_4 M_i + \hat{\beta}_5 Y_i O_i + \hat{\beta}_6 Y_i R_i\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 Y_j + \hat{\beta}_2 O_j + \hat{\beta}_3 R_j + \hat{\beta}_4 M_j + \hat{\beta}_5 Y_j O_j + \hat{\beta}_6 Y_j R_j\right)} \\
+&= \frac{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (0) + \hat{\beta}_3 (1) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (0) + \hat{\beta}_6 y (1)\right)}{\exp\left(\hat{\beta}_0 + \hat{\beta}_1 y + \hat{\beta}_2 (0) + \hat{\beta}_3 (0) + \hat{\beta}_4 M_i + \hat{\beta}_5 y (0) + \hat{\beta}_6 y (0)\right)} \\
+&= \exp\left(\hat{\beta}_3 + \hat{\beta}_6 y\right) \\
+&= \exp\left(\hat{\beta}_3\right) \exp\left(\hat{\beta}_6 y\right) \\
+\end{align*}
+$$
+```{r}
+temp <- function(x){
+  exp(mod_01$coefficients[4] + mod_01$coefficients[7] * (x - 40))
+}
+curve(expr = temp,
+      from = min(d$Age),
+      to = max(d$Age),
+      xlab = "Age",
+      ylab = "Odds Ratio",
+      main = "Regular to No Vitamin Use, Same Sex")
+abline(h = 1,
+       lty = 2)
+```
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
