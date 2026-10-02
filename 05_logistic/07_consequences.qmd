@@ -1,44 +1,99 @@
 ---
-title: "Consequences of Poor Calibration"
+title: "Consequences of Violations of the Assumptions of Logistic Regression"
 execute:
   echo: false
 format: html
 ---
 
-## Learning Objective
+## Learning Objectives
 
-Explain the consequences of poor calibration in a logistic regression model.
+- State how the coefficients in logistic regression are estimated.
+- Explain the consequences of violations of the assumptions of logistic
+regression.
 
 
 ## Lesson
 
-Calibration is a measure of the model's ability to estimate the outcome.
-If the model isn't estimating the outcome well,
-you should be skeptical of the accuracy of the coefficients.
+The coefficients in logistic regression are estimated by maximizing the
+likelihood, which I've written below.
+(This is not something you need to memorize.)
 
-As we saw in the examples, 
+
+
+$$
+\begin{align*}
+\mathcal{L}(\beta_0,\beta_1,\dotsc,\beta_p) &= \prod_{i=1}^n p_i^{y_i} (1-p_i)^{1-y_i} \\
+&= \prod_{i=1}^n \left(\frac{1}{1 + \exp\left(-\left(\beta_0 + \beta_1 x_{i1} + \dotsc + \beta_p x_{ip} \right)\right)}\right)^{y_i} \left(1 - \frac{1}{1 + \exp\left(-\left(\beta_0 + \beta_1 x_{i1} + \dotsc + \beta_p x_{ip} \right)\right)}\right)^{1-y_i} \\
+&= \prod_{i=1}^n \left(\frac{1}{1 + \exp\left(-\left(\beta_0 + \beta_1 x_{i1} + \dotsc + \beta_p x_{ip} \right)\right)}\right)^{y_i} \left(\frac{\exp\left(-\left(\beta_0 + \beta_1 x_{i1} + \dotsc + \beta_p x_{ip} \right)\right)}{1 + \exp\left(-\left(\beta_0 + \beta_1 x_{i1} + \dotsc + \beta_p x_{ip} \right)\right)}\right)^{1-y_i} \\
+&= \prod_{i=1}^n \frac{\exp\left(-(1-y_i)\left(\beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip}\right)\right)}{1 + \exp\left(-\left(\beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip}\right)\right)} \\
+\end{align*}
+$$
+
+
+
+This likelihood above is based on all three assumptions,
+all at the same time.
+So, if any of them are wrong,
+the likelihood is wrong.
+Does that mean that if any of the assumptions are violated,
+we can't interpret our estimates,
+trust the standard errors,
+or use the p-values?
+Not exactly.
+
+If the first two assumptions are met,
+but the observations are not independent,
+the coefficient estimators will still be close to the true values
+if the sample size is large enough.
+This result comes to us from the theory of generalized estimating equations,
+more commonly known by the acronym GEE,
+which is usually taught in courses on longitudinal data analysis.
+I'm eliding a *lot* of details,
+so if you want to learn more, I recommend looking into GEE.
+For now, just know that if you have a binary outcome,
+a well-calibrated model, and a large sample size,
+you can go ahead and interpret the coefficients,
+even if the observations are not independent.
+If you want to do hypothesis testing,
+you should probably not use the default standard errors and p-values
+from logistic regression.
+
+What if the second assumption isn't met,
+as evidenced by a calibration plot where the confidence bands
+don't contain the reference line?
+It depends.
+If your model is well-calibrated for some fitted values but not others,
+you could interpret your coefficients and conduct your hypothesis tests
+with the caveat that the results only apply to a certain subset of
+observations.
+If your model is poorly calibrated everywhere,
+you should probably consider changing your model.
+
+
 
 ## Problems
 
 ### Problem 1
 
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
-
-### Problem 2
-
-
+Compare and contrast the relationship between sample size and the
+consequences of violating the assumptions for linear regression
+and logistic regression.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+For linear regression,
+as long as the linearity, iid, and homoscedasticity assumptions are met,
+a large sample size allows us to interpret the p-values,
+even if the errors are not normally distributed.
 
+For logistic regression,
+as long as the outcome is binary and the linear model is correct,
+a large sample size allows us to interpret the coefficient estimates,
+even if the observations are not independent.
 
 :::
+
+
 
 
 
