@@ -93,6 +93,18 @@ even if the observations are not independent.
 
 :::
 
+### Problem 2
+
+Can you use the AIC to compare different logistic regression models?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Yes. Since logistic regression is fit with maximum likelihood estimation,
+you can use the AIC, the LRT, the BIC, and any other likelihood-based
+measure of performance to compare models.
+
+:::
+
 
 
 
