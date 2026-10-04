@@ -13,7 +13,7 @@ term.
 
 ## Lesson
 
-
+### Example
 
 ```{r}
 d <- Lock5Data::NutritionStudy
@@ -221,15 +221,162 @@ abline(h = 1,
        lty = 2)
 ```
 
+### Heuristic
+
+When interpreting terms in a model that has an interaction terms,
+these might be some useful questions to ask:
+
+- Is this an intercept or a non-intercept term?
+  - If you're interpreting an intercept,
+  the interaction term doesn't really change anything.
+  Interpreting the intercept always requires setting all the covariates to zero.
+  - If you're interpreting a non-intercept term,
+  you may need to take into account the interaction term.
+- Is this coefficient attached to a single explanatory variable
+or a product?
+  - It's often really challenging to interpret a coefficient
+  that's attached to an interaction term.
+  Usually it's easier to interpret coefficients attached to single explanatory
+  variables,
+  or sums of coefficients,
+  where one of the coefficients in the sum is attached to a single explanatory
+  variable and the other coefficient in the sum
+  is attached to an interaction term.
+- What is this thing?
+  - For linear regression, the intercept is an expected value
+  and each non-intercept term attached to a single explanatory variable
+  is an expected difference.
+  For logistic regression, the exponentiated intercept is an odds
+  and each exponentiated non-intercept coefficient attached to
+  a single explanatory variable is an odds ratio.
+- Does the explanatory variable attached to this coefficient also appear
+in an interaction term?
+  - If no, you can interpret the coefficient as though there isn't
+  an interaction term in the model.
+  - If yes, you have to decide if you want to interpret the coefficient
+  by itself or combined with the coefficient attached to the interaction term.
+    - If you interpret the coefficient by itself,
+    it applies only to a population where the other explanatory variable
+    in the interaction term equals zero.
+    - If you interpret the coefficient combined with the coefficient
+    attached to the interaction term,
+    it applies only to a population where the other explanatory variable
+    in the interaction term equals one.
+    If the other explanatory variable is continuous,
+    you can replace it with a lower-case letter
+    to represent an algebraic variable
+    (rather than a random variable).
 
 ## Problems
 
 ### Problem 1
 
+```{r}
+d2 <- Lock5Data::NHANES
+d2$OrganicYes <- ifelse(test = d2$Organic == "Yes",
+                        yes = 1,
+                        no = 0)
+d2$Income1000 <- d2$Income / 1e3
+```
 
+Let's return to the NHANES data set.
+The outcome is a 1 if the respondent bought any food labeled organic
+in the past 30 days,
+and 0 otherwise.
+I've regressed this on self-rated health (excellent, very good,
+good, fair, and poor)
+and monthly income (in thousands of dollars),
+with an interaction term between the two explanatory variables.
+
+```{r}
+mod_02 <- glm(formula = OrganicYes ~ Health * Income1000,
+              family = binomial,
+              data = d2)
+summary(mod_02)
+```
+
+Interpret the exponentiated coefficients.
+```{r}
+#| echo: true
+exp(mod_02$coefficients)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+**Intercept**
+
+- The odds of having bought organic food for someone who has no income
+and rates their own health as excellent is 0.39.
+
+**Main Effects**
+
+- The odds of someone who rates their own health as fair having bought
+organic food are 25% lower than the same odds for someone who rates
+their own health as excellent,
+provided both these people have no income.
+- The odds of someone who rates their own health as good having bought
+organic food are 17% lower than the same odds for someone who rates
+their own health as excellent,
+provided both these people have no income.
+- The odds of someone who rates their own health as poor having bought
+organic food are 28% lower than the same odds for someone who rates
+their own health as excellent,
+provided both these people have no income.
+- The odds of someone who rates their own health as very good having bought
+organic food are 13% higher than the same odds for someone who rates
+their own health as excellent,
+provided both these people have no income.
+- The odds of of having bought organic food for someone who makes $x + 1000$
+dollars per month is 20% greater than the odds of having bought organic
+food for someone who makes $x$ dollars per month,
+provided both these people rate their health as excellent.
+
+**Moderation of Self-Rated Health by Income**
+
+- The odds of someone who rates their own health as fair having bought
+organic food are $0.7482764\times 0.8714446^x$ times the same odds for someone who rates
+their own health as excellent,
+provided both these people make $x$ dollars per month.
+The second term gets raised to the $x$th power because
+$$
+\begin{align*}
+\exp\left(\hat{\beta}_1 + \hat{\beta}_6 x\right) &= 
+\exp\left(\hat{\beta}_1 \right) \exp\left( \hat{\beta}_6 x\right) \\
+&= 
+\exp\left(\hat{\beta}_1 \right) \exp\left( \hat{\beta}_6\right)^x \text{.}
+\end{align*}
+$$
+- The odds of someone who rates their own health as good having bought
+organic food are $0.8317762\times 0.9699155^x$ times the same odds for someone who rates
+their own health as excellent,
+provided both these people make $x$ dollars per month.
+- The odds of someone who rates their own health as poor having bought
+organic food are $0.7233798\times 0.9274793^x$ times the same odds for someone who rates
+their own health as excellent,
+provided both these people make $x$ dollars per month.
+- The odds of someone who rates their own health as very good having bought
+organic food are $1.1274843\times 0.9581934^x$ times the same odds for someone who rates
+their own health as excellent,
+provided both these people make $x$ dollars per month.
+
+**Moderation of Income by Self-Rated Health**
+
+- The odds of of having bought organic food for someone who makes $x + 1000$
+dollars per month is $1.1999314\times 0.8714446$ times the odds of having bought organic
+food for someone who makes $x$ dollars per month,
+provided both these people rate their health as fair.
+- The odds of of having bought organic food for someone who makes $x + 1000$
+dollars per month is $1.1999314\times 0.9699155$ times the odds of having bought organic
+food for someone who makes $x$ dollars per month,
+provided both these people rate their health as good.
+- The odds of of having bought organic food for someone who makes $x + 1000$
+dollars per month is $1.1999314\times 0.7233798$ times the odds of having bought organic
+food for someone who makes $x$ dollars per month,
+provided both these people rate their health as poor.
+- The odds of of having bought organic food for someone who makes $x + 1000$
+dollars per month is $1.1999314\times 1.1274843$ times the odds of having bought organic
+food for someone who makes $x$ dollars per month,
+provided both these people rate their health as very good.
 
 
 
@@ -237,11 +384,48 @@ abline(h = 1,
 
 ### Problem 2
 
+```{r}
+d3 <- Lock5Data::ICUAdmissions
+d3$Died <- d3$Status
+d3$YearsSince20 <- d3$Age - 20
+```
 
+Let's return to our ICU admissions data set.
+Our outcome will be 1 if the patient died and 0 otherwise.
+We'll use two covariates:
+years since age 20
+and whether or not the patient got CPR prior to admission (1 = yes, 0 = no).
+I've also added an interaction term between the two covariates.
+
+```{r}
+mod_03 <- glm(formula = Died ~ YearsSince20 * CPR,
+              family = binomial,
+              data = d3)
+summary(mod_03)
+```
+
+Intepret the exponentiated coefficients.
+```{r}
+#| echo: true
+exp(mod_03$coefficients)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+- The odds of death for a twenty-year-old who did not get CPR
+is 0.08.
+- The odds of death for someone age $x + 21$ is $1.02507578$ times
+the odds of death for someone age $x + 20$,
+provided both these people did not receive CPR.
+- The odds of death for someone who did receive CPR is $0.15894754$ times
+the odds of death for someone who didn't receive CPR,
+provided both these people are age 20.
+- The odds of death for someone age $x + 21$ is $1.02507578\times 1.09876599$ times
+the odds of death for someone age $x + 20$,
+provided both these people did receive CPR.
+- The odds of death for someone who did receive CPR is $0.15894754\times 1.09876599^x$ times
+the odds of death for someone who didn't receive CPR,
+provided both these people are age $x+20$.
 
 :::
 
