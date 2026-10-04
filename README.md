@@ -80,6 +80,11 @@ more on concepts and less on math.
     3. [Assumptions of Logistic Regression](05_logistic/03_logistic_assumptions.qmd)
     4. [Odds](05_logistic/04_odds.qmd)
     5. [Interpretation](05_logistic/05_interpretation.qmd)
+    6. [Calibration](05_logistic/06_calibration.qmd)
+    7. [Consequences of Violations of the Assumptions of Logistic Regression](05_logistic/07_consequences.qmd)
+    8. [Hypothesis Testing](05_logistic/08_hypothesis_testing.qmd)
+    9. [Performance](05_logistic/09_performance.qmd)
+    10. [Interactions](05_logistic/10_interactions.qmd)
 
 Appendices
 
