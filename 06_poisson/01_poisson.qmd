@@ -1,0 +1,106 @@
+---
+title: "Poisson Distribution"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+- State the following, regarding the Poisson distribution:
+  - What the distribution is intended to represent.
+  - The support.
+  - What the parameter represents.
+  - The variance.
+  - How to represent the mean in terms of rate and time.
+
+
+## Lesson
+
+### What's Important to Know
+
+The Poisson distribution is a discrete distribution that forms the basis
+of Poisson regression.
+If $Y\sim\text{Poisson}(\mu)$,
+this is what is important to know:
+
+- $Y$ is a count. More specifically,
+$Y$ is a count of the number of events happening in a defined time
+and place, where the rate of events is constant.
+- Since $Y$ is a count, $Y$ can be any non-negative whole number,
+i.e., 0, 1, 2, 3, 4, 5, etc.
+There is no upper limit.
+- The single parameter, $\mu$, represents the expected value.
+So, $\mu = E(Y)$.
+- The variance of the Poisson distribution is exactly equal to its mean.
+So, $Var(Y) = \mu$.
+- The expected value, $\mu$, can also be represented as the product
+of the rate, $\lambda$, and the time period over which the counting is occurring.
+The duration of this time period is $t$.
+So, we can write $\mu = \lambda t$.
+
+### Examples
+
+#### Measles
+
+Suppose $Y_i$ is the number of new cases of measles in the state of
+Massachusetts in year $i$.
+$Y_i$ is a count,
+so we won't see a negative or fractional number.
+It might be reasonable to assume that the expected (or mean) number
+of measles is the same each year,
+i.e., that measles cases in Massachusetts occur at the same, low rate.
+We can call the yearly rate $\lambda$, where the units of $\lambda$
+are cases per year.
+The yearly mean is $\mu = \lambda \times 1 = \lambda$.
+If we wanted $Y_i$ to be the number of new cases in month $i$,
+then $\mu$ would be $\lambda / 12$.
+
+#### Words
+
+Suppose $Y_i$ is the number of times the word "the" appears on the $i$th
+page of a book.
+Again, $Y_i$ is a count.
+It might be reasonable to assume that the expected number of times
+the word "the" appears on a page is the same for each page.
+We can call this count per page $\lambda$,
+so that $E(Y_i) = \lambda = \mu$.
+If we wanted $Y_i$ to be the number of times the word "the" appears
+in the $i$th chapter of the book,
+we would need to know $t_i$, the number of pages in the $i$th chapter.
+Then $\mu_i = \lambda t_i$.
+In this example, $t_i$ varies with $i$,
+and it's not a time, it's a count of pages.
+This is common with the Poisson distribution;
+$t$ may not be a literal duration in time,
+but may represent some other quantity.
+
+#### Trees
+
+Suppose we 
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
