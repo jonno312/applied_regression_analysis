@@ -1,0 +1,236 @@
+---
+title: "Calibration and ROC"
+format: html
+---
+
+```{r}
+# Load packages
+library(probably)
+library(ggplot2)
+library(pROC)
+
+# Set seed
+set.seed(6)
+```
+
+## Problem 1
+
+
+
+### Part (a)
+
+In the chunk below, I've generated data according to the assumptions
+of linear regression.
+
+```{r}
+n <- 1e3
+x <- rnorm(n)
+beta_0 <- 0
+beta_1 <- -2
+sigma <- 1
+epsilon <- rnorm(n = n,
+                 sd = sigma)
+y <- beta_0 + beta_1 * x + epsilon
+```
+
+Use `lm` to regress `y` on `x`. Then, create a scatterplot of the residuals
+as a function of `x`. Add a horizontal line at zero.
+
+```{r}
+
+```
+
+
+### Part (b)
+
+In the chunk below, I've generated new data. I've kept everything the same
+except for $Var(Y_i|X_i) = \sigma^2$. I've greatly increased the variance
+of the random error.
+
+```{r}
+epsilon_new <- rnorm(n = n,
+                     sd = 10 * sigma)
+y_new <- beta_0 + beta_1 * x + epsilon_new
+```
+
+Use `lm` to regress `y_new` on `x`. Then, create a scatterplot of the residuals
+as a function of `x`. Add a horizontal line at zero.
+
+```{r}
+
+```
+
+
+
+
+### Part (c)
+
+What is the $R^2$ for the models in Part (b) and Part (c)?
+
+```{r}
+
+```
+
+For the remaining parts of the problem, we will try to see an analog of this
+phenomenon with a binary outcome.
+
+### Part (d)
+
+In the chunk below, I've generated a binary outcome according to the assumptions
+of logistic regression. I have changed the values of any parameters
+or of the explanatory variable.
+
+```{r}
+y_binary <- rbinom(n = n,
+                   size = 1,
+                   prob = plogis(beta_0 + beta_1 * x))
+```
+
+Regress `y_binary` on `x` using logistic regression.
+Then, create a calibration plot for the model.
+
+```{r}
+
+```
+
+### Part (e)
+
+In the chunk below, I've attenuated $\beta_1$ toward zero.
+
+```{r}
+y_binary_new <- rbinom(n = n,
+                       size = 1,
+                       prob = plogis(beta_0 + beta_1 / 100 * x))
+```
+
+Why did I do this? Now, the expected values of the observations are
+closer to 0.5.
+
+```{r}
+range(plogis(beta_0 + beta_1 * x))
+range(plogis(beta_0 + beta_1 / 100 * x))
+```
+
+This means that `x` is not very predictive. Even when you know `x`,
+whether you observe a 0 or a 1 is basically a coin toss.
+
+
+Regress `y_binary_new` on `x` using logistic regression.
+Then, create a calibration plot for the model.
+
+```{r}
+
+```
+
+
+
+
+
+### Part (f)
+
+Plot ROC curves and obtain areas under the curves for the models in Part (d)
+and Part (e).
+
+```{r}
+
+```
+
+
+## Problem 2
+
+The purpose of this problem is to get more comfortable working with fitted
+values. Make sure to install the package `aplore3` and then run
+the chunk below. You don't actually need to load the package `aplore3`.
+
+```{r}
+# Load data
+d <- aplore3::lowbwt
+```
+
+You can use the code `?lowbwt` to read more about this data set.
+I find it very annoying to work with factors, so I'm going to create a new
+outcome variable consisting of 1's (for those rows that have a low birth weight)
+and 0's (for those rows that do not have a low birth weight).
+
+```{r}
+# Get outcome of 1's and 0's
+d$low_bw <- as.integer(d$bwt < 2500)
+```
+
+### Part (a)
+
+Use *linear* regression to regress low birth weight on age,
+weight of the mother at last menstrual period, smoking status during
+pregnancy, and history of premature labor.
+
+```{r}
+
+```
+
+### Part (b)
+
+Using your coefficient estimates from Part (a), obtain the fitted value
+for the 82nd row in the data set. Check what you get against
+`mod_2a$fitted.values[82]`.
+
+```{r}
+
+```
+
+### Part (c)
+
+What's troublesome about the answer to Part (b)?
+
+
+
+
+### Part (d)
+
+Repeat Part (a) but use *logistic* regression.
+
+```{r}
+
+```
+
+
+### Part (e)
+
+Repeat Part (b) but use your coefficient estimates from Part (d).
+Check what you get against `mod_2d$fitted.values[82]`.
+
+```{r}
+
+```
+
+
+### Part (f)
+
+Does the answer to Part (e) have the same problem as the answer to Part (b)?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -383,6 +383,30 @@ The confidence band contains the reference line.
 
 :::
 
+### Problem 3
 
+Some courts use algorithms to estimate a criminal defendant's probability
+of re-offending. The scores generated from these algorithms--sometimes
+on a scale of 1 to 10--are used at various points, including to determine
+bond amounts and sentences. Much has been written about these algorithms
+(see, for example,
+[Machine Bias](https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing)
+and
+[Can Racist Algorithms Be Fixed?](https://www.themarshallproject.org/2019/07/01/can-racist-algorithms-be-fixed)).
+For this problem, I want you to answer this question:
+What would calibration mean in this context?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+In this context, calibration would mean that defendants
+assigned a score of 1 would have a lower probability of re-offending
+than defendants assigned a score of 2,
+defendants assigned a score of 2 would have a lower probability of re-offending
+than defendants assigned a score of 3, and so on.
+Furthermore, we would hope that the difference between a score of 1 and 2
+would be the same, approximately, as the difference between a score of 2
+and 3.
+
+:::
 
 

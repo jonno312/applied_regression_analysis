@@ -1,0 +1,361 @@
+---
+title: "Calibration and ROC (Solutions)"
+format: html
+---
+
+```{r}
+# Load packages
+library(probably)
+library(ggplot2)
+library(pROC)
+
+# Set seed
+set.seed(6)
+```
+
+## Problem 1
+
+
+
+### Part (a)
+
+In the chunk below, I've generated data according to the assumptions
+of linear regression.
+
+```{r}
+n <- 1e3
+x <- rnorm(n)
+beta_0 <- 0
+beta_1 <- -2
+sigma <- 1
+epsilon <- rnorm(n = n,
+                 sd = sigma)
+y <- beta_0 + beta_1 * x + epsilon
+```
+
+Use `lm` to regress `y` on `x`. Then, create a scatterplot of the residuals
+as a function of `x`. Add a horizontal line at zero.
+
+```{r}
+# Regression
+mod_1a <- lm(y ~ x)
+
+# Plot
+plot(x = x,
+     y = mod_1a$residuals,
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+
+### Part (b)
+
+In the chunk below, I've generated new data. I've kept everything the same
+except for $Var(Y_i|X_i) = \sigma^2$. I've greatly increased the variance
+of the random error.
+
+```{r}
+epsilon_new <- rnorm(n = n,
+                     sd = 10 * sigma)
+y_new <- beta_0 + beta_1 * x + epsilon_new
+```
+
+Use `lm` to regress `y_new` on `x`. Then, create a scatterplot of the residuals
+as a function of `x`. Add a horizontal line at zero.
+
+```{r}
+# Regression
+mod_1b <- lm(y_new ~ x)
+
+# Plot
+plot(x = x,
+     y = mod_1b$residuals,
+     ylab = "Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+
+Note the difference in the scale of the residuals between the two plots.
+Although both data sets meet all of our assumptions, the second one has way
+more error.
+
+### Part (c)
+
+What is the $R^2$ for the models in Part (b) and Part (c)?
+
+```{r}
+summary(mod_1a)$r.squared
+summary(mod_1b)$r.squared
+```
+
+For the remaining parts of the problem, we will try to see an analog of this
+phenomenon with a binary outcome.
+
+### Part (d)
+
+In the chunk below, I've generated a binary outcome according to the assumptions
+of logistic regression. I have changed the values of any parameters
+or of the explanatory variable.
+
+```{r}
+y_binary <- rbinom(n = n,
+                   size = 1,
+                   prob = plogis(beta_0 + beta_1 * x))
+```
+
+Regress `y_binary` on `x` using logistic regression.
+Then, create a calibration plot for the model.
+
+```{r}
+# Regression
+mod_1d <- glm(formula = y_binary ~ x,
+              family = binomial)
+
+# Calibration plot
+cal_plot_breaks(.data = data.frame(truth = as.factor(mod_1d$model$y_binary),
+                                   estimate = mod_1d$fitted.values),
+                truth = truth,
+                estimate = estimate,
+                event_level = "second")
+```
+
+### Part (e)
+
+In the chunk below, I've attenuated $\beta_1$ toward zero.
+
+```{r}
+y_binary_new <- rbinom(n = n,
+                       size = 1,
+                       prob = plogis(beta_0 + beta_1 / 100 * x))
+```
+
+Why did I do this? Now, the expected values of the observations are
+closer to 0.5.
+
+```{r}
+range(plogis(beta_0 + beta_1 * x))
+range(plogis(beta_0 + beta_1 / 100 * x))
+```
+
+This means that `x` is not very predictive. Even when you know `x`,
+whether you observe a 0 or a 1 is basically a coin toss.
+
+
+Regress `y_binary_new` on `x` using logistic regression.
+Then, create a calibration plot for the model.
+
+```{r}
+# Regression
+mod_1e <- glm(formula = y_binary_new ~ x,
+              family = binomial)
+
+# Calibration plot
+cal_plot_breaks(.data = data.frame(truth = as.factor(mod_1e$model$y_binary_new),
+                                   estimate = mod_1e$fitted.values),
+                truth = truth,
+                estimate = estimate,
+                event_level = "second")
+
+# Distribution of fitted values
+hist(mod_1e$fitted.values)
+
+# Calibration plot (more bins, zoom in)
+cal_plot_breaks(.data = data.frame(truth = as.factor(mod_1e$model$y_binary_new),
+                                   estimate = mod_1e$fitted.values),
+                truth = truth,
+                estimate = estimate,
+                event_level = "second",
+                num_breaks = 100) +
+  coord_cartesian(xlim = c(0.42,0.57))
+```
+
+I don't love the way these plots look.
+As great as `cal_plot_breaks` is,
+it has some limitations.
+In the chunk below I've created some alternative calibration plots.
+
+```{r}
+# Part (d)
+ggplot(mapping = aes(x = mod_1d$fitted.values,
+                     y = y_binary)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth() +
+  geom_abline(slope = 1,
+              intercept = 0,
+              linetype = "dashed") +
+  labs(title = "Part (d)",
+       x = "Fitted Values",
+       y = "Outcome")
+
+# Part (e)
+ggplot(mapping = aes(x = mod_1e$fitted.values,
+                     y = y_binary_new)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth() +
+  geom_abline(slope = 1,
+              intercept = 0,
+              linetype = "dashed") +
+  labs(title = "Part (e)",
+       x = "Fitted Values",
+       y = "Outcome")
+```
+
+The blue line is a smoother. You can think of it like a
+[moving average](https://www.statisticshowto.com/probability-and-statistics/statistics-definitions/moving-average).
+The dashed line has the same meaning as in the original calibration plots.
+If the blue line falls on the dashed line, it means that the fitted
+values (our estimated probabilities) are approximately equal to the true
+probabilities.
+
+Since both data sets meet our assumptions, the blue line in both plots
+is approximately on the dashed line.
+
+### Part (f)
+
+Plot ROC curves and obtain areas under the curves for the models in Part (d)
+and Part (e).
+
+```{r}
+# Part (d)
+plot.roc(x = y_binary,
+         predictor = mod_1d$fitted.values)
+auc(response = y_binary,
+    predictor = mod_1d$fitted.values)
+
+# Part (e)
+plot.roc(x = y_binary_new,
+         predictor = mod_1e$fitted.values)
+auc(response = y_binary_new,
+    predictor = mod_1e$fitted.values)
+```
+
+
+## Problem 2
+
+The purpose of this problem is to get more comfortable working with fitted
+values. Make sure to install the package `aplore3` and then run
+the chunk below. You don't actually need to load the package `aplore3`.
+
+```{r}
+# Load data
+d <- aplore3::lowbwt
+```
+
+You can use the code `?lowbwt` to read more about this data set.
+I find it very annoying to work with factors, so I'm going to create a new
+outcome variable consisting of 1's (for those rows that have a low birth weight)
+and 0's (for those rows that do not have a low birth weight).
+
+```{r}
+# Get outcome of 1's and 0's
+d$low_bw <- as.integer(d$bwt < 2500)
+```
+
+### Part (a)
+
+Use *linear* regression to regress low birth weight on age,
+weight of the mother at last menstrual period, smoking status during
+pregnancy, and history of premature labor.
+
+```{r}
+# Linear regression
+mod_2a <- lm(formula = low_bw ~ age + lwt + smoke + ptl,
+             data = d)
+```
+
+### Part (b)
+
+Using your coefficient estimates from Part (a), obtain the fitted value
+for the 82nd row in the data set. Check what you get against
+`mod_2a$fitted.values[82]`.
+
+```{r}
+# Coefficient estimates
+mod_2a$coefficients
+
+# 82nd row
+d[82, ]
+
+# Fitted value
+mod_2a$coefficients[1] + mod_2a$coefficients[2] * d$age[82] +
+  mod_2a$coefficients[3] * d$lwt[82] +
+  mod_2a$coefficients[4] * (d$smoke[82] == "Yes") +
+  mod_2a$coefficients[5] * (d$ptl[82] == "One") +
+  mod_2a$coefficients[6] * (d$ptl[82] == "Two, etc.")
+mod_2a$fitted.values[82]
+```
+
+### Part (c)
+
+What's troublesome about the answer to Part (b)?
+
+The fitted value is negative, but we can't have negative probabilities.
+
+
+### Part (d)
+
+Repeat Part (a) but use *logistic* regression.
+
+```{r}
+# Logistic regression
+mod_2d <- glm(formula = low_bw ~ age + lwt + smoke + ptl,
+              data = d,
+              family = binomial)
+```
+
+
+### Part (e)
+
+Repeat Part (b) but use your coefficient estimates from Part (d).
+Check what you get against `mod_2d$fitted.values[82]`.
+
+```{r}
+# Coefficient estimates
+mod_2d$coefficients
+
+# 82nd row
+d[82, ]
+
+# Fitted value
+plogis(mod_2d$coefficients[1] + mod_2d$coefficients[2] * d$age[82] +
+  mod_2d$coefficients[3] * d$lwt[82] +
+  mod_2d$coefficients[4] * (d$smoke[82] == "Yes") +
+  mod_2d$coefficients[5] * (d$ptl[82] == "One") +
+  mod_2d$coefficients[6] * (d$ptl[82] == "Two, etc."))
+mod_2d$fitted.values[82]
+```
+
+
+### Part (f)
+
+Does the answer to Part (e) have the same problem as the answer to Part (b)?
+
+No, the answer to Part (e) is between 0 and 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
