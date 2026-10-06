@@ -1,0 +1,61 @@
+---
+title: "Assumptions of Poisson Regression"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Explain the assumptions of Poisson regression.
+- Define, use, and interpret the term "offset".
+
+
+## Lesson
+
+Poisson regression has the following assumptions:
+
+1. $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{Poisson}(\lambda_i t_i)$.
+2. $\log\lambda_i = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+3. The observations are iid.
+
+This is the first time we're not modeling a mean.
+Here, we're modeling $\lambda_i$, which is a rate.
+We can model the mean if we include something called an "offset":
+$$
+\begin{align*}
+\log\lambda_i &= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \\
+\log\lambda_i + \log t_i &= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} + \log t_i \\
+\log \left(\lambda_i t_i\right) &= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} + \log t_i \\
+\log \mu_i &= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} + \underbrace{\log t_i}_{\text{offset}} \text{.} \\
+\end{align*}
+$$
+
+The offset is the additional term, $\log t_i$,
+that is added to the linear model so that we can model the mean
+instead of the rate.
+
+
+
+## Problems
+
+### Problem 1
+
+If $t_i = 1$,
+what is $\log \mu_i$?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+If $t_i = 1$ then $\log t_i = \log 1 = 0$, so
+$$
+\log \mu_i = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
+$$
+Another way of saying this is that if $t_i = 1$ then $\mu_i = \lambda_i$.
+
+:::
+
+
+
+
+
+
