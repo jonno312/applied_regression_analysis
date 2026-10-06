@@ -1,0 +1,197 @@
+---
+title: "Residuals in Poisson Regression"
+format: html
+---
+
+## Learning Objective
+
+State that there are different types of residuals for Poisson regression.
+
+
+## Lesson
+
+Residuals played a big role in linear regression,
+but I barely mentioned them for logistic regression.
+One of the reasons for that is that we can write the assumptions
+of linear regression in terms of random error, i.e., $\epsilon_i$,
+but we can't do the same for logistic regression.
+We can't write the assumptions of Poisson regression in terms
+of random error, either.
+Still, it's worth taking a look at the residuals to get a more visceral
+sense of why they can be less helpful for regression that isn't linear
+regression.
+
+I'm going to start by simulating data according to the assumptions
+of Poisson regression.
+To simplify things, I'm just going to assume that $t_i = 1$
+for every $i$.
+```{r}
+# Set random seed to make this reproducible
+set.seed(3)
+
+# Parameters
+n <- 1e3
+beta_0 <- 0
+beta_1 <- 0.1
+
+# Generate explanatory variable
+x <- rnorm(n)
+
+# Generate outcome variable
+mu <- exp(beta_0 + beta_1 * x)
+y <- rpois(n = n,
+           lambda = mu)
+```
+
+Now I'm going to perform Poisson regression.
+I know all the assumptions are met because I simulated the data that way.
+```{r}
+# Poisson regression
+mod_01 <- glm(formula = y ~ x,
+              family = poisson)
+summary(mod_01)
+```
+
+Now let's talk about residuals.
+With Poisson regression, logistic regression, and any form of regression
+that uses the `glm` function,
+there are many types of residuals.
+This is a partial list:
+
+- Response
+  - The $i$th residual is $Y_i - \hat{Y}_i$.
+  - These are what we know from linear regression.
+  - They don't work as well for logistic and Poisson regression
+  because logistic and Poisson regression have restrictions on what
+  values the outcome can take.
+  These restrictions on the outcome create restrictions on the residuals.
+  The other types of residuals are attempts at addressing these restrictions
+  and making residuals more useful when the outcome is not simply continuous.
+- Working
+  - The $i$th residual is $\displaystyle \left(\frac{d}{d\mu_i} \left(\beta_0 + \beta_1 X_{i1} +\cdots + \beta_p X_{ip}\right)\right) \left(Y_i - \hat{Y}_i\right)$.
+  - These are what you get from `mod_01$residuals` if `mod_01` is the result of a `glm` call.
+- Deviance
+  - The $i$th residual is $\text{sign}(Y_i - \hat{Y}_i) \sqrt{2 \left(\ell(Y_i,Y_i) - \ell(Y_i,\hat{Y}_i)\right)}$.
+  The $\ell$'s are used to denote log-likelihoods for different models.
+  - These are what you get from `residuals(mod_01)` if `mod_01` is the result of a `glm` call.
+- Pearson
+  - The $i$th residual is $\displaystyle \frac{Y_i - \hat{Y}_i}{\sqrt{\widehat{Var}(Y_i)}}$.
+  - This is a residual that we have standardized to have variance 1.
+
+Let's look at plots of these different types of residuals for our Poisson
+regression model.
+Remember: we know the assumptions of Poisson regression are met for these
+data.
+
+```{r}
+res_res <- residuals(object = mod_01,
+                     type = "response")
+res_wor <- residuals(object = mod_01,
+                     type = "working")
+res_dev <- residuals(object = mod_01,
+                     type = "deviance")
+res_pea <- residuals(object = mod_01,
+                     type = "pearson")
+
+# Scatterplot
+plot(x = x,
+     y = res_res,
+     ylab = "Residual",
+     main = "Response")
+abline(h = 0,
+       col = "red")
+plot(x = x,
+     y = res_wor,
+     ylab = "Residual",
+     main = "Working")
+abline(h = 0,
+       col = "red")
+plot(x = x,
+     y = res_dev,
+     ylab = "Residual",
+     main = "Deviance")
+abline(h = 0,
+       col = "red")
+plot(x = x,
+     y = res_pea,
+     ylab = "Residual",
+     main = "Pearson")
+abline(h = 0,
+       col = "red")
+
+# Boxplot
+boxplot(x = res_res,
+        main = "Response")
+boxplot(x = res_wor,
+        main = "Working")
+boxplot(x = res_dev,
+        main = "Deviance")
+boxplot(x = res_pea,
+        main = "Pearson")
+
+# Histogram
+hist(x = res_res,
+     xlab = "Residual",
+     main = "Response")
+hist(x = res_wor,
+     xlab = "Residual",
+     main = "Working")
+hist(x = res_dev,
+     xlab = "Residual",
+     main = "Deviance")
+hist(x = res_pea,
+     xlab = "Residual",
+     main = "Pearson")
+
+# Q-Q Plot
+qqnorm(y = res_res,
+       main = "Response")
+qqline(y = res_res)
+qqnorm(y = res_wor,
+       main = "Working")
+qqline(y = res_wor)
+qqnorm(y = res_dev,
+       main = "Deviance")
+qqline(y = res_dev)
+qqnorm(y = res_pea,
+       main = "Pearson")
+qqline(y = res_pea)
+```
+
+It's hard to know what we should be checking for here.
+None of the types of residuals look normal here,
+that's for sure.
+
+```{r}
+plot(x = mod_01$fitted.values,
+     y = mod_01$model$y)
+abline(a = 0,
+       b = 1,
+       col = "red")
+```
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
