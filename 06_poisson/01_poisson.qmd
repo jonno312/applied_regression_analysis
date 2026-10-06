@@ -77,27 +77,56 @@ but may represent some other quantity.
 
 #### Trees
 
-Suppose we 
+[Tongass National Forest](https://www.fs.usda.gov/r10/tongass/about-area),
+at nearly 17 million acres,
+is the largest national forest in the US.
+Suppose we wanted to estimate the number of spruce trees
+in the forest.
+We could sample several small sections of the forest
+and count the number of spruce trees in each section.
+Suppose each section is one acre, and we sample 100 acres.
+We could let $Y_i$ be the number of (live) spruce trees in the $i$th section.
+Again, this would be a non-negative whole number.
+$E(Y_i) = \mu$ would be the expected number of spruce trees in a single acre.
+
+If we wanted to vary the size of our sections,
+we could let $t_i$ denote the number of acres in the $i$th section,
+and $\lambda$ denote the expected number of spruce trees per acre.
+Then $E(Y_i) = \mu_i = \lambda t_i$.
+In this example, $t_i$ is not a measure of time,
+but of area.
 
 ## Problems
 
 ### Problem 1
 
+Fill in the rest of this table.
 
+| | Normal Distribution | Bernoulli Distribution | Poisson Distribution |
+|:-|:-|:-|:-|
+| Support |  |  |  |
+| Expected value | $\mu$ |  |  |
+| Variance | $\sigma^2$ |  |  |
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+| | Normal Distribution | Bernoulli Distribution | Poisson Distribution |
+|:-|:-|:-|:-|
+| Support | Any real number | $\{0,1\}$ | $\{0,1,2,3,4,\dotsc\}$ |
+| Expected value | $\mu$ | $p$ | $\mu = \lambda t$ |
+| Variance | $\sigma^2$ | $p(1-p)$ | $\mu = \lambda t$ |
 
 :::
 
 ### Problem 2
 
-
+Suppose your office sees, on average, $\lambda$
+[talon cusps](https://doi.org/10.1136/bcr-2022-252227) per year.
+How many talon cusps would you expect to see over ten years?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+$10\lambda$
 
 :::
 
