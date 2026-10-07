@@ -162,35 +162,11 @@ It's hard to know what we should be checking for here.
 None of the types of residuals look normal here,
 that's for sure.
 
-```{r}
-plot(x = mod_01$fitted.values,
-     y = mod_01$model$y)
-abline(a = 0,
-       b = 1,
-       col = "red")
-```
-
-## Problems
-
-### Problem 1
+The whole purpose of this exercise is to demonstrate that there
+are multiple types of residuals when it comes to Poisson regression,
+but they aren't necessarily useful for checking our assumptions.
 
 
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
-
-### Problem 2
-
-
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
 
 
 
