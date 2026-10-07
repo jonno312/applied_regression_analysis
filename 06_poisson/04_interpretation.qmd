@@ -1,0 +1,556 @@
+---
+title: "Interpretation"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(dplyr)
+```
+
+## Learning Objective
+
+Interpret the coefficients in Poisson regression.
+
+
+## Lesson
+
+### Intercept
+
+Recall that, in Poisson regression, we assume
+$$
+\log\lambda_i = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
+$$
+
+What happens when all the covariates equal zero?
+$$
+\begin{align*}
+\log\lambda_i &= \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \\
+\log\lambda_i &= \beta_0 + \beta_1 (0) + \cdots + \beta_p (0) \\
+\log\lambda_i &= \beta_0 \\
+\lambda_i &= \exp(\beta_0) \\
+\end{align*}
+$$
+
+So, $\exp(\beta_0)$ is the rate when all the covariates
+equal zero.
+
+### Non-Intercept Coefficients
+
+How do we interpret the non-intercept coefficients?
+Suppose observation $i$ has $X_{i1} = x$ and observation $j$ has $X_{j1} = x + 1$.
+For each $k \ne 1$, $X_{ik} = X_{jk}$.
+In words, the two observations are identical except for the first covariate,
+where the $j$th observation exceeds the $i$th observation by one unit.
+Then
+$$
+\begin{align*}
+\log \frac{\lambda_j}{\lambda_i} &= \log \frac{p_j}{1-p_j} - \log \frac{p_i}{1-p_i} \\
+&= \beta_0 + \beta_1 X_{j1} + \cdots + \beta_p X_{jp} - \left(\beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_0 + \beta_1 (x+1) + \cdots + \beta_p X_{jp} - \left(\beta_0 + \beta_1 x + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_0 + \beta_1 x + \beta_1 + \cdots + \beta_p X_{jp} - \left(\beta_0 + \beta_1 x + \cdots + \beta_p X_{ip}\right) \\
+&= \beta_1 \text{.}
+\end{align*}
+$$
+By exponentiating both sides of this equation, we see
+$$
+\begin{align*}
+\log \frac{\lambda_j}{\lambda_i} &= \beta_1 \\
+\frac{\lambda_j}{\lambda_i} &= \exp(\beta_1) \text{.} \\
+\end{align*}
+$$
+
+In words, $\exp(\beta_1)$ is the rate ratio comparing two populations
+that are identical except that one exceeds the other by one unit
+on the first covariate.
+If $\exp(\beta_1) > 1$,
+the rate is greater in the population
+with the higher value of the first covariate;
+if $\exp(\beta_1) < 1$,
+the rate is lesser in the population
+with the higher value of the first covariate;
+if $\exp(\beta_1) = 1$,
+the rate is the same in both populations.
+
+### Example
+
+```{r}
+age_group <- rep(x = c("<30",
+                       "30-34",
+                       "35-39",
+                       "40-44",
+                       "45-49",
+                       "50-54",
+                       "55-59",
+                       "60-64",
+                       "65-69",
+                       "70-74",
+                       "75-79",
+                       "80+"),
+                 times = 4)
+smoke_group <- rep(x = c("never_smoked",
+                         "cigar_and_pipe_only",
+                         "cigarette_and_other",
+                         "cigarette_only"),
+                   each = 12)
+population <- c(48,
+                739,
+                1113,
+                656,
+                359,
+                249,
+                632,
+                1067,
+                897,
+                668,
+                361,
+                274,
+                6,
+                162,
+                187,
+                145,
+                104,
+                98,
+                372,
+                846,
+                949,
+                824,
+                667,
+                537,
+                258,
+                4596,
+                6653,
+                4531,
+                3030,
+                2267,
+                4682,
+                6052,
+                3880,
+                2033,
+                871,
+                345,
+                214,
+                3185,
+                4639,
+                3410,
+                2239,
+                1851,
+                3270,
+                3791,
+                2421,
+                1195,
+                436,
+                113)
+deaths <- c(1,
+            12,
+            14,
+            18,
+            22,
+            19,
+            55,
+            117,
+            170,
+            179,
+            120,
+            128,
+            0,
+            0,
+            1,
+            2,
+            4,
+            3,
+            38,
+            113,
+            173,
+            212,
+            243,
+            253,
+            2,
+            61,
+            121,
+            149,
+            169,
+            193,
+            576,
+            1001,
+            901,
+            613,
+            337,
+            189,
+            4,
+            56,
+            88,
+            124,
+            140,
+            187,
+            514,
+            778,
+            689,
+            432,
+            214,
+            63)
+d <- data.frame(age_group,
+                smoke_group,
+                population,
+                deaths)
+```
+
+This data set comes from
+[A Canadian Study of Smoking and Health--Second Report](https://www.jstor.org/stable/41983444).
+These are the variables:
+
+- `age_group`: Age group, with the following levels:
+  - 40-44
+  - 45-49
+  - 50-54
+  - 55-59
+  - 60-64
+  - 65-69
+  - 70-74
+  - 75-79
+  - 80+
+- `smoke_group`: Smoking status, which has the following levels:
+  - Never smoked
+  - Cigar and pipe only
+  - Cigarette and other
+  - Cigarette only
+- `population`: The number of people in that age group who had
+that smoking status, at the start of the six-year follow-up period.
+- `deaths`: The number of people in that age group who had that
+smoking status and who died by the end of the six-year
+follow-up period.
+
+Each row corresponds to a unique combination of `age_group`
+and `smoke_group`.
+
+These are the modeling decisions I've made for this data set:
+
+- Our outcome will be `deaths`.
+Note that this is a count, which is appropriate for the Poisson distribution.
+- The offset will be `log(population / 1000)`.
+This means we will be modeling the expected number of deaths
+per thousand people.
+- If I don't make any changes,
+the reference age group will be `<30` because it's first alphabetically.
+This is not a great idea because it's the smallest age group.
+```{r}
+#| echo: true
+tapply(X = d$population,
+       INDEX = d$age_group,
+       FUN = sum)
+```
+I'm going to make `35-39` the reference group because it's
+the largest age group.
+```{r}
+#| echo: true
+d$age_group <- relevel(x = as.factor(d$age_group),
+                       ref = "35-39")
+```
+- If I don't make any changes,
+the reference smoke group will be `cigar_and_pipe_only`
+because it's first alphabetically.
+This is not a great idea because it's the smallest smoke group.
+```{r}
+#| echo: true
+tapply(X = d$population,
+       INDEX = d$smoke_group,
+       FUN = sum)
+```
+I'm going to make `never_smoked` the reference group because
+it's a larger smoke group and because
+it's logical to want to compare different forms of smoking
+to never having smoked
+```{r}
+#| echo: true
+d$smoke_group <- relevel(x = as.factor(d$smoke_group),
+                         ref = "never_smoked")
+```
+- I'm going to regress the outcome on `age_group` and `smoke_group`
+without an interaction term.
+I am primarily concerned with the association between smoke group
+and deaths, controlling for age.
+I'm willing to assume (at least for now)
+that the association between smoke group and deaths
+is the same, regardless of age group.
+
+
+```{r}
+#| echo: true
+mod_01 <- glm(formula = deaths ~ age_group + smoke_group + offset(log(population / 1000)),
+              family = poisson,
+              data = d)
+summary(mod_01)
+```
+
+How do we interpret these coefficients?
+They're actually meaningless in their current form.
+We need to exponentiate them first.
+
+```{r}
+#| echo: true
+exp(mod_01$coefficients)
+```
+
+Now we can interpret them.
+
+- 13.6261893 is the estimated number of deaths per 1,000 people
+among 35-39 year-olds who have never smoked.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people under 30
+is 0.7422365 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 30-34
+is 0.8355223 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 40-44
+is 1.8718787 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 45-49
+is 3.2573985 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 50-54
+is 4.9906857 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 55-59
+is 7.4373868 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 60-64
+is 9.7883901 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 65-69
+is 13.8070502 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 70-74
+is 18.1448406 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 75-79
+is 24.1906193 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding smoking group constant,
+the estimated number of deaths per 1,000 people age 80 and above
+is 32.6918510 times the estimated number of deaths per 1,000 people
+age 35-39.
+- Holding age group constant,
+the estimated number of deaths per 1,000 people who
+have only smoked cigars or pipes
+is 1.0303389 times the estimated number of deaths per 1,000 people
+who have never smoked.
+- Holding age group constant,
+the estimated number of deaths per 1,000 people who
+have smoked cigarettes and other things
+is 1.2302698 times the estimated number of deaths per 1,000 people
+who have never smoked.
+- Holding age group constant,
+the estimated number of deaths per 1,000 people who
+have only smoked cigarettes
+is 1.4977956 times the estimated number of deaths per 1,000 people
+who have never smoked.
+
+
+
+
+## Problems
+
+### Problem 1
+
+```{r}
+d2 <- read.table(file = "https://grodri.github.io/datasets/ships.dat",
+                 header = TRUE)
+```
+
+This data set comes from page 204 of
+McCullagh and Nelder's 1989 book
+*Generalized Linear Models*, published by Chapman and Hall.
+I downloaded it from
+[Germán Rodríguez's website](https://grodri.github.io/glms/datasets/#ship).
+These are the variables:
+
+- `type`: Ship type, with five levels: A, B, C, D, and E.
+- `construction`: Year of construction, with four levels:
+  - `1960-64`
+  - `1965-69`
+  - `1970-74`
+  - `1975-79`
+- `operation`: Period of operation, with two levels:
+  - `1960-74`
+  - `1975-79`
+- `months`: Months of service.
+- `damage`: Number of damage incidents.
+
+Each row of the data set corresponds to a unique combination
+of ship type,
+year of construction, and period of operation.
+
+```{r}
+mod_02 <- glm(formula = damage ~ type + construction + operation + offset(log(months / 12)),
+              family = poisson,
+              data = d2)
+summary(mod_02)
+```
+
+Interpret the exponentiated coefficients.
+```{r}
+#| echo: true
+exp(mod_02$coefficients)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- 0.01982136 is the estimated number of damage incidents per year
+for a type A ship constructed between 1960 and 1964
+and operating between 1960 and 1974.
+- Holding construction period and operation period constant,
+the estimated number of damage incidents per year
+for type B ships is 0.58080262 times
+the estimated number of damage incidents per year
+for type A ships.
+- Holding construction period and operation period constant,
+the estimated number of damage incidents per year
+for type C ships is 0.50288104 times
+the estimated number of damage incidents per year
+for type A ships.
+- Holding construction period and operation period constant,
+the estimated number of damage incidents per year
+for type D ships is 0.92685196 times
+the estimated number of damage incidents per year
+for type A ships.
+- Holding construction period and operation period constant,
+the estimated number of damage incidents per year
+for type E ships is 1.38483286 times
+the estimated number of damage incidents per year
+for type A ships.
+- Holding ship type and operation period constant,
+the estimated number of damage incidents per year
+for ships constructed between 1965 and 1969 is 2.00800246 times
+the estimated number of damage incidents per year
+for ships constructed between 1960 and 1964.
+- Holding ship type and operation period constant,
+the estimated number of damage incidents per year
+for ships constructed between 1970 and 1974 is 2.26693019 times
+the estimated number of damage incidents per year
+for ships constructed between 1960 and 1964.
+- Holding ship type and operation period constant,
+the estimated number of damage incidents per year
+for ships constructed between 1975 and 1979 is 1.57369544 times
+the estimated number of damage incidents per year
+for ships constructed between 1960 and 1964.
+- Holding ship type and construction period constant,
+the estimated number of damage incidents per year
+for ships operating between 1975 and 1979 is 1.46883116 times
+the estimated number of damage incidents per year
+for ships operating between 1960 and 1974.
+
+
+
+:::
+
+### Problem 2
+
+```{r}
+d3 <- read.table(file = "https://grodri.github.io/datasets/cancer.dat",
+                 header = TRUE)
+d3$malignant <- recode_values(x = d3$malignant,
+                              "no" ~ 0,
+                              "yes" ~ 1)
+d3$population <- d3$yes + d3$no
+d3$deaths <- d3$no
+d3$yes <- NULL
+d3$no <- NULL
+```
+
+This data set also comes from
+[Germán Rodríguez's website](https://grodri.github.io/glms/datasets/#cancer).
+It originally appeared in
+Bishop, Fienberg, and Holland's 1975 book
+*Discrete Multivariate Analysis: Theory and Practice*,
+published by MIT Press.
+The participants in this study were breast cancer patients.
+The variables are:
+
+- `age`: Age group, with three levels:
+  - `<50`
+  - `50-69`
+  - `70+`
+- `malignant`: 1 for yes and 0 for no
+- `population`: The number of patients at baseline for that
+age group and that malignancy status.
+- `deaths`: The number of deaths after three years.
+
+#### Part (a)
+
+```{r}
+mod_03 <- glm(formula = deaths ~ age + malignant + offset(log(population / 10)),
+              family = poisson,
+              data = d3)
+summary(mod_03)
+```
+
+Intepret the exponentiated coefficients.
+```{r}
+#| echo: true
+exp(mod_03$coefficients)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- 1.149412 is the expected number of deaths per ten
+patients under 50 with non-malignant breast cancer.
+- The expected number of deaths per ten patients
+age 50-69 is 1.639543 times
+the expected number of deaths per ten patients
+under 50,
+holding malignancy constant.
+- The expected number of deaths per ten patients
+age 70 and above is 2.015077 times
+the expected number of deaths per ten patients
+under 50,
+holding malignancy constant.
+- The expected number of deaths per ten patients
+with malignant cancer is 1.767224 times
+the expected number of deaths per ten patients
+with non-malignant cancer,
+holding age group constant.
+
+:::
+
+#### Part (b)
+
+If I fit this model, how will the exponentiated coefficients change from part (a)?
+```{r}
+#| echo: true
+mod_04 <- glm(formula = deaths ~ age + malignant + offset(log(population)),
+              family = poisson,
+              data = d3)
+```
+::: {.callout-tip title="Solution" collapse="true"}
+
+Only the exponentiated intercept will change.
+It will be the estimated number of deaths per person
+in the reference group,
+rather than per ten people,
+so it will be one-tenth of the value for part (a).
+
+Since the non-intercept exponentiated coefficients
+represent rate ratios,
+using per person or per ten people won't change them.
+
+```{r}
+#| echo: true
+exp(mod_03$coefficients)
+exp(mod_04$coefficients)
+```
+
+:::
+
+
