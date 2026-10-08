@@ -1,0 +1,293 @@
+---
+title: "Quasi-Poisson Regression"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Define, use, and interpret the term "overdispersion".
+- Interpret a dispersion parameter.
+- Explain how and why the output for quasi-Poisson regression differs from
+the output for Poisson regression.
+
+
+## Lesson
+
+### Definitions
+
+Recall that if $Y\sim\text{Poisson}(\mu)$,
+then $\mu = E(Y) = Var(Y)$.
+It's a very strong assumption to assume that the expectation
+is equal to the variance,
+and it's often violated in practice.
+With real count data,
+the variance is often greater than the mean.
+This is known as overdispersion.
+(The opposite phenomenon, underdispersion,
+where the variance is less than the mean,
+is much less common.)
+
+Quasi-Poisson regression is a form of Poisson regression
+that relaxes the assumption that $Var(Y) = E(Y)$.
+In quasi-Poisson regression,
+we assume $Var(Y) = \phi E(Y)$,
+where $0 < \phi < \infty$.
+The parameter $\phi$ is known as a dispersion parameter.
+If $\phi > 1$, there is overdispersion.
+
+### Example
+
+```{r}
+age_group <- rep(x = c("<30",
+                       "30-34",
+                       "35-39",
+                       "40-44",
+                       "45-49",
+                       "50-54",
+                       "55-59",
+                       "60-64",
+                       "65-69",
+                       "70-74",
+                       "75-79",
+                       "80+"),
+                 times = 4)
+smoke_group <- rep(x = c("never_smoked",
+                         "cigar_and_pipe_only",
+                         "cigarette_and_other",
+                         "cigarette_only"),
+                   each = 12)
+population <- c(48,
+                739,
+                1113,
+                656,
+                359,
+                249,
+                632,
+                1067,
+                897,
+                668,
+                361,
+                274,
+                6,
+                162,
+                187,
+                145,
+                104,
+                98,
+                372,
+                846,
+                949,
+                824,
+                667,
+                537,
+                258,
+                4596,
+                6653,
+                4531,
+                3030,
+                2267,
+                4682,
+                6052,
+                3880,
+                2033,
+                871,
+                345,
+                214,
+                3185,
+                4639,
+                3410,
+                2239,
+                1851,
+                3270,
+                3791,
+                2421,
+                1195,
+                436,
+                113)
+deaths <- c(1,
+            12,
+            14,
+            18,
+            22,
+            19,
+            55,
+            117,
+            170,
+            179,
+            120,
+            128,
+            0,
+            0,
+            1,
+            2,
+            4,
+            3,
+            38,
+            113,
+            173,
+            212,
+            243,
+            253,
+            2,
+            61,
+            121,
+            149,
+            169,
+            193,
+            576,
+            1001,
+            901,
+            613,
+            337,
+            189,
+            4,
+            56,
+            88,
+            124,
+            140,
+            187,
+            514,
+            778,
+            689,
+            432,
+            214,
+            63)
+d <- data.frame(age_group,
+                smoke_group,
+                population,
+                deaths)
+d$age_group <- relevel(x = as.factor(d$age_group),
+                       ref = "35-39")
+d$smoke_group <- relevel(x = as.factor(d$smoke_group),
+                         ref = "never_smoked")
+```
+
+Let's return to the data from
+[A Canadian Study of Smoking and Health--Second Report](https://www.jstor.org/stable/41983444).
+These are the variables:
+
+- `age_group`: Age group, with the following levels:
+  - 40-44
+  - 45-49
+  - 50-54
+  - 55-59
+  - 60-64
+  - 65-69
+  - 70-74
+  - 75-79
+  - 80+
+- `smoke_group`: Smoking status, which has the following levels:
+  - Never smoked
+  - Cigar and pipe only
+  - Cigarette and other
+  - Cigarette only
+- `population`: The number of people in that age group who had
+that smoking status, at the start of the six-year follow-up period.
+- `deaths`: The number of people in that age group who had that
+smoking status and who died by the end of the six-year
+follow-up period.
+
+These are the results:
+```{r}
+mod_01 <- glm(formula = deaths ~ age_group + smoke_group + offset(log(population / 1000)),
+              family = poisson,
+              data = d)
+summary(mod_01)
+```
+
+Note the line in the output that says,
+`(Dispersion parameter for poisson family taken to be 1)`.
+This is saying that, since the user asked for Poisson regression,
+$\phi = 1$.
+
+Now let's try quasi-Poisson regression and see what changes.
+
+```{r}
+mod_02 <- glm(formula = deaths ~ age_group + smoke_group + offset(log(population / 1000)),
+              family = quasipoisson,
+              data = d)
+summary(mod_02)
+```
+
+What did and did not change when we used quasi-Poisson regression?
+
+- The coefficient estimates did not change at all.
+This is true in general;
+using quasi-Poisson will not change
+the estimates of the beta coefficients
+from what they are in Poisson regression.
+- The standard errors, $t$ values, and p-values changed.
+For each coefficient,
+the standard error in quasi-Poisson regression is smaller than
+in Poisson regression.
+Since the coefficient estimates did not change,
+smaller standard errors mean larger $t$ values and smaller p-values.
+This will not necessarily be true each time you run Poisson
+and quasi-Poisson regression.
+Sometimes the standard errors will increase, and sometimes they will
+decrease.
+- With quasi-Poisson regression,
+the dispersion parameter is estimated to be $0.8579232$.
+This is one of those rare scenarios when there appears to be underdispersion.
+- With quasi-Poisson regression, there is no AIC.
+This is because quasi-Poisson regression is not fit with maximum likelihood
+estimation.
+In fact, you can't write down a likelihood for the data in quasi-Poisson
+regression.
+There isn't a real distribution that corresponds to quasi-Poisson regression.
+This means that we can't use any likelihood-based methods
+to evaluate models fit with quasi-Poisson regression.
+
+### Threshold
+
+Students always ask me how much overdispersion is too much,
+i.e., at what point should you use quasi-Poisson regression instead
+of Poisson regression.
+Unfortunately, I don't think there's a single answer to that question.
+It probably depends on your goals and your data set.
+
+I know that's often an unsatisfactory answer,
+so I'll use
+[An empirical approach to determine a threshold for assessing overdispersion in Poisson and negative binomial models for count data](https://doi.org/10.1080/03610918.2017.1323223)
+to offer 1.2 as a threshold.
+If $\hat{\phi} \ge 1.2$, consider using quasi-Poisson regression
+instead of traditional Poisson regression.
+
+
+
+## Problems
+
+### Problem 1
+
+```{r}
+d3 <- Lock5Data::PASeniors
+```
+
+```{r}
+mod_03 <- glm(formula = TextsSent ~ Gender + Age + Communicate + HangHours + HWHours,
+              family = quasipoisson,
+              data = d3)
+summary(mod_03)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
