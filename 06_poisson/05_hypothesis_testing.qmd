@@ -1,0 +1,480 @@
+---
+title: "Hypothesis Testing"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(dplyr)
+```
+
+## Learning Objective
+
+Interpret the results of a hypothesis test in the context of Poisson
+regression.
+
+
+## Lesson
+
+### Interpretation in General
+
+As in linear and logistic regression, R will conduct a hypothesis test
+for each coefficient estimated in Poisson regression.
+The null hypothesis for each coefficient is that that coefficient is zero,
+and the alternative hypothesis is that the coefficient is not zero.
+It's always a two-sided test.
+
+What does it mean if the coefficient is zero?
+The answer to this is different if we're talking about the intercept
+versus a non-intercept coefficient.
+Let's start with the intercept.
+Recall that $\exp(\beta_0)$ is the expected rate
+when all the covariates are equal to zero.
+If $\beta_0 = 0$, then $\exp(\beta_0) = 1$.
+So, the null hypothesis for the intercept is that the expected rate is 1.
+Whether or not this is meaningful depends on your goals.
+
+What about for the non-intercept coefficients?
+For $j \ne 0$, $\exp(\beta_j)$ is the rate ratio comparing
+two populations that are identical except one has $X_{ij} = x + 1$
+and the other has $X_{kj} = x$.
+Again, if $\beta_j = 0$, then $\exp(\beta_j) = 1$.
+If a rate ratio is 1,
+then the two rates it's comparing are equal to each other.
+So, the null hypothesis corresponds to equal rates for these two populations.
+If the p-value is small, we reject the null
+and conclude that these two populations have different rates.
+
+### Example
+
+```{r}
+age_group <- rep(x = c("<30",
+                       "30-34",
+                       "35-39",
+                       "40-44",
+                       "45-49",
+                       "50-54",
+                       "55-59",
+                       "60-64",
+                       "65-69",
+                       "70-74",
+                       "75-79",
+                       "80+"),
+                 times = 4)
+smoke_group <- rep(x = c("never_smoked",
+                         "cigar_and_pipe_only",
+                         "cigarette_and_other",
+                         "cigarette_only"),
+                   each = 12)
+population <- c(48,
+                739,
+                1113,
+                656,
+                359,
+                249,
+                632,
+                1067,
+                897,
+                668,
+                361,
+                274,
+                6,
+                162,
+                187,
+                145,
+                104,
+                98,
+                372,
+                846,
+                949,
+                824,
+                667,
+                537,
+                258,
+                4596,
+                6653,
+                4531,
+                3030,
+                2267,
+                4682,
+                6052,
+                3880,
+                2033,
+                871,
+                345,
+                214,
+                3185,
+                4639,
+                3410,
+                2239,
+                1851,
+                3270,
+                3791,
+                2421,
+                1195,
+                436,
+                113)
+deaths <- c(1,
+            12,
+            14,
+            18,
+            22,
+            19,
+            55,
+            117,
+            170,
+            179,
+            120,
+            128,
+            0,
+            0,
+            1,
+            2,
+            4,
+            3,
+            38,
+            113,
+            173,
+            212,
+            243,
+            253,
+            2,
+            61,
+            121,
+            149,
+            169,
+            193,
+            576,
+            1001,
+            901,
+            613,
+            337,
+            189,
+            4,
+            56,
+            88,
+            124,
+            140,
+            187,
+            514,
+            778,
+            689,
+            432,
+            214,
+            63)
+d <- data.frame(age_group,
+                smoke_group,
+                population,
+                deaths)
+d$age_group <- relevel(x = as.factor(d$age_group),
+                       ref = "35-39")
+d$smoke_group <- relevel(x = as.factor(d$smoke_group),
+                         ref = "never_smoked")
+```
+
+Let's return to the data from
+[A Canadian Study of Smoking and Health--Second Report](https://www.jstor.org/stable/41983444).
+These are the variables:
+
+- `age_group`: Age group, with the following levels:
+  - 40-44
+  - 45-49
+  - 50-54
+  - 55-59
+  - 60-64
+  - 65-69
+  - 70-74
+  - 75-79
+  - 80+
+- `smoke_group`: Smoking status, which has the following levels:
+  - Never smoked
+  - Cigar and pipe only
+  - Cigarette and other
+  - Cigarette only
+- `population`: The number of people in that age group who had
+that smoking status, at the start of the six-year follow-up period.
+- `deaths`: The number of people in that age group who had that
+smoking status and who died by the end of the six-year
+follow-up period.
+
+These are the results:
+```{r}
+mod_01 <- glm(formula = deaths ~ age_group + smoke_group + offset(log(population / 1000)),
+              family = poisson,
+              data = d)
+summary(mod_01)
+```
+How do we interpret the hypothesis tests?
+Since we have quite a few coefficients being estimated,
+and thus quite a few hypothesis tests being conducted,
+I'm going to use a more conservative threshold for the p-values.
+Since we're estimating 15 coefficients,
+I'm going to use a threshold of $0.05 / 15 = 0.00333$.
+(This is called a Bonferroni correction.)
+
+- Since the p-value for the intercept is less than 0.00333,
+we can conclude that the expected number of deaths per 1,000 35-39 year-olds
+who have never smoked is different from 1.
+- Since the p-value for `age_group<30` is greater than 0.00333,
+we cannot conclude that
+the expected number of deaths per 1,000 people under 30
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group30-34` is greater than 0.00333,
+we cannot conclude that
+the expected number of deaths per 1,000 people age 30-34
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group40-44` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 40-44
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group45-49` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 45-49
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group50-54` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 50-54
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group55-59` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 55-59
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group60-64` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 60-64
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group65-69` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 65-69
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group70-74` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 70-74
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group75-79` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 75-79
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `age_group80+` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people age 80 and above
+is different than the expected number of deaths per 1,000 people
+age 35-39,
+holding smoking group constant.
+- Since the p-value for `smoke_groupcigar_and_pipe_only` is greater than 0.00333,
+we cannot conclude that
+the expected number of deaths per 1,000 people who
+have only smoked cigars or pipes
+is different than the expected number of deaths per 1,000 people
+who have never smoked,
+holding age group constant.
+- Since the p-value for `smoke_groupcigarette_and_other` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people who
+have smoked cigarettes and other things
+is different than the expected number of deaths per 1,000 people
+who have never smoked,
+holding age group constant.
+- Since the p-value for `smoke_groupcigarette_only` is less than 0.00333,
+we can conclude that
+the expected number of deaths per 1,000 people who
+have only smoked cigarettes
+is different than the expected number of deaths per 1,000 people
+who have never smoked,
+holding age group constant.
+
+## Problems
+
+### Problem 1
+
+```{r}
+d2 <- read.table(file = "https://grodri.github.io/datasets/ships.dat",
+                 header = TRUE)
+```
+
+Let's return to the ship data.
+These are the variables:
+
+- `type`: Ship type, with five levels: A, B, C, D, and E.
+- `construction`: Year of construction, with four levels:
+  - `1960-64`
+  - `1965-69`
+  - `1970-74`
+  - `1975-79`
+- `operation`: Period of operation, with two levels:
+  - `1960-74`
+  - `1975-79`
+- `months`: Months of service.
+- `damage`: Number of damage incidents.
+
+
+```{r}
+mod_02 <- glm(formula = damage ~ type + construction + operation + offset(log(months / 12)),
+              family = poisson,
+              data = d2)
+summary(mod_02)
+```
+
+Interpret the hypothesis tests for the coefficients in the model.
+Use a threshold of $0.05 / 9 = 0.00555$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+- Since the p-value for the intercept is less than 0.00555,
+we can conclude that
+the expected number of damage incidents per year
+for a type A ship constructed between 1960 and 1964
+and operating between 1960 and 1974 is different than 1.
+- Since the p-value for `typeB` is less than 0.00555,
+we can conclude that
+the expected number of damage incidents per year
+for type B ships is different than
+the expected number of damage incidents per year
+for type A ships,
+holding construction period and operation period constant.
+- Since the p-value for `typeC` is greater than 0.00555,
+we cannot conclude that
+the expected number of damage incidents per year
+for type C ships is different than
+the expected number of damage incidents per year
+for type A ships,
+holding construction period and operation period constant.
+- Since the p-value for `typeD` is greater than 0.00555,
+we cannot conclude that
+the expected number of damage incidents per year
+for type D ships is different than
+the expected number of damage incidents per year
+for type A ships,
+holding construction period and operation period constant.
+- Since the p-value for `typeE` is greater than 0.00555,
+we cannot conclude that
+the expected number of damage incidents per year
+for type E ships is different than
+the expected number of damage incidents per year
+for type A ships,
+holding construction period and operation period constant.
+- Since the p-value for `construction1965-69` is less than 0.00555,
+we can conclude that
+the expected number of damage incidents per year
+for ships constructed between 1965 and 1969 is different than
+the expected number of damage incidents per year
+for ships constructed between 1960 and 1964,
+holding ship type and operation period constant.
+- Since the p-value for `construction1970-74` is less than 0.00555,
+we can conclude that
+the expected number of damage incidents per year
+for ships constructed between 1970 and 1974 is different than
+the expected number of damage incidents per year
+for ships constructed between 1960 and 1964,
+holding ship type and operation period constant.
+- Since the p-value for `construction1975-79` is greater than 0.00555,
+we cannot conclude that
+the expected number of damage incidents per year
+for ships constructed between 1975 and 1979 is different than
+the expected number of damage incidents per year
+for ships constructed between 1960 and 1964,
+holding ship type and operation period constant.
+- Since the p-value for `operation1975-79` is less than 0.00555,
+we can conclude that
+the expected number of damage incidents per year
+for ships operating between 1975 and 1979 is different than
+the expected number of damage incidents per year
+for ships operating between 1960 and 1974,
+holding ship type and construction period constant.
+
+:::
+
+### Problem 2
+
+```{r}
+d3 <- read.table(file = "https://grodri.github.io/datasets/cancer.dat",
+                 header = TRUE)
+d3$malignant <- recode_values(x = d3$malignant,
+                              "no" ~ 0,
+                              "yes" ~ 1)
+d3$population <- d3$yes + d3$no
+d3$deaths <- d3$no
+d3$yes <- NULL
+d3$no <- NULL
+```
+
+Let's return to the breast cancer data.
+The variables are:
+
+- `age`: Age group, with three levels:
+  - `<50`
+  - `50-69`
+  - `70+`
+- `malignant`: 1 for yes and 0 for no
+- `population`: The number of patients at baseline for that
+age group and that malignancy status.
+- `deaths`: The number of deaths after three years.
+
+```{r}
+mod_03 <- glm(formula = deaths ~ age + malignant + offset(log(population / 10)),
+              family = poisson,
+              data = d3)
+summary(mod_03)
+```
+
+Interpret the hypothesis tests for the coefficients in the model.
+Use a threshold of $0.05 / 4 = 0.0125$.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- Since the p-value for the intercept is greater than 0.0125,
+we cannot conclude that
+the expected number of deaths per ten
+patients under 50 with non-malignant breast cancer
+is different than 1.
+- Since the p-value for `age50-69` is greater than 0.0125,
+we cannot conclude that
+the expected number of deaths per ten patients
+age 50-69 is different than
+the expected number of deaths per ten patients
+under 50,
+holding malignancy constant.
+- Since the p-value for `age70+` is greater than 0.0125,
+we cannot conclude that,
+the expected number of deaths per ten patients
+age 70 and above is different than
+the expected number of deaths per ten patients
+under 50,
+holding malignancy constant.
+- Since the p-value for `malignant` is greater than 0.0125,
+we cannot conclude that
+the expected number of deaths per ten patients
+with malignant cancer is different than
+the expected number of deaths per ten patients
+with non-malignant cancer,
+holding age group constant.
+
+:::
+
+
+
+
