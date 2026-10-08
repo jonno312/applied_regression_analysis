@@ -504,21 +504,21 @@ exp(mod_03$coefficients)
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-- 1.149412 is the expected number of deaths per ten
+- 1.149412 is the estimated number of deaths per ten
 patients under 50 with non-malignant breast cancer.
-- The expected number of deaths per ten patients
+- The estimated number of deaths per ten patients
 age 50-69 is 1.639543 times
-the expected number of deaths per ten patients
+the estimated number of deaths per ten patients
 under 50,
 holding malignancy constant.
-- The expected number of deaths per ten patients
+- The estimated number of deaths per ten patients
 age 70 and above is 2.015077 times
-the expected number of deaths per ten patients
+the estimated number of deaths per ten patients
 under 50,
 holding malignancy constant.
-- The expected number of deaths per ten patients
+- The estimated number of deaths per ten patients
 with malignant cancer is 1.767224 times
-the expected number of deaths per ten patients
+the estimated number of deaths per ten patients
 with non-malignant cancer,
 holding age group constant.
 
