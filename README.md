@@ -85,6 +85,12 @@ more on concepts and less on math.
     8. [Hypothesis Testing](05_logistic/08_hypothesis_testing.qmd)
     9. [Performance](05_logistic/09_performance.qmd)
     10. [Interactions](05_logistic/10_interactions.qmd)
+6. Poisson Regression
+    1. [Poisson Distribution](06_poisson/01_poisson.qmd)
+    2. [Assumptions of Poisson Regression](06_poisson/02_poisson_assumptions.qmd)
+    3. [Residuals in Poisson Regression](06_poisson/03_poisson_residuals.qmd)
+    4. [Interpretation](06_poisson/04_interpretation.qmd)
+    5. [Hypothesis Testing](06_poisson/05_hypothesis_testing.qmd)
 
 Appendices
 
