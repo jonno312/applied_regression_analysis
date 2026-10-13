@@ -265,28 +265,81 @@ instead of traditional Poisson regression.
 d3 <- Lock5Data::PASeniors
 ```
 
+As stated in the
+[Lock5Data package manual](https://cran.r-project.org/web/packages/Lock5Data/Lock5Data.pdf),
+This data set "gives responses for a random sample of high school seniors in
+Pennsylvania who participated in the Census at Schools project in 2023 and 2024."
+I've run two regression analyses below,
+one with Poisson regression and the other with quasi-Poisson regression.
+The two analyses use the same outcome,
+namely, the number of text messages sent on the previous day.
+They also use the same explanatory variables:
+
+- `Gender`: Male or female.
+- `Age`: In years.
+- `HangHours`: Hours spent hanging out with friends in the previous week.
+- `HWHours`: Hours spent doing homework in the previous week.
+- `VideoGameHours`: Hours spent playing computer or video games in the previous
+week.
+- `WorkHours`: Hours spent working at a paid job in the previous week.
+
 ```{r}
-mod_03 <- glm(formula = TextsSent ~ Gender + Age + Communicate + HangHours + HWHours,
-              family = quasipoisson,
+mod_03 <- glm(formula = TextsSent ~ Gender + Age + HangHours + HWHours + VideoGameHours + WorkHours,
+              family = poisson,
               data = d3)
 summary(mod_03)
+mod_04 <- glm(formula = TextsSent ~ Gender + Age + HangHours + HWHours + VideoGameHours + WorkHours,
+              family = quasipoisson,
+              data = d3)
+summary(mod_04)
 ```
 
-::: {.callout-tip title="Solution" collapse="true"}
+#### Part (a)
 
-
-
-:::
-
-### Problem 2
-
-
+Is there evidence for over- or under-dispersion in these data
+for this model?
+Justify your answer.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Yes, there is evidence for overdispersion.
+The dispersion parameter in quasi-Poisson regression is estimated
+to be over 135.
+If there were no overdispersion (or underdispersion),
+the dispersion parameter would be 1.
 
 :::
+
+#### Part (b)
+
+How did the standard errors and p-values change between Poisson regression
+and quasi-Poisson regression?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The standard errors all increased from Poisson to quasi-Poisson regression,
+and the p-values all increased as well.
+
+:::
+
+#### Part (c)
+
+Why isn't there an offset?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Everyone was asked about the number of text messages sent on the previous day.
+So, everyone was asked about the number of text messages sent
+over the same time period.
+
+:::
+
+
+
+
+
+
+
 
 
 
