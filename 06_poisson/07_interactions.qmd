@@ -1,0 +1,177 @@
+---
+title: "Interactions"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Interpret the coefficients of a Poisson regression model with an interaction term.
+
+
+## Lesson
+
+```{r}
+d <- Lock5Data::PASeniors
+```
+
+Let's return to the data set examining text messages sent
+by high school seniors in Pennsylvania in 2023 and 2024.
+These are the variables:
+
+- `TextsSent`: Number of text messages sent on the previous day.
+- `Gender`: Male or female.
+- `HangHours`: Hours spent hanging out with friends in the previous week.
+
+The results below are for a quasi-Poisson regression
+with an interaction between gender and hours spent hanging out.
+
+
+```{r}
+mod_01 <- glm(formula = TextsSent ~ Gender * HangHours,
+              family = quasipoisson,
+              data = d)
+summary(mod_01)
+```
+
+How do we interpret the coefficients?
+In service of answering that question, let's look at the model:
+$$
+\begin{align*}
+&\log \hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale},\texttt{HangHours}\right) \\
+&= 3.966289 -0.225848\ \texttt{GenderMale} + 0.012592\ \texttt{HangHours} - 0.009417\ \texttt{GenderMale} \times \texttt{HangHours} \text{.}
+\end{align*}
+$$
+This implies that
+$$
+\begin{align*}
+&\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale},\texttt{HangHours}\right) \\
+&= \exp\left(3.966289 -0.225848\ \texttt{GenderMale} + 0.012592\ \texttt{HangHours} - 0.009417\ \texttt{GenderMale} \times \texttt{HangHours}\right) \text{.}
+\end{align*}
+$$
+So, we actually need to exponentiate the coefficients before interpreting them.
+```{r}
+#| echo: true
+exp(mod_01$coefficients)
+```
+
+Now we can interpret the coefficients.
+
+- 52.7882917 is the expected number of text messages sent in one day
+by a female senior who spent zero hours hanging out with friends the previous
+week.
+$$
+\begin{align*}
+&\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 0,\texttt{HangHours} = 0\right) \\
+&= \exp\left(3.966289 -0.225848 (0) + 0.012592 (0) - 0.009417 (0) \times (0)\right) \\
+&= \exp\left(3.966289 \right) \\
+&= 52.7882917 \text{.}
+\end{align*}
+$$
+In case you were wondering, zero is a reasonable number of hours
+to have spent hanging out with friends.
+Seven of the girls in the data set said they spent zero hours hanging
+out with friends in the previous week.
+```{r}
+sum(d$HangHours == 0 & d$Gender == "Female")
+```
+- Among seniors who spent zero hours hanging out with friends in the previous
+week,
+boys sent about 20% fewer text messages per day than girls.
+$$
+\begin{align*}
+\frac{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 1,\texttt{HangHours} = 0\right)}{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 0,\texttt{HangHours} = 0\right)} &= \frac{\exp\left(3.966289 -0.225848 (1) + 0.012592 (0) - 0.009417 (1) \times (0)\right)}{\exp\left(3.966289 -0.225848 (0) + 0.012592 (0) - 0.009417 (0) \times  (0) \right)} \\
+&= \exp\left(-0.225848\right) \\
+&= 0.7978395 \text{.}
+\end{align*}
+$$
+- Among girls, each additional hour spent hanging out with friends
+is associated with a 1.26721% increase in the number of text messages sent
+per day.
+$$
+\begin{align*}
+\frac{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 0,\texttt{HangHours} = x+1\right)}{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 0,\texttt{HangHours} = x\right)} &= \frac{\exp\left(3.966289 -0.225848 (0) + 0.012592 (x+1) - 0.009417 (0) \times (x+1)\right)}{\exp\left(3.966289 -0.225848 (0) + 0.012592 x - 0.009417 (0) \times  x \right)} \\
+&= \exp(0.012592) \\
+&= 1.0126721 \text{.}
+\end{align*}
+$$
+- Among seniors who spent $x$ hours hanging out with friends in the previous
+week,
+boys sent $\exp(-0.225848-0.009417x)$ as many text messages per day as girls.
+$$
+\begin{align*}
+\frac{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 1,\texttt{HangHours} = x\right)}{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 0,\texttt{HangHours} = x\right)} &= \frac{\exp\left(3.966289 -0.225848 (1) + 0.012592 x - 0.009417 (1) \times x\right)}{\exp\left(3.966289 -0.225848 (0) + 0.012592 x - 0.009417 (0) \times  x \right)} \\
+&= \exp(-0.225848-0.009417x) \\
+\end{align*}
+$$
+- Among boys, each additional hour spent hanging out with friends
+is associated with a 0.318% increase in the number of text messages sent
+per day.
+$$
+\begin{align*}
+\frac{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 1,\texttt{HangHours} = x+1\right)}{\hat{E}\left(\texttt{TextsSent}\middle|\texttt{GenderMale} = 1,\texttt{HangHours} = x\right)} &= \frac{\exp\left(3.966289 -0.225848 (1) + 0.012592 (x+1) - 0.009417 (1) \times (x+1)\right)}{\exp\left(3.966289 -0.225848 (1) + 0.012592 x - 0.009417 (1) \times  x \right)} \\
+&= \exp\left(0.012592-0.009417\right) \\
+&= 1.00318 \text{.}
+\end{align*}
+$$
+
+
+## Problems
+
+### Problem 1
+
+```{r}
+d2 <- Lock5Data::SandwichAnts2
+```
+
+This data set comes from an experiment in which a student counted the number
+of ants on bits of different sandwiches.
+These are the variables:
+
+- `Ants`: Number of ants on the sandwich.
+- `Butter`: `yes` if there was butter on the sandwich, `no` if not.
+- `Bread`: Type of bread, with the following levels:
+  - `Multigrain`
+  - `Rye`
+  - `White`
+  - `Wholemeal`
+
+These are the results from a quasi-Poisson regression of the number of ants
+on `Butter` and `Bread`, with an interaction between the two
+
+```{r}
+#| echo: true
+mod_02 <- glm(formula = Ants ~ Butter * Bread,
+              data = d2,
+              family = quasipoisson)
+summary(mod_02)
+exp(mod_02$coefficients)
+```
+
+Fill in this table with the average number of ants for the given bread/butter
+combination:
+
+| | No Butter | Butter |
+|:-|-:|-:|
+| Multigrain |  |  |
+| Rye | | |
+| White | | |
+| Wholemeal | | |
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+| | No Butter | Butter |
+|:-|-:|-:|
+| Multigrain | $36$ | $36\times 1.3\overline{8}=50$ |
+| Rye | $36\times 1.0462963=37.\overline{6}$ | $36\times1.3\overline{8}\times 1.0462963\times 0.8824779 = 46.1\overline{6}$ |
+| White | $36\times 0.9953704 = 35.8\overline{3}$ | $36\times1.3\overline{8}\times 0.9953704 \times 0.9209302=45.8\overline{3}$ |
+| Wholemeal | $36\times 1.1805556=42.5$ | $36\times1.3\overline{8}\times1.1805556\times 0.9374118=55.\overline{3}$ |
+
+:::
+
+
+
+
+
+
