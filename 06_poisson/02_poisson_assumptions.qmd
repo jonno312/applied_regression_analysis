@@ -54,6 +54,30 @@ Another way of saying this is that if $t_i = 1$ then $\mu_i = \lambda_i$.
 
 :::
 
+### Problem 2
+
+Which of the four assumptions of linear regression are automatically violated
+when the outcome is a count?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The assumption that the random errors are normally distributed,
+conditional on the explanatory variables,
+is automatically violated.
+Suppose $E(Y_i|X_{i1},\dotsc,X_{ip})$ is 3.5.
+The only possible random errors are $\{-3.5,-2.5,-1.5,-0.5,0.5,1.5,2.5,3.5,\dotsc\}$
+because the outcome needs to be in $\{0,1,2,3,4,5,6,7,\dotsc\}$.
+A normally distributed random variable can be any real number.
+So, the errors can't be normally distributed.
+
+The assumption of constant variance is not automatically violated,
+but it is often violated.
+Suppose the outcome is Poisson-distributed.
+Recall that the mean of the Poisson distribution is equal to its variance.
+So, the variance will change as the mean changes.
+
+:::
+
 
 
 

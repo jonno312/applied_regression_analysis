@@ -429,6 +429,189 @@ provided both these people are age $x+20$.
 
 :::
 
+### Problem 3
+
+This problem is about Table 2 in
+[Ethnicity/Race, Paranoia, and Hospitalization for Mental Health Problems Among Men](https://doi.org/10.2105/AJPH.94.1.78).
+
+#### Part (a)
+
+Interpret the odds ratio for "Ethnicity".
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Part of the difficulty of this problem is just figuring out what the heck
+the author means by "Ethnicity".
+If you read the Results section, the author reveals that this is actually race.
+He writes "1 = White, 2 = Black", but that doesn't tell us
+what the reference group is.
+Later in the Results section,
+he writes, "Black men were more than 49 times more likely than
+White men to have had a mental health hospitalization."
+This is incorrect in a couple ways, but at least we can combine it with Table 2
+to determine that "White" is the reference group.
+
+So, Black men without mild paranoia have 4869% greater odds of hospitalization for mental health problems than
+white men without mild paranoia,
+holding all else equal.
+
+How was the author's interpretation incorrect?
+First, he didn't take into account the interaction term.
+If we're just interpreting the odds ratio for "Ethnicity",
+we need the value of the interaction term to be zero.
+So, we need the "Mild paranoia" variable to be zero.
+So, we are only talking about men who do not have mild paranoia.
+
+Second, the author said that Black were "more than 49 times more".
+If the odds ratio is 49.69,
+it should be "more than 49 times *as*"
+or "more than 48 times more".
+
+Finally, the author uses the word "likely", which I think most people would
+interpret as a probability or chance,
+when in fact we're talking about odds.
+
+:::
+
+#### Part (b)
+
+Interpret the odds ratio for "Mild paranoia (distrust)".
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The odds of hospitalization for mental health problems among white men with mild paranoia
+are 2.63 times the odds of hospitalization for mental health problems among white men
+without mild paranoia, holding all else equal.
+
+We want to interpret the odds ratio for "Mild paranoia (distrust)"
+on its own,
+so we need the interaction term to be zero,
+so we need "Ethnicity" to be zero,
+so we need to restrict our focus to white men.
+
+:::
+
+#### Part (c)
+
+Suppose a white man with mild paranoia has 0.0789 odds of hospitalization for
+mental health problems.
+What is the odds of hospitalization for mental health problems
+for another man who differs only in that he is Black?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Because both of these men have mild paranoia,
+we have to take into account the interaction term.
+The odds ratio for this comparison is $49.69 \times 0.03 = 1.4907$.
+Since the starting odds is 0.0789,
+the new odds is $0.0789 \times 1.4907 = 0.11761623$.
+
+Here's an explanation that uses the coefficients explicitly:
+Suppose the white man in the statement of the problem is participant $i$.
+We know he's white and that he has mild paranoia.
+So, we can write
+$$
+\begin{align*}
+    \text{odds}_i &= \exp\left(-5.35 + 3.91 \text{Black}_i + 0.97 \text{paranoia}_i - 3.64 \text{Black}_i \times \text{paranoia}_i + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91 (0) + 0.97 (1) - 3.64 (0) \times (1) + \cdots \right) \\
+    &= \exp\left(-5.35  + 0.97  + \cdots \right) \text{.} \\
+\end{align*}
+$$
+Now suppose the Black man in the statement of the problem is participant $j$.
+We can write
+$$
+\begin{align*}
+    \text{odds}_j &= \exp\left(-5.35 + 3.91 \text{Black}_i + 0.97 \text{paranoia}_i - 3.64 \text{Black}_i \times \text{paranoia}_i + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91 (1) + 0.97 (1) - 3.64 (1) \times (1) + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91  + 0.97  - 3.64  + \cdots \right) \text{.} \\
+\end{align*}
+$$
+To get odds$_j$, we can do this:
+$$
+\begin{align*}
+    \frac{\text{odds}_j}{\text{odds}_i} &= \frac{\exp\left(-5.35 + 3.91  + 0.97  - 3.64  + \cdots \right)}{\exp\left(-5.35  + 0.97  + \cdots \right)} \\
+    \frac{\text{odds}_j}{\text{odds}_i} &= \exp\left( 3.91    - 3.64   \right) \\
+    \text{odds}_j &= \exp\left( 3.91    - 3.64   \right) \text{odds}_i \\
+    \text{odds}_j &= \exp\left( 3.91 \right) \exp\left(   - 3.64   \right) \text{odds}_i \\
+    \text{odds}_j &= \left( 49.69 \right) \left(   0.03   \right) (0.0789) \text{.} \\
+\end{align*}
+$$
+
+:::
+
+#### Part (d)
+
+Suppose a Black man without mild paranoia has 1.4907 odds of hospitalization for
+mental health problems.
+What is the odds of hospitalization for mental health problems
+for another man who differs only in that he is has mild paranoia?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Because both of these men are Black,
+we have to take into account the interaction term.
+The odds ratio for this comparison is $2.63 \times 0.03 = 0.0789$.
+Since the starting odds is 1.4907,
+the new odds is $1.4907 \times 0.0789 = 0.11761623$.
+
+Note that the answer is the same as for the previous question.
+
+Here's an explanation that uses the coefficients explicitly:
+Suppose the man without mild paranoia in the statement of the problem is participant $i$.
+We know he's Black and that he does not have mild paranoia.
+So, we can write
+$$
+\begin{align*}
+    \text{odds}_i &= \exp\left(-5.35 + 3.91 \text{Black}_i + 0.97 \text{paranoia}_i - 3.64 \text{Black}_i \times \text{paranoia}_i + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91 (1) + 0.97 (0) - 3.64 (1) \times (0) + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91  + \cdots \right) \text{.} \\
+\end{align*}
+$$
+Now suppose the man with mild paranoia in the statement of the problem is participant $j$.
+We can write
+$$
+\begin{align*}
+    \text{odds}_j &= \exp\left(-5.35 + 3.91 \text{Black}_i + 0.97 \text{paranoia}_i - 3.64 \text{Black}_i \times \text{paranoia}_i + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91 (1) + 0.97 (1) - 3.64 (1) \times (1) + \cdots \right) \\
+    &= \exp\left(-5.35 + 3.91  + 0.97  - 3.64  + \cdots \right) \text{.} \\
+\end{align*}
+$$
+To get odds$_j$, we can do this:
+$$
+\begin{align*}
+    \frac{\text{odds}_j}{\text{odds}_i} &= \frac{\exp\left(-5.35 + 3.91  + 0.97  - 3.64  + \cdots \right)}{\exp\left(-5.35 + 3.91  + \cdots \right) } \\
+    \frac{\text{odds}_j}{\text{odds}_i} &= \exp\left(  0.97  - 3.64   \right) \\
+    \text{odds}_j &= \exp\left(  0.97  - 3.64   \right) \text{odds}_i \\
+    \text{odds}_j &= \exp\left(  0.97\right) \exp\left(  - 3.64   \right) \text{odds}_i \\
+    \text{odds}_j &= \left(  2.63\right) \left(  0.03  \right) (1.4907) \text{.} \\
+\end{align*}
+$$
+
+:::
+
+#### Part (e)
+
+Interpret the "odds ratio" for "Constant".
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is not an odds ratio, it's an odds.
+The intercept for the model was $-5.35$
+and $\exp(-5.35) = 0.004748151$.
+The author then rounded up to 0.01 to get the odds.
+This would be the odds of hospitalization for mental health problems
+for a man with zeroes for all the explanatory variables,
+i.e., a man who is white, does not have mild paranoia,
+is zero years old, has never been married,
+has less than a high school education,
+makes under \$7,000/year,
+has a zero occupational prestige score,
+has no diagnosis of a mental disorder,
+has no moderate or severe paranoia,
+and has a zero social desirability score.
+
+:::
+
 
 
 

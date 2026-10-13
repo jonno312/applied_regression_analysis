@@ -417,7 +417,39 @@ the remaining data set matches the remaining plot.
 :::
 
 
+### Problem 2
+
+This problem uses Figure 1 in
+[Prediction of High Nodal Burden in Patients With Sentinel Node–Positive Luminal ERBB2-Negative Breast Cancer](https://jamanetwork.com/journals/jamasurgery/fullarticle/2824187).
+
+#### Part (a)
+
+Interpret the AUC in panel A.
 
 
+::: {.callout-tip title="Solution" collapse="true"}
+
+If you randomly selected one person with high nodal burden and one person without,
+both from the training set,
+there's a 77% chance the person with high nodal burden would have a higher
+fitted value than the person without.
+
+:::
+
+#### Part (b)
+
+If someone has a fitted value of 0.25,
+what is their actual probability of high nodal burden?
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+We need the calibration plot, which is in panel C,
+to answer this.
+The fitted values are along the horizontal axis.
+A fitted value of 0.25 corresponds to an actual probability of
+about 0.35.
+
+:::
 
 

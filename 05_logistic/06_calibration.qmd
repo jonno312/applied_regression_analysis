@@ -409,4 +409,30 @@ and 3.
 
 :::
 
+### Problem 4
+
+What would calibration mean in the context of credit scores?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Credit scores are intended to measure the risk of non-payment for loans,
+rent, etc.
+Suppose we took a sample of people getting a loan to buy a car.
+At the end of the loan period, we checked to see who had defaulted
+and who had not.
+If we took everyone with a credit score between 651 and 700
+and computed the proportion who defaulted,
+it should be higher than the proportion of defaults
+among borrowers with a credit score between 701 and 750.
+That would be a well-calibrated credit score.
+
+If the proportion of defaults among borrowers with a credit score between 651 and 700
+was lower than that among borrowers with a credit score between 701 and 750,
+we would not be doing a very good job of estimating risk.
+This would have serious consequences.
+We would be denying loans to people with low credit scores,
+even though they have a high probability of paying us back on time.
+
+:::
+
 
