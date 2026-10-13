@@ -91,6 +91,8 @@ more on concepts and less on math.
     3. [Residuals in Poisson Regression](06_poisson/03_poisson_residuals.qmd)
     4. [Interpretation](06_poisson/04_interpretation.qmd)
     5. [Hypothesis Testing](06_poisson/05_hypothesis_testing.qmd)
+    6. [Quasi-Poisson Regression](06_poisson/06_quasi_poisson.qmd)
+    7. [Interactions](06_poisson/07_interactions.qmd)
 
 Appendices
 
