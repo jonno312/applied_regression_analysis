@@ -1,0 +1,46 @@
+---
+title: "Censoring"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Define, use, and interpret the following terms:
+
+- Left censoring
+- Right censoring
+- Interval censoring
+- Independent censoring
+
+
+## Lesson
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
