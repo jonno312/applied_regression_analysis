@@ -1,0 +1,167 @@
+---
+title: "Generalized Linear Models"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the key components of a generalized linear model (GLM).
+
+
+## Lesson
+
+So far, we've covered three forms of regression:
+
+1. Linear
+2. Logistic
+3. Poisson
+
+They all fall under a broader umbrella of models called
+"generalized linear models" (GLMs).
+A GLM has two main components:
+
+1. A distribution for the outcome, conditional on the covariates.
+2. A link function connecting the expected value of the distribution
+to the covariates through a linear model.
+
+Let's examine how each of the three forms of regression we've covered
+contains these two components.
+
+- Linear regression
+  - The distribution is the normal distribution.
+  We assume $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{normal}(\mu_i,\sigma^2)$.
+  - The link function is the identity function.
+  We assume
+  $\mu_i = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+- Logistic regression
+  - The distribution is the Bernoulli distribution.
+  We assume $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{Bernoulli}(\mu_i)$.
+  - The link function is the logit function.
+  We assume
+  $\log\frac{\mu_i}{1-\mu_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+- Poisson regression
+  - The distribution is the Poisson distribution.
+  We assume $Y_i|X_{i1},\dotsc,X_{ip}\sim\text{Poisson}(\mu_i)$.
+  - The link function is the log function.
+  We assume
+  $\log\mu_i = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} + \log t_i$.
+
+These are not the only distributions that fit into the GLM framework.
+The other two most commonly-used distributions are the gamma
+distribution and the negative binomial distribution.
+Both are right-skewed distributions.
+The gamma is continuous and the negative binomial is discrete.
+
+Here are some graphs the negative binomial distribution:
+
+```{r}
+for(p in c(0.25,0.5,0.75,0.9)){
+  for(r in c(1,2,5,10)){
+    mu <- r * (1 - p) / p
+    sigma_2 <- r * (1 - p) / p^2
+    x_max <- qnbinom(p = 0.99,
+                     size = r,
+                     prob = p)
+    barplot(height = dnbinom(0:x_max,
+                             size = r,
+                             prob = p),
+            names = as.character(0:x_max),
+            xlab = "y",
+            ylab = "P(Y= y)",
+            main = paste0("E(Y) = ",
+                          mu,
+                          ", Var(Y) = ",
+                          sigma_2))
+  }
+}
+```
+
+Here are some graphs the gamma distribution:
+
+```{r}
+for(lambda in c(1,2,4,8)){
+  for(r in c(1,2,5,10)){
+    mu <- r / lambda
+    sigma_2 <- r / lambda^2
+    x_max <- qgamma(p = 0.99,
+                    shape = r,
+                    rate = lambda)
+    f_temp <- function(x){
+      dgamma(x = x,
+             shape = r,
+             rate = lambda)
+    }
+    curve(expr = f_temp,
+          from = 0,
+          to = x_max,
+          xlab = "y",
+          ylab = "f(y)",
+          main = paste0("E(Y) = ",
+                        mu,
+                        ", Var(Y) = ",
+                        sigma_2))
+  }
+}
+```
+
+The default link function for the negative binomial distribution
+is the log function,
+meaning that with negative binomial regression,
+we assume $\log \mu_i = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+The default link function for the gamma distribution
+is the inverse function,
+meaning that with negative binomial regression,
+we assume $\frac{1}{\mu_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+You don't need to memorize this;
+if you type `?family` into the R console and press enter,
+a help page will pop up showing all the distributions and their default link
+functions.
+(The one exception to this is the negative binomial distribution.
+For some reason, negative binomial regression is not included in base R.
+You have to install the package `MASS` to perform negative binomial
+regression.
+The function is `glm.nb`.)
+
+It's important to know that you can change the link function you use.
+Although each distribution has a default,
+it's not set in stone.
+So, you can use the `family = binomial(link = "identity")`,
+and your coefficients will be interpreted like in linear regression,
+as risk differences.
+It's also important to know that the distribution determines the relationship
+between the mean and the variance.
+With linear regression,
+there is no relationship;
+the variance can be anything, irrespective of the mean.
+With logistic regression,
+the variance is equal to $\mu (1 - \mu)$,
+and with Poisson regression,
+the variance is equal to the mean.
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
