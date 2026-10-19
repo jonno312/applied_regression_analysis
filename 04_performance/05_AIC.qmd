@@ -157,6 +157,105 @@ If you transform your outcome, for example, by logging it,
 you shouldn't use the AIC to compare the model with the transformed outcome
 to the model with the untransformed outcome.
 
+I have another warning that isn't in the `AIC` help file.
+You can't use the AIC to compare two models when one is based
+on a discrete distribution and the other is based on a continuous distribution.
+This will become more relevant later, when we cover forms of regression
+that are designed for discrete outcomes, like counts.
+For example, you can't use the AIC to compare a Poisson regression model
+to a linear regression model.
+The reason behind this is a little complicated,
+so you don't need to know it.
+It took me forever to work out, though, so I'm going to include it in the
+callout below.
+
+::: {.callout-caution collapse="true"}
+## Caution: Math
+
+Suppose $P$ and $Q$ are probability measures on $\left(\mathbb{R},\mathcal{B}\right)$
+and $P$ is absolutely continuous with respect to $Q$.
+(This means that $\forall A\in\mathcal{B}$, $Q(A) = 0 \implies P(A) = 0$.
+We denote this $P \ll Q$
+and say $P$ is dominated by $Q$.)
+The Kullback-Leibler divergence of $P$ from $Q$,
+also called the relative entropy from $Q$ to $P$,
+is
+$$
+D_{KL}\left(P\parallel Q\right) = \int_{x\in\mathbb{R}} \log \frac{dP(x)}{dQ(x)} dP(x) \text{.}
+$$
+Note that
+$$
+\begin{align*}
+    D_{KL}\left(P\parallel Q\right) &= \int_{x\in\mathbb{R}} \log \frac{dP(x)}{dQ(x)} dP(x) \\
+    &= \int_{x\in\mathbb{R}} \log dP(x) dP(x) - \int_{x\in\mathbb{R}} \log dQ(x) dP(x) \text{.}
+\end{align*}
+$$
+If $P$ is the true data-generating distribution,
+$\int_{x\in\mathbb{R}} \log dP(x) dP(x)$ will be the same
+regardless of our hypothesized model $Q$.
+The AIC is based on the second term.
+
+Suppose $Q_2\left(\left\{x\in\mathbb{R} : Q_2(x) = 0\right\}\right) = 0$.
+
+- This implies
+$Q_2\left(\left\{x\in\mathbb{R} : Q_2(x) > 0\right\}\right) = 1$.
+- Define $D_n = \left\{x\in\mathbb{R} : Q_2(x) \ge \frac{1}{n}\right\}$.
+Let $|D_n| = M$.
+Then $Q_2\left(\left\{x\in\mathbb{R} : Q_2(x) \ge \frac{1}{n}\right\}\right) \ge \frac{M}{n}$.
+Since $Q_2\left(\left\{x\in\mathbb{R} : Q_2(x) \ge \frac{1}{n}\right\}\right) \le 1$,
+$$
+\begin{align*}
+    1 &\ge \frac{M}{n} \\
+    n &\ge M \text{,}
+\end{align*}
+$$
+and $|D_n| = M < +\infty$.
+- Since $D_n$ has finitely many elements,
+$\bigcup_{n=1}^\infty D_n$ has at most countably many elements.
+But
+$$
+\begin{align*}
+    \bigcup_{n=1}^\infty D_n &= \bigcup_{n=1}^\infty \left\{x\in\mathbb{R} : Q_2(x) \ge \frac{1}{n}\right\} \\
+    &= \left\{x\in\mathbb{R} : Q_2(x) > 0\right\} \text{,}
+\end{align*}
+$$
+so $\left\{x\in\mathbb{R} : Q_2(x) > 0\right\}$
+has at most countably many elements.
+
+Suppose that
+
+- $Q_2\left(\left\{x\in\mathbb{R} : Q_2(x) = 0\right\}\right) = 0$.
+- $Q_1\ll\lambda$, where $\lambda$ is Lebesgue measure.
+
+If
+
+- $P \ll Q_1$.
+  - $Q_1(A) = 0 \implies P(A) = 0$.
+  Since $Q_1\ll\lambda$,
+  $\lambda(A) = 0 \implies Q_1(A) = 0$.
+  So, $\lambda(A) = 0 \implies Q_1(A) = 0 \implies P(A) = 0$,
+  and $P \ll \lambda$.
+  - 
+  $$
+  \begin{align*}
+    P\left(\left\{x\in\mathbb{R} : Q_2(x) = 0\right\}\right) &= 1 - P\left(\left\{x\in\mathbb{R} : Q_2(x) > 0\right\}\right) \\
+    &= 1 - \sum_{\left\{x\in\mathbb{R} : Q_2(x) > 0\right\}} P(x) \\
+    &= 1 - 0 \\
+    &= 1
+  \end{align*}
+  $$
+  - So, $P$ is not dominated by $Q_2$.
+- $P \ll Q_2$.
+  - $P\left(\left\{x\in\mathbb{R} : Q_2(x) = 0\right\}\right) = 0$.
+  - $P\left(\left\{x\in\mathbb{R} : Q_2(x) > 0\right\}\right) = 1$.
+  - $\exists x_0\in\mathbb{R}$ such that $P(x_0) > 0$.
+  $\lambda(x_0) = 0 \implies Q_1(x_0) = 0$.
+  - $Q_1$ does not dominate $P$.
+
+
+
+:::
+
 ## Problems
 
 ### Problem 1
