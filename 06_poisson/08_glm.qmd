@@ -5,10 +5,12 @@ execute:
 format: html
 ---
 
-## Learning Objective
+## Learning Objectives
 
-Explain the key components of a generalized linear model (GLM).
-
+- Explain the key components of generalized linear models (GLMs).
+- For a given GLM, do the following:
+  - Interpret the coefficients.
+  - Interpret the results of a hypothesis test.
 
 ## Lesson
 
@@ -78,7 +80,7 @@ for(p in c(0.25,0.5,0.75,0.9)){
 }
 ```
 
-Here are some graphs the gamma distribution:
+Here are some graphs of the gamma distribution:
 
 ```{r}
 for(lambda in c(1,2,4,8)){
@@ -122,7 +124,8 @@ functions.
 For some reason, negative binomial regression is not included in base R.
 You have to install the package `MASS` to perform negative binomial
 regression.
-The function is `glm.nb`.)
+The function is `glm.nb`.
+To find its default link function, use `?negative.binomial`.)
 
 It's important to know that you can change the link function you use.
 Although each distribution has a default,
@@ -144,20 +147,67 @@ the variance is equal to the mean.
 
 ### Problem 1
 
+Suppose I own a shop, and every morning I measure the time between
+opening my shop and the first customer arriving.
+Let $T_i$ represent this time in minutes on the $i$th day of my study.
+Let $E_i = 1$ if the $i$th day is on the weekend
+and $E_i = 0$ if the $i$th day is during the work week.
+I use gamma regression with the default link function
+to regress $T_i$ on $E_i$.
+My estimated intercept is 0.1
+and the estimated coefficient on $E_i$ is also 0.1.
+Interpret these coefficients.
 
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Our model is
+$$
+\frac{1}{E(T_i|E_i)} = \beta_0 + \beta_1 E_i \text{,}
+$$
+so
+$$
+\begin{align*}
+\frac{1}{\hat{E}(T_i|E_i)} &= \hat{\beta}_0 + \hat{\beta}_1 E_i \\
+\frac{1}{\hat{E}(T_i|E_i)} &= 0.1 + 0.1 E_i \\
+\frac{1}{0.1 + 0.1 E_i} &= \hat{E}(T_i|E_i) \text{.} \\
+\end{align*}
+$$
+This means
+$$
+\begin{align*}
+\hat{E}(T_i|E_i = 0) &= \frac{1}{0.1} \\
+&= 10 \\
+\hat{E}(T_i|E_i = 1) &= \frac{1}{0.1 + 0.1} \\
+&= \frac{1}{0.2} \\
+&= 20 \text{.}
+\end{align*}
+$$
+So, during the work week we would expect to wait 10 minutes
+for the first customer to arrive
+and on the weekend we would expect to wait 20 minutes
+for the first customer to arrive.
 
 :::
 
 ### Problem 2
 
-
+Could I use a logit link with Poisson regression?
+Justify your answer.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
+This sounds like a bad idea.
+For simplicity, assume there's no offset.
+Then we're assuming
+$$
+\log\frac{\mu_i}{1 - \mu_i} = \beta_0 + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
+$$
+If $\mu_i = 1$, the term $\frac{\mu_i}{1-\mu_i}$ is not defined.
+If $\mu_i > 1$, then $\frac{\mu_i}{1 - \mu_i} < 0$
+and the term $\log\frac{\mu_i}{1-\mu_i}$ is not defined,
+because you can't take the log of a negative number.
+This is really something you should only consider if your outcome is binary.
 
 
 :::
