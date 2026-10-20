@@ -93,6 +93,7 @@ more on concepts and less on math.
     5. [Hypothesis Testing](06_poisson/05_hypothesis_testing.qmd)
     6. [Quasi-Poisson Regression](06_poisson/06_quasi_poisson.qmd)
     7. [Interactions](06_poisson/07_interactions.qmd)
+    8. [Generalized Linear Models](06_poisson/08_glm.qmd)
 
 Appendices
 
