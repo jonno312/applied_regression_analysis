@@ -1,0 +1,461 @@
+---
+title: "Poisson Regression (Solutions)"
+format: html
+---
+
+```{r}
+# Load packages
+library(readxl)
+
+# Set seed
+set.seed(9)
+```
+
+
+
+## Problem 1
+
+The purpose of this problem is to demonstrate just how difficult it is
+to check our assumptions for Poisson regression.
+
+### Part (a)
+
+Create the following variables:
+
+- `n`: This will be the sample size. Make this at least 100.
+- `beta_0`: This will be the intercept. You can make this any real number.
+- `beta_1`: This will be the slope. You can make this any real number
+other than zero.
+
+```{r}
+n <- 1e3
+beta_0 <- 0
+beta_1 <- 0.1
+```
+
+### Part (b)
+
+Generate `n` iid standard normal random variables. Store them as `x`.
+
+```{r}
+x <- rnorm(n)
+```
+
+### Part (c)
+
+For this problem, we will assume the following:
+
+1. $\log \mu_i = \beta_0 + \beta_1 X_i$
+2. The observations are iid.
+3. $Y_i |X_i \sim \text{Poisson}(\mu_i)$
+
+To make our lives easier, we're not going to worry about offsets right now.
+We're going to assume that $t_1 = t_2 = \cdots = t_{n-1} = t_n = 1$.
+
+Create a vector `mu` that contains $\mu_1,\mu_2,\dotsc,\mu_n$.
+Then, use `summary(mu)` to get some descriptive statistics on the means.
+Create a histogram of $\mu_1,\mu_2,\dotsc,\mu_n$ as well.
+
+```{r}
+mu <- exp(beta_0 + beta_1 * x)
+summary(mu)
+hist(x = mu,
+     xlab = expression(mu[i]),
+     main = "")
+```
+
+### Part (d)
+
+Generate $Y_1,\dotsc,Y_n$ according to the assumptions above.
+
+```{r}
+y <- rpois(n = n,
+           lambda = mu)
+```
+
+### Part (e)
+
+Perform Poisson regression and quasi-Poisson regression with $Y_i$
+as the outcome and $X_i$ as the single explanatory variable.
+
+```{r}
+# Poisson regression
+mod_01 <- glm(formula = y ~ x,
+              family = poisson)
+summary(mod_01)
+
+# Quasi-Poisson Regression
+mod_02 <- glm(formula = y ~ x,
+              family = quasipoisson)
+summary(mod_02)
+```
+
+
+Is there evidence of overdispersion?
+
+No. The dispersion parameter is essentially 1.
+
+### Part (f)
+
+Using the Poisson regression model, make the following plots:
+
+- A calibration-style plot with fitted values on the horizontal axis,
+observed values on the vertical axis, and a reference line with intercept 0
+and slope 1.
+- Histogram, boxplot, and q-q plot of the deviance residuals.
+- Scatterplot with the fitted values on the horizontal axis,
+deviance residuals on the vertical axis, and a horizontal line at zero.
+- Scatterplot with the fitted values on the horizontal axis,
+response residuals on the vertical axis, and a horizontal line at zero.
+- Scatterplot with the fitted values on the horizontal axis,
+Pearson residuals on the vertical axis, and a horizontal line at zero.
+
+```{r}
+# Calibration-style plot
+plot(x = mod_01$fitted.values,
+     y = y,
+     xlab = "Fitted Values",
+     ylab = "Observed Values")
+abline(a = 0,
+       b = 1,
+       col = "red")
+
+# Deviance residuals
+resid_dev <- residuals(object = mod_01,
+                       type = "deviance")
+boxplot(x = resid_dev,
+        ylab = "Deviance Residuals")
+hist(x = resid_dev,
+     xlab = "Deviance Residuals",
+     main = "")
+qqnorm(resid_dev)
+qqline(resid_dev)
+plot(x = mod_01$fitted.values,
+     y = resid_dev,
+     xlab = "Fitted Values",
+     ylab = "Deviance Residuals")
+abline(h = 0,
+       col = "red")
+
+# Response residuals
+resid_response <- residuals(object = mod_01,
+                            type = "response")
+plot(x = mod_01$fitted.values,
+     y = resid_response,
+     xlab = "Fitted Values",
+     ylab = "Response Residuals")
+abline(h = 0,
+       col = "red")
+
+# Response residuals
+resid_pearson <- residuals(object = mod_01,
+                           type = "pearson")
+plot(x = mod_01$fitted.values,
+     y = resid_pearson,
+     xlab = "Fitted Values",
+     ylab = "Pearson Residuals")
+abline(h = 0,
+       col = "red")
+```
+
+
+### Part (g)
+
+Modify `beta_0` and/or `beta_1` in Part (a) so that $\mu_1,\dotsc,\mu_n$
+are all at least 100. (You can check Part (c).) Then re-run all your code.
+What do the plots in Part (f) look like?
+
+Then, modify `beta_0` and/or `beta_1` in Part (a) so that $\mu_1,\dotsc,\mu_n$
+are all below 2. (You can check Part (c).) Then re-run all your code.
+What do the plots in Part (f) look like?
+
+
+
+
+When the means are large, the plots in Part (f) look
+how we want them to. The points in the calibration-style plot fall along the
+reference line; the deviance residuals are normally distributed;
+and in the scatterplots, the reference line goes straight through the center
+of the cloud of points.
+
+When the means are small, the plots are weird. All of the scatterplots
+have striations or banding, which is a result of the restricted range
+of the outcome. Consider the response residuals:
+If $Y_i$ has to be a counting number then plotting
+$Y_i - \hat{Y}_i$ as a function of $\hat{Y}_i$ will result in a bunch
+of lines that intersect the vertical axis at $Y_i$ and have a slope of $-1$.
+
+Keep in mind that no matter what $\beta_0$ and $\beta_1$ are,
+we're not violating any of the assumptions of Poisson regression.
+This is why assumption-checking is so hard for this analysis;
+even when the assumptions are met, we get weird plots.
+
+
+
+## Problem 2
+
+For this problem, you will analyze the data set from
+[Obesity Is Independently Associated with Spinal Anesthesia Outcomes: A Prospective Observational Study](https://doi.org/10.1371/journal.pone.0124264).
+You'll have to download the
+[data set](https://doi.org/10.1371/journal.pone.0124264.s001)
+and put it in your working directory.
+The authors of this paper performed logistic regression with "successful
+anesthesia" as the outcome. We will be examining the variable
+`HospitalStay` instead. Although there's no data dictionary, we're going
+to assume this variable represents the duration of the hospital stay in days.
+
+```{r}
+# Load data
+d <- read_xls("pone.0124264.s001.xls")
+```
+
+
+### Part (a)
+
+Knowing what you know about Poisson regression, does it make sense
+to use Poisson regression for this outcome? Why or why not?
+
+
+I don't think it makes sense to use Poisson regression for this outcome.
+Although the outcome is a count, it's not a count of the number of events,
+where the events are occurring at a constant rate.
+
+
+### Part (b)
+
+Use Poisson regression to regress `HospitalStay` on at least two explanatory
+variables of your own choosing.
+
+Do not supply an offset. There's not really a $t_i$ here, so we're sort of
+assuming $t_i = 1$ for everyone. This means that we're modeling the mean
+of the distribution, and not really a rate.
+
+Use `summary` to print the results to screen.
+
+```{r}
+# What are the ages in the data set?
+summary(d$Age)
+
+# Create shifted age variable
+d$Age_70 <- d$Age - 70
+
+# Poisson regression
+mod_03 <- glm(formula = HospitalStay ~ Age_70 + SuccessAnesthesia,
+              data = d,
+              family = poisson)
+summary(mod_03)
+```
+
+
+### Part (c)
+
+Repeat Part (b) but use quasi-Poisson regression instead.
+Does there appear to be over-dispersion?
+
+```{r}
+mod_04 <- glm(formula = HospitalStay ~ Age_70 + SuccessAnesthesia,
+              data = d,
+              family = quasipoisson)
+summary(mod_04)
+```
+
+No, there appears to be underdispersion.
+The variance is about half of the mean.
+
+### Part (d)
+
+Interpret the intercept and at least one non-intercept coefficient
+in real-world terms.
+
+```{r}
+exp(mod_03$coefficients)
+```
+
+
+- We would expect a patient who is 70 years old and had unsuccessful
+anesthesia to have a hospital stay of 7 days.
+- With each additional year of age, the expected hospital stay
+decreases by $(1 - 0.9988225)\times 100 = 0.12$ percent,
+holding anesthesia success status constant.
+- Successful anesthesia is associated with a $(1 - 0.8883495) \times 100 = 11.2$
+percent decrease in expected hospital stay,
+holding age constant.
+
+
+### Part (e)
+
+Use `hist` and `summary` on the outcome variable, `HospitalStay`.
+What do you notice?
+
+```{r}
+hist(x = d$HospitalStay,
+     xlab = "Hospital Stay (days)",
+     main = "")
+summary(d$HospitalStay)
+```
+
+The minimum hospital stay is 4 days.
+This doesn't match the support of the Poisson, which includes 0, 1, 2, and 3.
+It appears that this procedure always requires a hospital stay of
+at least four days. It's almost like the first four days are non-random,
+and only the excess beyond those four days is random.
+
+
+### Part (f)
+
+Repeat Parts (b) and (c), but change the outcome to a transformation of
+`HospitalStay` that makes sense based on what you saw in Part (e).
+Use the same explanatory variables.
+
+```{r}
+# Create shifted outcome variable
+d$HospitalStay_4 <- d$HospitalStay - 4
+
+# Poisson regression
+mod_05 <- glm(formula = HospitalStay_4 ~ Age_70 + SuccessAnesthesia,
+              data = d,
+              family = poisson)
+summary(mod_05)
+
+# Quasi-Poisson regression
+mod_06 <- glm(formula = HospitalStay_4 ~ Age_70 + SuccessAnesthesia,
+              data = d,
+              family = quasipoisson)
+summary(mod_06)
+```
+
+Now we see a little bit of overdispersion.
+
+### Part (g)
+
+How does the transformation you made in Part (f) affect the interpretation
+of the coefficients?
+
+
+The exponentiated coefficients represent ratios, but not of the mean
+number days spent in the hospital. Instead, they represent ratios
+of the mean number of days *above four* spent in the hospital.
+If we wanted to interpret them, we'd have to talk about percentage changes,
+but of the number of days above four. It would be a nightmare.
+
+
+### Part (h)
+
+Repeat Part (f) but use `family = poisson(link = "identity")`
+and `family = quasipoisson(link = "identity")`.
+
+```{r}
+# Poisson regression
+mod_07 <- glm(formula = HospitalStay_4 ~ Age_70 + SuccessAnesthesia,
+              data = d,
+              family = poisson(link = "identity"))
+summary(mod_07)
+
+# Quasi-Poisson regression
+mod_08 <- glm(formula = HospitalStay_4 ~ Age_70 + SuccessAnesthesia,
+              data = d,
+              family = quasipoisson(link = "identity"))
+summary(mod_08)
+```
+
+The estimate of the dispersion parameter is about the same
+as in Part (f).
+
+### Part (i)
+
+Interpret the intercept and at least one non-intercept coefficient from
+Part (h) in real-world terms.
+
+```{r}
+mod_07$coefficients
+```
+
+
+With the identity link, the interpretations are the same as for linear
+regression.
+
+- We would expect a patient who is 70 years old and had unsuccessful
+anesthesia to have a hospital stay of 7 days (remember we have to add
+4 back to the intercept to get the number of days, not the number
+of excess days).
+- With each additional year of age, the expected hospital stay
+decreases by 0.007 days,
+holding anesthesia success status constant.
+- Holding age constant, patients with successful anesthesia
+spend 0.78 day less in the hospital than patients wtih unsuccessful
+anesthesia, on average.
+
+
+## Problem 3
+
+Suppose you visit $n$ emergency rooms to observe how busy they are.
+Define the following:
+
+- $t_i$ is the number of hours you spend observing the $i$th hospital.
+- $Y_i$ is the number of patients you see enter the emergency room
+at the $i$th hospital.
+- $T_i$ is the temperature outside in degrees Fahrenheit.
+- $W_i = 1$ if you observe on a work day (Monday through Friday) and
+$W_i = 0$ if you observe on a weekend (Saturday or Sunday).
+
+You assume the following:
+
+1. $\log E(Y_i|T_i,W_i) = \beta_0 + \beta_1 T_i + \beta_2 W_i + \beta_3 T_i W_i + \log t_i$.
+2. The observations are iid.
+3. $Y_i|T_i,W_i\sim\text{Poisson}(\mu_i)$.
+
+### Part (a)
+
+Interpret $\exp(\beta_0)$ in real-world terms.
+
+
+The expected number of new patients per hour when it's zero degrees
+Fahrenheit outside and a weekend.
+
+
+### Part (b)
+
+Interpret $\exp(\beta_1)$ in real-world terms.
+
+
+Each one-degree Fahrenheit increase in temperature is associated with
+a $(\exp(\beta_1) - 1)\times 100$\% increase in the number of new patients
+per hour, assuming it's a weekend.
+
+
+### Part (c)
+
+Interpret $\exp(\beta_2)$ in real-world terms.
+
+
+If it's zero degrees Fahrenheit outside, the rate of new patients per hour
+on work days is $\exp(\beta_2)$ times the rate of new patients per hour
+on the weekend.
+
+
+### Part (d)
+
+Interpret $\exp(\beta_1 + \beta_3)$ in real-world terms.
+
+
+Each one-degree Fahrenheit increase in temperature is associated with
+a $(\exp(\beta_1 + \beta_3) - 1)\times 100$\% increase in the number of new patients
+per hour, assuming it's a workday.
+
+
+### Part (e)
+
+Interpret $\exp(\beta_2 + \beta_3)$ in real-world terms.
+
+
+If it's one degree Fahrenheit outside, the rate of new patients per hour
+on work days is $\exp(\beta_2 + \beta_3)$ times the rate of new patients per hour
+on the weekend.
+
+
+
+
+
+
+
+
