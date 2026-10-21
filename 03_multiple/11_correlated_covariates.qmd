@@ -1,0 +1,188 @@
+---
+title: "Correlated Covariates"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(car)
+```
+
+## Learning Objectives
+
+- Explain the effects of correlated explanatory variables.
+- Define, use, and interpret variance inflation factors (VIFs).
+
+
+## Lesson
+
+It is not uncommon for the explanatory variables in a regression model
+to be correlated with each other.
+Usually, you've chosen the explanatory variables because you think
+they are related to the outcome,
+and if they're all related to the outcome,
+they're probably related to each other.
+Unfortunately, problems can arise when explanatory variables
+are *highly* correlated with each other,
+which we will examine here.
+
+First, let's consider the case where two explanatory variables
+are perfectly correlated, i.e.,
+one is a linear function of the other.
+Suppose our outcome is body fat percentage
+and the explanatory variables are
+weight in pounds and weight in ounces.
+Weight in ounces is just weight in pounds times 16.
+
+```{r}
+d <- Lock5Data::BodyFat
+d$Weight_pounds <- d$Weight
+d$Weight_ounces <- d$Weight * 16
+mod_01 <- lm(formula = Bodyfat ~ Weight_pounds + Weight_ounces,
+             data = d)
+summary(mod_01)
+```
+As you can see, R did not even estimate anything for weight in ounces.
+If you try to include an explanatory variable that is a linear combination
+of any of the other explanatory variables,
+R will refuse.
+This is because it's impossible to do the math required to get estimates,
+standard errors, etc.
+
+What if you have two explanatory variables that are not perfectly correlated,
+but are still highly correlated?
+Let's regress body fat percentage on weight in pounds
+and abdomen circumference in centimeters.
+These two explanatory variables have a correlation of 0.888.
+```{r}
+#| echo: true
+cor(d$Weight_pounds,
+    d$Abdomen)
+mod_02 <- lm(formula = Bodyfat ~ Weight_pounds + Abdomen,
+             data = d)
+summary(mod_02)
+```
+
+
+That worked. Does that mean there's no problem?
+Maybe.
+Watch what we get if we just use weight in pounds.
+
+```{r}
+mod_03 <- lm(formula = Bodyfat ~ Weight_pounds,
+             data = d)
+summary(mod_03)
+```
+What changed?
+The estimated coefficient
+on `Weight_pounds` flipped signs.
+When both variables are included in the model,
+the coefficient on `Weight_pounds` is -0.16082,
+meaning we would expect body fat percentage to decrease by 0.16 percentage
+points with every additional pound of body weight,
+holding abdomen circumference constant.
+If someone's abdomen circumference is staying the same
+but they are getting heavier, they are probably getting taller or more muscular.
+Either way, their body fat is decreasing.
+
+When only `Weight_pounds` is included in the model,
+its coefficient is 0.16171,
+meaning we would expect body fat percentage to increase by 0.16 percentage
+points with every additional pound of body weight.
+This flipping of signs--going from an increase to a decrease or vice versa--is
+not uncommon when you fit a model with highly correlated covariates
+and then fit a model with only one of them.
+
+This behavior is related to another effect of using correlated variables.
+In order to demonstrate it,
+I need to recreate `mod_02`
+but somehow de-correlate the variables.
+The way to do that is to regress `Abdomen` on `Weight_pounds`
+and obtain the residuals.
+Note that these residuals are uncorrelated with `Weight_pounds`.
+
+```{r}
+#| echo: true
+mod_04 <- lm(formula = Abdomen ~ Weight_pounds,
+             data = d)
+cor(d$Weight_pounds,
+    mod_04$residuals)
+```
+
+Now I'm going to regress `Bodyfat` on `Weight_pounds`
+and the residuals from the regression of `Abdomen` on `Weight_pounds`.
+
+```{r}
+#| echo: true
+mod_05 <- lm(d$Bodyfat ~ d$Weight_pounds + mod_04$residuals)
+summary(mod_05)
+```
+
+Note the following:
+
+- The $R^2$ for `mod_05` is the same as for `mod_02`.
+The two models are explaining exactly the same amount of variance in the outcome.
+- The coefficient estimate for `Weight_pounds` is the same in `mod_05`
+and in `mod_03`.
+Since `Weight_pounds` is uncorrelated with `mod_04$residuals`,
+controlling for `mod_04$residuals` doesn't change the relationship
+between `Weight_pounds` and `Bodyfat`.
+- The variance of the coefficient estimate for `Weight_pounds`
+in `mod_02` is much greater than the variance of the coefficient
+estimate for `Weight_pounds` in `mod_05`.
+```{r}
+#| echo: true
+summary(mod_02)$coefficients[2,2]^2 / summary(mod_05)$coefficients[2,2]^2
+```
+When explanatory variables in a model are correlated,
+the variances of their associated coefficients are inflated.
+In fact,
+the "variance inflation factor (VIF)" is the ratio of the variance of the
+coefficient estimate in a model
+to the variance of the same coefficient estimate
+in a model where the explanatory variables are uncorrelated.
+We can use the function `vif` from the package `car`
+to get the variance inflation factors:
+```{r}
+#| echo: true
+vif(mod_02)
+```
+
+Different sources use different cutoffs for when a VIF is "too high",
+but you shouldn't blindly follow them.
+Sometimes you want correlated variables in a model.
+For example,
+interaction terms tend to be highly correlated with their component
+variables,
+but that doesn't mean we should exclude them.
+You have to use your judgment, and consider the goals of your analysis.
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
