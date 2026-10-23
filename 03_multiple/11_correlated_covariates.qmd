@@ -9,6 +9,9 @@ format: html
 #| warning: false
 # Load packages
 library(car)
+
+# Set random seed
+set.seed(11)
 ```
 
 ## Learning Objectives
@@ -160,26 +163,84 @@ variables,
 but that doesn't mean we should exclude them.
 You have to use your judgment, and consider the goals of your analysis.
 
+It's important to note that problems don't just arise when two
+variables are correlated with each other.
+It could be the case that no two variables in a data set are highly correlated,
+but one of the variables is close to being a linear combination of the others,
+and that will also inflate the variances.
+I'll simulate some data to illustrate this.
+
+```{r}
+n <- 1e2
+p <- 10
+X <- matrix(data = rnorm(n = n * p),
+            nrow = n)
+X <- cbind(X,
+           rowSums(X) + rnorm(n))
+Y <- rowSums(X) + rnorm(n,
+                        sd = 2)
+d_sim <- cbind(Y,X)
+colnames(d_sim) <- c("Y",
+                     paste0("X",
+                            1:ncol(X)))
+d_sim <- as.data.frame(d_sim)
+mod_06 <- lm(formula = Y ~ .,
+             data = d_sim)
+```
+
+In this model, I regressed `Y` on eleven explanatory variables.
+```{r}
+summary(mod_06)
+```
+
+The variable `X11` is not super highly correlated with any single other variable.
+```{r}
+#| echo: true
+cor(x = d_sim$X11,
+    y = d_sim[-c(1,12)])
+```
+Yet, the VIF for `X11` is very high.
+```{r}
+#| echo: true
+vif(mod_06)
+```
+
+This is because `X11` is nearly equal to the sum of the other ten variables.
+Because there are so many variables,
+`X11` is not that correlated with any individual variable.
+Yet, in the model,
+the variance of the coefficient associated with `X11` is far
+higher than it would be if the explanatory variables were uncorrelated.
 
 ## Problems
 
 ### Problem 1
 
-
+If the explanatory variables in a model are utterly uncorrelated,
+what should the VIFs be?
+(By the way, this might seem impossible,
+but you can perform principal components analysis
+on your explanatory variables to get uncorrelated variables
+that have the same information.)
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+If the explanatory variables are uncorrelated,
+their VIFs should be 1.
 
 :::
 
 ### Problem 2
 
-
+What will happen if I try to regress $Y$ on $X$ and $X^2$,
+where $X$ can only be 0 or 1?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+R won't provide a result for the $X^2$ term.
+Note that if $X = 0$ then $X^2 = 0^2 = 0 = X$
+and if $X = 1$ then $X^2 = 1^2 = 1 = X$,
+so $X^2 = X$.
 
 :::
 
