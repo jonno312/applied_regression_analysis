@@ -1,0 +1,175 @@
+---
+title: "Splines"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+# Load packages
+library(splines)
+
+# Set seed
+set.seed(12)
+```
+
+## Learning Objective
+
+Explain each of the following words in the context of splines:
+
+- Natural.
+- Cubic.
+- Spline.
+- Knot.
+
+
+## Lesson
+
+Suppose we have the following data:
+
+```{r}
+n <- 1e3
+x <- sort(runif(n = n,
+                min = 0,
+                max = 13))
+mu <- 2 * sin(x) + sin(2 * x) + exp(x / 5)
+y <- mu + rnorm(n)
+plot(x = x,
+     y = y)
+```
+
+Obviously, simple linear regression will not be a good fit for these data.
+
+```{r}
+mod_01 <- lm(y ~ x)
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_01$fitted.values,
+      col = "blue",
+      lwd = 3)
+```
+
+We may not do much better by incorporating polynomial terms.
+The blue line in this next plot is fit according to the model
+$$
+E(Y|X) = \beta_0 + \beta_1 X + \beta_1 X^2 + \beta_3 X^3 + \beta_4 X^4 \text{.}
+$$
+
+```{r}
+mod_02 <- lm(y ~ x + I(x^2) + I(x^3) + I(x^4))
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_02$fitted.values,
+      col = "blue",
+      lwd = 3)
+```
+
+A different approach that works pretty well is called natural cubic splines.
+The blue line in this next plot was fit using natural cubic splines.
+
+```{r}
+mod_03 <- lm(y ~ ns(x = x,
+                    df = 5))
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_03$fitted.values,
+      col = "blue",
+      lwd = 3)
+```
+
+How did R get the blue curve above?
+First, it split the horizontal axis into five sections.
+Seven is not the default;
+R used five sections because I set the parameter `df` in the function
+`ns` equal to 5. Here's the code I used:
+```
+mod_03 <- lm(y ~ ns(x = x,
+                    df = 5))
+```
+
+How did R choose the five sections?
+It used the quintiles, i.e., the values that split the data into
+five approximately equal bins.
+We can examine them using the function `quantile`:
+```{r}
+#| echo: true
+quantile(x = x,
+         probs = seq(from = 0,
+                     to = 1,
+                     by = 1 / 5))
+```
+The value under `0%` is the minimum value of `x`.
+The value under `100%` is the maximum value of `x`.
+The value under `20%` is the value such that 20% of the values of `x`
+fall below that point and `80% of the values of `x` fall above that point.
+The value under `40%` is the value such that 40% of the values of `x`
+fall below that point and `60% of the values of `x` fall above that point.
+And so forth.
+
+These quintiles have a special name in the vocabulary of splines.
+They're called "knots".
+You can also think of them as breakpoints.
+We can visualize them on the plot.
+```{r}
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_03$fitted.values,
+      col = "blue",
+      lwd = 3)
+abline(v = quantile(x = x,
+                    probs = seq(from = 0,
+                                to = 1,
+                                by = 1 / 5)),
+       lty = 2,
+       col = "lightgray")
+```
+
+After splitting up the data,
+R fit a separate model between consecutive pair of knots,
+i.e., within each bin.
+Because this is a cubic spline,
+the model within each bin was a cubic polynomial,
+i.e., $E(Y|X) = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3$.
+"Cubic" means the maximum exponent of the polynomial was 3.
+
+Part of the meaning of "spline" is that the function is piecewise,
+which we've already covered.
+The second part of the meaning of "spline" is that the function is smooth.
+This means that the pieces of the function are smoothly connected
+at the knots.
+As you can see in the plot,
+there aren't gaps in the blue curve,
+nor are there hard angles.
+This is by design.
+
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
