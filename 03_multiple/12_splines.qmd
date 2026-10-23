@@ -32,7 +32,10 @@ n <- 1e3
 x <- sort(runif(n = n,
                 min = 0,
                 max = 13))
-mu <- 2 * sin(x) + sin(2 * x) + exp(x / 5)
+get_mu <- function(x){
+  2 * sin(x) + sin(2 * x) + exp(x / 5)
+}
+mu <- get_mu(x)
 y <- mu + rnorm(n)
 plot(x = x,
      y = y)
@@ -70,8 +73,11 @@ A different approach that works pretty well is called natural cubic splines.
 The blue line in this next plot was fit using natural cubic splines.
 
 ```{r}
-mod_03 <- lm(y ~ ns(x = x,
-                    df = 5))
+d_sim <- data.frame(x = x,
+                    y = y)
+mod_03 <- lm(formula = y ~ ns(x = x,
+                              df = 5),
+             data = d_sim)
 plot(x = x,
      y = y)
 lines(x = x,
@@ -82,12 +88,13 @@ lines(x = x,
 
 How did R get the blue curve above?
 First, it split the horizontal axis into five sections.
-Seven is not the default;
+Five is not the default;
 R used five sections because I set the parameter `df` in the function
 `ns` equal to 5. Here's the code I used:
 ```
-mod_03 <- lm(y ~ ns(x = x,
-                    df = 5))
+mod_03 <- lm(formula = y ~ ns(x = x,
+                              df = 5),
+             data = d_sim)
 ```
 
 How did R choose the five sections?
@@ -96,18 +103,25 @@ five approximately equal bins.
 We can examine them using the function `quantile`:
 ```{r}
 #| echo: true
-quantile(x = x,
-         probs = seq(from = 0,
-                     to = 1,
-                     by = 1 / 5))
+quintiles <- quantile(x = x,
+                      probs = seq(from = 0,
+                                  to = 1,
+                                  by = 1 / 5))
+quintiles
 ```
-The value under `0%` is the minimum value of `x`.
-The value under `100%` is the maximum value of `x`.
-The value under `20%` is the value such that 20% of the values of `x`
-fall below that point and `80% of the values of `x` fall above that point.
-The value under `40%` is the value such that 40% of the values of `x`
-fall below that point and `60% of the values of `x` fall above that point.
-And so forth.
+
+- `r quintiles[1]` is the minimum value of `x`.
+- 20% of the values of `x` fall below `r quintiles[2]`
+and 80% of the values of `x` fall above `r quintiles[2]`.
+- 40% of the values of `x` fall below `r quintiles[3]`
+and 60% of the values of `x` fall above `r quintiles[3]`.
+- 60% of the values of `x` fall below `r quintiles[4]`
+and 40% of the values of `x` fall above `r quintiles[4]`.
+- 80% of the values of `x` fall below `r quintiles[5]`
+and 20% of the values of `x` fall above `r quintiles[5]`.
+- `r quintiles[6]` is the maximum value of `x`.
+
+
 
 These quintiles have a special name in the vocabulary of splines.
 They're called "knots".
@@ -128,8 +142,15 @@ abline(v = quantile(x = x,
        col = "lightgray")
 ```
 
+We can see what values were used for knots using this code:
+```{r}
+#| echo: true
+attr(x = terms(mod_03),
+     which = "predvars")
+```
+
 After splitting up the data,
-R fit a separate model between consecutive pair of knots,
+R fit a separate model between each consecutive pair of knots,
 i.e., within each bin.
 Because this is a cubic spline,
 the model within each bin was a cubic polynomial,
@@ -137,36 +158,154 @@ i.e., $E(Y|X) = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3$.
 "Cubic" means the maximum exponent of the polynomial was 3.
 
 Part of the meaning of "spline" is that the function is piecewise,
-which we've already covered.
+meaning there's a different model within each bin.
 The second part of the meaning of "spline" is that the function is smooth.
 This means that the pieces of the function are smoothly connected
 at the knots.
 As you can see in the plot,
 there aren't gaps in the blue curve,
 nor are there hard angles.
-This is by design.
+This is true for all splines.
 
+What makes this a "natural" cubic spline?
+Below the lowest knot and above the highest knot,
+the function is linear.
+```{r}
+x_new <- seq(from = -2,
+             to = 14,
+             length.out = 101)
+y_new <- get_mu(x_new) + rnorm(length(x_new))
+plot(x = x,
+     y = y,
+     xlim = c(-2,14),
+     ylim = c(min(c(y,
+                    y_new)),
+              max(c(y,
+                    y_new))))
+lines(x = x_new,
+      y = predict(object = mod_03,
+                  newdata = data.frame(x = x_new,
+                                       y = y_new)),
+      col = "blue",
+      lwd = 3)
+abline(v = quantile(x = x,
+                    probs = seq(from = 0,
+                                to = 1,
+                                by = 1 / 5)),
+       lty = 2,
+       col = "lightgray")
+```
 
+There you have it.
+Here's a summary of the new words:
+
+- A spline is a smooth, piecewise function.
+- The knots of a spline are the points that split the function into pieces.
+- A cubic spline uses cubic polynomials to model the data between knots.
+- A natural spline uses a linear function to model data beyond
+the minimum and maximum values observed.
+
+A few more things:
+
+- What value should you choose for `df`?
+A higher value will give better fit, but can also lead to overfitting.
+Here's a spline fit with `df = 10`.
+```{r}
+mod_04 <- lm(formula = y ~ ns(x = x,
+                              df = 10),
+             data = d_sim)
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_04$fitted.values,
+      col = "blue",
+      lwd = 3)
+```
+Here's a spline fit with `df = 3`.
+```{r}
+mod_05 <- lm(formula = y ~ ns(x = x,
+                              df = 3),
+             data = d_sim)
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_05$fitted.values,
+      col = "blue",
+      lwd = 3)
+```
+I think people often choose a relatively small value (5 or 6) for `df`
+and go on their way.
+An arguably better, but more involved approach, is to use cross-validation.
+
+- Instead of telling the function how many sections or bins you want,
+you can tell it where you want the knots.
+In this plot, I've put the knots at 1, 2, 3, 4, 5, and 9.
+(These are what you might call the "internal" knots,
+although that's not a technical term.
+Unless I change the argument `Boundary.knots`,
+there will still be knots at the minimum and maximum `x` values.)
+```{r}
+#| echo: true
+knots <- c(1:5,9)
+mod_06 <- lm(formula = y ~ ns(x = x,
+                              knots = knots),
+             data = d_sim)
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_06$fitted.values,
+      col = "blue",
+      lwd = 3)
+abline(v = c(min(x),
+             knots,
+             max(x)),
+       lty = 2,
+       col = "lightgray")
+```
+
+- It's generally not super useful to interpret the coefficient estimates
+or p-values of the splines.
+```{r}
+summary(mod_03)
+```
 
 ## Problems
 
 ### Problem 1
 
-
+True or false:
+Increasing `df` will decrease the size of the bins.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+True.
+With more bins but the same number of observations,
+you'll have fewer observations in each bin.
+So long as there aren't a bunch of observations with identical values
+for $X$,
+this will also decrease the width of the bins on the $X$-axis.
 
 :::
 
 ### Problem 2
 
+Is this blue curve a spline?
+Justify your answer.
 
+```{r}
+mod_07 <- lm(y ~ x * I(x < 1) * I(x < 6) * I(x < 7) * I(x < 11))
+plot(x = x,
+     y = y)
+lines(x = x,
+      y = mod_07$fitted.values,
+      col = "blue",
+      lwd = 3)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+No.
+Splines are smooth, and this blue curve is jagged.
 
 :::
 
