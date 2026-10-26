@@ -148,6 +148,25 @@ open each Quarto document.
 If you need to install any packages,
 RStudio should tell you.
 
+### Rendering the Full Textbook to PDF
+
+To render the whole textbook as a single PDF, you'll need LaTeX.
+If you don't already have it, run the following in the R console
+(you only have to do this once):
+
+```r
+install.packages(c("quarto", "tinytex"))
+tinytex::install_tinytex()
+```
+
+Then run `source("render_pdf.R")`.
+This takes several minutes, requires an internet connection,
+and creates `applied_regression_analysis.pdf`.
+To leave out the solutions, set `include_solutions <- FALSE`
+at the top of `render_pdf.R`.
+Problems in Appendix A are included only if their data files are saved in
+`A_problems_with_coding/`.
+
 ### Closing the Project
 
 When you're done using the textbook, you should close the project in R.
