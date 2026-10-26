@@ -52,3 +52,6 @@ rsconnect/
 *_files/
 *.html
 *.pdf
+
+# Full textbook rendered to HTML
+*_html/

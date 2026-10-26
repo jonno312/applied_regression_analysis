@@ -1,24 +1,36 @@
-# Render the entire textbook as a single PDF.
+# Render the entire textbook as a single PDF, or as a folder of HTML pages.
 #
 # The table of contents comes from the "Contents" section of README.md, so
-# a chapter is included in the PDF if and only if it's listed there.
+# a chapter is included in the book if and only if it's listed there.
 # Run this script from the project root, e.g., `source("render_pdf.R")`.
-
-library(quarto)
+#
+# The GitHub Action in .github/workflows/publish.yml also uses this script to
+# build the website and PDFs.
 
 # Settings
+book_format <- "pdf"  # or "html"
 include_solutions <- TRUE
+
+# The GitHub Action overrides the settings above with environment variables
+book_format <- Sys.getenv("BOOK_FORMAT", book_format)
+include_solutions <- as.logical(Sys.getenv("INCLUDE_SOLUTIONS",
+                                           include_solutions))
+pdf_links <- as.logical(Sys.getenv("BOOK_PDF_LINKS", "FALSE"))
+output_file <- "applied_regression_analysis"
 if(include_solutions) {
-  output_file <- "applied_regression_analysis_wsolutions.pdf"
+  output_file <- paste0(output_file, "_wsolutions")
+}
+if(book_format == "pdf") {
+  output_file <- paste0(output_file, ".pdf")
 } else {
-  output_file <- "applied_regression_analysis.pdf"
+  output_file <- paste0(output_file, "_html")
 }
 appendix_dir <- "A_problems_with_coding"
 
 # Find the Quarto command-line tool, falling back on the copy bundled with
 # RStudio if Quarto isn't on the PATH
 find_quarto <- function() {
-  if (!is.null(quarto_path())) {
+  if (!is.null(quarto::quarto_path())) {
     return(invisible(TRUE))
   }
   candidates <- c(
@@ -116,8 +128,8 @@ select_appendix_files <- function() {
   unname(files[keep])
 }
 
-# Make sure every package used in the R chunks is installed
-check_packages <- function(files) {
+# List the (non-base) packages used in the R chunks
+list_packages <- function(files) {
   code <- unlist(lapply(files, function(f) {
     lines <- readLines(f, warn = FALSE)
     fences <- grepl("^```", lines)
@@ -132,6 +144,12 @@ check_packages <- function(files) {
                                      perl = TRUE)))
   )
   pkgs <- sort(unique(pkgs))
+  setdiff(pkgs, rownames(installed.packages(priority = "base")))
+}
+
+# Make sure every package used in the R chunks is installed
+check_packages <- function(files) {
+  pkgs <- list_packages(files)
   missing <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
   if (length(missing) > 0) {
     stop("Please install the following packages first:\n  install.packages(",
@@ -140,7 +158,7 @@ check_packages <- function(files) {
 }
 
 # Write the front page of the book, using the README's description and
-# license sections
+# license sections (plus links to the PDFs, for the website)
 write_index <- function(path) {
   lines <- readLines("README.md", warn = FALSE)
   section <- function(name) {
@@ -149,7 +167,13 @@ write_index <- function(path) {
     end <- c(end[end > start], length(lines) + 1)[1]
     lines[(start + 1):(end - 1)]
   }
-  writeLines(c("# Preface {.unnumbered}", section("Description"),
+  downloads <- if (pdf_links) {
+    c("## Download {.unnumbered}", "",
+      "- [PDF without solutions](applied_regression_analysis.pdf)",
+      "- [PDF with solutions](applied_regression_analysis_wsolutions.pdf)",
+      "")
+  }
+  writeLines(c("# Preface {.unnumbered}", section("Description"), downloads,
                "## License {.unnumbered}", section("License")),
              file.path(path, "index.qmd"))
 }
@@ -167,19 +191,24 @@ write_solution_filter <- function(path) {
   ), file.path(path, "remove-solutions.lua"))
 }
 
-render_pdf <- function() {
+render_book <- function() {
   # Check prerequisites
   find_quarto()
-  check_latex()
+  if (book_format == "pdf") {
+    check_latex()
+  }
   parts <- parse_readme_contents()
   appendices <- select_appendix_files()
   chapters <- c(unlist(lapply(parts, `[[`, "chapters")), appendices)
   check_packages(chapters)
 
   # Copy the textbook into a temporary directory so that nothing in the
-  # project (other than the final PDF) is touched
-  build_dir <- tempfile("textbook_pdf_")
+  # project (other than the final output) is touched
+  # (resolving symlinks, since on macOS Quarto otherwise mangles the path
+  # when it copies the HTML pages' figures)
+  build_dir <- tempfile("textbook_")
   dir.create(build_dir)
+  build_dir <- normalizePath(build_dir)
   on.exit(unlink(build_dir, recursive = TRUE), add = TRUE)
   for (d in unique(dirname(chapters))) {
     file.copy(d, build_dir, recursive = TRUE)
@@ -195,14 +224,21 @@ render_pdf <- function() {
         list(part = p$part, chapters = as.list(p$chapters))
       }))
     ),
-    format = list(pdf = list(
+    execute = list(warning = FALSE, message = FALSE)
+  )
+  if (book_format == "pdf") {
+    config$format <- list(pdf = list(
       documentclass = "scrreprt",
       toc = TRUE,
       `toc-depth` = 1,
       `number-sections` = TRUE
-    )),
-    execute = list(warning = FALSE, message = FALSE)
-  )
+    ))
+  } else {
+    config$format <- list(html = list(
+      toc = TRUE,
+      `number-sections` = TRUE
+    ))
+  }
   if (length(appendices) > 0) {
     config$book$appendices <- as.list(appendices)
   }
@@ -213,15 +249,28 @@ render_pdf <- function() {
   yaml::write_yaml(config, file.path(build_dir, "_quarto.yml"),
                    handlers = list(logical = yaml::verbatim_logical))
 
-  # Render the book and copy the PDF back into the project
-  message("Rendering ", length(chapters), " chapters to PDF ",
-          "(this will take several minutes)...")
-  quarto_render(build_dir, output_format = "pdf", as_job = FALSE)
-  pdf <- list.files(file.path(build_dir, "_book"), pattern = "\\.pdf$",
-                    full.names = TRUE)
-  file.copy(pdf[1], output_file, overwrite = TRUE)
+  # Render the book and copy the output back into the project
+  message("Rendering ", length(chapters), " chapters to ",
+          toupper(book_format), " (this will take several minutes)...")
+  quarto::quarto_render(build_dir, output_format = book_format,
+                        as_job = FALSE)
+  book_dir <- file.path(build_dir, "_book")
+  if (book_format == "pdf") {
+    pdf <- list.files(book_dir, pattern = "\\.pdf$", full.names = TRUE)
+    file.copy(pdf[1], output_file, overwrite = TRUE)
+  } else {
+    # The HTML book is a folder of pages, so replace the old folder whole
+    unlink(output_file, recursive = TRUE)
+    dir.create(output_file)
+    file.copy(list.files(book_dir, full.names = TRUE), output_file,
+              recursive = TRUE)
+  }
   message("Done: ", normalizePath(output_file))
   invisible(output_file)
 }
 
-render_pdf()
+# The GitHub Action sets BOOK_SKIP_RENDER when it only needs the functions
+# above (e.g., to list the packages to install)
+if (!as.logical(Sys.getenv("BOOK_SKIP_RENDER", "FALSE"))) {
+  render_book()
+}
