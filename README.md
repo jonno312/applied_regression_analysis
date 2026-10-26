@@ -161,9 +161,10 @@ tinytex::install_tinytex()
 
 Then run `source("render_pdf.R")`.
 This takes several minutes, requires an internet connection,
-and creates `applied_regression_analysis.pdf`.
+and creates `applied_regression_analysis_wsolutions.pdf`.
 To leave out the solutions, set `include_solutions <- FALSE`
-at the top of `render_pdf.R`.
+at the top of `render_pdf.R`;
+this creates `applied_regression_analysis.pdf` instead.
 Problems in Appendix A are included only if their data files are saved in
 `A_problems_with_coding/`.
 
