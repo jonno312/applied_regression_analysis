@@ -150,7 +150,7 @@ plot(x = d$RH,
 It's hard to detect a relationship between the two variables.
 This might be easier if we log the outcome.
 However, we can't take the log of zero,
-and 4.7% of the observations have zero as the outcome.
+and 47.8% of the observations have zero as the outcome.
 ```{r}
 #| echo: true
 sum(d$Area == 0)
