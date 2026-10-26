@@ -6,6 +6,16 @@ This is a (bare-bones, first-draft) textbook on applied regression analysis.
 It's a "Just the facts, ma'am"-style treatment of the material that focuses
 more on concepts and less on math.
 
+## Reading Online
+
+You can read the textbook at
+<https://jonno312.github.io/applied_regression_analysis/>,
+or download it as a PDF
+([without solutions](https://jonno312.github.io/applied_regression_analysis/applied_regression_analysis.pdf) or
+[with solutions](https://jonno312.github.io/applied_regression_analysis/applied_regression_analysis_wsolutions.pdf)).
+These are updated automatically whenever the textbook changes.
+To run the code yourself, see "Using the Textbook" below.
+
 ## Contents
 
 1. Prerequisites
@@ -165,6 +175,10 @@ and creates `applied_regression_analysis_wsolutions.pdf`.
 To leave out the solutions, set `include_solutions <- FALSE`
 at the top of `render_pdf.R`;
 this creates `applied_regression_analysis.pdf` instead.
+To get the textbook as web pages instead of a PDF, set
+`book_format <- "html"`; you don't need LaTeX for this.
+This creates a folder (e.g., `applied_regression_analysis_wsolutions_html/`);
+open `index.html` inside it in your web browser.
 Problems in Appendix A are included only if their data files are saved in
 `A_problems_with_coding/`.
 

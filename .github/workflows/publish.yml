@@ -1,0 +1,97 @@
+# Build the textbook (a website plus two PDFs) and publish it on GitHub Pages
+# whenever main changes.
+#
+# One-time setup: in the repo's Settings > Pages, set "Source" to
+# "GitHub Actions". To publish without pushing, click "Run workflow" on the
+# Actions tab.
+#
+# Pull requests into main run the build but don't publish, so you can check
+# that everything renders (the built site is attached to the run as the
+# "github-pages" artifact).
+
+name: Publish textbook
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - ".gitignore"
+      - "LICENSE"
+      - "*.Rproj"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Run one build at a time, but don't cancel a deployment that's under way
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Uses the same code as render_pdf.R's check, so new packages in the
+      # chapters get installed without updating this file
+      - name: List the R packages the chapters use
+        id: packages
+        env:
+          BOOK_SKIP_RENDER: "TRUE"
+        run: |
+          Rscript \
+            -e 'source("render_pdf.R")' \
+            -e 'parts <- parse_readme_contents()' \
+            -e 'files <- c(unlist(lapply(parts, "[[", "chapters")), select_appendix_files())' \
+            -e 'cat("list=", paste0("any::", list_packages(files), collapse = " "), "\n", sep = "")' \
+            >> "$GITHUB_OUTPUT"
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::quarto
+            any::yaml
+            any::knitr
+            any::rmarkdown
+            any::tinytex
+            ${{ steps.packages.outputs.list }}
+
+      - uses: r-lib/actions/setup-tinytex@v2
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render the website and PDFs
+        run: |
+          BOOK_FORMAT=html BOOK_PDF_LINKS=TRUE Rscript render_pdf.R
+          BOOK_FORMAT=pdf Rscript render_pdf.R
+          BOOK_FORMAT=pdf INCLUDE_SOLUTIONS=FALSE Rscript render_pdf.R
+          cp applied_regression_analysis.pdf \
+             applied_regression_analysis_wsolutions.pdf \
+             applied_regression_analysis_wsolutions_html/
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: applied_regression_analysis_wsolutions_html
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
