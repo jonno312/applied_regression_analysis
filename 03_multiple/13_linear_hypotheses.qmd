@@ -1,0 +1,135 @@
+---
+title: "Linear Hypotheses"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(car)
+```
+
+## Learning Objectives
+
+- Implement a linear hypothesis test.
+- Interpret the results of a linear hypothesis test.
+
+
+## Lesson
+
+In the regression below,
+each observation corresponds to a person receiving funds from
+the California Department of Developmental Services (DDS).
+I used annual expenditure (in dollars) as the outcome
+and age cohort (0-5, 6-12, 13-17, 18-21, 22-50, 51 and above)
+and gender (male, female) as explanatory variables.
+
+```{r}
+d_dds <- Lock5Data::DDS
+mod_01 <- lm(formula = Expenditures ~ AgeCohort + Gender,
+             data = d_dds)
+summary(mod_01)
+```
+
+We can see from the results that there is not a statistically significant
+difference in expenditures between people age 6 to 12
+and people age 0 to 5,
+holding gender constant,
+but there is a statistically significant difference in expenditures
+between people age 13 to 17 and people age 0 to 5,
+holding gender constant.
+Is there a statistically significant difference in expenditures
+between people age 6 to 12
+and people age 13 to 17?
+We've seen that we can answer this question by changing the reference
+group for the regression,
+but there's another, easier way.
+We can use the function `linearHypothesis` in the package `car`.
+
+```{r}
+#| echo: true
+linearHypothesis(model = mod_01,
+                 hypothesis.matrix = "AgeCohort6-12 = AgeCohort13-17")
+```
+The null hypothesis in the code above is that the coefficient
+for `AgeCohort6-12` is equal to the coefficient for `AgeCohort13-17`.
+Because the p-value is tiny,
+we can safely reject that null hypothesis and conclude
+that there is a statistically significant difference in expenditures
+between these two age cohorts,
+holding gender constant.
+
+Our linear hypothesis can get more complex,
+but they can be tricky to interpret.
+For example,
+we could test if the sum of the coefficients for
+`AgeCohort6-12`, `AgeCohort13-17`, `AgeCohort18-21`, and `AgeCohort22-50`
+is equivalent to the coefficient for `AgeCohort51+`.
+```{r}
+#| echo: true
+linearHypothesis(model = mod_01,
+                 hypothesis.matrix = "AgeCohort6-12 + AgeCohort13-17 + AgeCohort18-21 + AgeCohort22-50 = AgeCohort51+")
+```
+
+The p-value is large.
+This *does not* mean that expenditures for people age 51+ are not significantly
+different from the sum of the expenditures for people in the four
+age cohorts on the left-hand side of the equation.
+This is because the coefficients represent deviations from the reference group.
+If you wanted to get the total expenditures in each cohort,
+you'd have to add back the expenditures for the reference group
+*four times* on the left hand side,
+but only once on the right-hand side.
+This is why you should be careful with linear hypotheses.
+
+
+## Problems
+
+### Problem 1
+
+Let's return to the ICU admissions data.
+The outcome is heart rate
+(in beats per minute)
+and the explanatory variables are
+age minus 20 (in years), sex (male or female), admission type (elective or emergency),
+and consciousness (conscious, deep stupor, or coma).
+The participants were 200 patients admitted to an adult
+intensive care unit (ICU).
+```{r}
+d <- Lock5Data::ICUAdmissions
+# sum(complete.cases(d))
+d$sex <- "Male"
+d$sex[d$Sex == 1] <- "Female"
+d$type <- "Elective"
+d$type[d$Type == 1] <- "Emergency"
+d$consciousness <- "Conscious"
+d$age_20 <- d$Age - 20
+d$consciousness[d$Consciousness == 1] <- "Deep Stupor"
+d$consciousness[d$Consciousness == 2] <- "Coma"
+mod_02 <- lm(formula = HeartRate ~ age_20 + sex + type + consciousness,
+             data = d)
+summary(mod_02)
+```
+
+Interpret the results of this hypothesis test:
+
+```{r}
+#| echo: true
+linearHypothesis(model = mod_02,
+                 hypothesis.matrix = "consciousnessConscious = consciousnessDeep Stupor")
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+There is not a statistically significant difference in heart rate
+between people who are conscious and people who are in a deep stupor,
+holding all else constant.
+
+:::
+
+
+
+
+
+
