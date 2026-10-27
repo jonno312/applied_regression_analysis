@@ -69,6 +69,7 @@ more on concepts and less on math.
     10. [Interaction Between One Binary Variable and One Continuous Variable](03_multiple/10_interaction_binary_continuous.qmd)
     11. [Correlated Covariates](03_multiple/11_correlated_covariates.qmd)
     12. [Splines](03_multiple/12_splines.qmd)
+    13. [Linear Hypotheses](03_multiple/13_linear_hypotheses.qmd)
 4. Model Performance
     1. [Overfitting](04_performance/01_overfitting.qmd)
     2. [R-Squared](04_performance/02_r2.qmd)
