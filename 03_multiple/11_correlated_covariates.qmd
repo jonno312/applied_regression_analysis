@@ -244,6 +244,62 @@ so $X^2 = X$.
 
 :::
 
+### Problem 3
+
+I simulated more data.
+`X1` through `X10` are completely independent of each other.
+`X11` is equal to the sum of `X1` through `X4`,
+plus some random error.
+`Y` is equal to the sum of `X1` through `X11`,
+plus some random error.
+Below are the results of regressing `Y` on `X1` through `X11`.
+
+```{r}
+X <- matrix(data = rnorm(n = n * p),
+            nrow = n)
+X <- cbind(X,
+           rowSums(X[ ,1:4]) + rnorm(n))
+Y <- rowSums(X) + rnorm(n,
+                        sd = 2)
+d_sim <- cbind(Y,X)
+colnames(d_sim) <- c("Y",
+                     paste0("X",
+                            1:ncol(X)))
+d_sim <- as.data.frame(d_sim)
+mod_07 <- lm(formula = Y ~ .,
+             data = d_sim)
+summary(mod_07)
+```
+
+What do you predict will be the values of the pairwise correlations
+between `X11` and `X1` through `X10`?
+What do you predict will be the values for the VIFs?
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+```{r}
+#| echo: true
+cor(x = d_sim$X11,
+    y = d_sim[-c(1,12)])
+```
+
+We see above that `X11` is not correlated with `X5` through `X10`,
+but has fairly high correlations with `X1` through `X4`.
+
+```{r}
+#| echo: true
+vif(mod_07)
+```
+
+We see above that `X5` through `X10` have low VIFs,
+`X1` through `X4` have slightly elevated VIFs,
+and `X11` has a high VIF
+(though not as high as when it was nearly equal to the sum
+of all the other covariates).
+
+:::
+
 
 
 
