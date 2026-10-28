@@ -8,6 +8,7 @@ format: html
 ```{r}
 # Load packages
 library(splines)
+library(scales)
 
 # Set seed
 set.seed(12)
@@ -308,6 +309,205 @@ No.
 Splines are smooth, and this blue curve is jagged.
 
 :::
+
+### Problem 3
+
+The subparts of this problem refer to this figure:
+
+```{r}
+# Parameters
+min_val <- -2
+max_val <- 1
+sigma <- 0.25
+
+# Generate data
+x <- runif(n = n,
+           min = min_val,
+           max = max_val)
+epsilon <- rnorm(n = n,
+                 sd = sigma)
+f <- function(x){
+  return(x^3 + x^2 - x)
+}
+y <- f(x) + epsilon
+
+# Plot
+plot(x = x,
+     y = y,
+     col = alpha(colour = "black",
+                 alpha = 0.3),
+     pch = 19)
+```
+
+You will be asked to draw some graphs,
+so please grab a writing implement and some scratch paper.
+
+
+#### Part (a)
+
+
+In the plot above, the relationship between $x$ and $y$
+is not linear.
+However, we could model the relationship with a piecewise linear function.
+To create a piecewise linear function,
+you split the horizontal axis into pieces
+and fit a different linear function (i.e., a different straight line)
+for each piece.
+On your scratch paper, draw a piecewise linear function
+to represent the relationship between $x$ and $y$.
+Please connect each of your straight lines;
+there shouldn't be any gaps.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+```{r}
+x0 <- c(-2,
+        -4 / 3,
+        -2 / 3,
+        1 / 3)
+y0 <- f(x0)
+x1 <- c(x0[-1],
+        1)
+y1 <- f(x1)
+plot(x = x,
+     y = y,
+     col = alpha(colour = "black",
+                 alpha = 0.3))
+segments(x0 = x0,
+         y0 = y0,
+         x1 = x1,
+         y1 = y1,
+         col = "red",
+         lwd = 3)
+```
+
+
+Your figure need not look exactly like mine.
+You could've used more, fewer, or different line segments.
+
+:::
+
+#### Part (b)
+
+Draw a plot (it can be an approximate sketch)
+of the slopes of your piecewise linear function.
+The horizontal axis should be $x$
+and the vertical axis should be the slope.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+```{r}
+slopes <- (y1 - y0) / (x1 - x0)
+plot(x = range(x0,x1),
+     y = range(slopes),
+     type = "n",
+     xlab = "x",
+     ylab = "Slope")
+segments(x0 = x0,
+         y0 = slopes,
+         x1 = x1,
+         y1 = slopes)
+```
+
+:::
+
+#### Part (c)
+
+
+One issue with a piecewise linear function is that it's not smooth;
+it has corners where the function abruptly changes direction.
+Draw a smooth function to represent
+the relationship between $x$ and $y$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+```{r}
+plot(x = x,
+     y = y,
+     col = alpha(colour = "black",
+                 alpha = 0.3))
+curve(expr = f,
+      add = TRUE,
+      col = "red",
+      lwd = 3)
+```
+
+
+Your figure need not look exactly like mine.
+
+:::
+
+#### Part (d)
+
+Draw a plot (it can be an approximate sketch)
+of the slope (derivative) of your smooth function.
+The horizontal axis should be $x$
+and the vertical axis should be the slope (derivative).
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+```{r}
+# Smooth function derivative
+f_prime <- function(x){
+  return(3 * x^2 + 2 * x - 1)
+}
+curve(expr = f_prime,
+      from = -2,
+      to = 1,
+      xlab = "x",
+      ylab = "Slope")
+```
+
+What was the point of all this?
+
+
+- It is not uncommon for an explanatory variable to have a non-linear relationship
+with the outcome,
+and/or for the relationship between the variable and the outcome to be different
+for different values of the variable.
+One approach to this problem is to use a piecewise linear function.
+- Unfortunately, piecewise linear functions are not smooth.
+The function in Part (a) has hard corners
+where it abruptly changes direction.
+These corners correspond to abrupt changes in slope.
+In other words, a non-smooth function has a non-continuous derivative.
+(A continuous function is one that you can draw without lifting your pencil up from the paper.)
+A smooth function, like the one in Part (c),
+has a continuous derivative,
+like the one in Part (d).
+- Splines combine piecewise functions and smoothness.
+The most common type is cubic splines.
+When you use cubic splines, you split the horizontal axis into pieces;
+fit a different cubic polynomial (i.e., $y = ax^3 + bx^2 + cx + d$) to each piece;
+make sure the polynomials connect across the pieces;
+and make sure that the first and second derivatives of the function as a whole
+is continuous.
+- In practice, you need to decide on the number of pieces,
+but not where they start or end.
+In the `ns` function from the `splines` package,
+you increase the number of pieces by increasing the `df` argument.
+You can change the breakpoints between the pieces if you want,
+by using the `knots` parameter.
+
+        
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
