@@ -264,11 +264,28 @@ but I don't know exactly what time he finished his run.
 
 ### Problem 2
 
+In the 1963 film
+[It's a Mad, Mad, Mad, Mad World](https://www.criterion.com/films/28579-it-s-a-mad-mad-mad-mad-world),
+a group of motorists stop to help a car crash victim who,
+with his dying breath,
+tells them he has buried \$350,000 (about \$3.9 million in 2026)
+in Santa Rosita State Park under a big W.
+The motorists then race to the park so they can claim the money.
+Unbeknownst to them,
+a police officer named Captain Culpeper has the motorists shadowed;
+the money was stolen, and the captain wants to close the case
+before retiring.
 
+Suppose (contrary to what actually happens in the film),
+that the canniest motorists not only manage to shake the police officers
+following them, but also arrive earliest at the big W.
+Thus, the police do not know their arrival times.
+Is this an example of independent censoring?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+No, because the censored times are shorter
+than the observed observed times.
 
 :::
 
