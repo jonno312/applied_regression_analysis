@@ -17,17 +17,248 @@ Define, use, and interpret the following terms:
 
 ## Lesson
 
+It is very common in medical research for the outcome to be the time
+from some origin to some event.
+Here are some examples:
+
+- Time from diagnosis to death.
+- Time from treatment onset to recovery.
+- Time from treatment completion to disease progression.
+
+When time-to-event is the outcome,
+it's very common to have partial information about the outcome.
+There are a few ways this information can be missing,
+as described in the following subsections.
+
+### Right Censoring
+
+The most common version of partial information for time-to-event data
+is "right censoring".
+Right censoring occurs when you know the event happened after
+some amount of time, but you don't know exactly when.
+If $T$ is the time to event,
+you know $T > t$, but not the exact value of $T$.
+Right censoring is depicted in this figure:
+
+```{r}
+plot(x = NULL,
+     ylab = "",
+     xlab = "Time since [time origin] in [units]",
+     xlim = c(0,3),
+     ylim = c(0,2),
+     yaxt = "n",
+     main = "Right Censoring")
+points(x = 0,
+       y = 1,
+       pch = "|")
+segments(x0 = c(1  ,1  ,2  ,2  ),
+         y0 = c(0.5,1.5,1.5,0.5),
+         x1 = c(1  ,2  ,2  ,1  ),
+         y1 = c(1.5,1.5,0.5,0.5))
+text(x = 1.5,
+     y = 1.75,
+     labels = "Window of observation")
+points(x = 2.5,
+       y = 1,
+       pch = 4)
+segments(x0 = 0,
+         y0 = 1,
+         x1 = 2.5,
+         y1 = 1)
+```
+
+Here are a couple examples of right censoring:
+
+- You recruit people into a study and follow them for five years.
+If a participant doesn't have the event before the five years are up,
+you know their event occurred after the study ended,
+but you don't know exactly when.
+- If someone in your study moves away and ceases participating,
+you know their event occurred after this rupture,
+but not exactly when.
+
+
+### Left Censoring
+
+As you might be able to guess,
+left censoring occurs when you know the event occurred before some time,
+but not exactly when.
+If $T$ is the time to the event,
+you know $T < t$, but not the exact value of $T$.
+Left censoring is depicted in the following figure:
+
+```{r}
+plot(x = NULL,
+     ylab = "",
+     xlab = "Time since [time origin] in [units]",
+     xlim = c(0,3),
+     ylim = c(0,2),
+     yaxt = "n",
+     main = "Left Censoring")
+points(x = 0,
+       y = 1,
+       pch = "|")
+segments(x0 = c(1  ,1  ,2  ,2  ),
+         y0 = c(0.5,1.5,1.5,0.5),
+         x1 = c(1  ,2  ,2  ,1  ),
+         y1 = c(1.5,1.5,0.5,0.5))
+text(x = 1.5,
+     y = 1.75,
+     labels = "Window of observation")
+points(x = 0.5,
+       y = 1,
+       pch = 4)
+segments(x0 = 0,
+         y0 = 1,
+         x1 = 0.5,
+         y1 = 1)
+```
+
+An example of left censoring is when a patient enters your clinic
+with a rash,
+but they don't remember exactly when it started.
+You know the rash appeared before their clinic visit,
+but not exactly when.
+
+### Interval Censoring
+
+Interval censoring occurs when you know the event
+happened between two time-points,
+but not exactly when.
+If $T$ is the time to the event,
+interval censoring occurs when you know $t_1 < T < t_2$,
+but not the exact value of $T$.
+Interval censoring is depicted in the following figure:
+
+```{r}
+plot(x = NULL,
+     ylab = "",
+     xlab = "Time since [time origin] in [units]",
+     xlim = c(0,3),
+     ylim = c(0,2),
+     yaxt = "n",
+     main = "Interval Censoring")
+points(x = 0,
+       y = 1,
+       pch = "|")
+segments(x0 = c(0.5,0.5,1  ,1  ),
+         y0 = c(0.5,1.5,1.5,0.5),
+         x1 = c(0.5,1  ,1  ,0.5),
+         y1 = c(1.5,1.5,0.5,0.5))
+text(x = 0.75,
+     y = 1.75,
+     labels = "Window of observation")
+segments(x0 = c(2  ,2  ,2.5,2.5),
+         y0 = c(0.5,1.5,1.5,0.5),
+         x1 = c(2  ,2.5,2.5,2  ),
+         y1 = c(1.5,1.5,0.5,0.5))
+text(x = 2.25,
+     y = 1.75,
+     labels = "Window of observation")
+points(x = 1.5,
+       y = 1,
+       pch = 4)
+segments(x0 = 0,
+         y0 = 1,
+         x1 = 1.5,
+         y1 = 1)
+```
+
+Interval censoring might happen if you check in with participant in a study
+at regular intervals.
+If someone has not had the event by check-in \#3,
+but they have had the event by check-in \#4,
+you know the event occurred between those two time-points.
+
+### No Censoring
+
+Just for completeness,
+the following figure depicts no censoring:
+
+```{r}
+plot(x = NULL,
+     ylab = "",
+     xlab = "Time since [time origin] in [units]",
+     xlim = c(0,3),
+     ylim = c(0,2),
+     yaxt = "n",
+     main = "No Censoring")
+points(x = 0,
+       y = 1,
+       pch = "|")
+segments(x0 = c(1  ,1  ,2  ,2  ),
+         y0 = c(0.5,1.5,1.5,0.5),
+         x1 = c(1  ,2  ,2  ,1  ),
+         y1 = c(1.5,1.5,0.5,0.5))
+text(x = 1.5,
+     y = 1.75,
+     labels = "Window of observation")
+points(x = 1.5,
+       y = 1,
+       pch = 4)
+segments(x0 = 0,
+         y0 = 1,
+         x1 = 1.5,
+         y1 = 1)
+```
+
+
+### Independent Censoring
+
+The following definition of independent censoring is taken from
+page 38 of
+[Survival Analysis: A Self-Learning Text (3rd ed.)](https://doi.org/10.1007/978-1-4419-6646-9),
+by Kleinbaum and Klein (author's emphasis):
+
+> Independent censoring essentially means that *within any subgroup of interest, the subjects who are censored at time t should be representative of all the subjects in that subgroup who remained at risk at time t with respect to their survival experience*.
+
+Kleinbaum and Klein provide the following example:
+Suppose you start a study at time 0 with 100 participants.
+At the three year mark,
+twenty participants have experienced the event.
+This leaves 80 participants who have not experienced the event.
+
+Suppose that 40 of the remaining participants are censored
+at the three year mark,
+and 40 continue with the study.
+Independent censoring means that the distribution in times to event
+should be the same among the 40 who were censored and the 40 who were not
+censored.
+So, if we check in again at the five year mark,
+we would expect approximately the same number of events
+among the 40 who were censored and the 40 who were not censored.
+
+I hope you can see why independent censoring would be important
+for analyzing time-to-event data.
+We can only draw conclusions based on the values we observe.
+If the people who remain in our study are fundamentally different
+from the people who drop out,
+we will draw conclusions that will only be true for the subset of people
+who remained in the study.
+If the people who remain in our study are essentially the same
+as the people who drop out,
+any conclusions based on the people who remain
+will also apply to the people who dropped out.
+
 
 
 ## Problems
 
 ### Problem 1
 
-
+Suppose my dad and I leave the house at the same time
+to go for a run.
+We run exactly the same distance,
+but on different routes.
+When I return to the house,
+my dad has already returned home.
+What kind of censoring has occurred for my dad's run time?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+Left censoring.
+I know he took less time than I did,
+but I don't know exactly what time he finished his run.
 
 :::
 
