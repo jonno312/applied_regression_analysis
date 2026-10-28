@@ -212,6 +212,182 @@ This is really something you should only consider if your outcome is binary.
 
 :::
 
+### Problem 3
+
+
+You work in Research and Development at Goblins, Inc.
+You are testing the efficacy of a new potion on humans.
+For each of $n$ human subjects,
+you have measurements for the following variables:
+
+- `potion`: The number of teaspoons (tsp) of potion
+the human drank.
+If this is zero,
+that means the human drank distilled water as a control.
+- `warts`: The number of warts the human grew after
+drinking the potion.
+- `green`: The amount of green in the human's skin
+after drinking the potion.
+This is a continuous but unitless scale
+ranging from -50 to +50.
+- `witch`: This equals 1 if the human turned into a witch
+after drinking the potion
+and it equals 0 if the human did not turn into a witch.
+- `toad`: This equals 1 if the human turned into a toad
+after drinking the potion
+and it equals 0 if the human did not turn into a toad.
+
+You have run four regression models.
+These are the results:
+
+```{r}
+# Set seed
+set.seed(8)
+
+# Parameters
+n_fourth <- 25e4
+n <- n_fourth * 4
+a_toad <- 0
+b_toad <- 0.15
+a_witch <- log(0.05)
+b_witch <- log(2)
+a_green <- a_witch
+b_green <- b_witch
+a_warts <- a_toad
+b_warts <- b_toad
+
+# Generate data
+potion <- rep(x = 0:3,
+              each = n_fourth)
+green <- a_green + b_green * potion + rnorm(n)
+toad <- rbinom(n = n,
+               size = 1,
+               prob = a_toad + b_toad * potion)
+witch <- rbinom(n = n,
+                size = 1,
+                prob = plogis(a_witch + b_witch * potion))
+warts <- rpois(n = n,
+               lambda = exp(a_warts + b_warts * potion))
+
+# Run regression
+mod_warts <- glm(formula = warts ~ potion,
+                 family = poisson)
+mod_green <- lm(formula = green ~ potion)
+mod_witch <- glm(formula = witch ~ potion,
+                 family = binomial)
+mod_toad <- lm(formula = toad ~ potion)
+
+# Results
+summary(mod_warts)
+summary(mod_green)
+summary(mod_witch)
+summary(mod_toad)
+```
+
+
+
+Please answer the following questions.
+
+#### Part (a)
+
+For which of the following models do you need to exponentiate the coefficients
+to get interpretable values?
+Select all that apply.
+
+
+(a) `mod_warts`
+(b) `mod_green`
+(c) `mod_witch`
+(d) `mod_toad`
+(e) None of the above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(a) and (c)
+
+:::
+
+#### Part (b)
+
+For which of the following models do the raw coefficients represent
+risks and/or risk differences?
+Select all that apply.
+
+(a) `mod_warts`
+(b) `mod_green`
+(c) `mod_witch`
+(d) `mod_toad`
+(e) None of the above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(d)
+:::
+
+#### Part (c)
+
+For which of the following models do the exponentiated coefficients represent
+odds and/or odds ratios?
+Select all that apply.
+
+(a) `mod_warts`
+(b) `mod_green`
+(c) `mod_witch`
+(d) `mod_toad`
+(e) None of the above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(c)
+
+:::
+
+#### Part (d)
+
+Which of the following models could produce impossible fitted values
+for humans drinking ten teaspoons of potion?
+Select all that apply.
+
+(a) `mod_warts`
+(b) `mod_green`
+(c) `mod_witch`
+(d) `mod_toad`
+(e) None of the above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(d)
+
+:::
+
+#### Part (e)
+
+Which of the following models fall into the category
+of generalized linear models (GLMs)?
+Select all that apply.
+
+(a) `mod_warts`
+(b) `mod_green`
+(c) `mod_witch`
+(d) `mod_toad`
+(e) None of the above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(a), (b), (c), and (d)
+
+:::
+
+
+
+
+
+
 
 
 
