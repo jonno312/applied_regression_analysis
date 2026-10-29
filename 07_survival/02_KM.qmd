@@ -301,21 +301,31 @@ ggsurvfit(survfit2(Surv(time = time,
 
 ### Problem 1
 
-
+In the example above, what is the probability of surviving past 2.5 years?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+It's about 0.75,
+because that's the (approximate) height of the Kaplan-Meier curve
+at 2.5 years since diagnosis.
 
 :::
 
 ### Problem 2
 
-
+Why doesn't the Kaplan-Meier curve above reach zero?
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+In order for the Kaplan-Meier curve to reach zero,
+there must be some $k$ where $\hat{P}(T > t_k | T \ge t_k) = 0$.
+For this to happen,
+$\hat{P}(T = t_k|T \ge t_k)$ must be 1,
+meaning $D_k = N_k$.
+In other words, there must be a time when everyone who is still at risk dies.
+The fact that the Kaplan-Meier curve above doesn't reach zero
+means that at the time of the last death,
+not everybody at risk died.
 
 :::
 
