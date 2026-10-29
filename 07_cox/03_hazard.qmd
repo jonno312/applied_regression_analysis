@@ -1,0 +1,163 @@
+---
+title: "Hazard Rate"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objectives
+
+- Define, use, and interpret discrete hazard.
+- Define, use, and interpret hazard rate.
+
+
+## Lesson
+
+The hazard rate is a very important concept in survival analysis,
+but it's also very difficult to define and interpret.
+So, we're going to start with something easier,
+which I will call the discrete hazard or discrete time hazard.
+
+### Discrete Hazard
+
+If $T$ is the time to an event,
+and time is measured in discrete units,
+then the discrete hazard is $P(T  = t| T \ge t)$.
+In words, the discrete hazard at time $t$ is the probability that
+the event occurs at time $t$,
+given that it has not occurred before time $t$.
+
+What do I mean by "discrete time"?
+I mean that time is measured in units that don't allow fractions.
+For example,
+imagine time is measured in days,
+where you can't have any partial days.
+Or, imagine time is measured in the number of trials,
+like the number of times you turn on a light before the bulb dies.
+
+Note that the discrete hazard is a probability,
+but it's a conditional probability.
+In general, $P(T  = t| T \ge t) \ne P(T = t)$.
+To illustrate this, suppose $T$ is time from birth to death,
+measured in whole years.
+$P(T = 100)$ is probably pretty low;
+very few people survive to age 100.
+In contrast, $P(T = 100|T \ge 100)$ is probably relatively high.
+Among all 100-year-olds, a relatively high percentage
+die before turning 101.
+
+### Hazard Rate
+
+Now suppose time is measured as a continuous variable,
+so it can take any positive decimal value.
+For any value $t$, $P(T = t) = 0$.
+So, $P(T  = t| T \ge t) = 0$,
+which is not very useful to us.
+So, we have to use limits.
+
+Consider the quantity
+$$
+\frac{P\left(t \le T < t + \delta \middle| T \ge t\right)}{\delta} \text{.}
+$$
+When $\delta = 1$, we essentially have our discrete time hazard:
+$$
+\begin{align*}
+\frac{P\left(t \le T < t + \delta \middle| T \ge t\right)}{\delta} &= \frac{P\left(t \le T < t + 1 \middle| T \ge t\right)}{1} \\
+&= P\left(t \le T < t + 1 \middle| T \ge t\right) \text{.} \\
+\end{align*}
+$$
+
+To get a hazard rate,
+we're going to make $\delta$ smaller and smaller.
+$$
+\begin{align*}
+\frac{P\left(t \le T < t + 1 \middle| T \ge t\right)}{1} &= P\left(t \le T < t + 1 \middle| T \ge t\right) \\
+\frac{P\left(t \le T < t + \frac{1}{2} \middle| T \ge t\right)}{\frac{1}{2}} &= 2P\left(t \le T < t + \frac{1}{2} \middle| T \ge t\right) \\
+\frac{P\left(t \le T < t + \frac{1}{3} \middle| T \ge t\right)}{\frac{1}{3}} &= 3P\left(t \le T < t + \frac{1}{3} \middle| T \ge t\right) \\
+\frac{P\left(t \le T < t + \frac{1}{4} \middle| T \ge t\right)}{\frac{1}{4}} &= 4P\left(t \le T < t + \frac{1}{4} \middle| T \ge t\right) \\
+\frac{P\left(t \le T < t + \frac{1}{5} \middle| T \ge t\right)}{\frac{1}{5}} &= 5P\left(t \le T < t + \frac{1}{5} \middle| T \ge t\right) \\
+\end{align*}
+$$
+
+As $\delta$ gets smaller, $P\left(t \le T < t + \delta \middle| T \ge t\right)$
+gets smaller, too,
+but $\frac{1}{\delta}$ gets bigger.
+So, by dividing by $\delta$, we're balancing out the decrease in
+$P\left(t \le T < t + \delta \middle| T \ge t\right)$.
+
+We define the hazard rate to be
+$$
+h(t) = \lim_{\delta\downarrow 0} \frac{P\left(t \le T < t + \delta \middle| T \ge t\right)}{\delta} \text{.}
+$$
+This is also
+$$
+\begin{align*}
+h(t) &= \lim_{\delta\downarrow 0} \frac{P\left(t \le T < t + \delta \middle| T \ge t\right)}{\delta} \\
+&= \lim_{\delta\downarrow 0} \frac{P\left(t \le T < t + \delta , T \ge t\right)}{\delta P\left( T \ge t\right)} \\
+&= \lim_{\delta\downarrow 0} \frac{P\left(t \le T < t + \delta \right)}{\delta P\left( T \ge t\right)} \\
+&= \frac{1}{P\left( T \ge t\right)} \lim_{\delta\downarrow 0} \frac{P\left(t \le T < t + \delta \right)}{\delta } \\
+&= \frac{1}{P\left( T \ge t\right)} f(t) \\
+&= \frac{f(t)}{P\left( T \ge t\right)}  \\
+&= \frac{f(t)}{P\left( T > t\right)} \text{.} \\
+\end{align*}
+$$
+The numerator is the probability density function or PDF.
+The denominator is the survival function.
+
+The hazard rate is, unfortunately, very difficult to interpret.
+It's a conditional probability *per unit time*.
+It's like a PDF in that we arrive at it via a limit,
+but it's unlike a PDF in that we don't get a probability if we integrate it.
+Some people interpret the hazard rate as "instantaneous risk",
+which is pretty close to correct.
+The hazard rate is the risk (probability) that the event happens right now,
+given it hasn't happened before now,
+scaled by time.
+
+## Problems
+
+### Problem 1
+
+#### Part (a)
+
+Is it possible for $h(t) = 5$?
+Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Yes, this is possible.
+Since $h(t)$ is not a probability,
+we can have $h(t) > 1$.
+If $f(t) = 5 \exp(-5t)$,
+then $h(t) = 5$.
+
+:::
+
+
+#### Part (b)
+
+Is it possible for $h(t) = -5$?
+Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No, we can't have a negative hazard rate.
+In the definition,
+all the terms are non-negative,
+so we can't end up with a negative value.
+
+:::
+
+#### Part (c)
+
+Is it possible for $P(T = t|T \ge t) = 5$?
+Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No.
+This is a probability, so it must be between 0 and 1.
+
+:::
+
+
