@@ -1,0 +1,91 @@
+---
+title: "Cox Proportional Hazards Model"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Explain the assumptions of the Cox proportional hazards model.
+
+
+## Lesson
+
+### Assumptions
+
+The Cox proportional hazards model has the following assumptions,
+where $h_i(t)$ is the hazard rate for the $i$th observation
+and $h_0(t)$ is the baseline hazard rate:
+
+1. $\log h_i(t) = \log h_0(t) + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$
+2. The observations are iid.
+3. Censoring is independent of time to event.
+
+Note that there's no $\beta_0$.
+With the Cox proportional hazards model (which I will abbreviate to
+the Cox model),
+we don't estimate an intercept.
+This means we don't estimate the baseline hazard rate.
+At no point do we say what $h_0(t)$ is.
+
+### Interpretation
+
+How do we interpret the coeffcients in the Cox model?
+Consider the first assumption:
+$$
+\log h_i(t) = \log h_0(t) + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
+$$
+If we exponentiate both sides, we get this:
+$$
+h_i(t) = h_0(t) \exp\left( \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \right) \text{.}
+$$
+So, we can get $\exp(\beta_1)$ as follows:
+$$
+\begin{align*}
+\frac{h_0(t) \exp\left( \beta_1 (x+1) + \cdots + \beta_p X_{ip} \right)}{h_0(t) \exp\left( \beta_1 x + \cdots + \beta_p X_{ip} \right)} &= \frac{\exp\left( \beta_1 (x+1) + \cdots + \beta_p X_{ip} \right)}{\exp\left( \beta_1 x + \cdots + \beta_p X_{ip} \right)} \\
+&= \frac{\exp\left( \beta_1 (x+1)  \right)}{\exp\left( \beta_1 x  \right)} \\
+&= \frac{\exp\left( \beta_1 x + \beta_1  \right)}{\exp\left( \beta_1 x  \right)} \\
+&= \exp\left(\beta_1\right) \text{.}
+\end{align*}
+$$
+
+So, $\exp\left(\beta_1\right)$ is the hazard ratio comparing two populations
+that are identical except for a difference of one unit on the first
+explanatory variable.
+Phrased another way,
+the hazard rate for a population with $X_1 = x+1$ is $\exp(\beta_1)$
+times the hazard rate for a population with $X_1 = x$,
+holding all else equal.
+Phrased yet another way,
+the hazard rate for a population with $X_1 = x+1$ is
+$\left(\exp(\beta_1) - 1\right)\times 100\%$ greater than
+the hazard rate for a population with $X_1 = x$,
+holding all else equal.
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
