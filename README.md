@@ -97,8 +97,9 @@ more on concepts and less on math.
     6. [Quasi-Poisson Regression](06_poisson/06_quasi_poisson.qmd)
     7. [Interactions](06_poisson/07_interactions.qmd)
     8. [Generalized Linear Models](06_poisson/08_glm.qmd)
-7. Survival Analysis
-    1. [Censoring](07_survival/01_censoring.qmd)
+7. Cox Regression
+    1. [Censoring](07_cox/01_censoring.qmd)
+    2. [Kaplan-Meier Curve](07_cox/02_KM.qmd)
 
 Appendices
 
