@@ -1,0 +1,324 @@
+---
+title: "Kaplan-Meier Curve"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(survival)
+library(ggsurvfit)
+
+# Set seed
+set.seed(2)
+```
+
+## Learning Objectives
+
+- Create a Kaplan-Meier curve.
+- Interpret a Kaplan-Meier curve.
+- Define, use, and interpret median survival.
+
+## Lesson
+
+```{r}
+# Parameters
+n <- 100
+t_median <- 5
+lambda <- log(2) / t_median
+
+# Generate data
+t_survival <- rexp(n = n,
+                   rate = lambda)
+t_censor <- rexp(n = n,
+                 rate = lambda)
+t_censor[t_censor > 10] <- 10
+d_survival <- data.frame(time = pmin(t_survival,
+                                     t_censor),
+                         death = as.integer(t_survival <= t_censor))
+```
+
+Suppose we run a study where we recruit 100 people with a serious disease
+and measure time from diagnosis until death.
+We only have the money to run the study for ten years,
+so any participant who is still alive after ten years is automatically
+censored at that time.
+Some participants drop out or are lost to follow-up for other reasons,
+leading to censoring.
+These are the first ten rows of data:
+
+```{r}
+head(x = d_survival,
+     n = 10)
+```
+
+The variable `time` is time from diagnosis to either death or censoring,
+in years.
+The variable `death` equals 1 for any participant whose time to death was
+observed,
+and 0 for any participant who was censored.
+In this section we will learn how to display these data graphically,
+in what's called a Kaplan-Meier curve.
+
+The horizontal axis of the Kaplan-Meier curve is time from some origin.
+It's very important that this axis label include (a) what that time origin is
+and (b) what the units of time are.
+The vertical axis is probability of survival,
+i.e., $P(T > t)$, where $T$ is the time from the origin to the event.
+The Kaplan-Meier curve always starts at the point $(0,1)$,
+because at time zero, no one has had the event.
+
+```{r}
+# Have survival package work its magic
+mod_01 <- survfit(Surv(time = time,
+                       event = death) ~ 1,
+                  data = d_survival)
+
+# Empty plot
+plot(x = 0,
+     y = 1,
+     xlim = c(0,10),
+     ylim = c(0,1),
+     xlab = "Years Since Diagnosis",
+     ylab = "Probability of Survival",
+     pch = 19)
+```
+
+Where do we go from here?
+Moving from left to right,
+the curve will remain constant until there is at least one event.
+When there is at least one event, the curve will drop.
+The trick is figuring out how much the curve should drop.
+
+In order to explain the next steps,
+I need to use some new notation.
+To be consistent with the example, I'm going to use "death" and "event"
+interchangeably.
+Also, I'm going to assume the deaths all happened at different times.
+Define the following:
+
+- $k$ is the index for the deaths.
+So, $k = 1$ indicates the first death,
+$k = 2$ indicates the second death,
+and so forth.
+- $t_k$ is the time of the $k$th death.
+- $N_k$ is the number of people at risk at time $t_k$.
+In other words, $N_k$ is the number of people who have neither died
+nor been censored before $t_k$.
+- $D_k$ is the number of deaths at $t_k$.
+Since we're assuming that all the deaths happened at unique times,
+$D_k$ will just be 1 for each $k$.
+
+In order to make our Kaplan-Meier curve,
+we are going to fill in the following table:
+
+| $k$ | $t_k$ | $N_k$ | $D_k$ | $\hat{P}(T = t_k|T \ge t_k)$ | $\hat{P}(T > t_k | T \ge t_k)$ | $\hat{P}(T > t_k)$ |
+|-:|-:|-:|-:|-:|-:|-:|
+| 0 | 0 | | | | | 1 |
+
+How do we get those last three columns?
+
+- $\hat{P}(T = t_k|T \ge t_k)$ is an estimate of the probability
+that the death happens exactly at $t_k$, given that it hasn't happened
+before $t_k$.
+This is fairly straightforward to compute:
+We will divide the number of deaths at $t_k$ by the number of people
+at risk at $t_k$.
+In symbols,
+$$
+\hat{P}(T = t_k|T \ge t_k) = \frac{D_k}{N_k} \text{.}
+$$
+- $\hat{P}(T > t_k | T \ge t_k)$ is an estimate of the probability
+that the death happens after $t_k$, i.e., that someone survives past $t_k$,
+given that the death didn't happen before $t_k$.
+This is
+$$
+\begin{align*}
+\hat{P}(T > t_k | T \ge t_k) &= 1 - \hat{P}(T = t_k | T \ge t_k) \\
+&= 1 - \frac{D_k}{N_k} \text{.} \\
+\end{align*}
+$$
+- $\hat{P}(T > t_k)$ is what we actually want to plot;
+unfortunately, it's the least straightforward quantity to compute.
+We use the following logic:
+$$
+\begin{align}
+\hat{P}(T > t_k) &= \hat{P}(T > t_k, T \ge t_{k}) \\
+&= \hat{P}(T > t_k | T \ge t_{k}) \hat{P}(T \ge t_{k}) \\
+&= \hat{P}(T > t_k | T \ge t_{k}) \hat{P}(T > t_{k-1}) \text{.}
+\end{align}
+$$
+
+Let's start filling in the table.
+In order to do so, we must first sort our data set from smallest to largest
+time.
+
+```{r}
+head(x = d_survival[order(d_survival$time), ],
+     n = 10)
+```
+
+Note that $t_1 = 0.02841937$.
+At the time of the first death,
+no one has been censored, so there are 100 people at risk.
+There's exactly one death at $t_1$,
+so
+$$
+\begin{align*}
+\hat{P}(T = t_1|T \ge t_1) &= \frac{D_1}{N_1} \\
+&= \frac{1}{100} \\
+\hat{P}(T > t_1 | T \ge t_1) &= 1 - \hat{P}(T = t_1|T \ge t_1) \\
+&= 1 - \frac{1}{100} \\
+&= \frac{99}{100} \\
+\hat{P}(T > t_1) &= \hat{P}(T > t_1 | T \ge t_{1}) \hat{P}(T > t_{0}) \\
+&= \frac{99}{100} \times 1 \\
+&= \frac{99}{100} \text{.}
+\end{align*}
+$$
+
+
+| $k$ | $t_k$ | $N_k$ | $D_k$ | $\hat{P}(T = t_k|T \ge t_k)$ | $\hat{P}(T > t_k | T \ge t_k)$ | $\hat{P}(T > t_k)$ |
+|-:|-:|-:|-:|-:|-:|-:|
+| 0 | 0 | | | | | 1 |
+| 1 | 0.02841937 | 100 | 1 | 0.01 | 0.99 | 0.99 |
+
+Moving on,
+we have $t_2 = 0.11406225$.
+At the time of the second death,
+three people have been censored and one has already died, so there are 96 people at risk.
+There's exactly one death at $t_2$,
+so
+$$
+\begin{align*}
+\hat{P}(T = t_2|T \ge t_2) &= \frac{D_2}{N_2} \\
+&= \frac{1}{96} \\
+\hat{P}(T > t_2 | T \ge t_2) &= 1 - \hat{P}(T = t_2|T \ge t_2) \\
+&= 1 - \frac{1}{96} \\
+&= \frac{95}{96} \\
+\hat{P}(T > t_2) &= \hat{P}(T > t_2 | T \ge t_{2}) \hat{P}(T > t_{1}) \\
+&= \frac{95}{96} \times \frac{99}{100} \times 1 \\
+&\approx 0.9796875 \text{.}
+\end{align*}
+$$
+
+
+| $k$ | $t_k$ | $N_k$ | $D_k$ | $\hat{P}(T = t_k|T \ge t_k)$ | $\hat{P}(T > t_k | T \ge t_k)$ | $\hat{P}(T > t_k)$ |
+|-:|-:|-:|-:|-:|-:|-:|
+| 0 | 0 | | | | | 1 |
+| 1 | 0.02841937 | 100 | 1 | 0.01000000 | 0.9900000 | 0.9900000 |
+| 2 | 0.11406225 | 96 | 1 | 0.01041667 | 0.9895833 | 0.9796875 |
+
+Let's do one more and then have R take over.
+We have $t_3 = 0.22482600	$.
+At the time of the third death,
+three people have been censored and two have already died, so there are 95 people at risk.
+There's exactly one death at $t_3$,
+so
+$$
+\begin{align*}
+\hat{P}(T = t_3|T \ge t_3) &= \frac{D_3}{N_3} \\
+&= \frac{1}{95} \\
+\hat{P}(T > t_3 | T \ge t_3) &= 1 - \hat{P}(T = t_3|T \ge t_3) \\
+&= 1 - \frac{1}{95} \\
+&= \frac{94}{95} \\
+\hat{P}(T > t_3) &= \hat{P}(T > t_3 | T \ge t_{3}) \hat{P}(T > t_{2}) \\
+&= \frac{94}{95} \times \frac{95}{96} \times \frac{99}{100} \times 1 \\
+&\approx 0.969375 \text{.}
+\end{align*}
+$$
+
+
+| $k$ | $t_k$ | $N_k$ | $D_k$ | $\hat{P}(T = t_k|T \ge t_k)$ | $\hat{P}(T > t_k | T \ge t_k)$ | $\hat{P}(T > t_k)$ |
+|-:|-:|-:|-:|-:|-:|-:|
+| 0 | 0 | | | | | 1 |
+| 1 | 0.02841937 | 100 | 1 | 0.01000000 | 0.9900000 | 0.9900000 |
+| 2 | 0.11406225 | 96 | 1 | 0.01041667 | 0.9895833 | 0.9796875 |
+| 3 | 0.22482600 | 95 | 1 | 0.01052632 | 0.9894737 | 0.9693750 |
+
+
+Instead of doing this 48 more times, let's have R plot
+the Kaplan-Meier curve for us.
+We can use base R or the package `ggsurvfit` to make the plot.
+Either way, we need the package `survival`.
+
+```{r}
+#| echo: true
+# Have survival package work its magic
+mod_01 <- survfit(Surv(time = time,
+                       event = death) ~ 1,
+                  data = d_survival)
+
+# Base R plotting
+plot(x = mod_01,
+     xlab = "Years Since Diagnosis",
+     ylab = "Probability of Survival")
+
+# ggsurvfit plotting
+ggsurvfit(survfit2(Surv(time = time,
+                        event = death) ~ 1,
+                   data = d_survival)) +
+  labs(x = "Years Since Diagnosis",
+       y = "Probability of Survival")
+```
+
+Ta-da! Now we have an estimate of $P(T > t)$ for each value of $t$
+from 0 to 10.
+
+There's one more term we have to learn, which is "median survival".
+Median survival is the time $t_{0.5}$ such that $P(T > t_{0.5}) = 0.5$,
+i.e., the time that we would expect approximately half the people to survive
+past.
+It's very easy to get median survival from the `survfit` object:
+```{r}
+mod_01
+```
+As we can see, the median survival is 5.98.
+So, people have a 50\% chance of surviving past 5.98 years after their diagnosis.
+
+On the Kaplan-Meier curve, the median survival is the point on the horizontal
+axis where the height of the curve is 0.5.
+```{r}
+# Base R plotting
+plot(x = mod_01,
+     xlab = "Years Since Diagnosis",
+     ylab = "Probability of Survival")
+abline(h = 0.5,
+       v = 5.98)
+
+# ggsurvfit plotting
+ggsurvfit(survfit2(Surv(time = time,
+                        event = death) ~ 1,
+                   data = d_survival)) +
+  labs(x = "Years Since Diagnosis",
+       y = "Probability of Survival") +
+  geom_hline(yintercept = 0.5) +
+  geom_vline(xintercept = 5.98)
+```
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
