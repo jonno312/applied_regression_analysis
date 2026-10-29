@@ -63,6 +63,14 @@ $\left(\exp(\beta_1) - 1\right)\times 100\%$ greater than
 the hazard rate for a population with $X_1 = x$,
 holding all else equal.
 
+### Example
+
+Let's look at data from a trial
+
+```{r}
+d_colon <- survival::colon
+```
+
 
 ## Problems
 
