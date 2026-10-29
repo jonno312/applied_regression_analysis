@@ -100,6 +100,7 @@ more on concepts and less on math.
 7. Cox Regression
     1. [Censoring](07_cox/01_censoring.qmd)
     2. [Kaplan-Meier Curve](07_cox/02_KM.qmd)
+    3. [Hazard Rate](07_cox/03_hazard.qmd)
 
 Appendices
 
