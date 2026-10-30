@@ -5,10 +5,16 @@ execute:
 format: html
 ---
 
-## Learning Objective
+```{r}
+#| warning: false
+library(survival)
+```
 
-Explain the assumptions of the Cox proportional hazards model.
+## Learning Objectives
 
+- Explain the assumptions of the Cox proportional hazards model.
+- Interpret the coefficients in a Cox proportional hazards model.
+- Explain what "proportional hazards" means.
 
 ## Lesson
 
@@ -31,7 +37,7 @@ At no point do we say what $h_0(t)$ is.
 
 ### Interpretation
 
-How do we interpret the coeffcients in the Cox model?
+How do we interpret the coefficients in the Cox model?
 Consider the first assumption:
 $$
 \log h_i(t) = \log h_0(t) + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
@@ -50,26 +56,83 @@ $$
 \end{align*}
 $$
 
-So, $\exp\left(\beta_1\right)$ is the hazard ratio comparing two populations
+So, $\exp\left(\beta_1\right)$ is the hazard ratio at time $t$ comparing two populations
 that are identical except for a difference of one unit on the first
 explanatory variable.
 Phrased another way,
-the hazard rate for a population with $X_1 = x+1$ is $\exp(\beta_1)$
-times the hazard rate for a population with $X_1 = x$,
+the hazard rate at time $t$ for a population with $X_1 = x+1$ is $\exp(\beta_1)$
+times the hazard rate at time $t$ for a population with $X_1 = x$,
 holding all else equal.
 Phrased yet another way,
-the hazard rate for a population with $X_1 = x+1$ is
+the hazard rate at time $t$ for a population with $X_1 = x+1$ is
 $\left(\exp(\beta_1) - 1\right)\times 100\%$ greater than
-the hazard rate for a population with $X_1 = x$,
+the hazard rate at time $t$ for a population with $X_1 = x$,
 holding all else equal.
 
 ### Example
 
-Let's look at data from a trial
+
 
 ```{r}
-d_colon <- survival::colon
+d_colon <- colon
+
+# Just death, not recurrence
+d_colon <- d_colon[d_colon$etype == 2, ]
 ```
+
+Let's look at data from a trial comparing two adjuvant therapy regimens
+for colon cancer
+([Moertel et al., 1995](https://doi.org/10.7326/0003-4819-122-5-199503010-00001)).
+These are the variables:
+
+- `time`: Time until death in days. Unfortunately, I don't know the time origin.
+- `status`: 1 is death, 0 is censoring.
+- `rx`: This is the treatment variable, and it has three levels:
+`Obs` for observation; `Lev` for Levamisole,
+and `Lev+5FU` for Levamisole plus 5-FU.
+- `sex`: 1 for male, 0 for female.
+- `age`: This is in years, but I don't know when it was measured.
+Maybe at the time origin?
+
+The results of a Cox regression is below.
+
+```{r}
+#| echo: true
+# Cox regression
+mod_01 <- coxph(formula = Surv(time = time,
+                               event = status) ~ rx + sex + age,
+                data = d_colon)
+summary(mod_01)
+```
+
+How do we interpret these coefficients?
+R has kindly exponentiated them so we don't have to do it ourselves.
+
+- The 0.9729 next to `rxLev` means that the hazard rate at time $t$ for participants
+on Levamisole is 13\% lower than the hazard rate for participants
+on observation,
+holding sex and age constant.
+- The 0.6881 next to `rxLev+5FU` means that the hazard rate at time $t$ for participants
+on Levamisole plus 5-FU is 31\% lower than the hazard rate for participants
+on observation,
+holding sex and age constant.
+- The 0.9996 next to `sex` means that the hazard at time $t$ for males is 0.04\%
+lower than the hazard rate for females,
+holding treatment and age constant.
+- The 1.0024 next to `age` means that with each additional year of age,
+the hazard rate at time $t$ increases by 0.24\%,
+holding treatment and sex constant.
+
+### Proportional Hazards
+
+Note that I kept saying "hazard rate at time $t$".
+With the Cox proportional hazards model,
+we assume that if you fix $t$,
+one hazard rate is a constant multiple of the other.
+In other words, the hazard rates are always proportional to each other.
+But we must fix the time we're talking about.
+We can't compare the hazard rate in one group at time $t$
+to the hazard rate in another group at time $s$.
 
 
 ## Problems
@@ -77,6 +140,14 @@ d_colon <- survival::colon
 ### Problem 1
 
 
+
+```{r}
+d_dr <- diabetic
+mod_02 <- coxph(formula = Surv(time = time,
+                               event = status) ~ rx + sex + age,
+                data = d_colon)
+summary(mod_02)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
