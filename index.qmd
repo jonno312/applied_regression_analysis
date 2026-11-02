@@ -1,0 +1,30 @@
+# Preface {.unnumbered}
+
+## Description
+
+This is a (bare-bones, first-draft) textbook on applied regression analysis.
+It's a "Just the facts, ma'am"-style treatment of the material that focuses
+more on concepts and less on math.
+
+The course as I teach it is built around this course description,
+which I did not write:
+
+> Topics include model interpretation, model building, and model assessment for linear regression with continuous outcomes, logistic regression with binary outcomes, and proportional hazards regression with survival time outcomes. Specific topics include regression diagnostics, confounding and effect modification, goodness of fit, data transformations, splines and additive models, ordinal, multinomial, and conditional logistic regression, generalized linear models, overdispersion, Poisson regression for rate outcomes, hazard functions, and missing data. The course will provide students with the skills necessary to perform regression analyses and to critically interpret statistical issues related to regression applications in the public health literature.
+
+## License
+
+This work is licensed under a Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International license
+([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)).
+
+## AI
+
+With one exception,
+I did not use AI to create these materials.
+I thought that creating them myself would make me a better teacher
+and statistician.
+
+The one exception is [render.R](render.R).
+Google Gemini wrote this when I searched something like
+"is there a function that will render all Quarto documents in a folder
+and all of its subfolders?"
