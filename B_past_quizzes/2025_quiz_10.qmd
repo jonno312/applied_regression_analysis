@@ -1,0 +1,287 @@
+---
+title: "Fall 2025 Quiz 10"
+date: "2025-11-14"
+execute:
+  echo: false
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(survival)
+library(ggsurvfit)
+
+# Set seed
+set.seed(10)
+
+# Sample size
+n <- 1e3
+
+# Parameters
+a <- 2
+sigma <- sqrt(2)
+p_censor <- 0.2
+n_censor <- round(p_censor * n)
+
+# Generate data
+t <- rweibull(n = n,
+              shape = a,
+              scale = sigma)
+t <- sort(t)
+status <- rep(x = 1,
+              times = n)
+
+# Censoring times
+censor_times <- rbeta(n = n_censor,
+                      shape1 = 1,
+                      shape2 = 5) * max(t) * 0.6
+censor_times <- sort(censor_times)
+
+# Create three additional data sets
+# This code relies on t and censor_times being sorted from low to high
+t_ind <- t_low <- t_hig <- t
+status_ind <- status_low <- status_hig <- status
+for(i in 1:n_censor){
+  # Independent
+  indices_ind <- which(t_ind >= censor_times[i])
+  censor_this <- sample(x = indices_ind,
+                        size = 1)
+  t_ind[censor_this] <- censor_times[i]
+  status_ind[censor_this] <- 0
+  
+  # Low
+  indices_low <- which(t_low >= censor_times[i])
+  censor_this <- min(indices_low)
+  t_low[censor_this] <- censor_times[i]
+  status_low[censor_this] <- 0
+  
+  # High
+  indices_hig <- which(t_hig >= censor_times[i])
+  censor_this <- max(indices_hig)
+  t_hig[censor_this] <- censor_times[i]
+  status_hig[censor_this] <- 0
+}
+
+
+
+### Kaplan-Meier curves
+# Plot names
+# sample(x = LETTERS[1:4],
+#        size = 4)
+
+# No censoring
+ggsurvfit(survfit2(Surv(time = t,
+                        event = status) ~ 1)) +
+  labs(x = "Years",
+       y = "Probability of Survival",
+       title = "Plot D") +
+  add_risktable()
+
+
+# Independent censoring
+ggsurvfit(survfit2(Surv(time = t_ind,
+                        event = status_ind) ~ 1)) +
+  labs(x = "Years",
+       y = "Probability of Survival",
+       title = "Plot A") +
+  add_risktable()
+
+
+# Low censoring
+ggsurvfit(survfit2(Surv(time = t_low,
+                        event = status_low) ~ 1)) +
+  labs(x = "Years",
+       y = "Probability of Survival",
+       title = "Plot C") +
+  add_risktable()
+
+
+# High censoring
+ggsurvfit(survfit2(Surv(time = t_hig,
+                        event = status_hig) ~ 1)) +
+  labs(x = "Years",
+       y = "Probability of Survival",
+       title = "Plot B") +
+  add_risktable()
+
+```
+
+
+Each of the four Kaplan-Meier curves above was created using the same 1,000 survival times.
+Three of the plots have censoring; one does not.
+The censoring times are identical in the three plots that have censoring.
+In one of the plots, censoring is independent of survival time.
+In another plot, censoring is an indication that the event will occur soon.
+In another plot, censoring is an indication that the event
+will not occur for a long time.
+
+Each plot has a risk table below it,
+displaying the number of people at risk at time $t$
+and the number of events that have occurred by time $t$.
+
+## Problem 1
+
+(4 points)
+In each plot, what is the probability of surviving
+past one year?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plot A: Between 0.5625 and 0.625
+
+Plot B: Between 0.5 and 0.5625
+
+Plot C: About 0.75
+
+Plot D: Between 0.5625 and 0.625
+
+:::
+
+## Problem 2
+
+(4 points)
+In each plot, what is the probability of an event occurring
+in the first two years?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plot A: Approximately 0.875
+
+Plot B: 1
+
+Plot C: Approximately 0.8
+
+Plot D: Approximately 0.875
+
+:::
+
+## Problem 3
+
+(1 point)
+How many people were censored between 1 and 2 years?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Consider Plot A.
+The number of people at risk dropped from 469 to 102,
+meaning $469-102 = 367$ people either had an event or were censored.
+The number of events was $698 - 340 = 358$.
+So, $367 - 358 = 9$ people were censored.
+
+:::
+
+
+
+## Problem 4
+
+(1 point)
+In Plot C, how many observed events occurred between 0 and 6 months?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Zero. The curve only drops when there's an event,
+and the curve is flat over this range of times.
+
+:::
+    
+## Problem 5
+
+(1 point)
+Which plot has no censoring?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plot D.
+We know this is true because Plot D has the most events
+by Year 3.
+
+:::
+
+## Problem 6
+
+(1 point)
+In which plot is censoring an indication that the event
+will not occur for a long time?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plot B.
+Recall that censoring times are identical in the three plots
+that have censoring.
+If censoring is an indication that the event will not occur
+for a long time,
+then censoring will eliminate later event times.
+Plot B has no events after about two years.
+So, it must be Plot B that has censoring long before the actual
+event time.
+
+:::
+
+## Problem 7
+
+(1 point)
+In which plot is censoring an indication that the event will
+occur soon?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plot C.
+Recall that censoring times are identical in the three plots
+that have censoring.
+If censoring is an indication that the event will occur soon,
+then censoring will eliminate earlier event times.
+Plot C has no events between 0 and six months.
+So, it must be Plot C that has censoring just before the actual
+event time.
+
+Another way to reason through this:
+Note that Plot C and Plot D have the same number of people at risk
+at each year.
+Plot C has censoring, but Plot D does not.
+This means that in Plot C, the censoring times were almost at the same time as the
+actual event times.
+
+:::
+
+## Problem 8
+
+(1 point)
+In which plot is censoring independent of survival time?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Plot A.
+This plot has the most similar curve to Plot D,
+but with fewer events by year 3.
+
+:::
+
+## Problem 9
+
+(4 points)
+For each plot, state whether the last observed time was an event time
+or a censoring time.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+For each plot, the last observed time was an event time.
+
+In each plot, the survival curve hits zero.
+If the last observed time was a censoring time,
+the survival curve would have to be positive at its right-most point.
+
+::: 
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
