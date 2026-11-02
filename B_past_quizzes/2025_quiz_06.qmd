@@ -1,0 +1,239 @@
+---
+title: "Fall 2025 Quiz 6"
+date: "2025-10-17"
+execute:
+  echo: false
+---
+
+[Kushel et al. (2001)](https://doi.org/10.2105/AJPH.92.5.778)
+conducted interviews with
+"2578 homeless and marginally housed persons"
+to determine risk factors for emergency department use.
+Suppose they obtained the following results from a logistic regression analysis.
+
+```
+Call:
+glm(formula = ED ~ age_transformed + crime_victim, family = binomial, 
+    data = d)
+
+Coefficients:
+                  Estimate Std. Error z value Pr(>|z|)   
+(Intercept)       ????????????????????????????????????
+age_transformed   -0.17435    0.07483   -2.33  0.00990 **   
+crime_victim       0.80648    0.31259    2.58  0.00494 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+This is what the variables mean:
+
+- `ED` is a 1 if the interviewee visited the emergency department
+in the last twelve months and a 0 otherwise.
+- If $a$ is the interviewee's age in years then
+$$
+\texttt{age\_transformed} = \frac{a - 40}{10} \text{.}
+$$
+- `crime_victim` is a 1 if the interviewee was the victim of a crime
+in the last twelve months and a 0 otherwise.
+
+Please answer the following questions.
+
+## Problem 1
+
+(1 point)
+If the `Estimate` of the `(Intercept)` is $-4.60517$,
+what are the odds of emergency department use for someone who is 50 years old
+and was not the victim of a crime in the last twelve months?
+
+
+(a) $\exp(-4.60517) \times \exp(-0.17435)$
+(b) $\exp(-4.60517) \times \exp(5 \times -0.17435)$
+(c) $\exp(-4.60517) \times \exp(10\times -0.17435)$
+(d) $\exp(-4.60517) \times \exp(50\times -0.17435)$
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(a)
+
+If they're 50, their value for `age_transformed` would be $\displaystyle \frac{50 - 40}{10} = 1$.
+If they weren't a victim of a crime then their value for `crime_victim` would be 0.
+So, their odds would be $\exp(-4.60517-0.17435) = \exp(-4.60517) \times \exp(-0.17435)$.
+
+:::
+
+
+## Problem 2
+
+(1 point)
+If the `Estimate` of the `(Intercept)` is $-2.302585$,
+what are the odds of emergency department use for someone who is 40 years old
+and was the victim of a crime in the last twelve months?
+
+
+
+(a) $\exp(-2.302585)$
+(b) $\exp(-0.17435) \times \exp(-0.17435)$
+(c) $\exp(-2.302585 + 0.80648)$
+(d) $\exp(-2.302585 \times 0.80648)$
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(c)
+
+:::
+
+## Problem 3
+
+(1 point)
+If the `Estimate` of the `(Intercept)` is $-0.80648$,
+what are the odds of emergency department use for someone who is 40 years old
+and was the victim of a crime in the last twelve months?
+
+
+(a) 0
+(b) 1/2
+(c) 1
+(d) $e$
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(c)
+
+:::
+
+## Problem 4
+
+(1 point)
+We would expect the odds of emergency department use to increase
+as age increases, holding crime victim status constant.
+
+
+(a) This statement is true.
+(b) This statement is false.
+(c) Without additional information, it is impossible to know
+if this statement is true or false.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(b)
+
+:::
+
+## Problem 5
+
+(1 point)
+The odds of emergency department use are approximately 20% lower
+among people who were a victim of a crime in the last twelve months
+than among people who were not a victim of a crime in the last twelve months,
+holding age constant.
+
+
+(a) This statement is true.
+(b) This statement is false.
+(c) Without additional information, it is impossible to know
+if this statement is true or false.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(b)
+
+:::
+
+
+
+## Problem 6
+
+
+(1 point)
+The chance of emergency department use among people who are 40 years old
+is less than 5%.
+
+
+(a) This statement is true.
+(b) This statement is false.
+(c) Without additional information, it is impossible to know
+if this statement is true or false.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(c)
+
+:::
+
+## Problem 7
+
+(1 point)
+There is a statistically significant difference in the odds of emergency department use
+between people who were the victim of a crime in the last twelve months
+and people who were not, holding age constant.
+
+
+(a) This statement is true.
+(b) This statement is false.
+(c) Without additional information, it is impossible to know
+if this statement is true or false.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(a)
+
+:::
+
+
+
+## Problem 8
+
+(1 point)
+Suppose we use this model to predict emergency department use for a new group of people,
+sampled from the same population as the original group.
+Those predictions have a very high sensitivity.
+This means:
+
+(a) A high proportion of people who are predicted to use the emergency room
+end up using the emergency room.
+(b) A high proportion of people who end up using the emergency room
+are predicted to use the emergency room.
+(c) A randomly-selected person who ends up using the emergency room
+is very likely to have a higher fitted value than a randomly-selected person
+who does not end up using the emergency room.
+(d) There is a very low number of false positives.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(b)
+
+:::
+
+## Problem 9
+
+(1 point)
+For this example, a well-calibrated model would, by definition, have:
+
+
+(a) An even spread of fitted values between 0 and 1.
+(b) High sensitivity and specificity.
+(c) A high area under the curve.
+(d) Fitted values that are close to the true probabilities of emergency department use.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(d)
+
+:::
+
+
+
+
+
+
+
+
