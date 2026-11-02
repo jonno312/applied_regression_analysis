@@ -1,0 +1,209 @@
+---
+title: "Fall 2025 Quiz 4"
+date: "2025-10-03"
+execute:
+  echo: false
+---
+
+
+## Problem 1
+
+Suppose I recruit a sample of $n$ teachers to study the effect of hydration and sleep
+on voice quality. Define the following variables:
+
+- $H_i$ is the harmonics-to-noise ratio (HNR) of the $i$th participant's voice.
+This is a measure of voice quality and is measured in decibels.
+- $S_i = 1$ if participant $i$ slept well the night before they were assessed and
+$S_i = 0$ if they slept poorly.
+- $W_i$ is the number of liters of water the $i$th participant drank in
+the previous 24 hours.
+
+Suppose I fit the following model:
+$$
+H_i = \beta_0 + \beta_1 S_i + \beta_2 W_i + \beta_3 S_i W_i + \epsilon_i \text{.}
+$$
+Please answer the following questions,
+assuming all necessary assumptions are met.
+
+### Part (a)
+
+(4 points)
+What does $\beta_0$ mean in real-world terms?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The expected (or average, or mean, or estimated; 1 point)
+HNR (1 point) for a teacher who slept poorly the night before (1 point)
+and drank no water (1 point) in the past 24 hours.
+
+:::
+
+### Part (b)
+
+(7 points)
+Compute $E(H_i|S_i = 1,W_i = w) - E(H_i|S_i = 0,W_i = w)$
+and interpret its meaning in real-world terms.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(H_i|S_i = 1,W_i = w) - E(H_i|S_i = 0,W_i = w) \\
+    &= \beta_0 + \beta_1 (1) + \beta_2 w + \beta_3 (1) w - \left(\beta_0 + \beta_1 (0) + \beta_2 w + \beta_3 (0) w\right) \\
+    &= \beta_0 + \beta_1  + \beta_2 w + \beta_3  w - \left(\beta_0  + \beta_2 w \right) \\
+    &= \beta_1 + \beta_3 w \text{ (1 point)}
+\end{align*}
+$$
+
+The expected (or average, or mean, or estimated; 1 point)
+difference (1 point)
+in HNR (1 point)
+between those who slept well (1 point)
+and those who slept poorly (1 point),
+among people who drank $w$ liters of water (1 point) over the past 24 hours.
+
+:::
+
+### Part (c)
+
+(7 points)
+Compute $E(H_1 |S_i = 0,W_i = w + 1) - E(H_i|S_i = 0,W_i = w)$
+and interpret its meaning in real-world terms.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(H_1 |S_i = 0,W_i = w + 1) - E(H_i|S_i = 0,W_i = w) \\
+    &= \beta_0 + \beta_1 (0) + \beta_2 (w+1) + \beta_3 (0) (w+1) - \left(\beta_0 + \beta_1 (0) + \beta_2 (w) + \beta_3 (0) w \right) \\
+    &= \beta_0  + \beta_2 w + \beta_2   - \left(\beta_0 + \beta_2 w  \right) \\
+    &= \beta_2 \text{ (1 point)}
+\end{align*}
+$$
+
+The expected (or average, or mean, or estimated; 1 point)
+change (or increase; 1 point)
+in HNR (1 point)
+associated with a one-liter increase (1 point)
+in water consumption (1 point),
+among people who slept poorly (1 point).
+
+Alternatively,
+the expected (or average, or mean, or estimated; 1 point)
+difference (1 point)
+in HNR (1 point)
+between two populations of teachers
+that differ by one liter (1 point)
+in their water consumption (1 point)
+but who all slept poorly (1 point).
+
+:::
+
+### Part (d)
+
+Compute $E(H_1 |S_i = 1,W_i = w + 1) - E(H_i|S_i = 1,W_i = w)$
+and interpret its meaning in real-world terms.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$$
+\begin{align*}
+    &E(H_1 |S_i = 1,W_i = w + 1) - E(H_i|S_i = 1,W_i = w) \\
+    &= \beta_0 + \beta_1 (1) + \beta_2 (w+1) + \beta_3 (1) (w+1) - \left(\beta_0 + \beta_1 (1) + \beta_2 (w) + \beta_3 (1) w \right) \\
+    &= \beta_0 + \beta_1  + \beta_2 w + \beta_2 + \beta_3 w + \beta_3 - \left(\beta_0 + \beta_1  + \beta_2 w + \beta_3  w \right) \\
+    &= \beta_2 + \beta_3 \text{ (1 point)}
+\end{align*}
+$$
+
+The expected (or average, or mean, or estimated; 1 point)
+change (or increase; 1 point)
+in HNR (1 point)
+associated with a one-liter increase (1 point)
+in water consumption (1 point),
+among people who slept well (1 point).
+
+Alternatively,
+the expected (or average, or mean, or estimated; 1 point)
+difference (1 point)
+in HNR (1 point)
+between two populations of teachers
+that differ by one liter (1 point)
+in their water consumption (1 point)
+but who all slept well (1 point).
+
+:::
+
+## Problem 2
+
+Please identify each of the following statements as true or false.
+Each problem is worth one point.
+You do not need to justify your answers.
+
+### Part (a)
+
+We usually consider parameters to be unknown.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (b)
+
+A statistic is a function of the population.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (c)
+
+We use the sample to draw conclusions about the population.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (d)
+
+If you know the expected value of $X$, you should be able to compute the
+probability that $X$ is in any given range.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (e)
+
+A statistic can have a distribution.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (f)
+
+"Statistic" is another word for "parameter."
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+
+
+
+
+
+
+
