@@ -1,0 +1,23 @@
+---
+title: "Past Quizzes"
+execute:
+  echo: false
+format: html
+---
+
+This appendix contains past quizzes from when I've taught the course.
+I administer one quiz per week,
+for a total of fourteen quizzes per semester.
+The quizzes are paired, such that I use the highest score from quizzes 1 and 2,
+quizzes 3 and 4, quizzes 5 and 6, and so forth.
+This allows students to miss a quiz without me having to schedule a make-up.
+It also allows students a second opportunity to demonstrate mastery of the
+material if they made mistakes the first time.
+The material on the quizzes is cumulative throughout the semester,
+so the last two quizzes are effectively comprehensive final exams,
+except they're worth the same as all the other quizzes,
+and if you don't like your score on the first one, you can take the second one.
+
+
+
+

@@ -1,0 +1,17 @@
+---
+title: "Problems with Coding"
+execute:
+  echo: false
+format: html
+---
+
+This appendix contains problem sets that involve coding.
+Each problem set has a version with solutions and another without.
+In order to complete the problem sets,
+you will need to download data from the internet.
+I can't guarantee the data still exist on the internet in the same form
+as when I wrote the problem sets.
+
+
+
+
