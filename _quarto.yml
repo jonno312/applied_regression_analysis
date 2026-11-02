@@ -109,7 +109,7 @@ book:
         - 07_cox/01_censoring.qmd
         - 07_cox/02_KM.qmd
         - 07_cox/03_hazard.qmd
-    - part: "Appendix: Problems with Coding"
+    - part: "Appendix A: Problems with Coding"
       chapters:
         - A_problems_with_coding/01_index.qmd
         - A_problems_with_coding/assumptions_SLR.qmd
@@ -122,10 +122,23 @@ book:
         - A_problems_with_coding/calibration_ROC_solutions.qmd
         - A_problems_with_coding/poisson.qmd
         - A_problems_with_coding/poisson_solutions.qmd
-    - part: "Appendix: Past Quizzes"
+    - part: "Appendix B: Past Quizzes"
       chapters:
         - B_past_quizzes/01_index.qmd
         - B_past_quizzes/2025_quiz_01.qmd
+        - B_past_quizzes/2025_quiz_02.qmd
+        - B_past_quizzes/2025_quiz_03.qmd
+        - B_past_quizzes/2025_quiz_04.qmd
+        - B_past_quizzes/2025_quiz_05.qmd
+        - B_past_quizzes/2025_quiz_06.qmd
+        - B_past_quizzes/2025_quiz_07.qmd
+        - B_past_quizzes/2025_quiz_08.qmd
+        - B_past_quizzes/2025_quiz_09.qmd
+        - B_past_quizzes/2025_quiz_10.qmd
+        - B_past_quizzes/2025_quiz_11.qmd
+        - B_past_quizzes/2025_quiz_12.qmd
+        - B_past_quizzes/2025_quiz_13.qmd
+        - B_past_quizzes/2025_quiz_14.qmd
 
 format:
   html:
