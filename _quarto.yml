@@ -104,13 +104,14 @@ book:
         - 06_poisson/06_quasi_poisson.qmd
         - 06_poisson/07_interactions.qmd
         - 06_poisson/08_glm.qmd
-    - part: "Poisson Regression"
+    - part: "Cox Proportional Hazards Regression"
       chapters:
         - 07_cox/01_censoring.qmd
         - 07_cox/02_KM.qmd
         - 07_cox/03_hazard.qmd
     - part: "Appendix: Problems with Coding"
       chapters:
+        - A_problems_with_coding/01_index.qmd
         - A_problems_with_coding/assumptions_SLR.qmd
         - A_problems_with_coding/assumptions_SLR_solutions.qmd
         - A_problems_with_coding/interactions_MLR.qmd
@@ -121,6 +122,10 @@ book:
         - A_problems_with_coding/calibration_ROC_solutions.qmd
         - A_problems_with_coding/poisson.qmd
         - A_problems_with_coding/poisson_solutions.qmd
+    - part: "Appendix: Past Quizzes"
+      chapters:
+        - B_past_quizzes/01_index.qmd
+        - B_past_quizzes/2025_quiz_01.qmd
 
 format:
   html:
