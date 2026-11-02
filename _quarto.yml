@@ -6,6 +6,7 @@ book:
   title: "Applied Regression Analysis"
   author: "Jonathan Larson"
   date: last-modified
+  repo-url: https://github.com/jonno312/applied_regression_analysis
   chapters:
     - index.qmd
     - part: "Prerequisites"
@@ -126,6 +127,7 @@ format:
     theme:
       - cosmo
       - brand
+    link-external-newwindow: true
   pdf:
     documentclass: scrreprt
 
