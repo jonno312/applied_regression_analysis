@@ -6,6 +6,8 @@ book:
   title: "Applied Regression Analysis"
   author: "Jonathan Larson"
   date: last-modified
+  sidebar:
+    collapse-level: 1
   repo-url: https://github.com/jonno312/applied_regression_analysis
   chapters:
     - index.qmd
