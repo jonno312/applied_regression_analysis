@@ -1,0 +1,331 @@
+---
+title: "Fall 2025 Quiz 13"
+date: "2025-12-12"
+execute:
+  echo: false
+---
+
+```{r}
+#| warning: false
+# Set seed
+set.seed(13)
+
+# Plot A
+h_1 <- function(x){
+  x
+}
+h_2 <- function(x){
+  x / 2
+}
+curve(expr = h_1,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "h(t)",
+      main = "Plot A")
+curve(expr = h_2,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot B
+cll_1 <- function(x){
+  log(x)
+}
+cll_2 <- function(x){
+  log(x) / 2 - 1
+}
+curve(expr = cll_1,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "log(-log(S(t)))",
+      main = "Plot B")
+curve(expr = cll_2,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot C
+S_1 <- function(x){
+  exp(-(x / 5)^2)
+}
+S_2 <- function(x){
+  1 - x / 12
+}
+curve(expr = S_1,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "S(t)",
+      main = "Plot C")
+curve(expr = S_2,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot D
+h_3 <- function(x){
+  sin(x / 8 * 2 * pi) + 1
+}
+h_4 <- function(x){
+  h_3(x) / 2
+}
+curve(expr = h_3,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "h(t)",
+      main = "Plot D")
+curve(expr = h_4,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot E
+h_5 <- function(x){
+  x + 2
+}
+h_6 <- function(x){
+  x + 4
+}
+curve(expr = h_5,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "h(t)",
+      main = "Plot E")
+curve(expr = h_6,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot F
+cll_3 <- function(x){
+  2 * log(x) - 2 * log(2)
+}
+cll_4 <- function(x){
+  2 * log(x) - 2 * log(2) - 1
+}
+curve(expr = cll_3,
+      from = 2,
+      to = 12,
+      xlab = "t",
+      ylab = "log(-log(S(t)))",
+      main = "Plot F",
+      ylim = c(cll_4(2),
+               cll_3(12)))
+curve(expr = cll_4,
+      add = TRUE,
+      lty = 2)
+grid()
+```
+
+
+
+## Problem 1
+
+Each of the plots above shows two curves,
+one for each group in a randomized controlled trial.
+For each plot,
+identify whether the proportional hazards assumption is met.
+Each is worth one point.
+
+### Part (a)
+
+
+ Plot A
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i
+
+The solid hazard function is twice the dashed hazard function.
+
+:::
+        
+### Part (b)
+
+Plot B
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The complementary log-log functions are not parallel.
+
+:::
+        
+### Part (c)
+
+Plot C
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The survival curves cross, so the hazards can't be proportional.
+
+:::
+        
+### Part (d)
+
+Plot D
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i
+
+The solid hazard function is twice the dashed hazard function.
+
+:::
+        
+### Part (e)
+
+Plot E
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The hazard functions are parallel, but they need to be proportional.
+
+:::
+
+### Part (f)
+
+Plot F
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i
+
+The complementary log-log functions are parallel.
+
+:::
+
+## Problem 2
+
+For each of the following examples,
+identify the best analysis method from the options provided.
+Each is worth one point.
+
+### Part (a)
+
+
+You want to know whether using mechanical lifts decreases the incidence of musculoskeletal
+injuries among nurses in hospitals.
+You randomly assign some hospitals to receive mechanical lifts;
+those that don't receive the lifts serve as controls.
+You measure a variety of variables for each hospital,
+including the number of nurses employed,
+how many hours they work,
+how many patients are treated,
+what they are treated for, etc.
+Your primary outcome measure is the number of new musculoskeletal injuries
+in the six months following installation of the lifts.
+
+
+(i) Cox regression
+(ii) Logistic regression
+(iii) Multinomial regression (baseline category logit model)
+(iv) Poisson regression
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+iv
+
+The outcome is a count, so Poisson regression is the best bet.
+
+:::
+
+### Part (b)
+
+
+You want to know the impact of journaling on mental health.
+You recruit undergraduates at your university and randomly assign them
+to one of three categories:
+no journaling; journaling about what happened to them each week;
+or journaling about what they're grateful for each week.
+At the beginning and end of the study, you have participants fill out the
+Beck Depression Inventory (BDI),
+a 21-item pencil-and-paper questionnaire
+that results in a score between 0 and 63,
+with higher values representing worse depression.
+You also measure other variables,
+including gender, age, time spent socializing, and other coping mechanisms.
+
+
+(i) Multinomial regression (baseline category logit model)
+(ii) Linear regression
+(iii) Logistic regression
+(iv) Cox regression
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The outcome is not strictly continuous,
+but it's nearly continuous.
+Also, it's definitely not categorical, binary, or a time to event.
+
+:::
+
+
+### Part (c)
+
+You are testing the efficacy of a variety of smoking cessation methods.
+You recruit a large sample of people who are trying to quit smoking.
+You measure several variables, including sex, age, age at first cigarette, etc.
+You ask each participant when they last smoked,
+and your outcome is the time until their next cigarette.
+
+
+(i) Logistic regression
+(ii) Multinomial regression (proportional odds model)
+(iii) Cox regression
+(iv) Multinomial regression (adjacent categories model)
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+iii
+
+The outcome is time to an event, so Cox is the best option among those provided.
+
+::: 
+
+    
+
+
+
+
+
+
+
+
+
+
+
