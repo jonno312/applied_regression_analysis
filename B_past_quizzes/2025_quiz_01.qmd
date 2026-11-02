@@ -1,0 +1,283 @@
+---
+title: "Fall 2025 Quiz 1"
+date: "2025-09-12"
+execute:
+  echo: false
+---
+
+
+## Problem 1
+
+Please identify each of the following statements as true or false.
+Each problem is worth one point.
+
+### Part (a)
+
+We usually consider parameters to be random.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (b)
+
+We usually consider parameters to be unknown.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (c)
+
+A statistic is a function of the population.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (d)
+
+A population can be infinite.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (e)
+
+We use the sample to draw conclusions about the population.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (f)
+
+If you know the expected value of $X$, you should be able to compute the
+probability that $X$ is in any given range.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (g)
+
+The expected value is a measure of the spread of a distribution.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (h)
+
+The support of a random variable must be between 0 and 1.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (i)
+
+A statistic can have a distribution.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+### Part (j)
+
+"Statistic" is another word for "parameter."
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+```{r}
+#| label: fig-dist
+#| fig-cap: "Three distributions."
+curve(expr = dnorm,
+      from = -3,
+      to = 6,
+      ylab = "f(x)")
+lambda <- function(x){
+  dexp(x = x,
+       rate = dnorm(0))
+}
+curve(expr = lambda,
+      add = TRUE,
+      lty = "aa")
+lambda <- function(x){
+  dgamma(x = x,
+         shape = 2,
+         rate = 0.6)
+}
+curve(expr = lambda,
+      add = TRUE,
+      lty = 3)
+legend(x = "topright",
+       legend = c("A",
+                  "B",
+                  "C"),
+       lty = c("solid",
+               "aa",
+               "dotted"))
+```
+
+## Problem 2
+
+(1 point)
+Which of the distributions in @fig-dist
+could describe the time in months
+from diagnosis to death from a fatal form of cancer?
+Select all that apply.
+
+(a) A
+(b) B
+(c) C
+(d) None of the above
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+B and C
+
+:::
+
+## Problem 3
+
+(1 point)
+In one to three sentences,
+justify your answer to Problem 2.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+The time to an event must be non-negative.
+The support of distribution A includes negative values,
+so it cannot be the distribution of the time to death.
+The supports of distributions B and C are both non-negative,
+so each could be the distribution of time to death.
+
+Some students pointed out that diagnosis could be made via autopsy.
+If a student said this in their justification and selected A, B, and C,
+I gave them the points for both questions.
+
+:::
+
+## Problem 4
+
+(1 point)
+Which of the distributions in @fig-dist
+is most likely to yield observations greater than 2?
+
+(a) A
+(b) B
+(c) C
+(d) It's impossible to tell from the information provided.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+C
+
+:::
+
+## Problem 5
+
+(1 point)
+In one to three sentences,
+justify your answer to Problem 4.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+The height of distribution C is higher than the other distributions
+for all values greater than 2.
+Thus, the area under the curve to the right of 2 will be greatest for Distribution C.
+Since area under the curve corresponds to probability,
+Distribution C is most likely to yield observations greater than 2.
+
+Some students described Distributions B and C as left-skewed,
+which is incorrect. Both of these distributions are right-skewed.
+The direction (left or right) refers to where the tail is, 
+not where the hump is.
+
+:::
+
+## Problem 6
+
+(1 point)
+Identify the correct ordering of the expected values
+of the distributions in @fig-dist,
+from smallest to largest.
+
+(a) A, B, C
+(b) A, C, B
+(c) B, A, C
+(d) B, C, A
+(e) C, A, B
+(f) C, B, A
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+A, B, C
+
+Distribution A is symmetric around zero, so its expected value is zero
+(assuming the expected value exists).
+Distributions B and C both have positive supports, so they must have positive expected values.
+Because Distribution B has most of its mass close to zero
+and Distribution C has most of its mass greater than zero,
+the expected value of Distribution B should be less than the expected value of Distribution C.
+
+
+:::
+
+
+## Problem 7
+
+(1 point)
+Which of the distributions in @fig-dist
+could describe the height in meters
+of patients at primary care clinic?
+Select all that apply.
+
+(a) A
+(b) B
+(c) C
+(d) None of the above
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+D
+
+Nobody has a height less than zero and no one is more than four meters tall.
+
+:::
+
+
+
+
+
+
+
