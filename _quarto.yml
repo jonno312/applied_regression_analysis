@@ -1,0 +1,133 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Applied Regression Analysis"
+  author: "Jonathan Larson"
+  date: last-modified
+  chapters:
+    - index.qmd
+    - part: "Prerequisites"
+      chapters:
+        - 01_prereqs/01_exponents.qmd
+        - 01_prereqs/02_logarithms.qmd
+        - 01_prereqs/03_intercept_and_slope.qmd
+        - 01_prereqs/04_integral.qmd
+        - 01_prereqs/05_derivative.qmd
+        - 01_prereqs/06_probability.qmd
+        - 01_prereqs/07_random_variable.qmd
+        - 01_prereqs/08_distribution.qmd
+        - 01_prereqs/09_support.qmd
+        - 01_prereqs/10_continuous_discrete.qmd
+        - 01_prereqs/11_PMF.qmd
+        - 01_prereqs/12_PDF.qmd
+        - 01_prereqs/13_graph_prob.qmd
+        - 01_prereqs/14_expected_value.qmd
+        - 01_prereqs/15_independence.qmd
+        - 01_prereqs/16_population_sample.qmd
+        - 01_prereqs/17_sample_average.qmd
+        - 01_prereqs/18_parameter_statistic.qmd
+        - 01_prereqs/19_tilde.qmd
+        - 01_prereqs/20_estimator_estimand.qmd
+        - 01_prereqs/21_variance.qmd
+        - 01_prereqs/22_bias.qmd
+        - 01_prereqs/23_accuracy_precision.qmd
+        - 01_prereqs/24_hypothesis_test.qmd
+        - 01_prereqs/25_marginal_conditional.qmd
+        - 01_prereqs/26_conditional_expectation.qmd
+    - part: "Simple Linear Regression"
+      chapters:
+        - 02_simple/01_linear_assumption.qmd
+        - 02_simple/02_linear_consequences.qmd
+        - 02_simple/03_fitted_values_residuals.qmd
+        - 02_simple/04_linear_evaluation.qmd
+        - 02_simple/05_iid_assumption.qmd
+        - 02_simple/06_iid_consequences.qmd
+        - 02_simple/07_iid_evaluation.qmd
+        - 02_simple/08_homoscedasticity_assumption.qmd
+        - 02_simple/09_homoscedasticity_consequences.qmd
+        - 02_simple/10_homoscedasticity_evaluation.qmd
+        - 02_simple/11_normality_assumption.qmd
+        - 02_simple/12_normality_consequences.qmd
+        - 02_simple/13_normality_evaluation.qmd
+        - 02_simple/14_LINE.qmd
+        - 02_simple/15_interpretation.qmd
+        - 02_simple/16_hypothesis_testing.qmd
+        - 02_simple/17_OLS.qmd
+        - 02_simple/18_log_transform_outcome.qmd
+        - 02_simple/19_shift_for_intercept.qmd
+        - 02_simple/20_robust_SE.qmd
+    - part: "Multiple Linear Regression"
+      chapters:
+        - 03_multiple/01_linear_assumption.qmd
+        - 03_multiple/02_iid_assumption.qmd
+        - 03_multiple/03_homoscedasticity_assumption.qmd
+        - 03_multiple/04_normality_assumption.qmd
+        - 03_multiple/05_categorical.qmd
+        - 03_multiple/06_interpretation.qmd
+        - 03_multiple/07_hypothesis_testing.qmd
+        - 03_multiple/08_interaction_two_binary.qmd
+        - 03_multiple/09_interaction_binary_categorical.qmd
+        - 03_multiple/10_interaction_binary_continuous.qmd
+        - 03_multiple/11_correlated_covariates.qmd
+        - 03_multiple/12_splines.qmd
+        - 03_multiple/13_linear_hypotheses.qmd
+    - part: "Model Performance"
+      chapters:
+        - 04_performance/01_overfitting.qmd
+        - 04_performance/02_r2.qmd
+        - 04_performance/03_test_set_error.qmd
+        - 04_performance/04_likelihood.qmd
+        - 04_performance/05_AIC.qmd
+        - 04_performance/06_LRT.qmd
+    - part: "Logistic Regression"
+      chapters:
+        - 05_logistic/01_mean_variance.qmd
+        - 05_logistic/02_violated_assumptions.qmd
+        - 05_logistic/03_logistic_assumptions.qmd
+        - 05_logistic/04_odds.qmd
+        - 05_logistic/05_interpretation.qmd
+        - 05_logistic/06_calibration.qmd
+        - 05_logistic/07_consequences.qmd
+        - 05_logistic/08_hypothesis_testing.qmd
+        - 05_logistic/09_performance.qmd
+        - 05_logistic/10_interactions.qmd
+    - part: "Poisson Regression"
+      chapters:
+        - 06_poisson/01_poisson.qmd
+        - 06_poisson/02_poisson_assumptions.qmd
+        - 06_poisson/03_poisson_residuals.qmd
+        - 06_poisson/04_interpretation.qmd
+        - 06_poisson/05_hypothesis_testing.qmd
+        - 06_poisson/06_quasi_poisson.qmd
+        - 06_poisson/07_interactions.qmd
+        - 06_poisson/08_glm.qmd
+    - part: "Poisson Regression"
+      chapters:
+        - 07_cox/01_censoring.qmd
+        - 07_cox/02_KM.qmd
+        - 07_cox/03_hazard.qmd
+    - part: "Appendix: Problems with Coding"
+      chapters:
+        - A_problems_with_coding/assumptions_SLR.qmd
+        - A_problems_with_coding/assumptions_SLR_solutions.qmd
+        - A_problems_with_coding/interactions_MLR.qmd
+        - A_problems_with_coding/interactions_MLR_solutions.qmd
+        - A_problems_with_coding/model_selection.qmd
+        - A_problems_with_coding/model_selection_solutions.qmd
+        - A_problems_with_coding/calibration_ROC.qmd
+        - A_problems_with_coding/calibration_ROC_solutions.qmd
+        - A_problems_with_coding/poisson.qmd
+        - A_problems_with_coding/poisson_solutions.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+
+
+
