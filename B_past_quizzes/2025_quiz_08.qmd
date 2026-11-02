@@ -1,0 +1,309 @@
+---
+title: "Fall 2025 Quiz 8"
+date: "2025-10-31"
+execute:
+  echo: false
+---
+
+
+
+
+## Problem 1
+
+
+Suppose you have three multiple linear regression models that differ only in what explanatory variables
+they include. The three models are:
+
+- Model 1: $E(Y_i|A_i,B_i,C_i,D_i) = \beta_0 + \beta_1 A_i + \beta_2 B_i + \beta_3 C_i + \beta_4 D_i$;
+- Model 2: $E(Y_i|A_i,B_i,C_i) = \beta_0 + \beta_1 A_i + \beta_2 B_i + \beta_3 C_i$; and
+- Model 3: $E(Y_i|A_i,B_i) = \beta_0 + \beta_1 A_i + \beta_2 B_i$.
+
+Please answer the following questions based on these three models.
+Assume all four of our assumptions for linear regression are met for each model.
+
+
+### Part (a) (4 points)
+
+Suppose $D_3$ is missing in the data set, i.e., the third participant
+is missing a value for the fourth explanatory variable.
+There is no other missing data in the data set.
+Which of the following metrics could you use to compare Model 1 and Model 2?
+Select all that apply.
+
+
+(i) $R^2$
+(ii) $R_\text{adj}^2$
+(iii) Likelihood
+(iv) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i and ii
+
+Since these two models are fit on different observations, you can't use
+likelihood-based methods to compare them.
+Model 2 is fit on all $n$ observations and Model 1 is fit on $n - 1$ observations,
+i.e., all the observations except the third.
+
+This doesn't matter for $R^2$ because it's a ratio.
+The contribution of the third observation is removed from both the numerator and denominator
+of the $R^2$ for Model 1.
+This also doesn't matter for $R^2_\text{adj}$ for similar reasons.
+
+For a more thorough explanation: the key here is that Model 1 and Model 2 were fit using different datasets (Model 1 using $n - 1$ participants, Model 2 using all $n$ participants). Therefore, the likelihood of Model 2 is based on the distribution of the all of the observations, while the likelihood of Model 1 is based on the distribution of a subset of those observations. As a result, the two models aren't properly comparable using likelihood-based metrics, since those essentially rely on checking which model has a higher likelihood $\mathcal{L}$ based on the same distribution of observations. 
+
+:::
+
+### Part (b)
+
+(4 points)
+Suppose $D_3$ is missing in the data set, i.e., the third participant
+is missing a value for the fourth explanatory variable.
+There is no other missing data in the data set.
+Which of the following metrics could you use to compare Model 2 and Model 3?
+Select all that apply.
+
+
+(i) $R^2$
+(ii) $R_\text{adj}^2$
+(iii) Likelihood
+(iv) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i, ii, iii, and iv
+
+Since Models 2 and 3 don't use the fourth explanatory variable,
+it doesn't matter if one of the observations is missing the fourth explanatory variable.
+Both Models 2 and 3 can be fit on all $n$ observations.
+
+:::
+
+### Part (c)
+
+(4 points)
+Suppose $A_3$ is missing in the data set, i.e., the third participant
+is missing a value for the first explanatory variable.
+There is no other missing data in the data set.
+Which of the following metrics could you use to compare Model 2 and Model 3?
+Select all that apply.
+
+
+(i) $R^2$
+(ii) $R_\text{adj}^2$
+(iii) Likelihood
+(iv) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i, ii, iii, and iv
+
+Since both Models 2 and 3 use the first explanatory variable,
+the third observation couldn't be used to fit either of them.
+So, Models 2 and 3 will be fit on the same $n - 1$ observations.
+
+:::
+
+### Part (d)
+
+(4 points)
+Suppose you use a likelihood ratio test to compare Model 1 to Model 3.
+You obtain a p-value of 0.00001.
+What is a reasonable conclusion from this result?
+Select all that apply.
+
+
+(i)   Model 3 is at least as good as Model 1.
+(ii)  Model 3 fits the data better than Model 1.
+(iii) Model 2 is at least as good as Model 3.
+(iv)  Model 1 fits the data better than Model 3.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+iv
+
+The null hypothesis is that the smaller model is the true model.
+With such a low p-value, we would reject this hypothesis
+and conclude that the larger model, Model 1,
+fits the data better than the smaller model, Model 3.
+
+:::
+    
+        
+
+    
+## Problem 2
+
+(4 points)
+If $X\sim\text{Poisson}(\mu)$ then $X$ could represent (select all that apply):
+
+(a) A count.
+(b) The time to an event.
+(c) The outcome of a coin toss.
+(d) Any decimal value.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(a)
+
+The support of $X$ is $\{0,1,2,3,\dotsc\}$,
+and a count is the only real world quantity in this list that matches that.
+
+:::
+
+## Problem 3
+
+(4 points)
+If $X\sim\text{Poisson}(\mu)$ then $\mu$ is (select all that apply):
+
+(a) The standard deviation of $X$.
+(b) The variance of $X$.
+(c) The probability that $X = 1$.
+(d) The mean of $X$.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(b) and (d)
+
+:::
+
+## Problem 4
+
+(4 points)
+Suppose you conduct quasi-Poisson regression and get an estimated dispersion parameter
+of $\hat{\phi} = 100$.
+This is evidence that (select all that apply):
+
+(a) The mean is equal to the variance.
+(b) The mean is not equal to the variance.
+(c) The data are Poisson-distributed.
+(d) The data are not Poisson-distributed.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(b) and (d)
+
+With quasi-Poisson regression, we assume that $Var(Y) = \phi E(Y)$.
+With the Poisson distribution, $Var(Y) = E(Y)$.
+So, if $\phi$ is large, that's evidence that the data are not Poisson-distributed.
+
+:::
+
+## Problem 5
+
+(1 point)
+When there is overdispersion, we expect the standard errors
+for quasi-Poisson regression to be \rule{1cm}{0.15mm}
+the standard errors for Poisson regression.
+(Select one.)
+
+(a) the same as
+(b) less than
+(c) greater than
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(c)
+
+With more variability in the data, we expect lower precision in estimating our coefficients.
+
+:::
+
+## Problem 6
+
+(1 point)
+True or false:
+R does not produce an AIC for quasi-Poisson regression because quasi-Poisson regression
+does not use a likelihood.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+Quasi-Poisson regression doesn't correspond to an actual distribution.
+It uses a quasi-likelihood instead of a likelihood.
+
+:::
+
+## Problem 7
+
+(1 point)
+True or false:
+Assuming everything else stays the same (e.g., the data, the formula),
+if you only change from Poisson to quasi-Poisson regression,
+the estimates of the coefficients will not change.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+:::
+
+## Problem 8
+
+(1 point)
+True or false:
+If $t_1 = t_2 = t_3 = \cdots = t_{n-1} = t_n = 1$
+then we do not need to include an offset in Poisson regression.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+$\log 1 = 0$
+
+:::
+
+## Problem 9
+
+(1 point)
+True or false:
+It is appropriate to use the $R^2$ for model selection when only some of the
+assumptions of linear regression are met.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+The $R^2$ is just a function of the observed values, the fitted values,
+and the average. It doesn't rely on any assumptions.
+
+:::
+
+## Problem 10
+
+(1 point)
+True or false:
+It is appropriate to use the $R^2_\text{adj}$ for model selection when only some of the
+assumptions of linear regression are met.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+:::
+
+    
+
+
+
+
+
+
+
+
+
+
+
