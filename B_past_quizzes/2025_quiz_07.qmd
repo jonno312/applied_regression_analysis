@@ -1,0 +1,340 @@
+---
+title: "Fall 2025 Quiz 7"
+date: "2025-10-24"
+execute:
+  echo: false
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(probably)
+
+# Set seed
+set.seed(7)
+```
+
+
+Below are the results of a logistic regression analysis.
+```{r}
+#| warning: false
+# Set parameter values
+n <- 1e3
+p_0 <- 0.6
+or_age_dog <- 0.5
+beta_0 <- log(p_0 / (1 - p_0))
+beta_1 <- 0
+beta_2 <- 0
+beta_3 <- log(or_age_dog)
+p_dog <- 0.445
+
+# Generate data
+dog <- rbinom(n = n,
+              size = 1,
+              prob = p_dog)
+age_5 <- runif(n = n,
+               min = 0,
+               max = 60)
+candy <- rbinom(n = n,
+                size = 1,
+                prob = plogis(beta_0 + beta_1 * dog + beta_2 * age_5 + beta_3 * dog * age_5))
+
+# Logistic regression
+mod_01 <- glm(formula = candy ~ dog * age_5,
+              family = binomial)
+summary(mod_01)
+```
+
+These are the variable definitions:
+
+- `candy` is equal to 1 for participants who use candy as a coping mechanism
+and 0 otherwise.
+- `dog` is equal to 1 for participants who have a dog
+and 0 otherwise.
+- `age_5` is equal to age in years minus 5.
+So, a participant of age 40 would have a value of 35
+for this variable.
+
+These are all possible sums of the coefficients, exponentiated:
+
+- `exp(0) = 1`
+- `exp(0.708233) = 2.03`
+- `exp(-0.346741) = 0.71`
+- `exp(-0.006168) = 0.99`
+- `exp(-0.598946) = 0.55`
+- `exp(0.708233 - 0.346741) = 1.44`
+- `exp(0.708233 - 0.006168) = 2.02`
+- `exp(0.708233 - 0.598946) = 1.12`
+- `exp(-0.346741 - 0.006168) = 0.70`
+- `exp(-0.346741 - 0.598946) = 0.39`
+- `exp(-0.006168 - 0.598946) = 0.55`
+- `exp(0.708233 - 0.346741 - 0.006168) = 1.43`
+- `exp(0.708233 - 0.346741 - 0.598946) = 0.79`
+- `exp(0.708233 - 0.006168 - 0.598946) = 1.11`
+- `exp(-0.346741 - 0.006168 - 0.598946) = 0.39`
+- `exp(0.708233 - 0.346741 - 0.006168 - 0.598946) = 0.78`
+
+
+## Problem 1
+
+    
+
+Please provide the correct numerical value for the odds or odds ratio
+in each statement.
+Each is worth one point.
+
+### Part (a)
+
+The odds of using candy as a coping mechanism for someone who does not have
+a dog and is five years old.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+2.03
+
+Since there was a request for more in-depth solutions in the mid-semester feedback,
+I've provided step-by-step solutions below.
+You do not need to go through all these steps to solve the problems.
+The learning objective was to be able to interpret the coefficients in logistic regression,
+so my hope was that you would interpret the coefficients and then just find
+those interpretations on the next page.
+The purpose of the additional questions about odds was to help you check your answers
+for the odds ratios.
+
+$$
+\begin{align*}
+    &\text{odds}_i \\
+    &= \exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right) \\
+    &= \exp\left(0.708233 - 0.346741 (0) -0.006168 (0) -0.598946 (0) \times (0) \right) \\
+    &= \exp\left(0.708233  \right) \\
+    &= 2.03
+\end{align*}
+$$
+
+:::
+
+### Part (b)
+
+The odds ratio comparing five-year-old dog owners to five-year-old
+non-dog-owners.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+0.71
+
+$$
+\begin{align*}
+    &\frac{\text{odds}_i}{\text{odds}_j} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right)}{\exp\left(0.708233 - 0.346741 \texttt{dog}_j -0.006168 \texttt{age\_5}_j -0.598946 \texttt{dog}_j \times \texttt{age\_5}_j \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 (1) -0.006168 (0) -0.598946 (1) \times (0) \right)}{\exp\left(0.708233 - 0.346741 (0) -0.006168 (0) -0.598946 (0) \times (0) \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741  \right)}{\exp\left(0.708233  \right)} \\
+    &= \exp\left(- 0.346741  \right) \\
+    &= 0.71
+\end{align*}
+$$
+
+:::
+
+### Part (c)
+
+The odds ratio comparing 45-year-old non-dog-owners to 44-year-old non-dog-owners.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+0.99
+
+$$
+\begin{align*}
+    &\frac{\text{odds}_i}{\text{odds}_j} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right)}{\exp\left(0.708233 - 0.346741 \texttt{dog}_j -0.006168 \texttt{age\_5}_j -0.598946 \texttt{dog}_j \times \texttt{age\_5}_j \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 (0) -0.006168 (40) -0.598946 (0) \times (40) \right)}{\exp\left(0.708233 - 0.346741 (0) -0.006168 (39) -0.598946 (0) \times (39) \right)} \\
+    &= \frac{\exp\left(0.708233  -0.006168 (40)  \right)}{\exp\left(0.708233  -0.006168 (39)  \right)} \\
+    &= \exp\left(-0.006168   \right) \\
+    &= 0.99
+\end{align*}
+$$
+
+:::
+
+### Part (d)
+
+The odds ratio comparing six-year-old dog owners to six-year-old
+non-dog-owners.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+0.39
+
+$$
+\begin{align*}
+    &\frac{\text{odds}_i}{\text{odds}_j} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right)}{\exp\left(0.708233 - 0.346741 \texttt{dog}_j -0.006168 \texttt{age\_5}_j -0.598946 \texttt{dog}_j \times \texttt{age\_5}_j \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 (1) -0.006168 (1) -0.598946 (1) \times (1) \right)}{\exp\left(0.708233 - 0.346741 (0) -0.006168 (1) -0.598946 (0) \times (1) \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741  -0.006168  -0.598946  \right)}{\exp\left(0.708233  -0.006168   \right)} \\
+    &= \exp\left( - 0.346741    -0.598946  \right) \\
+    &= 0.39
+\end{align*}
+$$
+
+:::
+
+### Part (e)
+
+The odds ratio comparing 36-year-old dog owners to 35-year-old dog owners.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+0.55
+
+$$
+\begin{align*}
+    &\frac{\text{odds}_i}{\text{odds}_j} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right)}{\exp\left(0.708233 - 0.346741 \texttt{dog}_j -0.006168 \texttt{age\_5}_j -0.598946 \texttt{dog}_j \times \texttt{age\_5}_j \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741 (1) -0.006168 (31) -0.598946 (1) \times (31) \right)}{\exp\left(0.708233 - 0.346741 (1) -0.006168 (30) -0.598946 (1) \times (30) \right)} \\
+    &= \frac{\exp\left(0.708233 - 0.346741  -0.006168 (31) -0.598946  (31) \right)}{\exp\left(0.708233 - 0.346741  -0.006168 (30) -0.598946  (30) \right)} \\
+    &= \exp\left( -0.006168 -0.598946   \right) \\
+    &= 0.55
+\end{align*}
+$$
+
+:::
+
+### Part (f)
+
+The odds of using candy as a coping mechanism for someone who
+does have a dog and is five years old.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+1.44
+
+$$
+\begin{align*}
+    &\text{odds}_i \\
+    &= \exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right) \\
+    &= \exp\left(0.708233 - 0.346741 (1) -0.006168 (0) -0.598946 (1) \times (0) \right) \\
+    &= \exp\left(0.708233 - 0.346741  \right) \\
+    &= 1.44
+\end{align*}
+$$
+
+:::
+
+### Part (g)
+
+The odds of using candy as a coping mechanism for someone who
+does not have a dog and is six years old.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+2.02
+
+$$
+\begin{align*}
+    &\text{odds}_i \\
+    &= \exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right) \\
+    &= \exp\left(0.708233 - 0.346741 (0) -0.006168 (1) -0.598946 (0) \times (1) \right) \\
+    &= \exp\left(0.708233  -0.006168 \right) \\
+    &= 2.02
+\end{align*}
+$$
+
+:::
+
+### Part (h)
+
+The odds of using candy as a coping mechanism for someone who
+does have a dog and is six years old.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+0.78
+
+$$
+\begin{align*}
+    &\text{odds}_i \\
+    &= \exp\left(0.708233 - 0.346741 \texttt{dog}_i -0.006168 \texttt{age\_5}_i -0.598946 \texttt{dog}_i \times \texttt{age\_5}_i \right) \\
+    &= \exp\left(0.708233 - 0.346741 (1) -0.006168 (1) -0.598946 (1) \times (1) \right) \\
+    &= \exp\left(0.708233 - 0.346741  -0.006168  -0.598946  \right) \\
+    &= 0.78
+\end{align*}
+$$
+
+:::
+
+
+## Problem 2
+
+```{r}
+#| label: fig-cal
+#| fig-cap: "Calibration plot for analysis above."
+cal_plot_breaks(.data = data.frame(truth = candy,
+                                   estimate = mod_01$fitted.values),
+                truth = truth,
+                estimate = estimate)
+```
+
+
+
+The following questions refer to @fig-cal.
+Each is worth one point.
+
+### Part (a)
+
+What is the probability of using candy as a coping mechanism
+for someone with a fitted value of 0.25?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+0.75
+
+You need to find 0.25 on the horizontal axis,
+go up to the dot, and find the corresponding value on the vertical axis.
+
+:::
+
+### Part (b)
+
+What is the probability of using candy as a coping mechanism
+for someone with a fitted value of 0.65?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+0.625 (give or take)
+
+:::
+
+### Part (c)
+
+Does this type of plot tell us if our assumptions are met?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+Yes
+
+:::
+
+### Part (d)
+
+True or false: The closer the black line is to the upper-left-hand corner,
+the better our model is.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+False
+
+:::
+
+
+
+
+
+
+
+
+
