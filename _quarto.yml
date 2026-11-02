@@ -128,8 +128,7 @@ format:
       - cosmo
       - brand
     link-external-newwindow: true
-  pdf:
-    documentclass: scrreprt
+
 
 
 
