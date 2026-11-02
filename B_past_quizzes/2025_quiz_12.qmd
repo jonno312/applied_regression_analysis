@@ -1,0 +1,330 @@
+---
+title: "Fall 2025 Quiz 12"
+date: "2025-12-05"
+execute:
+  echo: false
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(nnet)
+library(AER)
+```
+
+Recall that for the baseline category logit model,
+we assume the following:
+
+- $Y_i\in\{0,1,2,\dotsc,M\}$.
+- For each $m\in\{1,2,\dotsc,M\}$,
+$$
+\log \left(\frac{P\left(Y_i = m\middle|X_{i1},\dotsc,X_{ip}\right)}{P\left(Y_i = 0\middle|X_{i1},\dotsc,X_{ip}\right)}\right) = \beta_{0m} + \beta_{1m} X_{i1} + \cdots + \beta_{pm} X_{ip} \text{.}
+$$
+
+Below are the results of a baseline category logit model.
+
+```{r}
+# Create data set from Table 8.17 on page 331 of Categorical Data Analysis,
+# 3rd ed, by Alan Agresti. Published by Wiley.
+length <- c(1.30,1.32,1.32,1.40,1.42,
+            1.42,1.47,1.47,1.50,1.52,
+            1.63,1.65,1.65,1.65,1.65,
+            1.68,1.70,1.73,1.78,1.78,
+            1.80,1.85,1.93,1.93,1.98,
+            2.03,2.03,2.31,2.36,2.46,
+            3.25,3.28,3.33,3.56,3.58,
+            3.66,3.68,3.71,3.89,1.24,
+            1.30,1.45,1.45,1.55,1.60,
+            1.60,1.65,1.78,1.78,1.80,
+            1.88,2.16,2.26,2.31,2.36,
+            2.39,2.41,2.44,2.56,2.67,
+            2.72,2.79,2.84)
+choice <- c("invertebrates","fish","fish","fish","invertebrates",
+            "fish","invertebrates","fish","invertebrates","invertebrates",
+            "invertebrates","other","other","invertebrates","fish",
+            "fish","invertebrates","other","fish","other",
+            "fish","fish","invertebrates","fish","invertebrates",
+            "fish","fish","fish","fish","fish",
+            "other","other","fish","fish","fish",
+            "fish","other","fish","fish","invertebrates",
+            "invertebrates","invertebrates","other","invertebrates","invertebrates",
+            "invertebrates","fish","invertebrates","other","invertebrates",
+            "invertebrates","fish","fish","fish","fish",
+            "fish","fish","fish","other","fish",
+            "invertebrates","fish","fish")
+
+# Shift length
+length_2 <- length - 2
+
+# Outcome
+table(choice)
+
+# Baseline category logit model
+mod_01 <- multinom(formula = choice ~ length_2)
+# summary(mod_01)
+
+# P-values
+coeftest(mod_01)
+```
+
+Below are the exponentiated coefficients.
+
+```{r}
+# Exponentiated coefficients
+co <- exp(summary(mod_01)$coefficients)
+co
+
+# Probabilities for two-meter-long alligators
+p_f <- 1 / (1 + co[1,1] + co[2,1])
+p_i <- co[1,1] * p_f
+p_o <- co[2,1] * p_f
+```
+
+The "participants" in this study were 63 alligators caught in Lake George, Florida.
+The variables are as follows:
+
+- The outcome was primary food choice,
+with three levels: fish, invertebrates, and other.
+- `length_2` denotes length in meters, minus 2.
+So, a three-meter-long alligator would have a value of 1 for this variable.
+
+Please answer the following questions.
+
+## Problem 1
+
+(1 point)
+Which primary food choice is most likely among alligators that are two meters long?
+Ignore statistical significance.
+Select only one of the following options.
+
+
+(a) Fish
+(b) Invertebrates
+(c) Other
+(d) It's impossible to know from the information provided.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Fish.
+
+The probability that a two-meter-long alligator primarily eats invertebrates
+is 53% lower than the probability that it primarily eats fish.
+The probability that a two-meter-long alligator primarily eats other food
+is 69% lower than the probability that it primarily eats fish.
+So, fish must be the most likely choice among two-meter-long alligators.
+
+:::
+
+## Problem 2
+
+(1 point)
+Which primary food choice is most likely among alligators that are three meters long?
+Ignore statistical significance.
+Select only one of the following options.
+
+
+(a) Fish
+(b) Invertebrates
+(c) Other
+(d) It's impossible to know from the information provided.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Fish.
+
+The ratio of the probability that an alligator primarily eats invertebrates
+to the probability that it primarily eats fish decreases
+by 92% with each one-meter increase in length.
+The ratio of the probability that an alligator primarily eats other food
+to the probability that it primarily eats fish decreases
+by 8% with each one-meter increase in length.
+Since these ratios were already less than 1 for two-meter-long alligators,
+and they are decreasing,
+the ratios must be less than 1 for three-meter-long alligators.
+
+:::
+
+## Problem 3
+
+For each of the following pairs,
+select whether the difference is statistically significant,
+not statistically significant,
+or whether it's impossible to tell based on the results above.
+Each is worth one point.
+
+### Part (a)
+
+The probability that a two-meter-long alligator
+will primarily eat fish
+and the probability that a two-meter-long alligator
+will primarily eat invertebrates.
+
+
+(i) Statistically significant.
+(ii) Not statistically significant.
+(iii) Impossible to tell from the results above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Statistically significant.
+
+This is tested in the following line:
+        
+```
+                           Estimate Std. Error z value Pr(>|z|)   
+invertebrates:(Intercept) -0.763870   0.386543 -1.9762 0.048137 * 
+```
+
+:::
+
+### Part (b)
+
+The odds that a three-meter-long alligator
+will primarily eat invertebrates
+and the odds that a two-meter-long alligator
+will primarily eat invertebrates.
+
+
+(i) Statistically significant.
+(ii) Not statistically significant.
+(iii) Impossible to tell from the results above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible to tell.
+
+This analysis does not use odds.
+
+Even if this analysis did use odds,
+the fact that the coefficient for `invertebrates:length_2`
+is significantly different from zero
+doesn't imply that there is a statistically significant
+difference between any two groups of alligators
+of different lengths.
+We don't know if there even were any alligators who were
+two or three meters long.
+        
+
+:::
+        
+### Part (c)
+
+The probability that a two-meter-long alligator
+will primarily eat fish
+and the probability that a two-meter-long alligator
+will primarily eat other food.
+
+
+(i) Statistically significant.
+(ii) Not statistically significant.
+(iii) Impossible to tell from the results above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Statistically significant.
+
+This is tested in the following line:
+        
+```
+                           Estimate Std. Error z value Pr(>|z|)   
+other:(Intercept)         -1.168143   0.388183 -3.0093 0.002619 **
+```
+
+:::
+        
+### Part (d)
+
+The probability that a two-meter-long alligator
+will primarily eat invertebrates
+and the probability that a two-meter-long alligator
+will primarily eat other food.
+
+
+(i) Statistically significant.
+(ii) Not statistically significant.
+(iii) Impossible to tell from the results above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible to tell.
+
+This difference is not explicitly tested
+in the output above,
+since fish is the reference category.
+
+:::
+
+### Part (e)
+
+The odds that a three-meter-long alligator
+will primarily eat fish
+and the odds that a three-meter-long alligator
+will primarily eat invertebrates.
+
+
+(i) Statistically significant.
+(ii) Not statistically significant.
+(iii) Impossible to tell from the results above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible to tell.
+
+This analysis does not use odds.
+
+:::
+
+## Problem 4
+
+(5 points)
+Which of the following models could be applied to these data?
+Select all that apply.
+
+
+(a) The cumulative logits model, which assumes that for each $m\in\{0,1,2,\dotsc,M-1\}$,
+$$
+\log \left(\frac{P\left(Y_i \le m \middle|X_{i1},\dotsc,X_{ip}\right)}{P\left(Y_i > m \middle|X_{i1},\dotsc,X_{ip}\right)}\right) = \beta_{0m} + \beta_{1m} X_{i1} + \cdots + \beta_{pm} X_{ip} \text{.}
+$$
+(b) The proportional odds model, which assumes that for each $m\in\{0,1,2,\dotsc,M-1\}$,
+$$
+\log \left(\frac{P\left(Y_i \le m \middle|X_{i1},\dotsc,X_{ip}\right)}{P\left(Y_i > m \middle|X_{i1},\dotsc,X_{ip}\right)}\right) = \beta_{0m} + \beta_{1} X_{i1} + \cdots + \beta_{p} X_{ip} \text{.}
+$$
+(c) The adjacent categories model, which assumes that for each $m\in\{1,2,\dotsc,M\}$,
+$$
+\log \left(\frac{P\left(Y_i = m\middle|X_{i1},\dotsc,X_{ip}\right)}{P\left(Y_i = m - 1\middle|X_{i1},\dotsc,X_{ip}\right)}\right) = \beta_{0m} + \beta_{1m} X_{i1} + \cdots + \beta_{pm} X_{ip} \text{.}
+$$
+(d) The restricted adjacent categories model, which assumes that for each $m\in\{1,2,\dotsc,M\}$,
+$$
+\log \left(\frac{P\left(Y_i = m\middle|X_{i1},\dotsc,X_{ip}\right)}{P\left(Y_i = m - 1\middle|X_{i1},\dotsc,X_{ip}\right)}\right) = \beta_{0m} + \beta_{1} X_{i1} + \cdots + \beta_{p} X_{ip} \text{.}
+$$
+(e) None of the above.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+None of the above.
+All of these models require the outcome to have ordered levels.
+There's no natural ordering to fish, invertebrates, and other.
+
+:::
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
