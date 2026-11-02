@@ -1,0 +1,350 @@
+---
+title: "Fall 2025 Quiz 14"
+date: "2025-12-19"
+execute:
+  echo: false
+---
+
+```{r}
+#| warning: false
+# Plot A
+h_5 <- function(x){
+  x + 2
+}
+h_6 <- function(x){
+  x + 4
+}
+curve(expr = h_5,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "h(t)",
+      main = "Plot A")
+curve(expr = h_6,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot B
+cll_3 <- function(x){
+  2 * log(x) - 2 * log(2)
+}
+cll_4 <- function(x){
+  2 * log(x) - 2 * log(2) - 1
+}
+curve(expr = cll_3,
+      from = 2,
+      to = 12,
+      xlab = "t",
+      ylab = "log(-log(S(t)))",
+      main = "Plot B",
+      ylim = c(cll_4(2),
+               cll_3(12)))
+curve(expr = cll_4,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot C
+h_3 <- function(x){
+  sin(x / 8 * 2 * pi) + x
+}
+h_4 <- function(x){
+  h_3(x) / 2
+}
+curve(expr = h_3,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "h(t)",
+      main = "Plot C")
+curve(expr = h_4,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot D
+h_1 <- function(x){
+  12 - x
+}
+h_2 <- function(x){
+  h_1(x) / 2
+}
+curve(expr = h_1,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "h(t)",
+      main = "Plot D")
+curve(expr = h_2,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot E
+cll_1 <- function(x){
+  log(x)
+}
+cll_2 <- function(x){
+  log(x) / 2
+}
+curve(expr = cll_1,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "log(-log(S(t)))",
+      main = "Plot E")
+curve(expr = cll_2,
+      add = TRUE,
+      lty = 2)
+grid()
+
+# Plot F
+S_1 <- function(x){
+  -(x - 6)^3 / 432 + 1 / 2
+}
+S_2 <- function(x){
+  1 - x / 12
+}
+curve(expr = S_1,
+      from = 0,
+      to = 12,
+      xlab = "t",
+      ylab = "S(t)",
+      main = "Plot F")
+curve(expr = S_2,
+      add = TRUE,
+      lty = 2)
+grid()
+```
+
+
+
+## Problem 1
+
+Each of the plots above shows two curves,
+one for each group in a randomized controlled trial.
+For each plot,
+identify whether the proportional hazards assumption is met.
+Each is worth one point.
+
+### Part (a)
+
+
+Plot A
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The hazard functions are parallel, not proportional.
+
+:::
+
+### Part (b)
+
+
+Plot B
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i
+
+The complementary log-log functions are parallel.
+
+:::
+
+### Part (c)
+
+
+Plot C
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i
+
+The solid hazard function is twice the dashed hazard function.
+
+:::
+
+### Part (d)
+
+
+Plot D
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i
+
+The solid hazard function is twice the dashed hazard function.
+
+:::
+
+### Part (e)
+
+
+Plot E
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The complementary log-log functions intersect,
+so they cannot be parallel.
+
+:::
+
+### Part (f)
+
+
+Plot F
+
+
+(i) Proportional hazards assumption is met.
+(ii) Proportional hazards assumption is not met.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+ii
+
+The survival functions cross, meaning $S_2(t) \ne S_1(t)^c$.
+
+:::
+        
+
+
+## Problem 2
+
+
+Please identify each of the following statements as true or false.
+Each problem is worth one point.
+
+### Part (a)
+
+Cox regression estimates hazard rates.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+Cox regression estimates hazard ratios.
+
+:::
+
+### Part (b)
+
+The raw estimates of coefficients in logistic regression represent odds ratios,
+and therefore cannot be negative.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+The raw estimate of the intercept is a log odds and the raw estimate
+of a slope is a log odds ratio.
+Both of these can be negative.
+
+:::
+
+### Part (c)
+
+I've developed a new blood test for a previously difficult-to-identify cancer.
+The test has high sensitivity.
+This means that if someone has the cancer,
+they have a high probability of testing positive.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+:::
+
+
+### Part (d)
+
+I've developed a new blood test for a previously difficult-to-identify cancer.
+The test has high specificity.
+This means that if someone tests negative,
+they have a low probability of having the cancer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+High specificity means that if someone does not have the cancer,
+they have a high probability of testing negative.
+
+:::
+
+
+### Part (e)
+
+We can only compute $R^2$ for normally-distributed data.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+
+:::
+
+### Part (f)
+
+Suppose you have a normally-distributed vulnerability index ($V_i$)
+that you hypothesize has a different mean depending on race ($R_i$).
+It doesn't make sense to write the linear model equation as
+$E(V_i|R_i) = \beta_0 + \beta_1 R_i$
+because $R_i$ is a categorical variable, not a numeric variable.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True.
+
+We would have to turn race into dummy variables in order to write down
+a linear model that makes sense.
+
+:::
+
+    
+
+
+
+
+
+
+
+
+
+
+
