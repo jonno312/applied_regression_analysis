@@ -104,8 +104,8 @@ so we fail to reject the null hypothesis that the slope is zero.
 z <- rgamma(n = n,
             shape = 2,
             rate = 0.1)
-boxplot(z)
-hist(z)
+# boxplot(z)
+# hist(z)
 qqnorm(z)
 qqline(z)
 ```
