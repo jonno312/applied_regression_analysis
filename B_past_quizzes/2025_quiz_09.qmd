@@ -1,0 +1,191 @@
+---
+title: "Fall 2025 Quiz 9"
+date: "2025-11-07"
+execute:
+  echo: false
+---
+
+```{r}
+# Set seed
+set.seed(9)
+```
+
+Below are the results of a Poisson regression analysis.
+
+```{r}
+# Set parameter values
+beta_0 <- 10
+beta_1 <- 4
+beta_2 <- 65
+beta_3 <- -6.5
+
+# Generate data
+year_1986 <- 0:20
+after_1996 <- as.integer(year_1986 > 10)
+mu <- beta_0 + beta_1 * year_1986 + beta_2 * after_1996 + beta_3 * year_1986 * after_1996
+new_hiv <- rpois(n = length(year_1986),
+                 lambda = mu)
+
+# Regression
+mod_01 <- glm(formula = new_hiv ~ year_1986 * after_1996,
+              family = poisson)
+summary(mod_01)
+```
+
+These are the variable definitions:
+
+- `new_hiv` is the number of new cases of HIV at a hospital in one year.
+- `year_1986` is the number of years after 1986.
+So, the year 1991 would have a value of 5 for this variable.
+- `after_1996` is equal to 1 for years after 1996 (i.e., 1997, 1998, 1999, etc.)
+and 0 for years up to and including 1996 (i.e., 1996, 1995, 1994, 1993, etc.).
+
+Each of the following statements can be expressed in the form
+$$
+\exp(2.41328a + 0.16398 b + 2.58774 c - 0.25147 d) \text{.}
+$$
+For each statement, provide the correct values of $a$, $b$, $c$, and $d$.
+Each statement is worth four points.
+
+
+## Problem 1
+
+
+
+The expected number of new cases of HIV in 1986.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$a = 1$, $b = 0$, $c = 0$, $d = 0$
+
+Note that since $t_i = 1$, $\mu_i= \lambda_i t_i = \lambda_i$.
+$$
+\begin{align*}
+    \mu_i &= \exp(2.41328 + 0.16398 \texttt{year\_1986}_i + 2.58774 \texttt{after\_1996}_i \\
+    &\qquad - 0.25147 \texttt{year\_1986}_i \times \texttt{after\_1996}_i) \\
+    &= \exp(2.41328 (1) + 0.16398 (0) + 2.58774 (0) - 0.25147 (0)) 
+\end{align*}
+$$
+
+:::
+
+## Problem 2
+
+The ratio of the expected number of new cases of HIV in 1987 to
+the expected number of new cases of HIV in 1986.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$a = 0$, $b = 1$, $c = 0$, $d = 0$
+
+$$
+\begin{align*}
+    &\frac{\exp(2.41328 (1) + 0.16398 (1) + 2.58774 (0) - 0.25147  (0))}{\exp(2.41328 (1) + 0.16398 (0) + 2.58774 (0) - 0.25147 (0))} \\
+    &= \exp(2.41328 (0) + 0.16398 (1) + 2.58774 (0) - 0.25147 (0) ) \\
+\end{align*}
+$$
+
+:::
+
+## Problem 3
+
+The ratio of the expected number of new cases of HIV in 1988 to
+the expected number of new cases of HIV in 1987.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$a = 0$, $b = 1$, $c = 0$, $d = 0$
+
+$$
+\begin{align*}
+    &\frac{\exp(2.41328 (1) + 0.16398 (2) + 2.58774 (0) - 0.25147 (0) )}{\exp(2.41328 (1) + 0.16398 (1) + 2.58774 (0) - 0.25147 (0) )} \\
+    &= \exp(2.41328 (0) + 0.16398 (1) + 2.58774 (0) - 0.25147 (0) ) \\
+\end{align*}
+$$
+
+:::
+
+## Problem 4
+
+The expected number of new cases of HIV in 1996.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$a = 1$, $b = 10$, $c = 0$, $d = 0$
+
+$$
+\begin{align*}
+    \mu_i &= \exp(2.41328 + 0.16398 \texttt{year\_1986}_i + 2.58774 \texttt{after\_1996}_i \\
+    &\qquad - 0.25147 \texttt{year\_1986}_i \times \texttt{after\_1996}_i) \\
+    &= \exp(2.41328 (1) + 0.16398 (10) + 2.58774 (0) - 0.25147 (10) \times (0)) \\
+    &= \exp(2.41328 (1) + 0.16398 (10) + 2.58774 (0) - 0.25147  (0)) 
+    % &= \exp(2.41328 + 0.16398 (10) ) \\
+    % &= 57.57451
+\end{align*}
+$$
+
+:::
+
+## Problem 5
+
+The ratio of the expected number of new cases of HIV in 1997 to
+the expected number of new cases of HIV in 1996.
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$a = 0$, $b = 1$, $c = 1$, $d = 11$
+
+$$
+\begin{align*}
+    &\frac{\exp(2.41328 (1) + 0.16398 (11) + 2.58774 (1) - 0.25147 (11) )}{\exp(2.41328 (1) + 0.16398 (10) + 2.58774 (0) - 0.25147  (0))} \\
+    &= \exp(2.41328 (0) + 0.16398 (1) + 2.58774 (1) - 0.25147 ( 11)) \text{.}
+\end{align*}
+$$
+
+:::
+
+## Problem 6
+
+The ratio of the expected number of new cases of HIV in 1998 to
+the expected number of new cases of HIV in 1997.
+
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$a = 0$, $b = 1$, $c = 0$, $d = 1$
+
+$$
+\begin{align*}
+    &\frac{\exp(2.41328 (1) + 0.16398 (12) + 2.58774 (1) - 0.25147 (12) )}{\exp(2.41328 (1) + 0.16398 (11) + 2.58774 (1) - 0.25147 (11) )} \\
+    &= \exp(2.41328 (0) + 0.16398 (1) + 2.58774 (0) - 0.25147 (1) ) \\
+\end{align*}
+$$
+
+:::
+        
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
