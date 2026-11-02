@@ -1,0 +1,269 @@
+---
+title: "Fall 2025 Quiz 5"
+date: "2025-10-10"
+execute:
+  echo: false
+---
+
+## Problem 1
+
+(1 point)
+Which of the following values of $R^2$ indicates the best fit to the data?
+Select only one.
+
+(a) $0.34$
+(b) $0.43$
+(c) $0.58$
+(d) $0.60$
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+D
+
+:::
+
+## Problem 2
+
+(4 points)
+Which of the following metrics is/are intended to prevent overfitting?
+Select all that apply.
+
+
+(a) $R^2$
+(b) $R_\text{adj}^2$
+(c) Likelihood
+(d) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+B and D
+
+:::
+
+## Problem 3
+
+Suppose you have three multiple regression models that differ only in what explanatory variables
+they include. The three models are:
+
+- Model 1: $E(Y_i|A_i,B_i,C_i,D_i) = \beta_0 + \beta_1 A_i + \beta_2 B_i + \beta_3 C_i + \beta_4 D_i$;
+- Model 2: $E(Y_i|A_i,B_i,C_i) = \beta_0 + \beta_1 A_i + \beta_2 B_i + \beta_3 C_i$; and
+- Model 3: $E(Y_i|A_i,B_i) = \beta_0 + \beta_1 A_i + \beta_2 B_i$.
+
+Please answer the following questions based on these three models.
+Assume all four of our assumptions are met for each model.
+
+
+
+### Part (a)
+
+(4 points)
+Which of the following statements is/are true?
+Select all that apply.
+
+
+(i) Model 3 is nested within Model 2.
+(ii) Model 3 is nested within Model 1.
+(iii) Model 2 is nested within Model 3.
+(iv) Model 2 is nested within Model 1.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i, ii, and iv
+
+:::
+
+### Part (b)
+
+(4 points)
+Suppose $D_3$ is missing in the data set, i.e., the third participant
+is missing a value for the fourth explanatory variable.
+There is no other missing data in the data set.
+Which of the following metrics could you use to compare Model 1 and Model 2?
+Select all that apply.
+
+
+(i) $R^2$
+(ii) $R_\text{adj}^2$
+(iii) Likelihood
+(iv) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i and ii
+
+:::
+
+### Part (c)
+
+(4 points)
+Suppose $D_3$ is missing in the data set, i.e., the third participant
+is missing a value for the fourth explanatory variable.
+There is no other missing data in the data set.
+Which of the following metrics could you use to compare Model 2 and Model 3?
+Select all that apply.
+
+
+(i) $R^2$
+(ii) $R_\text{adj}^2$
+(iii) Likelihood
+(iv) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i, ii, iii, and iv
+
+:::
+
+### Part (d)
+
+(4 points)
+Suppose $A_3$ is missing in the data set, i.e., the third participant
+is missing a value for the first explanatory variable.
+There is no other missing data in the data set.
+Which of the following metrics could you use to compare Model 2 and Model 3?
+Select all that apply.
+
+
+(i) $R^2$
+(ii) $R_\text{adj}^2$
+(iii) Likelihood
+(iv) AIC
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+i, ii, iii, and iv
+
+:::
+
+### Part (e)
+
+(4 points)
+Suppose you use a likelihood ratio test to compare Model 1 to Model 3.
+You obtain a p-value of 0.00001.
+What is a reasonable conclusion from this result?
+Select all that apply.
+
+
+(i) Model 3 is at least as good as Model 1.
+(ii) Model 3 fits the data better than Model 1.
+(iii) Model 2 is at least as good as Model 3.
+(iv) Model 1 fits the data better than Model 3.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+iv
+
+:::
+
+## Problem 4
+
+Please identify each of the following statements as true or false.
+Each problem is worth one point.
+You do not need to justify your answers.
+
+### Part (a)
+
+Adding more explanatory variables to the model increases the risk of overfitting.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+:::
+
+### Part (b)
+
+Maximizing the $R^2$ maximizes our ability to generalize to new data.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False
+
+:::
+
+### Part (c)
+
+        The AIC and likelihood ratio test will always agree on the best model.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False
+
+:::
+
+### Part (d)
+
+Testing a model on new data can help us determine if it has been overfit.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+:::
+
+### Part (e)
+
+A high AIC is better than a low AIC.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False
+
+:::
+
+### Part (f)
+
+It is appropriate to use the $R^2$ for model selection when only some of the
+assumptions of linear regression are met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+:::
+
+### Part (g)
+
+It is appropriate to use the $R^2_\text{adj}$ for model selection when only some of the
+assumptions of linear regression are met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+True
+
+:::
+
+### Part (h)
+
+The likelihood ratio test cannot be used to compare nested models.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False
+
+:::
+
+### Part (i)
+
+The AIC cannot be used to compare nested models.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False
+
+:::
+
+
+
+
+
+
+
+
