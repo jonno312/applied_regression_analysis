@@ -1,0 +1,213 @@
+---
+title: "Fall 2025 Quiz 2"
+date: "2025-09-19"
+execute:
+  echo: false
+---
+
+```{r}
+# Set seed
+set.seed(2)
+```
+
+
+## Problem 1
+
+Suppose I recruit a sample of Bostonians and measure the duration of their daily commute (in minutes)
+and their total cholesterol (in mg/dL).
+The results below are from a regression of cholesterol on commute:
+
+```{r}
+# Parameter values
+n <- 1e4
+beta_0 <- 187
+beta_1 <- 0
+sigma <- 500
+
+# Generate data
+commute <- rnorm(n = n)
+epsilon <- rnorm(n = n,
+                 sd = sigma)
+y <- beta_0 + beta_1 * commute + epsilon
+
+# Run model
+mod_01 <- lm(formula = y ~ commute)
+summary(mod_01)
+```
+
+
+### Part (a)
+
+(3 points)
+Assuming the necessary assumptions are met,
+what does 186.636 represent in real-world terms?
+In other words, interpret the intercept for this study.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The expected (or average, or mean, or estimated; 1 point)
+cholesterol (1 point) for a Bostonian whose commute is zero minutes long (1 point).
+No points lost if you don't mention that we're talking about Bostonians specifically.
+
+:::
+
+### Part (b)
+
+(6 points)
+Assuming the necessary assumptions are met,
+what does the value 6.998 represent in real-world terms?
+In other words, intepret the slope for this study.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The expected (or average, or mean, or estimated; 1 point)
+change (or increase; 1 point)
+in cholesterol (1 point)
+associated with a one-minute (1 point)
+increase (or change; 1 point)
+in commute duration (1 point).
+No points lost if you used a causal interpretation;
+that's not our focus right now.
+
+Alternatively,
+the expected (or average, or mean, or estimated; 1 point)
+difference (1 point)
+in total cholesterol (1 point)
+between two populations of Bostonians
+that differ (1 point) by one minute (1 point)
+in the duration of their daily commute (1 point).
+
+:::
+
+### Part (c)
+
+(2 points)
+Assuming the necessary assumptions are met,
+would you conclude that there's a linear relationship between commute duration
+and total cholesterol among Bostonians?
+Why or why not?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No (1 point).
+The p-value associated with `commute` is $0.167 > 0.05$ (1 point),
+so we fail to reject the null hypothesis that the slope is zero.
+
+:::
+
+## Problem 2
+
+```{r}
+#| label: fig-qq
+#| fig-cap: "Q-Q plot of the residuals for a simple linear regression."
+# Generate non-normal random variables
+z <- rgamma(n = n,
+            shape = 2,
+            rate = 0.1)
+boxplot(z)
+hist(z)
+qqnorm(z)
+qqline(z)
+```
+
+
+Suppose @fig-qq contains a Q-Q plot of the residuals for a simple linear regression.
+For each assumption below, do the following:
+
+- State whether @fig-qq is evidence for the validity
+of the assumption in this data set, evidence against it,
+or provides no information.
+- If you decide that @fig-qq is evidence for or against the assumption,
+justify your decision.
+If you decide that @fig-qq provides no information about the assumption,
+state what would be informative instead.
+
+
+### Part (a)
+
+(2 points)
+$E(\epsilon_i|X_1,\dotsc,X_n) = 0$
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+@fig-qq provides no information.
+To evaluate this assumption, we need a plot of the residuals as a function
+of the explanatory variable.
+
+Note: a plot of the residuals against $X$ (such as a scatter plot of the residuals) would be needed. Saying "scatter plot" or "residual plot" alone would not be sufficient.
+
+:::
+
+### Part (b)
+
+(2 points)
+The observations are iid.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+@fig-qq provides no information.
+Instead, we would need to examine how the data were collected.
+
+:::
+
+### Part (c)
+
+(2 points)
+$Var(\epsilon_i|X_1,\dotsc,X_n) = \sigma^2$
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+@fig-qq provides no information.
+Instead, we would need a plot of the residuals as a function
+of the explanatory variable.
+        
+Note: same as (a)
+
+:::
+
+### Part (d)
+
+(2 points)
+$\epsilon_i|X_1,\dotsc,X_n$ is normally distributed.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+@fig-qq is evidence against the validity of this assumption
+in this data set.
+We know this because the points deviate strongly from the reference line.
+
+:::
+
+## Problem 3
+
+(4 points)
+Suppose you and your colleagues agree that the following assumptions are met for 
+a simple linear regression that you've run:
+
+- $E(\epsilon_i|X_1,\dotsc,X_n) = 0$
+- The observations are iid.
+- $Var(\epsilon_i|X_1,\dotsc,X_n) = \sigma^2$
+
+Without any additional information,
+which of the following claims can you make?
+Select all that apply.
+
+(a) We can interpret the coefficients.
+(b) The standard errors are accurate.
+(c) If we increase our sample size, our estimators will get close to the true values.
+(d) We can interpret the p-values generated by R.
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+(a), (b), and (c)
+
+    
+:::
+
+
+
+
+
+
+
