@@ -1,0 +1,320 @@
+---
+title: "Fall 2025 Quiz 11"
+date: "2025-11-21"
+execute:
+  echo: false
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(survival)
+```
+
+These are the results of a Cox regression:
+
+```{r}
+#| warning: false
+# Load data
+d <- gbsg
+
+# # Values of variable
+# range(d$rfstime)
+# range(d$nodes)
+
+# Change survival time to years
+d$rfstime <- d$rfstime / 365.25
+
+# Cox regression with interaction
+mod_01 <- coxph(formula = Surv(time = rfstime,
+                               event = status) ~ meno * nodes,
+                data = d)
+summary(mod_01)
+
+# # Schoenfeld residual test
+# cox.zph(mod_01)
+```
+
+
+The data come from a 1984-1989 study of German patients with node-positive breast cancer.
+The variables are as follows:
+
+- `rfstime` is "recurrence free survival time",
+i.e., the number of years to recurrence, death, or last follow-up.
+- `status` is 1 for recurrence or death and 0
+for alive without recurrence.
+- `meno` is 1 for postmenopausal patients
+and 0 for premenopausal patients.
+- `nodes` is the number of positive lymph nodes.
+Values range from 1 to 51.
+
+Please answer the following questions.
+
+## Problem 1
+
+For each of the following,
+please write a number or mathematical expression representing the statement.
+Since I'm not letting you use calculators, you don't have to do any computation.
+For example, for the statement, "The number of toes on a typical human being,"
+you could write "10" or "5 + 5".
+If it's impossible to write a number or mathematical expression representing the statement
+because not enough information has been provided,
+please write, "Impossible."
+Each is worth one point.
+
+
+### Part (a)
+
+The hazard ratio at time $t$ comparing postmenopausal to premenopausal patients,
+among patients who have no positive lymph nodes.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+1.082660
+
+$$
+\begin{align*}
+    \frac{\lambda_j(t)}{\lambda_i(t)} &= \frac{\lambda_0(t) \exp\left(0.079421 \texttt{meno}_j + 0.060853 \texttt{nodes}_j - 0.003607 \texttt{meno}_j\times\texttt{nodes}_j\right)}{\lambda_0(t) \exp\left(0.079421 \texttt{meno}_i + 0.060853 \texttt{nodes}_i - 0.003607 \texttt{meno}_i\times\texttt{nodes}_i\right)} \\
+    &= \frac{ \exp\left(0.079421 (1) + 0.060853 (0) - 0.003607 (1)\times(0)\right)}{ \exp\left(0.079421 (0) + 0.060853 (0) - 0.003607 (0)\times(0)\right)} \\
+    &= \exp\left(0.079421 \right) \\
+    &= 1.082660
+\end{align*}
+$$
+You might have thought to yourself, "These patients have 'node-positive' breast cancer,
+and the minimum number of positive lymph nodes is 1.
+How can we estimate a hazard ratio among patients who have no positive lymph nodes?"
+The interpretation of the coefficient is the same,
+even though there aren't any observed patients with no positive lymph nodes.
+We are extrapolating beyond our observed data,
+which is never a good idea.
+But, that's how you interpret this coefficient.
+
+:::
+        
+### Part (b)
+
+The hazard rate at time $t$ for a postmenopausal patient
+with one positive lymph node.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible.
+
+Cox regression returns hazard ratios, not hazard rates.
+
+A couple people wrote $h_0(t) \exp(0.079421 + 0.060853 - 0.003607)$
+in response to this question.
+If you would admit this as a correct answer,
+you should admit any function of $t$.
+If a student wrote, for example, $h_0(t) \exp(5)$,
+they could argue that
+$$
+h_0(t) = g_0(t) \exp(0.079421 + 0.060853 - 0.003607 - 5) \text{,}
+$$
+so that
+$$
+\begin{align*}
+    h_0(t) \exp(5) &=  g_0(t) \exp(0.079421 + 0.060853 - 0.003607 - 5) \exp(5) \\
+    &=  g_0(t) \exp(0.079421 + 0.060853 - 0.003607) \text{.} 
+\end{align*}
+$$
+The point here is that Cox regression does not estimate hazard rates.
+
+:::
+
+### Part (c)
+
+The hazard ratio at time $t$ comparing patients with one positive lymph node
+to patients with zero positive lymph nodes, 
+among patients who are premenopausal.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+1.062743
+
+$$
+\begin{align*}
+    \frac{\lambda_j(t)}{\lambda_i(t)} &= \frac{\lambda_0(t) \exp\left(0.079421 \texttt{meno}_j + 0.060853 \texttt{nodes}_j - 0.003607 \texttt{meno}_j\times\texttt{nodes}_j\right)}{\lambda_0(t) \exp\left(0.079421 \texttt{meno}_i + 0.060853 \texttt{nodes}_i - 0.003607 \texttt{meno}_i\times\texttt{nodes}_i\right)} \\
+    &= \frac{ \exp\left(0.079421 (0) + 0.060853 (1) - 0.003607 (0)\times(1)\right)}{ \exp\left(0.079421 (0) + 0.060853 (0) - 0.003607 (0)\times(0)\right)} \\
+    &= \exp\left(0.060853 \right) \\
+    &= 1.062743
+\end{align*}
+$$
+
+:::
+
+### Part (d)
+
+The hazard ratio comparing postmenopausal patients at one year to premenopausal patients
+at two years,
+among patients who have no positive lymph nodes.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible.
+
+Cox regression gives hazard ratios for a specific time $t$.
+So, we could compare these groups at one year
+or we can compare them at two years;
+we can't compare one at one year to the other at two years.
+
+:::
+
+### Part (e)
+
+The hazard ratio at time $t$ comparing postmenopausal to premenopausal patients,
+among patients who have fifty positive lymph nodes.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+$\exp\left(0.079421   - 0.003607 (50)\right)$
+
+$$
+\begin{align*}
+    \frac{\lambda_j(t)}{\lambda_i(t)} &= \frac{\lambda_0(t) \exp\left(0.079421 \texttt{meno}_j + 0.060853 \texttt{nodes}_j - 0.003607 \texttt{meno}_j\times\texttt{nodes}_j\right)}{\lambda_0(t) \exp\left(0.079421 \texttt{meno}_i + 0.060853 \texttt{nodes}_i - 0.003607 \texttt{meno}_i\times\texttt{nodes}_i\right)} \\
+    &= \frac{\exp\left(0.079421 (1) + 0.060853 (50) - 0.003607 (1)\times(50)\right)}{\exp\left(0.079421 (0) + 0.060853 (50) - 0.003607 (0)\times(50)\right)} \\
+    &= \exp\left(0.079421   - 0.003607 (50)\right) \\
+\end{align*}
+$$
+
+:::
+
+### Part (f)
+
+The hazard ratio at time $t$ comparing patients with between 11 and 20 positive lymph nodes
+to patients with between 1 and 10 positive lymph nodes,
+among patients who are postmenopausal.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible.
+
+If we wanted to estimate this, we would've had to create a new categorical variable
+containing membership in these groups.
+
+:::
+
+### Part (g)
+
+The probability that the test statistic corresponding to the coefficient
+for `meno` would be at least as far from zero as it was in this data set,
+assuming the true value of the coefficient was 0.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+0.592
+
+This is the interpretation of the p-value.
+
+:::
+
+### Part (h)
+
+The number of patients who were censored.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+387
+
+The output tells us that the sample size was 686 and there were 299 events,
+so $686-299=387$ patients were censored.
+
+:::
+
+### Part (i)
+
+The median survival among premenopausal patients with one positive lymph node.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible.
+
+If we had the hazard function, $h(t)$, we could find this value.
+Since we only have hazard ratios, we can't compute survival probabilities.
+
+:::
+
+### Part (j)
+
+The probability that the coefficient for `meno` is equal to 0.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Impossible.
+
+In frequentist statistics, parameters are fixed, not random,
+so we don't compute probabilities like this.
+
+:::
+        
+
+
+## Problem 2
+
+(2 points)
+Please provide a reasonable method to check the proportional hazards assumption in this analysis
+and what results from that method would indicate that the assumption is met.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+You could conduct a Schoenfeld residual test.
+High p-values would indicate that the assumption is met,
+and low p-values would indicate that the assumption is not met.
+Another way of saying this is that a non-significant result on the Schoenfeld residual test
+would indicate that the assumption is met
+and a non-significant result on the test would indicate that the assumption is not met.
+It's not enough to just say ``check p-values''. You need to say
+*what results from that method would indicate that the assumption is met*.
+
+A complementary log-log-plot would not be reasonable for this analysis
+because there are so many levels of the `nodes` variable.
+However, you can still get a point for saying that parallel lines on the plot
+would indicate that the assumption is met.
+
+Looking at Kaplan-Meier curves would not be reasonable for this analysis
+since `nodes` is effectively a continuous variable.
+Even if there were no continuous variables, though, you couldn't check the PH assumptions
+using a Kaplan-Meier curve.
+The PH assumption implies that $S_1(t) = S_2(t)^c$.
+How would you check this visually?
+:::
+
+## Problem 3
+
+(2 points)
+Do you think there is effect modification?
+Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No, because the p-value for the interaction term is very high.
+
+You may have thought that, even if the p-value is high, there might be clinically meaningful
+effect modification.
+Let's consider an extreme case.
+Consider part (e):
+"The hazard ratio at time $t$ comparing postmenopausal to premenopausal patients,
+among patients who have fifty positive lymph nodes."
+This is $\exp\left(0.079421   - 0.003607 (50)\right) = 0.9039972$.
+The hazard ratio at time $t$ comparing postmenopausal to premenopausal patients,
+among patients who have zero positive lymph nodes,
+is $\exp\left(0.079421 \right) = 1.08266$.
+That's just not a huge difference in the effect of menopause for two wildly different
+numbers of positive nodes.
+
+:::
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
