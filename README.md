@@ -168,12 +168,7 @@ Attribution-NonCommercial-ShareAlike 4.0 International license
 
 ## AI
 
-With one exception,
 I did not use AI to create these materials.
 I thought that creating them myself would make me a better teacher
 and statistician.
 
-The one exception is [render.R](render.R).
-Google Gemini wrote this when I searched something like
-"is there a function that will render all Quarto documents in a folder
-and all of its subfolders?"
