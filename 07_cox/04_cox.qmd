@@ -139,31 +139,60 @@ to the hazard rate in another group at time $s$.
 
 ### Problem 1
 
+To quote the help page for this data set,
+"The 197 patients in this dataset were a 50% random sample of the patients with 'high-risk' diabetic retinopathy as defined by the Diabetic Retinopathy Study (DRS). Each patient had one eye randomized to laser treatment and the other eye received no treatment. For each eye, the event of interest was the time from initiation of treatment to the time when visual acuity dropped below 5/200 two visits in a row. Thus there is a built-in lag time of approximately 6 months (visits were every 3 months). Survival times in this dataset are therefore the actual time to blindness in months, minus the minimum possible time to event (6.5 months). Censoring was caused by death, dropout, or end of the study."
 
+Since I want the observations to be independent,
+I'm going to only use the left eye for each patient.
+The explanatory variables are as follows:
+
+- `age`: Age at diagnosis.
+- `trt`: Treatment (0 = no treatment, 1 = laser).
+- `risk_factor`: Risk group, with values 6, 8, 9, 10, 11, and 12.
+I'm not sure why there's no 7.
 
 ```{r}
 d_dr <- diabetic
+d_dr <- d_dr[d_dr$eye == "left", ]
+d_dr$risk_factor <- as.factor(d_dr$risk)
 mod_02 <- coxph(formula = Surv(time = time,
-                               event = status) ~ rx + sex + age,
-                data = d_colon)
+                               event = status) ~ age + trt + risk_factor,
+                data = d_dr)
 summary(mod_02)
 ```
 
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
-
-### Problem 2
-
-
+Interpret the estimated coefficients in the Cox regression above.
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+- With each additional year of age at diagnosis,
+the hazard rate at time $t$ increases by 1.15%,
+holding treatment and risk group constant.
+- Treated eyes have a 77% lower hazard rate at time $t$
+than untreated eyes,
+holding age at diagnosis and risk group constant.
+- Eyes in risk group 8 have a 37.5% lower hazard rate at time $t$
+than eyes in risk group 6,
+holding age at diagnosis and treatment status constant.
+(I say "eyes in risk group 8" because risk group applies to the eye,
+not the patient.
+The same patient can have eyes in two different risk groups.)
+- Eyes in risk group 9 have a 35% lower hazard rate at time $t$
+than eyes in risk group 6,
+holding age at diagnosis and treatment status constant.
+- Eyes in risk group 10 have a 151% higher hazard rate at time $t$
+than eyes in risk group 6,
+holding age at diagnosis and treatment status constant.
+- Eyes in risk group 11 have a 5% lower hazard rate at time $t$
+than eyes in risk group 6,
+holding age at diagnosis and treatment status constant.
+- Eyes in risk group 12 have a 38% higher hazard rate at time $t$
+than eyes in risk group 6,
+holding age at diagnosis and treatment status constant.
 
 :::
+
+
 
 
 
