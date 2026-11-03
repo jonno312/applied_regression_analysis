@@ -22,8 +22,9 @@ Please answer the following questions based on these three models.
 Assume all four of our assumptions for linear regression are met for each model.
 
 
-### Part (a) (4 points)
+### Part (a)
 
+(4 points)
 Suppose $D_3$ is missing in the data set, i.e., the third participant
 is missing a value for the fourth explanatory variable.
 There is no other missing data in the data set.
