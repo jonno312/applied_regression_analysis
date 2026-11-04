@@ -289,6 +289,69 @@ than the observed observed times.
 
 :::
 
+### Problem 3
 
+Categorize each of the following as left, right, or interval censoring.
+
+#### Part (a)
+
+
+Every year you send a holiday card to a former coworker.
+You haven't worked together in years, and you don't
+talk on the phone or see each other anymore,
+but you still send a holiday card every December.
+One year, the card comes back marked
+"No longer at this address."
+You ask yourself, "When did they move?"
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is interval censoring.
+You know your former coworker lived at that address
+last year and you know they don't live there now,
+but you don't know when exactly between those two dates
+they moved.
+
+:::
+
+#### Part (b)
+
+You know your parents got married before you were born,
+but you don't remember the exact year.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is left censoring.
+You know the event occurred before a certain time,
+but you don't know more than that.
+
+:::
+
+#### Part (c)
+
+Your bathroom scale has a maximum weight of 400 pounds.
+You get your pet elephant, Rufus, to step on the scale.
+It breaks. You know Rufus weighs at least 400 pounds,
+but you don't know what his exact weight is.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is right censoring.
+
+:::
+
+#### Part (d)
+
+You are a geologist.
+You find a cool new fossil between two layers of sedimentary rock.
+You don't know how old the fossil is,
+but you know the layer of rock above it is 1 million years old
+and the layer of rock beneath it is 2 million years old.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This is interval censoring.
+
+:::
 
 

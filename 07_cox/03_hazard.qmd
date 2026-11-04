@@ -160,4 +160,148 @@ This is a probability, so it must be between 0 and 1.
 
 :::
 
+### Problem 2
+
+*Note: This problem was written in 2025 and the data may no longer be accurate.*
+*The concepts are the same, though.*
+
+In the YouTube show *Hot Ones*,
+guests eat increasingly spicy chicken wings.
+In a standard show, guests are offered ten wings total.
+Data from $n = 275$ guests are presented in the table below.
+These data are from this website:
+[Ben Smith: Hot Ones](https://bensomething.notion.site/hotones).
+(I've made no effort to verify the accuracy of the data.)
+Define $W_i$ to be the last chicken wing eaten by the $i$th guest.
+We can think of $W_i$ as being the time to an event,
+where time is discretized into chicken wings.
+
+| Number of Wings ($w$) | Number of Guests | $P(W_i = w)$ | $P(W_i = w|W_i \ge w)$ |
+|-:|-:|-:|-:|
+| 2 | 1 | 0.00364 | |
+| 3 | 1 | 0.00364 | |
+| 4 | 1 | 0.00364 | |
+| 5 | 0 | 0.00000 | |
+| 6 | 1 | 0.00364 | |
+| 7 | 1 | 0.00364 | |
+| 8 | 10 | 0.03636 | |
+| 9 | 2 | 0.00727 | |
+| 10 | 258 | 0.93818 | |
+| Total | 275 | 1.00000 | N/A |
+
+#### Part (a)
+
+For each $w\in\{2,\dotsc,10\}$, find the discrete time hazard,
+$P(W_i = w|W_i \ge w)$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+| Number of Wings ($w$) | Number of Guests | $P(W_i = w)$ | $P(W_i = w|W_i \ge w)$ |
+|-:|-:|-:|-:|
+| 2 | 1 | 0.00364 | 0.00364 |
+| 3 | 1 | 0.00364 | 0.00365 |
+| 4 | 1 | 0.00364 | 0.00366 |
+| 5 | 0 | 0.00000 | 0.00000 |
+| 6 | 1 | 0.00364 | 0.00368 |
+| 7 | 1 | 0.00364 | 0.00369 |
+| 8 | 10 | 0.03636 | 0.003704 |
+| 9 | 2 | 0.00727 | 0.00769 |
+| 10 | 258 | 0.93818 | 1.00000 |
+| Total | 275 | 1.00000 | N/A |
+
+For generic $w$, the discrete time hazard is
+$$
+\begin{align*}
+h(w) &= P(W_i = w|W_i \ge w) \\
+&= \frac{P(W_i = w,W_i \ge w)}{P(W_i \ge w)} \\
+&= \frac{P(W_i = w)}{P(W_i \ge w)} \text{.}
+\end{align*}
+$$
+These are the hazards for specific values:
+$$
+\begin{align*}
+h(2) &= \frac{P(W_i = 2)}{P(W_i \ge 2)} \\
+&= \frac{0.00364}{1} \\
+&= 0.00364 \\
+h(3) &= \frac{P(W_i = 3)}{P(W_i \ge 3)} \\
+&= \frac{0.00364}{1 - 0.00364} \\
+&= \frac{\frac{1}{275}}{1-\frac{1}{275}} \\
+&= \frac{1}{275-1} \\
+&= 0.00365 \\
+h(4) &= \frac{P(W_i = 4)}{P(W_i \ge 4)} \\
+&= \frac{1}{1+1+1+10+2+258} \\
+&= \frac{1}{273} \\
+&= 0.00366 \\
+h(5) &= \frac{P(W_i = 5)}{P(W_i \ge 5)} \\
+&= 0 \\
+h(6) &= \frac{P(W_i = 6)}{P(W_i \ge 6)} \\
+&= \frac{1}{272} \\
+&= 0.00368 \\
+h(7) &= \frac{P(W_i = 7)}{P(W_i \ge 7)} \\
+&= \frac{1}{271} \\
+&= 0.00369 \\
+h(8) &= \frac{P(W_i = 8)}{P(W_i \ge 8)} \\
+&= \frac{10}{270} \\
+&= 0.03704 \\
+h(9) &= \frac{P(W_i = 9)}{P(W_i \ge 9)} \\
+&= \frac{2}{260} \\
+&= 0.00769 \\
+h(10) &= \frac{P(W_i = 10)}{P(W_i \ge 10)} \\
+&= \frac{258}{258} \\
+&= 1 \text{.}
+\end{align*}
+$$
+
+:::
+
+#### Part (b)
+
+Compare and contrast the example above with this example:
+
+> Suppose you are studying a new face wash for treating acne.
+> You give the face wash to $n$ people
+> and ask them to use it every day.
+> Let $X_i$ be the number of days until the $i$th person's acne disappears.
+> (This count includes the last day, when the acne is gone.)
+> You decide that $X_1,\dotsc,X_n\overset{\text{iid}}{\sim}\text{geometric}(p)$,
+> where $p$ is the probability that the acne disappears on a given day.
+
+> A random variable follows a geometric distribution
+> if it represents the number of trials until the first success;
+> there are only two outcomes (success and failure) on each trial;
+> the trials are independent;
+> and the probability of success is the same for each trial.
+> (The parameter $p$ is the probability of success on each trial.)
+
+::: {.callout-tip title="Solution" collapse="true"}
+        
+The Hot Ones example is sort of the opposite of the face wash example.
+In Hot Ones, $P(W_i = w)$ is constant for five of the possible values of $w$.
+The hazard, in contrast, is increasing.
+In the face wash example,
+$P(X_i = x)$ is decreasing and the discrete time hazard is constant.
+
+:::
+
+#### Part (c)
+
+Which is greater, $P(W_i = w)$ or $h(w)$? Is this true in general?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+In this example and in general, $h(w) \ge P(W_i = w)$.
+This is because
+$$
+h(w) = \frac{P(W_i = w)}{P(W_i \ge w)}
+$$
+and $P(W_i \ge w) \le 1$.
+Dividing by something smaller than 1 results in something bigger
+than what you started with.
+
+:::
+
+
+
+
+
 
