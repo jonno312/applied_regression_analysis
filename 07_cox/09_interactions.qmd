@@ -1,0 +1,223 @@
+---
+title: "Interactions"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(survival)
+```
+
+## Learning Objective
+
+Interpret the coefficients of a Cox proportional hazards model with an
+interaction term.
+
+
+## Lesson
+
+Since you've learned how to interpret interaction terms
+in linear, logistic, and Poisson regression,
+I'm sure you can do it with Cox regression.
+Let's dive directly into an example.
+
+```{r}
+d_colon <- colon
+
+# Just death, not recurrence
+d_colon <- d_colon[d_colon$etype == 2, ]
+d_colon$age_50 <- d_colon$age - 50
+```
+
+These are the variables for the colon cancer example:
+
+- `time`: Time until death in days. Unfortunately, I don't know the time origin.
+- `status`: 1 is death, 0 is censoring.
+- `rx`: This is the treatment variable, and it has three levels:
+`Obs` for observation; `Lev` for Levamisole,
+and `Lev+5FU` for Levamisole plus 5-FU.
+- `sex`: 1 for male, 0 for female.
+- `age_50`: This is in years minus 50, but I don't know when it was measured.
+Maybe at the time origin?
+
+The results of a Cox regression is below.
+
+```{r}
+#| echo: true
+# Cox regression
+mod_01 <- coxph(formula = Surv(time = time,
+                               event = status) ~ rx * age_50 + sex,
+                data = d_colon)
+summary(mod_01)
+```
+
+How do we interpret these coefficients?
+
+**Main Effects**
+
+- Among people who are 50 years old and are of the same sex,
+the hazard rate for people prescribed Levamisole
+is about 8% lower than the hazard rate for people on observation only.
+- Among people who are 50 years old and are of the same sex,
+the hazard rate for people prescribed Levamisole plus 5-FU
+is about 22% lower than the hazard rate for people on observation only.
+- Among people on observation and are of the same sex,
+each additional year of age is associated with a 0.47% increase
+in the hazard rate.
+- The hazard rate among males is 0.42% lower than the hazard rate among
+females,
+holding treatment and age constant.
+
+**Effect of Treatment at Different Ages**
+
+- Among people who are 51 years old and are of the same sex,
+the hazard rate for people prescribed Levamisole
+is about $0.9238 \times 1.0049 = 0.9283266$ times
+the hazard rate for people on observation only.
+- Among people who are 51 years old and are of the same sex,
+the hazard rate for people prescribed Levamisole plus 5-FU
+is about $0.7811 \times 0.9869 = 0.7708676$ times
+the hazard rate for people on observation only.
+
+**Effect of Age for Different Treatments**
+
+- Among people prescribed Levamisole and who are of the same sex,
+each additional year of age is associated with a 0.96% increase
+in the hazard rate,
+since $1.0047 \times 1.0049 = 1.009623$.
+- Among people prescribed Levamisole plus 5-FU and who are of the same sex,
+each additional year of age is associated with a 0.85% decrease
+in the hazard rate,
+since $1.0047 \times 0.9869 = 0.9915384$.
+
+
+## Problems
+
+### Problem 1
+
+Let's return to the diabetic retinopathy data set.
+The explanatory variables are as follows:
+
+- `trt`: Treatment (0 = no treatment, 1 = laser).
+- `laser`: The two levels are argon and xenon.
+
+Note that I've added a new explanatory variable, `laser`.
+This is the type of laser that the person was assigned to.
+In this study, each person was assigned to either argon or xenon;
+then, one eye was randomly selected to receive treatment.
+The other eye went untreated.
+
+For the analysis below, I've only used the left eye for each person.
+For some of these people,
+we are observing the untreated eye,
+even though the person was assigned to one of the two lasers.
+
+
+
+
+#### Part (a)
+
+Interpret the estimated coefficients in this Cox regression model:
+```{r}
+d_dr <- diabetic
+d_dr <- d_dr[d_dr$eye == "left", ]
+mod_02 <- coxph(formula = Surv(time = time,
+                               event = status) ~ trt * laser,
+                data = d_dr)
+summary(mod_02)
+```
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- Eyes treated with xenon have a 58% lower hazard rate than untreated
+eyes belonging to people assigned to xenon.
+- Untreated eyes belonging to people assigned to argon have a 31% higher hazard rate
+than untreated eyes belonging to people assigned to xenon.
+- Eyes treated with argon have an 87% lower hazard rate than untreated eyes
+belonging to people assigned to argon,
+since $0.4235 \times 0.2989 = 0.1265842$.
+- Eyes treated with argon have a 61% lower hazard rate than eyes treated
+with xenon, since $1.3062 \times 0.2989 = 0.3904232$.
+
+:::
+
+#### Part (b)
+
+Interpret the estimated coefficients in this Cox regression model:
+```{r}
+mod_03 <- coxph(formula = Surv(time = time,
+                               event = status) ~ trt + trt:laser,
+                data = d_dr)
+summary(mod_03)
+```
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+This might require some explanation.
+Our model is
+$$
+\hat{h}_i(t) = \hat{h}_0(t) \exp\left( -0.9667\texttt{trt} - 0.9403 \texttt{trt}\times \texttt{laserargon}\right) \text{.}
+$$
+
+The estimated hazard at time $t$ for an untreated eye is
+$$
+\begin{align*}
+\hat{h}_i(t) &= \hat{h}_0(t) \exp\left( -0.9667 (0) - 0.9403 (0)\times \texttt{laserargon}\right) \\
+&= \hat{h}_0(t) \text{.}
+\end{align*}
+$$
+
+The estimated hazard at time $t$ for an eye treated with xenon is
+$$
+\begin{align*}
+\hat{h}_i(t) &= \hat{h}_0(t) \exp\left( -0.9667 (1) - 0.9403 (1)\times (0)\right) \\
+&= \hat{h}_0(t) \exp\left( -0.9667 \right) \text{.}
+\end{align*}
+$$
+
+The estimated hazard at time $t$ for an eye treated with argon is
+$$
+\begin{align*}
+\hat{h}_i(t) &= \hat{h}_0(t) \exp\left( -0.9667 (1) - 0.9403 (1)\times (1)\right) \\
+&= \hat{h}_0(t) \exp\left( -0.9667 - 0.9403 \right) \text{.}
+\end{align*}
+$$
+
+This leads to the following interpretations:
+
+- Eyes treated with xenon have a 62% lower hazard rate than untreated eyes.
+- Eyes treated with argon have an 85% lower hazard rate than untreated eyes,
+since $0.3803 \times 0.3905 = 0.1485072$.
+
+:::
+
+#### Part (c)
+
+Which model is better, the one with `laserargon` or the one without?
+Or, is there a third model that would surpass both?
+Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The model with `laserargon` allows for untreated eyes assigned to argon
+to differ from untreated eyes assigned to xenon.
+I don't think there's a good reason to believe these two groups of eyes
+would differ, since both are untreated.
+In the model, we see that the p-value for `laserargon` is high,
+meaning the difference is not statistically significant.
+This is an argument for leaving out that variable.
+
+I would argue, though, that
+the best thing to do would be to include both eyes for each person.
+That way, each person could serve as their own control.
+Including both eyes would violate the independence assumption, though,
+so to do that we would need methods that aren't covered in this class.
+
+:::
+
+
+
+
