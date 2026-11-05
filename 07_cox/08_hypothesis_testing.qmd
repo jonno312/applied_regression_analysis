@@ -1,0 +1,144 @@
+---
+title: "Hypothesis Testing"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(survival)
+```
+
+## Learning Objective
+
+Interpret the results of a hypothesis test in the context of the Cox
+proportional hazards model.
+
+
+## Lesson
+
+As always, the null hypothesis for a specific covariate in Cox regression
+is that the coefficient equals zero, i.e., $\beta_j = 0$.
+Since $\exp(\beta_j)$ represents a hazard ratio,
+and $\exp(0) = 1$,
+the null hypothesis is that the hazard ratio is 1,
+i.e., the hazards are equal.
+The alternative hypothesis is that the hazards are not equal.
+
+```{r}
+d_colon <- colon
+
+# Just death, not recurrence
+d_colon <- d_colon[d_colon$etype == 2, ]
+```
+
+Let's look at an example.
+Let's return again to the data from the trial comparing two adjuvant therapy regimens
+for colon cancer
+([Moertel et al., 1995](https://doi.org/10.7326/0003-4819-122-5-199503010-00001)).
+These are the variables:
+
+- `time`: Time until death in days. Unfortunately, I don't know the time origin.
+- `status`: 1 is death, 0 is censoring.
+- `rx`: This is the treatment variable, and it has three levels:
+`Obs` for observation; `Lev` for Levamisole,
+and `Lev+5FU` for Levamisole plus 5-FU.
+- `sex`: 1 for male, 0 for female.
+- `age`: This is in years, but I don't know when it was measured.
+Maybe at the time origin?
+
+```{r}
+#| echo: true
+# Cox regression
+mod_01 <- coxph(formula = Surv(time = time,
+                               event = status) ~ rx + sex + age,
+                data = d_colon)
+summary(mod_01)
+```
+
+This is how we interpret the hypothesis tests in this output,
+using $\alpha = 0.05$:
+
+- The p-value for `rxLev` is greater than $\alpha$,
+so we fail to reject the null.
+This means that there is no statistically significant difference
+in the hazard rates of the Levamisole group and the observation group,
+holding sex and age constant.
+- The p-value for `rxLev+5FU` is less than $\alpha$,
+so we reject the null.
+This means that there is a statistically significant difference
+in the hazard rates of the Levamisole plus 5-FU group and the observation group,
+holding sex and age constant.
+- The p-value for `sex` is greater than $\alpha$,
+so we fail to reject the null.
+This means that there is no statistically significant difference
+in the hazard rates of the males and females,
+holding treatment and age constant.
+- The p-value for `age` is greater than $\alpha$,
+so we fail to reject the null.
+This means that there is no statistically significant difference
+in the hazard rates of people of different ages,
+holding treatment and sex constant.
+
+## Problems
+
+### Problem 1
+
+To quote the help page for this data set,
+"The 197 patients in this dataset were a 50% random sample of the patients with 'high-risk' diabetic retinopathy as defined by the Diabetic Retinopathy Study (DRS). Each patient had one eye randomized to laser treatment and the other eye received no treatment. For each eye, the event of interest was the time from initiation of treatment to the time when visual acuity dropped below 5/200 two visits in a row. Thus there is a built-in lag time of approximately 6 months (visits were every 3 months). Survival times in this dataset are therefore the actual time to blindness in months, minus the minimum possible time to event (6.5 months). Censoring was caused by death, dropout, or end of the study."
+
+Since I want the observations to be independent,
+I'm going to only use the left eye for each patient.
+The explanatory variables are as follows:
+
+- `age`: Age at diagnosis.
+- `trt`: Treatment (0 = no treatment, 1 = laser).
+- `risk_factor`: Risk group, with values 6, 8, 9, 10, 11, and 12.
+I'm not sure why there's no 7.
+
+```{r}
+d_dr <- diabetic
+d_dr <- d_dr[d_dr$eye == "left", ]
+d_dr$risk_factor <- as.factor(d_dr$risk)
+mod_02 <- coxph(formula = Surv(time = time,
+                               event = status) ~ age + trt + risk_factor,
+                data = d_dr)
+summary(mod_02)
+```
+
+Interpret the hypothesis test results in the Cox regression above.
+Use $\alpha = 0.01$.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+- The p-value for `age` is greater than $\alpha$,
+so we fail to reject the null hypothesis.
+There is no statistically significant different in the hazard rates
+of eyes of different ages,
+holding treatment and risk group constant.
+- The p-value for `trt` is less than $\alpha$,
+so we reject the null hypothesis.
+There is a statistically significant different in the hazard rates
+of treated and untreated eyes,
+holding age and risk group constant.
+- The p-value for each risk group variable is greater than $\alpha$,
+so we fail to reject all the null hypotheses.
+There is no statistically significant different between the hazard rate
+of eyes in risk group 8 and the hazard rate of eyes in risk group 6;
+between the hazard rate of eyes in risk group 9 and the hazard rate
+of eyes in risk group 6;
+between the hazard rate of eyes in risk group 10 and the hazard rate
+of eyes in risk group 6;
+between the hazard rate of eyes in risk group 11 and the hazard rate
+of eyes in risk group 6;
+or between the hazard rate of eyes in risk group 12 and the hazard rate
+of eyes in risk group 6;
+holding treatment and age constant.
+
+:::
+
+
+
+
+
