@@ -74,7 +74,7 @@ Now we can connect the hazards to the survival functions.
 Proportional hazards means
 $$
 \begin{align*}
-h_2(s) &= ch_1(s) \\
+h_2(t) &= ch_1(t) \\
 \int_0^t h_2(s)\,ds &= \int_0^t ch_1(s) \,ds \\
 \int_0^t h_2(s)\,ds &= c \int_0^t h_1(s) \,ds \\
 \Lambda_2(t) &= c\Lambda_1(t) \\
