@@ -1,0 +1,121 @@
+---
+title: "Comparing the Performance of Different Cox Models"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(survival)
+```
+
+## Learning Objectives
+
+- Identify valid methods to compare Cox models
+- Interpret concordance
+
+
+## Lesson
+
+Cox regression models are fit with "partial" likelihood,
+which allows us to use likelihood-based methods to compare them.
+This includes the AIC, BIC, and likelihood ratio test.
+
+```{r}
+d_dr <- diabetic
+d_dr <- d_dr[d_dr$eye == "left", ]
+```
+
+For example, let's compare these two interaction models
+using the diabetic retinopathy data.
+
+```{r}
+mod_01 <- coxph(formula = Surv(time = time,
+                               event = status) ~ trt * laser,
+                data = d_dr)
+mod_02 <- coxph(formula = Surv(time = time,
+                               event = status) ~ trt + trt:laser,
+                data = d_dr)
+AIC(mod_01)
+AIC(mod_02)
+BIC(mod_01)
+BIC(mod_02)
+anova(mod_01,
+      mod_02,
+      test = "LRT")
+```
+
+The simpler model has a lower AIC and lower BIC, and the likelihood ratio
+test is not significant,
+indicating that the simpler model is better.
+
+Since the Cox proportional hazards model doesn't estimate a baseline hazard,
+we can't use it to generate predicted values.
+This means we can't use a training-test set split or cross-validation
+to compare the performance of Cox models.
+However, there is another way to kinda-sorta get at prediction accuracy.
+If we look at the output for the two models above, we see something
+called "Concordance".
+
+```{r}
+summary(mod_01)
+summary(mod_02)
+```
+
+Concordance is a value between 0 and 1.
+It's interpreted as a probability.
+The concordance for model 1 is 0.656,
+meaning that in 65.6% of randomly-selected pairs of observations,
+the observation with the higher hazard has the shorter survival time.
+
+You might be thinking, "How do you estimate concordance in the presence
+of censoring?"
+Good question.
+In the presence of censoring, it's not necessarily possible to determine
+which of two observations had the shorter survival time.
+This has led to a fair number of publications on the correct way
+to estimate concordance.
+We're not going to get into the specifics;
+it's more important to me that you know how to interpret the result.
+
+It's also worth noting that the concordance estimates above are
+for the data set that was used to estimate the model,
+so they're inflated.
+Again, accounting for this can be complicated, so I don't want to get into
+details.
+
+
+## Problems
+
+### Problem 1
+
+Can you use the likelihood ratio test to compare any two Cox models?
+Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+No.
+The models still need to be nested,
+just like for any other likelihood ratio test.
+
+:::
+
+### Problem 2
+
+What measure of performance did we cover in logistic regression
+that's an analog of concordance?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+The AUC, also known as the "probability of superiority"
+or "common language effect size".
+The AUC is the probability that a randomly-selected observation
+with an outcome of 1 will have a higher fitted value
+than a randomly-selected observation with an outcome of 0.
+
+:::
+
+
+
+
