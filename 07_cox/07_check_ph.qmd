@@ -1,0 +1,234 @@
+---
+title: "Checking the Proportional Hazards Assumption"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(survival)
+library(survminer)
+```
+
+## Learning Objectives
+
+- Interpret a complementary log-log plot
+- Interpret Schoenfeld residual tests
+- Interpret Schoenfeld residual plots
+
+
+## Lesson
+
+Proportional hazards is a strong assumption.
+So, we really should check it before interpreting the results
+of a Cox regression model.
+How do we check this assumption?
+I'm going to present two methods.
+
+### Complementary Log-Log Plot
+
+Recall that proportional hazards means $h_2(t) = ch_1(t)$,
+where $h_2(t)$ denotes the hazard rate at time $t$ for group 2,
+$h_1(t)$ denotes the hazard rate at time $t$ for group 1,
+and $c$ is a positive constant.
+Proportional hazards implies
+$$
+\begin{align*}
+h_2(t) &= ch_1(t) \\
+\int_0^t h_2(s)\,ds &= \int_0^t ch_1(s) \,ds \\
+\int_0^t h_2(s)\,ds &= c \int_0^t h_1(s) \,ds \\
+\Lambda_2(t) &= c\Lambda_1(t) \\
+-\log S_2(t) &= -c\log S_1(t) \\
+\log(-\log S_2(t)) &= \log(-c\log S_1(t)) \\
+\log(-\log S_2(t)) &= \log c + \log(-\log S_1(t)) \text{.} \\
+\end{align*}
+$$
+How is this helpful to us?
+Well, we know how to estimate $S_2(t)$ and $S_1(t)$:
+we can create Kaplan-Meier curves.
+If we plot $\log(-\log \hat{S}_2(t))$ and $\log(-\log \hat{S}_1(t))$,
+and the two curves are parallel,
+that's evidence for proportional hazards.
+
+
+```{r}
+d_colon <- colon
+
+# Just death, not recurrence
+d_colon <- d_colon[d_colon$etype == 2, ]
+```
+
+Let's look at an example.
+Let's return to the data from the trial comparing two adjuvant therapy regimens
+for colon cancer
+([Moertel et al., 1995](https://doi.org/10.7326/0003-4819-122-5-199503010-00001)).
+These are the variables:
+
+- `time`: Time until death in days. Unfortunately, I don't know the time origin.
+- `status`: 1 is death, 0 is censoring.
+- `rx`: This is the treatment variable, and it has three levels:
+`Obs` for observation; `Lev` for Levamisole,
+and `Lev+5FU` for Levamisole plus 5-FU.
+- `sex`: 1 for male, 0 for female.
+- `age`: This is in years, but I don't know when it was measured.
+Maybe at the time origin?
+
+We can look at a complementary log-log plot to check for proportional hazards
+by treatment.
+
+```{r}
+#| echo: true
+# Complementary log-log plot
+ggsurvplot(fit = survfit(Surv(time = time,
+                              event = status) ~ rx,
+                         data = d_colon),
+           fun = "cloglog")
+```
+
+These lines are clearly not parallel. They intersect multiple times.
+
+What if we stratify by sex?
+
+```{r}
+#| echo: true
+# Complementary log-log plot
+ggsurvplot(fit = survfit(Surv(time = time,
+                              event = status) ~ sex,
+                         data = d_colon),
+           fun = "cloglog")
+```
+These are also not parallel.
+
+So far, we don't have evidence for proportional hazards in our data.
+However it's worth noting that the complementary log-log plot
+requires splitting the data set into groups.
+If we tried to make such a plot for a model
+with treatment, sex, and age as explanatory variables,
+it would include a separate curve for each unique combination of treatment,
+sex and age.
+That's not really feasible for a model with many variables,
+or a model with even a few continuous variables.
+
+### Schoenfeld Residuals
+
+Schoenfeld residuals are another way to assess the proportional hazards
+assumption for a given model.
+Fortunately, they can be used even when there are many covariates in the
+model,
+and/or continuous covariates.
+I'm not going to get into how Schoenfeld residuals are computed,
+but I'll explain how to intepret the associated hypothesis tests
+and plots.
+
+If you use the function `cox.zph` from the package `survival`,
+it will perform a few hypothesis tests:
+one for each explanatory variable in the model, and another global test.
+The null hypothesis for a specific covariate is that the proportional
+hazards assumption holds for that covariate.
+The null hypothesis for the global test is that the proportional hazards
+assumption holds for the model as a whole.
+
+```{r}
+#| echo: true
+# Cox regression
+mod_01 <- coxph(formula = Surv(time = time,
+                               event = status) ~ rx + sex + age,
+                data = d_colon)
+
+# Schoenfeld residual test
+mod_01_ph_test <- cox.zph(mod_01)
+mod_01_ph_test
+```
+
+We can see above that the p-values for every test are higher than any
+reasonable cutoff.
+This means that we fail to reject the hypotheses that the proportional hazards
+assumption holds for treatment, sex, age, and the model as a whole.
+This means we can interpret our coefficients.
+
+Note that this contradicts what we saw in the complementary log-log plots.
+I would trust the Schoenfeld residuals test more than the complementary log-log
+plots for this example because we weren't able to make a single
+complementary log-log plot that accounted for every covariate in the model.
+
+What if we rejected the null for some covariates but not others,
+or for the global test but not the covariate-specific tests?
+I would recommend looking at the Schoenfeld residual plots to get a better
+sense of what's going on.
+Actually, I would look at the Schoenfeld residual plots no matter what
+the tests say.
+
+
+```{r}
+#| echo: true
+# Plots
+plot(mod_01_ph_test)
+ggcoxzph(mod_01_ph_test)
+```
+
+In the code above, I've used both base R plotting and the function
+`ggcoxzph` from the package `survminer`.
+You only need to do one or the other.
+
+In each plot, time is on the horizontal axis and `Beta(t)` for a specific
+covariate is on the vertical axis.
+These plots are trying to display graphically how the estimated coefficient
+changes over time.
+The proportional hazards assumption means that the coefficient doesn't
+change over time.
+So, if the curve is flat,
+that's evidence for the proportional hazards assumption being correct.
+In all the plots above,
+the curve is flat, which is consistent with the results from the Schoenfeld
+residuals test.
+
+If you find, through either the test or the plots,
+that the proportional hazards assumption doesn't hold,
+you may have to use other methods and/or change your model.
+
+## Problems
+
+### Problem 1
+
+Let's return to the diabetic retinopathy data set.
+As a reminder, each row corresponds to the left eye of a patient
+with "high-risk" diabetic retinopathy.
+The explanatory variables are as follows:
+
+- `age`: Age at diagnosis.
+- `trt`: Treatment (0 = no treatment, 1 = laser).
+- `risk_factor`: Risk group, with values 6, 8, 9, 10, 11, and 12.
+I'm not sure why there's no 7.
+
+```{r}
+d_dr <- diabetic
+d_dr <- d_dr[d_dr$eye == "left", ]
+d_dr$risk_factor <- as.factor(d_dr$risk)
+```
+
+```{r}
+#| echo: true
+mod_02 <- coxph(formula = Surv(time = time,
+                               event = status) ~ age + trt + risk_factor,
+                data = d_dr)
+mod_02_ph_test <- cox.zph(mod_02)
+ggcoxzph(mod_02_ph_test)
+```
+
+Is the proportional hazards assumption met for this model?
+Justify your answer.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+All the p-values for the hypothesis tests are large,
+and the curves in the plots are flat,
+indicating the proportional hazards assumption is met for this model.
+
+:::
+
+
+
+
+
+
