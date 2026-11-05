@@ -112,7 +112,13 @@ book:
         - 07_cox/01_censoring.qmd
         - 07_cox/02_KM.qmd
         - 07_cox/03_hazard.qmd
-        - 07_cox/04_cox.qmd
+        - 07_cox/04_assumptions.qmd
+        - 07_cox/05_interpretation.qmd
+        - 07_cox/06_ph.qmd
+        - 07_cox/07_check_ph.qmd
+        - 07_cox/08_hypothesis_testing.qmd
+        - 07_cox/09_interactions.qmd
+        - 07_cox/10_performance.qmd
     - part: "Appendix A: Problems with Coding"
       chapters:
         - A_problems_with_coding/01_index.qmd
