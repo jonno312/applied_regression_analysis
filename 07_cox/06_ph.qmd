@@ -1,0 +1,117 @@
+---
+title: "Proportional Hazards Assumption"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(survival)
+```
+
+## Learning Objectives
+
+Explain what "proportional hazards" means.
+
+## Lesson
+
+With the Cox proportional hazards model,
+we assume that if you fix $t$,
+one hazard rate is a constant multiple of the other.
+In other words, the hazard rates are always proportional to each other.
+
+Suppose we have two groups, group 1 and group 2.
+Let $h_1(t)$ and $h_2(t)$ be the hazard rates of groups 1 and 2, respectively,
+at time $t$.
+The proportional hazards assumption is that $h_2(t) = c h_1(t)$,
+where $c$ is a positive constant.
+
+I'd like to look at what this means for the survival curve,
+but in order to do so, I have to introduce a new function.
+The "cumulative hazard" in group 1 is
+$$
+\Lambda_1(t) = \int_0^t h_1(s)\,ds \text{.}
+$$
+You don't need to memorize this;
+it's just an interim step between the hazard and the survival function.
+What you need to know is that
+$$
+\Lambda_1(t) = -\log S_1(t) \text{,}
+$$
+where $S_1(t) = P(T_1 > t)$.
+If you don't believe me, you can check out the proof in the callout below.
+
+::: {.callout-caution collapse="true"}
+## Caution: Math
+
+First, note that
+$$
+\begin{align*}
+\frac{d}{ds} \log S(s) &= \frac{1}{S(s)} \frac{d}{ds} S(s) & \text{chain rule} \\
+&= \frac{1}{S(s)} \frac{d}{ds} \left(1 - F(s)\right) & \text{definition of cumulative distribution function} \\
+&= \frac{1}{S(s)} \left(-f(s)\right)  & \text{definition of probability distribution function} \\
+&= - \frac{f(s)}{S(s)} \text{.}
+\end{align*}
+$$
+Next,
+$$
+\begin{align*}
+\Lambda(t) &= \int_0^t h(s)\,ds \\
+&= \int_0^t \frac{f(s)}{S(s)} \,ds \\
+&= \int_0^t \left(-\frac{d}{ds} \log S(s)\right) \,ds \\
+&= - \int_0^t \frac{d}{ds} \log S(s) \,ds \\
+&= - \log S(t) \text{.}
+\end{align*}
+$$
+
+
+
+
+:::
+
+Now we can connect the hazards to the survival functions.
+Proportional hazards means
+$$
+\begin{align*}
+h_2(s) &= ch_1(s) \\
+\int_0^t h_2(s)\,ds &= \int_0^t ch_1(s) \,ds \\
+\int_0^t h_2(s)\,ds &= c \int_0^t h_1(s) \,ds \\
+\Lambda_2(t) &= c\Lambda_1(t) \\
+-\log S_2(t) &= -c\log S_1(t) \\
+-\log S_2(t) &= -\log S_1(t)^c \\
+S_2(t) &= S_1(t)^c \text{.} \\
+\end{align*}
+$$
+So, at any time $t$, we can get the survival probability
+for group 2 by raising the survival probability for group 1 to the power $c$.
+
+To see visual representations of proportional hazards,
+I recommend checking out
+[Fall 2025 Quiz 13](../B_past_quizzes/2025_quiz_13.qmd) and
+[Fall 2025 Quiz 14](../B_past_quizzes/2025_quiz_14.qmd)
+
+
+
+## Problems
+
+### Problem 1
+
+True or false:
+Proportional hazards is equivalent to proportional survival.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+False.
+Proportional hazards is equivalent to $S_2(t) = S_1(t)^c$,
+not $S_2(t) = c S_1(t)$.
+
+:::
+
+
+
+
+
+
+
+

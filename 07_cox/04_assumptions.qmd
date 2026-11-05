@@ -1,0 +1,74 @@
+---
+title: "Assumptions of the Cox Proportional Hazards Model"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| warning: false
+library(survival)
+```
+
+## Learning Objective
+
+Explain the assumptions of the Cox proportional hazards model.
+
+
+## Lesson
+
+
+The Cox proportional hazards model has the following assumptions,
+where $h_i(t)$ is the hazard rate for the $i$th observation
+and $h_0(t)$ is the baseline hazard rate:
+
+1. $\log h_i(t) = \log h_0(t) + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}$
+2. The observations are iid.
+3. Censoring is independent of time to event.
+
+Note that there's no $\beta_0$.
+With the Cox proportional hazards model (which I will abbreviate to
+the Cox model or Cox regression),
+we don't estimate an intercept.
+This means we don't estimate the baseline hazard rate.
+At no point do we say what $h_0(t)$ is.
+
+We can write the first assumption above with exponents instead of logs:
+$$
+h_i(t) = h_0(t) \exp\left(\beta_1 X_{i1} + \cdots + \beta_p X_{ip}\right) \text{.}
+$$
+
+
+## Problems
+
+### Problem 1
+
+Compare and contrast these assumptions with those of a generalized linear
+model.
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+Similarities:
+
+- We have a linear function of the covariates,
+i.e., $\beta_1 X_{i1} + \cdots + \beta_p X_{ip}$.
+- We're modeling the log of the hazard,
+which is similar to modeling the log of the rate or mean in Poisson regression.
+- We assume the observations are independent.
+
+Differences:
+
+- There's no $\beta_0$.
+- We don't assume a distribution for the time to the event.
+This implies there's no assumed mean-variance relationship.
+- Here, we have to make an additional assumption about censoring.
+
+:::
+
+
+
+
+
+
+
+
