@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../07_cox/04_cox.html" rel="next">
+<link href="../07_cox/04_assumptions.html" rel="next">
 <link href="../07_cox/02_KM.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -136,6 +136,11 @@ window.Quarto = {
       <a href="../">Applied Regression Analysis</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/jonno312/applied_regression_analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
     </div>
       </div>
@@ -724,8 +729,44 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../07_cox/04_cox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></span></a>
+  <a href="../07_cox/04_assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Assumptions of the Cox Proportional Hazards Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/05_interpretation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Interpretation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/06_ph.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Proportional Hazards Assumption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/07_check_ph.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Checking the Proportional Hazards Assumption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/08_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/09_interactions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">92</span>&nbsp; <span class="chapter-title">Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/10_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">93</span>&nbsp; <span class="chapter-title">Comparing the Performance of Different Cox Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -739,67 +780,67 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/01_index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">94</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/assumptions_SLR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">95</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/assumptions_SLR_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">96</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/interactions_MLR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/interactions_MLR_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">92</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/model_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">93</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/model_selection_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">94</span>&nbsp; <span class="chapter-title">Model Selection (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">100</span>&nbsp; <span class="chapter-title">Model Selection (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/calibration_ROC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">95</span>&nbsp; <span class="chapter-title">Calibration and ROC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">101</span>&nbsp; <span class="chapter-title">Calibration and ROC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/calibration_ROC_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">96</span>&nbsp; <span class="chapter-title">Calibration and ROC (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">102</span>&nbsp; <span class="chapter-title">Calibration and ROC (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/poisson_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
   </div>
 </li>
       </ul>
@@ -813,91 +854,91 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/01_index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">100</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 1</span></span></a>
+ <span class="menu-text"><span class="chapter-number">106</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 1</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">101</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 2</span></span></a>
+ <span class="menu-text"><span class="chapter-number">107</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 2</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">102</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 3</span></span></a>
+ <span class="menu-text"><span class="chapter-number">108</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 3</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 4</span></span></a>
+ <span class="menu-text"><span class="chapter-number">109</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 4</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 5</span></span></a>
+ <span class="menu-text"><span class="chapter-number">110</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 5</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 6</span></span></a>
+ <span class="menu-text"><span class="chapter-number">111</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 6</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">106</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 7</span></span></a>
+ <span class="menu-text"><span class="chapter-number">112</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 7</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">107</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 8</span></span></a>
+ <span class="menu-text"><span class="chapter-number">113</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 8</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">108</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 9</span></span></a>
+ <span class="menu-text"><span class="chapter-number">114</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 9</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">109</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 10</span></span></a>
+ <span class="menu-text"><span class="chapter-number">115</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 10</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">110</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 11</span></span></a>
+ <span class="menu-text"><span class="chapter-number">116</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 11</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">111</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 12</span></span></a>
+ <span class="menu-text"><span class="chapter-number">117</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 12</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">112</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 13</span></span></a>
+ <span class="menu-text"><span class="chapter-number">118</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 13</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_14.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">113</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 14</span></span></a>
+ <span class="menu-text"><span class="chapter-number">119</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 14</span></span></a>
   </div>
 </li>
       </ul>
@@ -921,6 +962,7 @@ window.Quarto = {
   <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems"><span class="header-section-number">86.3</span> Problems</a>
   <ul class="collapse">
   <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1"><span class="header-section-number">86.3.1</span> Problem 1</a></li>
+  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2"><span class="header-section-number">86.3.2</span> Problem 2</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1060,6 +1102,273 @@ h(t) &amp;= \lim_{\delta\downarrow 0} \frac{P\left(t \le T &lt; t + \delta \midd
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>No. This is a probability, so it must be between 0 and 1.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="problem-2" class="level3" data-number="86.3.2">
+<h3 data-number="86.3.2" class="anchored" data-anchor-id="problem-2"><span class="header-section-number">86.3.2</span> Problem 2</h3>
+<p><em>Note: This problem was written in 2025 and the data may no longer be accurate.</em> <em>The concepts are the same, though.</em></p>
+<p>In the YouTube show <em>Hot Ones</em>, guests eat increasingly spicy chicken wings. In a standard show, guests are offered ten wings total. Data from <span class="math inline">\(n = 275\)</span> guests are presented in the table below. These data are from this website: <a href="https://bensomething.notion.site/hotones">Ben Smith: Hot Ones</a>. (I’ve made no effort to verify the accuracy of the data.) Define <span class="math inline">\(W_i\)</span> to be the last chicken wing eaten by the <span class="math inline">\(i\)</span>th guest. We can think of <span class="math inline">\(W_i\)</span> as being the time to an event, where time is discretized into chicken wings.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Number of Wings (<span class="math inline">\(w\)</span>)</th>
+<th style="text-align: right;">Number of Guests</th>
+<th style="text-align: right;"><span class="math inline">\(P(W_i = w)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(P(W_i = w|W_i \ge w)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.03636</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.00727</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">258</td>
+<td style="text-align: right;">0.93818</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Total</td>
+<td style="text-align: right;">275</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: right;">N/A</td>
+</tr>
+</tbody>
+</table>
+<section id="part-a-1" class="level4" data-number="86.3.2.1">
+<h4 data-number="86.3.2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">86.3.2.1</span> Part (a)</h4>
+<p>For each <span class="math inline">\(w\in\{2,\dotsc,10\}\)</span>, find the discrete time hazard, <span class="math inline">\(P(W_i = w|W_i \ge w)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Number of Wings (<span class="math inline">\(w\)</span>)</th>
+<th style="text-align: right;">Number of Guests</th>
+<th style="text-align: right;"><span class="math inline">\(P(W_i = w)\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(P(W_i = w|W_i \ge w)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;">0.00364</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;">0.00365</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;">0.00366</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00000</td>
+<td style="text-align: right;">0.00000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;">0.00368</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.00364</td>
+<td style="text-align: right;">0.00369</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.03636</td>
+<td style="text-align: right;">0.003704</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.00727</td>
+<td style="text-align: right;">0.00769</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">258</td>
+<td style="text-align: right;">0.93818</td>
+<td style="text-align: right;">1.00000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Total</td>
+<td style="text-align: right;">275</td>
+<td style="text-align: right;">1.00000</td>
+<td style="text-align: right;">N/A</td>
+</tr>
+</tbody>
+</table>
+<p>For generic <span class="math inline">\(w\)</span>, the discrete time hazard is <span class="math display">\[
+\begin{align*}
+h(w) &amp;= P(W_i = w|W_i \ge w) \\
+&amp;= \frac{P(W_i = w,W_i \ge w)}{P(W_i \ge w)} \\
+&amp;= \frac{P(W_i = w)}{P(W_i \ge w)} \text{.}
+\end{align*}
+\]</span> These are the hazards for specific values: <span class="math display">\[
+\begin{align*}
+h(2) &amp;= \frac{P(W_i = 2)}{P(W_i \ge 2)} \\
+&amp;= \frac{0.00364}{1} \\
+&amp;= 0.00364 \\
+h(3) &amp;= \frac{P(W_i = 3)}{P(W_i \ge 3)} \\
+&amp;= \frac{0.00364}{1 - 0.00364} \\
+&amp;= \frac{\frac{1}{275}}{1-\frac{1}{275}} \\
+&amp;= \frac{1}{275-1} \\
+&amp;= 0.00365 \\
+h(4) &amp;= \frac{P(W_i = 4)}{P(W_i \ge 4)} \\
+&amp;= \frac{1}{1+1+1+10+2+258} \\
+&amp;= \frac{1}{273} \\
+&amp;= 0.00366 \\
+h(5) &amp;= \frac{P(W_i = 5)}{P(W_i \ge 5)} \\
+&amp;= 0 \\
+h(6) &amp;= \frac{P(W_i = 6)}{P(W_i \ge 6)} \\
+&amp;= \frac{1}{272} \\
+&amp;= 0.00368 \\
+h(7) &amp;= \frac{P(W_i = 7)}{P(W_i \ge 7)} \\
+&amp;= \frac{1}{271} \\
+&amp;= 0.00369 \\
+h(8) &amp;= \frac{P(W_i = 8)}{P(W_i \ge 8)} \\
+&amp;= \frac{10}{270} \\
+&amp;= 0.03704 \\
+h(9) &amp;= \frac{P(W_i = 9)}{P(W_i \ge 9)} \\
+&amp;= \frac{2}{260} \\
+&amp;= 0.00769 \\
+h(10) &amp;= \frac{P(W_i = 10)}{P(W_i \ge 10)} \\
+&amp;= \frac{258}{258} \\
+&amp;= 1 \text{.}
+\end{align*}
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="part-b-1" class="level4" data-number="86.3.2.2">
+<h4 data-number="86.3.2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">86.3.2.2</span> Part (b)</h4>
+<p>Compare and contrast the example above with this example:</p>
+<blockquote class="blockquote">
+<p>Suppose you are studying a new face wash for treating acne. You give the face wash to <span class="math inline">\(n\)</span> people and ask them to use it every day. Let <span class="math inline">\(X_i\)</span> be the number of days until the <span class="math inline">\(i\)</span>th person’s acne disappears. (This count includes the last day, when the acne is gone.) You decide that <span class="math inline">\(X_1,\dotsc,X_n\overset{\text{iid}}{\sim}\text{geometric}(p)\)</span>, where <span class="math inline">\(p\)</span> is the probability that the acne disappears on a given day.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>A random variable follows a geometric distribution if it represents the number of trials until the first success; there are only two outcomes (success and failure) on each trial; the trials are independent; and the probability of success is the same for each trial. (The parameter <span class="math inline">\(p\)</span> is the probability of success on each trial.)</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The Hot Ones example is sort of the opposite of the face wash example. In Hot Ones, <span class="math inline">\(P(W_i = w)\)</span> is constant for five of the possible values of <span class="math inline">\(w\)</span>. The hazard, in contrast, is increasing. In the face wash example, <span class="math inline">\(P(X_i = x)\)</span> is decreasing and the discrete time hazard is constant.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="part-c-1" class="level4" data-number="86.3.2.3">
+<h4 data-number="86.3.2.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">86.3.2.3</span> Part (c)</h4>
+<p>Which is greater, <span class="math inline">\(P(W_i = w)\)</span> or <span class="math inline">\(h(w)\)</span>? Is this true in general?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In this example and in general, <span class="math inline">\(h(w) \ge P(W_i = w)\)</span>. This is because <span class="math display">\[
+h(w) = \frac{P(W_i = w)}{P(W_i \ge w)}
+\]</span> and <span class="math inline">\(P(W_i \ge w) \le 1\)</span>. Dividing by something smaller than 1 results in something bigger than what you started with.</p>
 </div>
 </div>
 </div>
@@ -1577,8 +1886,8 @@ h(t) &amp;= \lim_{\delta\downarrow 0} \frac{P\left(t \le T &lt; t + \delta \midd
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../07_cox/04_cox.html" class="pagination-link" aria-label="Cox Proportional Hazards Model">
-        <span class="nav-page-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../07_cox/04_assumptions.html" class="pagination-link" aria-label="Assumptions of the Cox Proportional Hazards Model">
+        <span class="nav-page-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Assumptions of the Cox Proportional Hazards Model</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>98&nbsp; Poisson Regression (Solutions) – Applied Regression Analysis</title>
+<title>104&nbsp; Poisson Regression (Solutions) – Applied Regression Analysis</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -153,7 +153,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../A_problems_with_coding/01_index.html">Appendix A: Problems with Coding</a></li><li class="breadcrumb-item"><a href="../A_problems_with_coding/poisson_solutions.html"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../A_problems_with_coding/01_index.html">Appendix A: Problems with Coding</a></li><li class="breadcrumb-item"><a href="../A_problems_with_coding/poisson_solutions.html"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></a></li></ol></nav>
         <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -171,6 +171,11 @@ window.Quarto = {
       <a href="../">Applied Regression Analysis</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/jonno312/applied_regression_analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
     </div>
       </div>
@@ -759,8 +764,44 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../07_cox/04_cox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></span></a>
+  <a href="../07_cox/04_assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Assumptions of the Cox Proportional Hazards Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/05_interpretation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Interpretation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/06_ph.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Proportional Hazards Assumption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/07_check_ph.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Checking the Proportional Hazards Assumption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/08_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/09_interactions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">92</span>&nbsp; <span class="chapter-title">Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/10_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">93</span>&nbsp; <span class="chapter-title">Comparing the Performance of Different Cox Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -774,67 +815,67 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/01_index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">94</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/assumptions_SLR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">95</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/assumptions_SLR_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">96</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/interactions_MLR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/interactions_MLR_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">92</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/model_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">93</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/model_selection_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">94</span>&nbsp; <span class="chapter-title">Model Selection (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">100</span>&nbsp; <span class="chapter-title">Model Selection (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/calibration_ROC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">95</span>&nbsp; <span class="chapter-title">Calibration and ROC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">101</span>&nbsp; <span class="chapter-title">Calibration and ROC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/calibration_ROC_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">96</span>&nbsp; <span class="chapter-title">Calibration and ROC (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">102</span>&nbsp; <span class="chapter-title">Calibration and ROC (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/poisson_solutions.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
   </div>
 </li>
       </ul>
@@ -848,91 +889,91 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/01_index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">100</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 1</span></span></a>
+ <span class="menu-text"><span class="chapter-number">106</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 1</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">101</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 2</span></span></a>
+ <span class="menu-text"><span class="chapter-number">107</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 2</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">102</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 3</span></span></a>
+ <span class="menu-text"><span class="chapter-number">108</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 3</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 4</span></span></a>
+ <span class="menu-text"><span class="chapter-number">109</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 4</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 5</span></span></a>
+ <span class="menu-text"><span class="chapter-number">110</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 5</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 6</span></span></a>
+ <span class="menu-text"><span class="chapter-number">111</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 6</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">106</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 7</span></span></a>
+ <span class="menu-text"><span class="chapter-number">112</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 7</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">107</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 8</span></span></a>
+ <span class="menu-text"><span class="chapter-number">113</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 8</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">108</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 9</span></span></a>
+ <span class="menu-text"><span class="chapter-number">114</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 9</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">109</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 10</span></span></a>
+ <span class="menu-text"><span class="chapter-number">115</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 10</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">110</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 11</span></span></a>
+ <span class="menu-text"><span class="chapter-number">116</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 11</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">111</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 12</span></span></a>
+ <span class="menu-text"><span class="chapter-number">117</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 12</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">112</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 13</span></span></a>
+ <span class="menu-text"><span class="chapter-number">118</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 13</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_14.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">113</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 14</span></span></a>
+ <span class="menu-text"><span class="chapter-number">119</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 14</span></span></a>
   </div>
 </li>
       </ul>
@@ -947,35 +988,35 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#problem-1" id="toc-problem-1" class="nav-link active" data-scroll-target="#problem-1"><span class="header-section-number">98.1</span> Problem 1</a>
+  <li><a href="#problem-1" id="toc-problem-1" class="nav-link active" data-scroll-target="#problem-1"><span class="header-section-number">104.1</span> Problem 1</a>
   <ul class="collapse">
-  <li><a href="#part-a" id="toc-part-a" class="nav-link" data-scroll-target="#part-a"><span class="header-section-number">98.1.1</span> Part (a)</a></li>
-  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b"><span class="header-section-number">98.1.2</span> Part (b)</a></li>
-  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c"><span class="header-section-number">98.1.3</span> Part (c)</a></li>
-  <li><a href="#part-d" id="toc-part-d" class="nav-link" data-scroll-target="#part-d"><span class="header-section-number">98.1.4</span> Part (d)</a></li>
-  <li><a href="#part-e" id="toc-part-e" class="nav-link" data-scroll-target="#part-e"><span class="header-section-number">98.1.5</span> Part (e)</a></li>
-  <li><a href="#part-f" id="toc-part-f" class="nav-link" data-scroll-target="#part-f"><span class="header-section-number">98.1.6</span> Part (f)</a></li>
-  <li><a href="#part-g" id="toc-part-g" class="nav-link" data-scroll-target="#part-g"><span class="header-section-number">98.1.7</span> Part (g)</a></li>
+  <li><a href="#part-a" id="toc-part-a" class="nav-link" data-scroll-target="#part-a"><span class="header-section-number">104.1.1</span> Part (a)</a></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b"><span class="header-section-number">104.1.2</span> Part (b)</a></li>
+  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c"><span class="header-section-number">104.1.3</span> Part (c)</a></li>
+  <li><a href="#part-d" id="toc-part-d" class="nav-link" data-scroll-target="#part-d"><span class="header-section-number">104.1.4</span> Part (d)</a></li>
+  <li><a href="#part-e" id="toc-part-e" class="nav-link" data-scroll-target="#part-e"><span class="header-section-number">104.1.5</span> Part (e)</a></li>
+  <li><a href="#part-f" id="toc-part-f" class="nav-link" data-scroll-target="#part-f"><span class="header-section-number">104.1.6</span> Part (f)</a></li>
+  <li><a href="#part-g" id="toc-part-g" class="nav-link" data-scroll-target="#part-g"><span class="header-section-number">104.1.7</span> Part (g)</a></li>
   </ul></li>
-  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2"><span class="header-section-number">98.2</span> Problem 2</a>
+  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2"><span class="header-section-number">104.2</span> Problem 2</a>
   <ul class="collapse">
-  <li><a href="#part-a-1" id="toc-part-a-1" class="nav-link" data-scroll-target="#part-a-1"><span class="header-section-number">98.2.1</span> Part (a)</a></li>
-  <li><a href="#part-b-1" id="toc-part-b-1" class="nav-link" data-scroll-target="#part-b-1"><span class="header-section-number">98.2.2</span> Part (b)</a></li>
-  <li><a href="#part-c-1" id="toc-part-c-1" class="nav-link" data-scroll-target="#part-c-1"><span class="header-section-number">98.2.3</span> Part (c)</a></li>
-  <li><a href="#part-d-1" id="toc-part-d-1" class="nav-link" data-scroll-target="#part-d-1"><span class="header-section-number">98.2.4</span> Part (d)</a></li>
-  <li><a href="#part-e-1" id="toc-part-e-1" class="nav-link" data-scroll-target="#part-e-1"><span class="header-section-number">98.2.5</span> Part (e)</a></li>
-  <li><a href="#part-f-1" id="toc-part-f-1" class="nav-link" data-scroll-target="#part-f-1"><span class="header-section-number">98.2.6</span> Part (f)</a></li>
-  <li><a href="#part-g-1" id="toc-part-g-1" class="nav-link" data-scroll-target="#part-g-1"><span class="header-section-number">98.2.7</span> Part (g)</a></li>
-  <li><a href="#part-h" id="toc-part-h" class="nav-link" data-scroll-target="#part-h"><span class="header-section-number">98.2.8</span> Part (h)</a></li>
-  <li><a href="#part-i" id="toc-part-i" class="nav-link" data-scroll-target="#part-i"><span class="header-section-number">98.2.9</span> Part (i)</a></li>
+  <li><a href="#part-a-1" id="toc-part-a-1" class="nav-link" data-scroll-target="#part-a-1"><span class="header-section-number">104.2.1</span> Part (a)</a></li>
+  <li><a href="#part-b-1" id="toc-part-b-1" class="nav-link" data-scroll-target="#part-b-1"><span class="header-section-number">104.2.2</span> Part (b)</a></li>
+  <li><a href="#part-c-1" id="toc-part-c-1" class="nav-link" data-scroll-target="#part-c-1"><span class="header-section-number">104.2.3</span> Part (c)</a></li>
+  <li><a href="#part-d-1" id="toc-part-d-1" class="nav-link" data-scroll-target="#part-d-1"><span class="header-section-number">104.2.4</span> Part (d)</a></li>
+  <li><a href="#part-e-1" id="toc-part-e-1" class="nav-link" data-scroll-target="#part-e-1"><span class="header-section-number">104.2.5</span> Part (e)</a></li>
+  <li><a href="#part-f-1" id="toc-part-f-1" class="nav-link" data-scroll-target="#part-f-1"><span class="header-section-number">104.2.6</span> Part (f)</a></li>
+  <li><a href="#part-g-1" id="toc-part-g-1" class="nav-link" data-scroll-target="#part-g-1"><span class="header-section-number">104.2.7</span> Part (g)</a></li>
+  <li><a href="#part-h" id="toc-part-h" class="nav-link" data-scroll-target="#part-h"><span class="header-section-number">104.2.8</span> Part (h)</a></li>
+  <li><a href="#part-i" id="toc-part-i" class="nav-link" data-scroll-target="#part-i"><span class="header-section-number">104.2.9</span> Part (i)</a></li>
   </ul></li>
-  <li><a href="#problem-3" id="toc-problem-3" class="nav-link" data-scroll-target="#problem-3"><span class="header-section-number">98.3</span> Problem 3</a>
+  <li><a href="#problem-3" id="toc-problem-3" class="nav-link" data-scroll-target="#problem-3"><span class="header-section-number">104.3</span> Problem 3</a>
   <ul class="collapse">
-  <li><a href="#part-a-2" id="toc-part-a-2" class="nav-link" data-scroll-target="#part-a-2"><span class="header-section-number">98.3.1</span> Part (a)</a></li>
-  <li><a href="#part-b-2" id="toc-part-b-2" class="nav-link" data-scroll-target="#part-b-2"><span class="header-section-number">98.3.2</span> Part (b)</a></li>
-  <li><a href="#part-c-2" id="toc-part-c-2" class="nav-link" data-scroll-target="#part-c-2"><span class="header-section-number">98.3.3</span> Part (c)</a></li>
-  <li><a href="#part-d-2" id="toc-part-d-2" class="nav-link" data-scroll-target="#part-d-2"><span class="header-section-number">98.3.4</span> Part (d)</a></li>
-  <li><a href="#part-e-2" id="toc-part-e-2" class="nav-link" data-scroll-target="#part-e-2"><span class="header-section-number">98.3.5</span> Part (e)</a></li>
+  <li><a href="#part-a-2" id="toc-part-a-2" class="nav-link" data-scroll-target="#part-a-2"><span class="header-section-number">104.3.1</span> Part (a)</a></li>
+  <li><a href="#part-b-2" id="toc-part-b-2" class="nav-link" data-scroll-target="#part-b-2"><span class="header-section-number">104.3.2</span> Part (b)</a></li>
+  <li><a href="#part-c-2" id="toc-part-c-2" class="nav-link" data-scroll-target="#part-c-2"><span class="header-section-number">104.3.3</span> Part (c)</a></li>
+  <li><a href="#part-d-2" id="toc-part-d-2" class="nav-link" data-scroll-target="#part-d-2"><span class="header-section-number">104.3.4</span> Part (d)</a></li>
+  <li><a href="#part-e-2" id="toc-part-e-2" class="nav-link" data-scroll-target="#part-e-2"><span class="header-section-number">104.3.5</span> Part (e)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -983,9 +1024,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../A_problems_with_coding/01_index.html">Appendix A: Problems with Coding</a></li><li class="breadcrumb-item"><a href="../A_problems_with_coding/poisson_solutions.html"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../A_problems_with_coding/01_index.html">Appendix A: Problems with Coding</a></li><li class="breadcrumb-item"><a href="../A_problems_with_coding/poisson_solutions.html"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></h1>
+<h1 class="title"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></h1>
 </div>
 
 
@@ -1009,11 +1050,11 @@ window.Quarto = {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="problem-1" class="level2" data-number="98.1">
-<h2 data-number="98.1" class="anchored" data-anchor-id="problem-1"><span class="header-section-number">98.1</span> Problem 1</h2>
+<section id="problem-1" class="level2" data-number="104.1">
+<h2 data-number="104.1" class="anchored" data-anchor-id="problem-1"><span class="header-section-number">104.1</span> Problem 1</h2>
 <p>The purpose of this problem is to demonstrate just how difficult it is to check our assumptions for Poisson regression.</p>
-<section id="part-a" class="level3" data-number="98.1.1">
-<h3 data-number="98.1.1" class="anchored" data-anchor-id="part-a"><span class="header-section-number">98.1.1</span> Part (a)</h3>
+<section id="part-a" class="level3" data-number="104.1.1">
+<h3 data-number="104.1.1" class="anchored" data-anchor-id="part-a"><span class="header-section-number">104.1.1</span> Part (a)</h3>
 <p>Create the following variables:</p>
 <ul>
 <li><code>n</code>: This will be the sample size. Make this at least 100.</li>
@@ -1026,15 +1067,15 @@ window.Quarto = {
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>beta_1 <span class="ot">&lt;-</span> <span class="fl">0.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="part-b" class="level3" data-number="98.1.2">
-<h3 data-number="98.1.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">98.1.2</span> Part (b)</h3>
+<section id="part-b" class="level3" data-number="104.1.2">
+<h3 data-number="104.1.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">104.1.2</span> Part (b)</h3>
 <p>Generate <code>n</code> iid standard normal random variables. Store them as <code>x</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="part-c" class="level3" data-number="98.1.3">
-<h3 data-number="98.1.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">98.1.3</span> Part (c)</h3>
+<section id="part-c" class="level3" data-number="104.1.3">
+<h3 data-number="104.1.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">104.1.3</span> Part (c)</h3>
 <p>For this problem, we will assume the following:</p>
 <ol type="1">
 <li><span class="math inline">\(\log \mu_i = \beta_0 + \beta_1 X_i\)</span></li>
@@ -1062,16 +1103,16 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="part-d" class="level3" data-number="98.1.4">
-<h3 data-number="98.1.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">98.1.4</span> Part (d)</h3>
+<section id="part-d" class="level3" data-number="104.1.4">
+<h3 data-number="104.1.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">104.1.4</span> Part (d)</h3>
 <p>Generate <span class="math inline">\(Y_1,\dotsc,Y_n\)</span> according to the assumptions above.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="at">n =</span> n,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">lambda =</span> mu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="part-e" class="level3" data-number="98.1.5">
-<h3 data-number="98.1.5" class="anchored" data-anchor-id="part-e"><span class="header-section-number">98.1.5</span> Part (e)</h3>
+<section id="part-e" class="level3" data-number="104.1.5">
+<h3 data-number="104.1.5" class="anchored" data-anchor-id="part-e"><span class="header-section-number">104.1.5</span> Part (e)</h3>
 <p>Perform Poisson regression and quasi-Poisson regression with <span class="math inline">\(Y_i\)</span> as the outcome and <span class="math inline">\(X_i\)</span> as the single explanatory variable.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Poisson regression</span></span>
@@ -1126,8 +1167,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p>Is there evidence of overdispersion?</p>
 <p>No.&nbsp;The dispersion parameter is essentially 1.</p>
 </section>
-<section id="part-f" class="level3" data-number="98.1.6">
-<h3 data-number="98.1.6" class="anchored" data-anchor-id="part-f"><span class="header-section-number">98.1.6</span> Part (f)</h3>
+<section id="part-f" class="level3" data-number="104.1.6">
+<h3 data-number="104.1.6" class="anchored" data-anchor-id="part-f"><span class="header-section-number">104.1.6</span> Part (f)</h3>
 <p>Using the Poisson regression model, make the following plots:</p>
 <ul>
 <li>A calibration-style plot with fitted values on the horizontal axis, observed values on the vertical axis, and a reference line with intercept 0 and slope 1.</li>
@@ -1230,8 +1271,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
 </section>
-<section id="part-g" class="level3" data-number="98.1.7">
-<h3 data-number="98.1.7" class="anchored" data-anchor-id="part-g"><span class="header-section-number">98.1.7</span> Part (g)</h3>
+<section id="part-g" class="level3" data-number="104.1.7">
+<h3 data-number="104.1.7" class="anchored" data-anchor-id="part-g"><span class="header-section-number">104.1.7</span> Part (g)</h3>
 <p>Modify <code>beta_0</code> and/or <code>beta_1</code> in Part (a) so that <span class="math inline">\(\mu_1,\dotsc,\mu_n\)</span> are all at least 100. (You can check Part (c).) Then re-run all your code. What do the plots in Part (f) look like?</p>
 <p>Then, modify <code>beta_0</code> and/or <code>beta_1</code> in Part (a) so that <span class="math inline">\(\mu_1,\dotsc,\mu_n\)</span> are all below 2. (You can check Part (c).) Then re-run all your code. What do the plots in Part (f) look like?</p>
 <p>When the means are large, the plots in Part (f) look how we want them to. The points in the calibration-style plot fall along the reference line; the deviance residuals are normally distributed; and in the scatterplots, the reference line goes straight through the center of the cloud of points.</p>
@@ -1239,20 +1280,20 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p>Keep in mind that no matter what <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are, we’re not violating any of the assumptions of Poisson regression. This is why assumption-checking is so hard for this analysis; even when the assumptions are met, we get weird plots.</p>
 </section>
 </section>
-<section id="problem-2" class="level2" data-number="98.2">
-<h2 data-number="98.2" class="anchored" data-anchor-id="problem-2"><span class="header-section-number">98.2</span> Problem 2</h2>
+<section id="problem-2" class="level2" data-number="104.2">
+<h2 data-number="104.2" class="anchored" data-anchor-id="problem-2"><span class="header-section-number">104.2</span> Problem 2</h2>
 <p>For this problem, you will analyze the data set from <a href="https://doi.org/10.1371/journal.pone.0124264">Obesity Is Independently Associated with Spinal Anesthesia Outcomes: A Prospective Observational Study</a>. You’ll have to download the <a href="https://doi.org/10.1371/journal.pone.0124264.s001">data set</a> and put it in your working directory. The authors of this paper performed logistic regression with “successful anesthesia” as the outcome. We will be examining the variable <code>HospitalStay</code> instead. Although there’s no data dictionary, we’re going to assume this variable represents the duration of the hospital stay in days.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_xls</span>(<span class="st">"pone.0124264.s001.xls"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="part-a-1" class="level3" data-number="98.2.1">
-<h3 data-number="98.2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">98.2.1</span> Part (a)</h3>
+<section id="part-a-1" class="level3" data-number="104.2.1">
+<h3 data-number="104.2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">104.2.1</span> Part (a)</h3>
 <p>Knowing what you know about Poisson regression, does it make sense to use Poisson regression for this outcome? Why or why not?</p>
 <p>I don’t think it makes sense to use Poisson regression for this outcome. Although the outcome is a count, it’s not a count of the number of events, where the events are occurring at a constant rate.</p>
 </section>
-<section id="part-b-1" class="level3" data-number="98.2.2">
-<h3 data-number="98.2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">98.2.2</span> Part (b)</h3>
+<section id="part-b-1" class="level3" data-number="104.2.2">
+<h3 data-number="104.2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">104.2.2</span> Part (b)</h3>
 <p>Use Poisson regression to regress <code>HospitalStay</code> on at least two explanatory variables of your own choosing.</p>
 <p>Do not supply an offset. There’s not really a <span class="math inline">\(t_i\)</span> here, so we’re sort of assuming <span class="math inline">\(t_i = 1\)</span> for everyone. This means that we’re modeling the mean of the distribution, and not really a rate.</p>
 <p>Use <code>summary</code> to print the results to screen.</p>
@@ -1296,8 +1337,8 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 </section>
-<section id="part-c-1" class="level3" data-number="98.2.3">
-<h3 data-number="98.2.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">98.2.3</span> Part (c)</h3>
+<section id="part-c-1" class="level3" data-number="104.2.3">
+<h3 data-number="104.2.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">104.2.3</span> Part (c)</h3>
 <p>Repeat Part (b) but use quasi-Poisson regression instead. Does there appear to be over-dispersion?</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mod_04 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">formula =</span> HospitalStay <span class="sc">~</span> Age_70 <span class="sc">+</span> SuccessAnesthesia,</span>
@@ -1330,8 +1371,8 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 <p>No, there appears to be underdispersion. The variance is about half of the mean.</p>
 </section>
-<section id="part-d-1" class="level3" data-number="98.2.4">
-<h3 data-number="98.2.4" class="anchored" data-anchor-id="part-d-1"><span class="header-section-number">98.2.4</span> Part (d)</h3>
+<section id="part-d-1" class="level3" data-number="104.2.4">
+<h3 data-number="104.2.4" class="anchored" data-anchor-id="part-d-1"><span class="header-section-number">104.2.4</span> Part (d)</h3>
 <p>Interpret the intercept and at least one non-intercept coefficient in real-world terms.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(mod_03<span class="sc">$</span>coefficients)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1346,8 +1387,8 @@ Number of Fisher Scoring iterations: 4</code></pre>
 <li>Successful anesthesia is associated with a <span class="math inline">\((1 - 0.8883495) \times 100 = 11.2\)</span> percent decrease in expected hospital stay, holding age constant.</li>
 </ul>
 </section>
-<section id="part-e-1" class="level3" data-number="98.2.5">
-<h3 data-number="98.2.5" class="anchored" data-anchor-id="part-e-1"><span class="header-section-number">98.2.5</span> Part (e)</h3>
+<section id="part-e-1" class="level3" data-number="104.2.5">
+<h3 data-number="104.2.5" class="anchored" data-anchor-id="part-e-1"><span class="header-section-number">104.2.5</span> Part (e)</h3>
 <p>Use <code>hist</code> and <code>summary</code> on the outcome variable, <code>HospitalStay</code>. What do you notice?</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="at">x =</span> d<span class="sc">$</span>HospitalStay,</span>
@@ -1368,8 +1409,8 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 <p>The minimum hospital stay is 4 days. This doesn’t match the support of the Poisson, which includes 0, 1, 2, and 3. It appears that this procedure always requires a hospital stay of at least four days. It’s almost like the first four days are non-random, and only the excess beyond those four days is random.</p>
 </section>
-<section id="part-f-1" class="level3" data-number="98.2.6">
-<h3 data-number="98.2.6" class="anchored" data-anchor-id="part-f-1"><span class="header-section-number">98.2.6</span> Part (f)</h3>
+<section id="part-f-1" class="level3" data-number="104.2.6">
+<h3 data-number="104.2.6" class="anchored" data-anchor-id="part-f-1"><span class="header-section-number">104.2.6</span> Part (f)</h3>
 <p>Repeat Parts (b) and (c), but change the outcome to a transformation of <code>HospitalStay</code> that makes sense based on what you saw in Part (e). Use the same explanatory variables.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create shifted outcome variable</span></span>
@@ -1434,13 +1475,13 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 <p>Now we see a little bit of overdispersion.</p>
 </section>
-<section id="part-g-1" class="level3" data-number="98.2.7">
-<h3 data-number="98.2.7" class="anchored" data-anchor-id="part-g-1"><span class="header-section-number">98.2.7</span> Part (g)</h3>
+<section id="part-g-1" class="level3" data-number="104.2.7">
+<h3 data-number="104.2.7" class="anchored" data-anchor-id="part-g-1"><span class="header-section-number">104.2.7</span> Part (g)</h3>
 <p>How does the transformation you made in Part (f) affect the interpretation of the coefficients?</p>
 <p>The exponentiated coefficients represent ratios, but not of the mean number days spent in the hospital. Instead, they represent ratios of the mean number of days <em>above four</em> spent in the hospital. If we wanted to interpret them, we’d have to talk about percentage changes, but of the number of days above four. It would be a nightmare.</p>
 </section>
-<section id="part-h" class="level3" data-number="98.2.8">
-<h3 data-number="98.2.8" class="anchored" data-anchor-id="part-h"><span class="header-section-number">98.2.8</span> Part (h)</h3>
+<section id="part-h" class="level3" data-number="104.2.8">
+<h3 data-number="104.2.8" class="anchored" data-anchor-id="part-h"><span class="header-section-number">104.2.8</span> Part (h)</h3>
 <p>Repeat Part (f) but use <code>family = poisson(link = "identity")</code> and <code>family = quasipoisson(link = "identity")</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Poisson regression</span></span>
@@ -1502,8 +1543,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 <p>The estimate of the dispersion parameter is about the same as in Part (f).</p>
 </section>
-<section id="part-i" class="level3" data-number="98.2.9">
-<h3 data-number="98.2.9" class="anchored" data-anchor-id="part-i"><span class="header-section-number">98.2.9</span> Part (i)</h3>
+<section id="part-i" class="level3" data-number="104.2.9">
+<h3 data-number="104.2.9" class="anchored" data-anchor-id="part-i"><span class="header-section-number">104.2.9</span> Part (i)</h3>
 <p>Interpret the intercept and at least one non-intercept coefficient from Part (h) in real-world terms.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>mod_07<span class="sc">$</span>coefficients</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1520,8 +1561,8 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </ul>
 </section>
 </section>
-<section id="problem-3" class="level2" data-number="98.3">
-<h2 data-number="98.3" class="anchored" data-anchor-id="problem-3"><span class="header-section-number">98.3</span> Problem 3</h2>
+<section id="problem-3" class="level2" data-number="104.3">
+<h2 data-number="104.3" class="anchored" data-anchor-id="problem-3"><span class="header-section-number">104.3</span> Problem 3</h2>
 <p>Suppose you visit <span class="math inline">\(n\)</span> emergency rooms to observe how busy they are. Define the following:</p>
 <ul>
 <li><span class="math inline">\(t_i\)</span> is the number of hours you spend observing the <span class="math inline">\(i\)</span>th hospital.</li>
@@ -1535,28 +1576,28 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <li>The observations are iid.</li>
 <li><span class="math inline">\(Y_i|T_i,W_i\sim\text{Poisson}(\mu_i)\)</span>.</li>
 </ol>
-<section id="part-a-2" class="level3" data-number="98.3.1">
-<h3 data-number="98.3.1" class="anchored" data-anchor-id="part-a-2"><span class="header-section-number">98.3.1</span> Part (a)</h3>
+<section id="part-a-2" class="level3" data-number="104.3.1">
+<h3 data-number="104.3.1" class="anchored" data-anchor-id="part-a-2"><span class="header-section-number">104.3.1</span> Part (a)</h3>
 <p>Interpret <span class="math inline">\(\exp(\beta_0)\)</span> in real-world terms.</p>
 <p>The expected number of new patients per hour when it’s zero degrees Fahrenheit outside and a weekend.</p>
 </section>
-<section id="part-b-2" class="level3" data-number="98.3.2">
-<h3 data-number="98.3.2" class="anchored" data-anchor-id="part-b-2"><span class="header-section-number">98.3.2</span> Part (b)</h3>
+<section id="part-b-2" class="level3" data-number="104.3.2">
+<h3 data-number="104.3.2" class="anchored" data-anchor-id="part-b-2"><span class="header-section-number">104.3.2</span> Part (b)</h3>
 <p>Interpret <span class="math inline">\(\exp(\beta_1)\)</span> in real-world terms.</p>
 <p>Each one-degree Fahrenheit increase in temperature is associated with a <span class="math inline">\((\exp(\beta_1) - 1)\times 100\)</span>% increase in the number of new patients per hour, assuming it’s a weekend.</p>
 </section>
-<section id="part-c-2" class="level3" data-number="98.3.3">
-<h3 data-number="98.3.3" class="anchored" data-anchor-id="part-c-2"><span class="header-section-number">98.3.3</span> Part (c)</h3>
+<section id="part-c-2" class="level3" data-number="104.3.3">
+<h3 data-number="104.3.3" class="anchored" data-anchor-id="part-c-2"><span class="header-section-number">104.3.3</span> Part (c)</h3>
 <p>Interpret <span class="math inline">\(\exp(\beta_2)\)</span> in real-world terms.</p>
 <p>If it’s zero degrees Fahrenheit outside, the rate of new patients per hour on work days is <span class="math inline">\(\exp(\beta_2)\)</span> times the rate of new patients per hour on the weekend.</p>
 </section>
-<section id="part-d-2" class="level3" data-number="98.3.4">
-<h3 data-number="98.3.4" class="anchored" data-anchor-id="part-d-2"><span class="header-section-number">98.3.4</span> Part (d)</h3>
+<section id="part-d-2" class="level3" data-number="104.3.4">
+<h3 data-number="104.3.4" class="anchored" data-anchor-id="part-d-2"><span class="header-section-number">104.3.4</span> Part (d)</h3>
 <p>Interpret <span class="math inline">\(\exp(\beta_1 + \beta_3)\)</span> in real-world terms.</p>
 <p>Each one-degree Fahrenheit increase in temperature is associated with a <span class="math inline">\((\exp(\beta_1 + \beta_3) - 1)\times 100\)</span>% increase in the number of new patients per hour, assuming it’s a workday.</p>
 </section>
-<section id="part-e-2" class="level3" data-number="98.3.5">
-<h3 data-number="98.3.5" class="anchored" data-anchor-id="part-e-2"><span class="header-section-number">98.3.5</span> Part (e)</h3>
+<section id="part-e-2" class="level3" data-number="104.3.5">
+<h3 data-number="104.3.5" class="anchored" data-anchor-id="part-e-2"><span class="header-section-number">104.3.5</span> Part (e)</h3>
 <p>Interpret <span class="math inline">\(\exp(\beta_2 + \beta_3)\)</span> in real-world terms.</p>
 <p>If it’s one degree Fahrenheit outside, the rate of new patients per hour on work days is <span class="math inline">\(\exp(\beta_2 + \beta_3)\)</span> times the rate of new patients per hour on the weekend.</p>
 
@@ -2068,12 +2109,12 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
       <a href="../A_problems_with_coding/poisson.html" class="pagination-link" aria-label="Poisson Regression (Solutions)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../B_past_quizzes/01_index.html" class="pagination-link" aria-label="Introduction">
-        <span class="nav-page-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

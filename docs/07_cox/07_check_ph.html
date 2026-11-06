@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>87&nbsp; Cox Proportional Hazards Model – Applied Regression Analysis</title>
+<title>90&nbsp; Checking the Proportional Hazards Assumption – Applied Regression Analysis</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,8 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../A_problems_with_coding/01_index.html" rel="next">
-<link href="../07_cox/03_hazard.html" rel="prev">
+<link href="../07_cox/08_hypothesis_testing.html" rel="next">
+<link href="../07_cox/06_ph.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
@@ -153,7 +153,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../07_cox/01_censoring.html">Cox Proportional Hazards Regression</a></li><li class="breadcrumb-item"><a href="../07_cox/04_cox.html"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../07_cox/01_censoring.html">Cox Proportional Hazards Regression</a></li><li class="breadcrumb-item"><a href="../07_cox/07_check_ph.html"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Checking the Proportional Hazards Assumption</span></a></li></ol></nav>
         <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -171,6 +171,11 @@ window.Quarto = {
       <a href="../">Applied Regression Analysis</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/jonno312/applied_regression_analysis" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
     </div>
       </div>
@@ -759,8 +764,44 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../07_cox/04_cox.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></span></a>
+  <a href="../07_cox/04_assumptions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Assumptions of the Cox Proportional Hazards Model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/05_interpretation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Interpretation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/06_ph.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Proportional Hazards Assumption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/07_check_ph.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Checking the Proportional Hazards Assumption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/08_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/09_interactions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">92</span>&nbsp; <span class="chapter-title">Interactions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_cox/10_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">93</span>&nbsp; <span class="chapter-title">Comparing the Performance of Different Cox Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -774,67 +815,67 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/01_index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">94</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/assumptions_SLR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">95</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/assumptions_SLR_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">96</span>&nbsp; <span class="chapter-title">Assumptions of Simple Linear Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/interactions_MLR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/interactions_MLR_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">92</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Interactions in Multiple Linear Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/model_selection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">93</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Model Selection</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/model_selection_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">94</span>&nbsp; <span class="chapter-title">Model Selection (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">100</span>&nbsp; <span class="chapter-title">Model Selection (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/calibration_ROC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">95</span>&nbsp; <span class="chapter-title">Calibration and ROC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">101</span>&nbsp; <span class="chapter-title">Calibration and ROC</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/calibration_ROC_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">96</span>&nbsp; <span class="chapter-title">Calibration and ROC (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">102</span>&nbsp; <span class="chapter-title">Calibration and ROC (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/poisson.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">97</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../A_problems_with_coding/poisson_solutions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">98</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Poisson Regression (Solutions)</span></span></a>
   </div>
 </li>
       </ul>
@@ -848,91 +889,91 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/01_index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">99</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">100</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 1</span></span></a>
+ <span class="menu-text"><span class="chapter-number">106</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 1</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">101</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 2</span></span></a>
+ <span class="menu-text"><span class="chapter-number">107</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 2</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">102</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 3</span></span></a>
+ <span class="menu-text"><span class="chapter-number">108</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 3</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">103</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 4</span></span></a>
+ <span class="menu-text"><span class="chapter-number">109</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 4</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">104</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 5</span></span></a>
+ <span class="menu-text"><span class="chapter-number">110</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 5</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">105</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 6</span></span></a>
+ <span class="menu-text"><span class="chapter-number">111</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 6</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_07.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">106</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 7</span></span></a>
+ <span class="menu-text"><span class="chapter-number">112</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 7</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">107</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 8</span></span></a>
+ <span class="menu-text"><span class="chapter-number">113</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 8</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">108</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 9</span></span></a>
+ <span class="menu-text"><span class="chapter-number">114</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 9</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">109</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 10</span></span></a>
+ <span class="menu-text"><span class="chapter-number">115</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 10</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">110</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 11</span></span></a>
+ <span class="menu-text"><span class="chapter-number">116</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 11</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_12.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">111</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 12</span></span></a>
+ <span class="menu-text"><span class="chapter-number">117</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 12</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_13.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">112</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 13</span></span></a>
+ <span class="menu-text"><span class="chapter-number">118</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 13</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../B_past_quizzes/2025_quiz_14.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">113</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 14</span></span></a>
+ <span class="menu-text"><span class="chapter-number">119</span>&nbsp; <span class="chapter-title">Fall 2025 Quiz 14</span></span></a>
   </div>
 </li>
       </ul>
@@ -947,17 +988,15 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">87.1</span> Learning Objectives</a></li>
-  <li><a href="#lesson" id="toc-lesson" class="nav-link" data-scroll-target="#lesson"><span class="header-section-number">87.2</span> Lesson</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">90.1</span> Learning Objectives</a></li>
+  <li><a href="#lesson" id="toc-lesson" class="nav-link" data-scroll-target="#lesson"><span class="header-section-number">90.2</span> Lesson</a>
   <ul class="collapse">
-  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">87.2.1</span> Assumptions</a></li>
-  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation"><span class="header-section-number">87.2.2</span> Interpretation</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">87.2.3</span> Example</a></li>
-  <li><a href="#proportional-hazards" id="toc-proportional-hazards" class="nav-link" data-scroll-target="#proportional-hazards"><span class="header-section-number">87.2.4</span> Proportional Hazards</a></li>
+  <li><a href="#complementary-log-log-plot" id="toc-complementary-log-log-plot" class="nav-link" data-scroll-target="#complementary-log-log-plot"><span class="header-section-number">90.2.1</span> Complementary Log-Log Plot</a></li>
+  <li><a href="#schoenfeld-residuals" id="toc-schoenfeld-residuals" class="nav-link" data-scroll-target="#schoenfeld-residuals"><span class="header-section-number">90.2.2</span> Schoenfeld Residuals</a></li>
   </ul></li>
-  <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems"><span class="header-section-number">87.3</span> Problems</a>
+  <li><a href="#problems" id="toc-problems" class="nav-link" data-scroll-target="#problems"><span class="header-section-number">90.3</span> Problems</a>
   <ul class="collapse">
-  <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1"><span class="header-section-number">87.3.1</span> Problem 1</a></li>
+  <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1"><span class="header-section-number">90.3.1</span> Problem 1</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -965,9 +1004,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../07_cox/01_censoring.html">Cox Proportional Hazards Regression</a></li><li class="breadcrumb-item"><a href="../07_cox/04_cox.html"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../07_cox/01_censoring.html">Cox Proportional Hazards Regression</a></li><li class="breadcrumb-item"><a href="../07_cox/07_check_ph.html"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Checking the Proportional Hazards Assumption</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">87</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Model</span></h1>
+<h1 class="title"><span class="chapter-number">90</span>&nbsp; <span class="chapter-title">Checking the Proportional Hazards Assumption</span></h1>
 </div>
 
 
@@ -984,45 +1023,31 @@ window.Quarto = {
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="87.1">
-<h2 data-number="87.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">87.1</span> Learning Objectives</h2>
+<section id="learning-objectives" class="level2" data-number="90.1">
+<h2 data-number="90.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">90.1</span> Learning Objectives</h2>
 <ul>
-<li>Explain the assumptions of the Cox proportional hazards model.</li>
-<li>Interpret the coefficients in a Cox proportional hazards model.</li>
-<li>Explain what “proportional hazards” means.</li>
+<li>Interpret a complementary log-log plot</li>
+<li>Interpret Schoenfeld residual tests</li>
+<li>Interpret Schoenfeld residual plots</li>
 </ul>
 </section>
-<section id="lesson" class="level2" data-number="87.2">
-<h2 data-number="87.2" class="anchored" data-anchor-id="lesson"><span class="header-section-number">87.2</span> Lesson</h2>
-<section id="assumptions" class="level3" data-number="87.2.1">
-<h3 data-number="87.2.1" class="anchored" data-anchor-id="assumptions"><span class="header-section-number">87.2.1</span> Assumptions</h3>
-<p>The Cox proportional hazards model has the following assumptions, where <span class="math inline">\(h_i(t)\)</span> is the hazard rate for the <span class="math inline">\(i\)</span>th observation and <span class="math inline">\(h_0(t)\)</span> is the baseline hazard rate:</p>
-<ol type="1">
-<li><span class="math inline">\(\log h_i(t) = \log h_0(t) + \beta_1 X_{i1} + \cdots + \beta_p X_{ip}\)</span></li>
-<li>The observations are iid.</li>
-<li>Censoring is independent of time to event.</li>
-</ol>
-<p>Note that there’s no <span class="math inline">\(\beta_0\)</span>. With the Cox proportional hazards model (which I will abbreviate to the Cox model), we don’t estimate an intercept. This means we don’t estimate the baseline hazard rate. At no point do we say what <span class="math inline">\(h_0(t)\)</span> is.</p>
-</section>
-<section id="interpretation" class="level3" data-number="87.2.2">
-<h3 data-number="87.2.2" class="anchored" data-anchor-id="interpretation"><span class="header-section-number">87.2.2</span> Interpretation</h3>
-<p>How do we interpret the coefficients in the Cox model? Consider the first assumption: <span class="math display">\[
-\log h_i(t) = \log h_0(t) + \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \text{.}
-\]</span> If we exponentiate both sides, we get this: <span class="math display">\[
-h_i(t) = h_0(t) \exp\left( \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \right) \text{.}
-\]</span> So, we can get <span class="math inline">\(\exp(\beta_1)\)</span> as follows: <span class="math display">\[
+<section id="lesson" class="level2" data-number="90.2">
+<h2 data-number="90.2" class="anchored" data-anchor-id="lesson"><span class="header-section-number">90.2</span> Lesson</h2>
+<p>Proportional hazards is a strong assumption. So, we really should check it before interpreting the results of a Cox regression model. How do we check this assumption? I’m going to present two methods.</p>
+<section id="complementary-log-log-plot" class="level3" data-number="90.2.1">
+<h3 data-number="90.2.1" class="anchored" data-anchor-id="complementary-log-log-plot"><span class="header-section-number">90.2.1</span> Complementary Log-Log Plot</h3>
+<p>Recall that proportional hazards means <span class="math inline">\(h_2(t) = ch_1(t)\)</span>, where <span class="math inline">\(h_2(t)\)</span> denotes the hazard rate at time <span class="math inline">\(t\)</span> for group 2, <span class="math inline">\(h_1(t)\)</span> denotes the hazard rate at time <span class="math inline">\(t\)</span> for group 1, and <span class="math inline">\(c\)</span> is a positive constant. Proportional hazards implies <span class="math display">\[
 \begin{align*}
-\frac{h_0(t) \exp\left( \beta_1 (x+1) + \cdots + \beta_p X_{ip} \right)}{h_0(t) \exp\left( \beta_1 x + \cdots + \beta_p X_{ip} \right)} &amp;= \frac{\exp\left( \beta_1 (x+1) + \cdots + \beta_p X_{ip} \right)}{\exp\left( \beta_1 x + \cdots + \beta_p X_{ip} \right)} \\
-&amp;= \frac{\exp\left( \beta_1 (x+1)  \right)}{\exp\left( \beta_1 x  \right)} \\
-&amp;= \frac{\exp\left( \beta_1 x + \beta_1  \right)}{\exp\left( \beta_1 x  \right)} \\
-&amp;= \exp\left(\beta_1\right) \text{.}
+h_2(t) &amp;= ch_1(t) \\
+\int_0^t h_2(s)\,ds &amp;= \int_0^t ch_1(s) \,ds \\
+\int_0^t h_2(s)\,ds &amp;= c \int_0^t h_1(s) \,ds \\
+\Lambda_2(t) &amp;= c\Lambda_1(t) \\
+-\log S_2(t) &amp;= -c\log S_1(t) \\
+\log(-\log S_2(t)) &amp;= \log(-c\log S_1(t)) \\
+\log(-\log S_2(t)) &amp;= \log c + \log(-\log S_1(t)) \text{.} \\
 \end{align*}
-\]</span></p>
-<p>So, <span class="math inline">\(\exp\left(\beta_1\right)\)</span> is the hazard ratio at time <span class="math inline">\(t\)</span> comparing two populations that are identical except for a difference of one unit on the first explanatory variable. Phrased another way, the hazard rate at time <span class="math inline">\(t\)</span> for a population with <span class="math inline">\(X_1 = x+1\)</span> is <span class="math inline">\(\exp(\beta_1)\)</span> times the hazard rate at time <span class="math inline">\(t\)</span> for a population with <span class="math inline">\(X_1 = x\)</span>, holding all else equal. Phrased yet another way, the hazard rate at time <span class="math inline">\(t\)</span> for a population with <span class="math inline">\(X_1 = x+1\)</span> is <span class="math inline">\(\left(\exp(\beta_1) - 1\right)\times 100\%\)</span> greater than the hazard rate at time <span class="math inline">\(t\)</span> for a population with <span class="math inline">\(X_1 = x\)</span>, holding all else equal.</p>
-</section>
-<section id="example" class="level3" data-number="87.2.3">
-<h3 data-number="87.2.3" class="anchored" data-anchor-id="example"><span class="header-section-number">87.2.3</span> Example</h3>
-<p>Let’s look at data from a trial comparing two adjuvant therapy regimens for colon cancer (<a href="https://doi.org/10.7326/0003-4819-122-5-199503010-00001">Moertel et al., 1995</a>). These are the variables:</p>
+\]</span> How is this helpful to us? Well, we know how to estimate <span class="math inline">\(S_2(t)\)</span> and <span class="math inline">\(S_1(t)\)</span>: we can create Kaplan-Meier curves. If we plot <span class="math inline">\(\log(-\log \hat{S}_2(t))\)</span> and <span class="math inline">\(\log(-\log \hat{S}_1(t))\)</span>, and the two curves are parallel, that’s evidence for proportional hazards.</p>
+<p>Let’s look at an example. Let’s return to the data from the trial comparing two adjuvant therapy regimens for colon cancer (<a href="https://doi.org/10.7326/0003-4819-122-5-199503010-00001">Moertel et al., 1995</a>). These are the variables:</p>
 <ul>
 <li><code>time</code>: Time until death in days. Unfortunately, I don’t know the time origin.</li>
 <li><code>status</code>: 1 is death, 0 is censoring.</li>
@@ -1030,99 +1055,127 @@ h_i(t) = h_0(t) \exp\left( \beta_1 X_{i1} + \cdots + \beta_p X_{ip} \right) \tex
 <li><code>sex</code>: 1 for male, 0 for female.</li>
 <li><code>age</code>: This is in years, but I don’t know when it was measured. Maybe at the time origin?</li>
 </ul>
-<p>The results of a Cox regression is below.</p>
+<p>We can look at a complementary log-log plot to check for proportional hazards by treatment.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cox regression</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mod_01 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">time =</span> time,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">event =</span> status) <span class="sc">~</span> rx <span class="sc">+</span> sex <span class="sc">+</span> age,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> d_colon)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_01)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Complementary log-log plot</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(<span class="at">fit =</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(<span class="at">time =</span> time,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">event =</span> status) <span class="sc">~</span> rx,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> d_colon),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">fun =</span> <span class="st">"cloglog"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These lines are clearly not parallel. They intersect multiple times.</p>
+<p>What if we stratify by sex?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Complementary log-log plot</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(<span class="at">fit =</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(<span class="at">time =</span> time,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">event =</span> status) <span class="sc">~</span> sex,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> d_colon),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">fun =</span> <span class="st">"cloglog"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These are also not parallel.</p>
+<p>So far, we don’t have evidence for proportional hazards in our data. However it’s worth noting that the complementary log-log plot requires splitting the data set into groups. If we tried to make such a plot for a model with treatment, sex, and age as explanatory variables, it would include a separate curve for each unique combination of treatment, sex and age. That’s not really feasible for a model with many variables, or a model with even a few continuous variables.</p>
+</section>
+<section id="schoenfeld-residuals" class="level3" data-number="90.2.2">
+<h3 data-number="90.2.2" class="anchored" data-anchor-id="schoenfeld-residuals"><span class="header-section-number">90.2.2</span> Schoenfeld Residuals</h3>
+<p>Schoenfeld residuals are another way to assess the proportional hazards assumption for a given model. Fortunately, they can be used even when there are many covariates in the model, and/or continuous covariates. I’m not going to get into how Schoenfeld residuals are computed, but I’ll explain how to intepret the associated hypothesis tests and plots.</p>
+<p>If you use the function <code>cox.zph</code> from the package <code>survival</code>, it will perform a few hypothesis tests: one for each explanatory variable in the model, and another global test. The null hypothesis for a specific covariate is that the proportional hazards assumption holds for that covariate. The null hypothesis for the global test is that the proportional hazards assumption holds for the model as a whole.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cox regression</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mod_01 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">time =</span> time,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">event =</span> status) <span class="sc">~</span> rx <span class="sc">+</span> sex <span class="sc">+</span> age,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> d_colon)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Schoenfeld residual test</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>mod_01_ph_test <span class="ot">&lt;-</span> <span class="fu">cox.zph</span>(mod_01)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>mod_01_ph_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(time = time, event = status) ~ rx + sex + 
-    age, data = d_colon)
-
-  n= 929, number of events= 452 
-
-                coef  exp(coef)   se(coef)      z Pr(&gt;|z|)   
-rxLev     -0.0274824  0.9728919  0.1103388 -0.249  0.80330   
-rxLev+5FU -0.3738188  0.6881016  0.1188508 -3.145  0.00166 **
-sex       -0.0004239  0.9995762  0.0943099 -0.004  0.99641   
-age        0.0023679  1.0023707  0.0040458  0.585  0.55836   
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-          exp(coef) exp(-coef) lower .95 upper .95
-rxLev        0.9729     1.0279    0.7837    1.2078
-rxLev+5FU    0.6881     1.4533    0.5451    0.8686
-sex          0.9996     1.0004    0.8309    1.2025
-age          1.0024     0.9976    0.9945    1.0104
-
-Concordance= 0.548  (se = 0.014 )
-Likelihood ratio test= 12.49  on 4 df,   p=0.01
-Wald test            = 11.9  on 4 df,   p=0.02
-Score (logrank) test = 12.02  on 4 df,   p=0.02</code></pre>
+<pre><code>       chisq df    p
+rx     1.498  2 0.47
+sex    0.932  1 0.33
+age    0.391  1 0.53
+GLOBAL 2.778  4 0.60</code></pre>
 </div>
 </div>
-<p>How do we interpret these coefficients? R has kindly exponentiated them so we don’t have to do it ourselves.</p>
-<ul>
-<li>The 0.9729 next to <code>rxLev</code> means that the hazard rate at time <span class="math inline">\(t\)</span> for participants on Levamisole is 13% lower than the hazard rate for participants on observation, holding sex and age constant.</li>
-<li>The 0.6881 next to <code>rxLev+5FU</code> means that the hazard rate at time <span class="math inline">\(t\)</span> for participants on Levamisole plus 5-FU is 31% lower than the hazard rate for participants on observation, holding sex and age constant.</li>
-<li>The 0.9996 next to <code>sex</code> means that the hazard at time <span class="math inline">\(t\)</span> for males is 0.04% lower than the hazard rate for females, holding treatment and age constant.</li>
-<li>The 1.0024 next to <code>age</code> means that with each additional year of age, the hazard rate at time <span class="math inline">\(t\)</span> increases by 0.24%, holding treatment and sex constant.</li>
-</ul>
+<p>We can see above that the p-values for every test are higher than any reasonable cutoff. This means that we fail to reject the hypotheses that the proportional hazards assumption holds for treatment, sex, age, and the model as a whole. This means we can interpret our coefficients.</p>
+<p>Note that this contradicts what we saw in the complementary log-log plots. I would trust the Schoenfeld residuals test more than the complementary log-log plots for this example because we weren’t able to make a single complementary log-log plot that accounted for every covariate in the model.</p>
+<p>What if we rejected the null for some covariates but not others, or for the global test but not the covariate-specific tests? I would recommend looking at the Schoenfeld residual plots to get a better sense of what’s going on. Actually, I would look at the Schoenfeld residual plots no matter what the tests say.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_01_ph_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoxzph</span>(mod_01_ph_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the code above, I’ve used both base R plotting and the function <code>ggcoxzph</code> from the package <code>survminer</code>. You only need to do one or the other.</p>
+<p>In each plot, time is on the horizontal axis and <code>Beta(t)</code> for a specific covariate is on the vertical axis. These plots are trying to display graphically how the estimated coefficient changes over time. The proportional hazards assumption means that the coefficient doesn’t change over time. So, if the curve is flat, that’s evidence for the proportional hazards assumption being correct. In all the plots above, the curve is flat, which is consistent with the results from the Schoenfeld residuals test.</p>
+<p>If you find, through either the test or the plots, that the proportional hazards assumption doesn’t hold, you may have to use other methods and/or change your model.</p>
 </section>
-<section id="proportional-hazards" class="level3" data-number="87.2.4">
-<h3 data-number="87.2.4" class="anchored" data-anchor-id="proportional-hazards"><span class="header-section-number">87.2.4</span> Proportional Hazards</h3>
-<p>Note that I kept saying “hazard rate at time <span class="math inline">\(t\)</span>”. With the Cox proportional hazards model, we assume that if you fix <span class="math inline">\(t\)</span>, one hazard rate is a constant multiple of the other. In other words, the hazard rates are always proportional to each other. But we must fix the time we’re talking about. We can’t compare the hazard rate in one group at time <span class="math inline">\(t\)</span> to the hazard rate in another group at time <span class="math inline">\(s\)</span>.</p>
 </section>
-</section>
-<section id="problems" class="level2" data-number="87.3">
-<h2 data-number="87.3" class="anchored" data-anchor-id="problems"><span class="header-section-number">87.3</span> Problems</h2>
-<section id="problem-1" class="level3" data-number="87.3.1">
-<h3 data-number="87.3.1" class="anchored" data-anchor-id="problem-1"><span class="header-section-number">87.3.1</span> Problem 1</h3>
-<p>To quote the help page for this data set, “The 197 patients in this dataset were a 50% random sample of the patients with ‘high-risk’ diabetic retinopathy as defined by the Diabetic Retinopathy Study (DRS). Each patient had one eye randomized to laser treatment and the other eye received no treatment. For each eye, the event of interest was the time from initiation of treatment to the time when visual acuity dropped below 5/200 two visits in a row. Thus there is a built-in lag time of approximately 6 months (visits were every 3 months). Survival times in this dataset are therefore the actual time to blindness in months, minus the minimum possible time to event (6.5 months). Censoring was caused by death, dropout, or end of the study.”</p>
-<p>Since I want the observations to be independent, I’m going to only use the left eye for each patient. The explanatory variables are as follows:</p>
+<section id="problems" class="level2" data-number="90.3">
+<h2 data-number="90.3" class="anchored" data-anchor-id="problems"><span class="header-section-number">90.3</span> Problems</h2>
+<section id="problem-1" class="level3" data-number="90.3.1">
+<h3 data-number="90.3.1" class="anchored" data-anchor-id="problem-1"><span class="header-section-number">90.3.1</span> Problem 1</h3>
+<p>Let’s return to the diabetic retinopathy data set. As a reminder, each row corresponds to the left eye of a patient with “high-risk” diabetic retinopathy. The explanatory variables are as follows:</p>
 <ul>
 <li><code>age</code>: Age at diagnosis.</li>
 <li><code>trt</code>: Treatment (0 = no treatment, 1 = laser).</li>
 <li><code>risk_factor</code>: Risk group, with values 6, 8, 9, 10, 11, and 12. I’m not sure why there’s no 7.</li>
 </ul>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(time = time, event = status) ~ age + trt + 
-    risk_factor, data = d_dr)
-
-  n= 197, number of events= 69 
-
-                  coef exp(coef) se(coef)      z Pr(&gt;|z|)    
-age            0.01142   1.01148  0.00855  1.335    0.182    
-trt           -1.46936   0.23007  0.30730 -4.781 1.74e-06 ***
-risk_factor8  -0.46987   0.62509  0.77566 -0.606    0.545    
-risk_factor9  -0.43159   0.64948  0.63438 -0.680    0.496    
-risk_factor10  0.91994   2.50914  0.63669  1.445    0.148    
-risk_factor11 -0.05001   0.95122  0.65880 -0.076    0.939    
-risk_factor12  0.32293   1.38117  0.66679  0.484    0.628    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-              exp(coef) exp(-coef) lower .95 upper .95
-age              1.0115     0.9886    0.9947    1.0286
-trt              0.2301     4.3464    0.1260    0.4202
-risk_factor8     0.6251     1.5998    0.1367    2.8588
-risk_factor9     0.6495     1.5397    0.1873    2.2519
-risk_factor10    2.5091     0.3985    0.7204    8.7393
-risk_factor11    0.9512     1.0513    0.2615    3.4598
-risk_factor12    1.3812     0.7240    0.3738    5.1029
-
-Concordance= 0.709  (se = 0.032 )
-Likelihood ratio test= 44  on 7 df,   p=2e-07
-Wald test            = 40.19  on 7 df,   p=1e-06
-Score (logrank) test = 44.34  on 7 df,   p=2e-07</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mod_02 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">time =</span> time,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">event =</span> status) <span class="sc">~</span> age <span class="sc">+</span> trt <span class="sc">+</span> risk_factor,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> d_dr)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mod_02_ph_test <span class="ot">&lt;-</span> <span class="fu">cox.zph</span>(mod_02)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoxzph</span>(mod_02_ph_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_check_ph_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>Interpret the estimated coefficients in the Cox regression above.</p>
+</div>
+<p>Is the proportional hazards assumption met for this model? Justify your answer.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1135,15 +1188,7 @@ Score (logrank) test = 44.34  on 7 df,   p=2e-07</code></pre>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<ul>
-<li>With each additional year of age at diagnosis, the hazard rate at time <span class="math inline">\(t\)</span> increases by 1.15%, holding treatment and risk group constant.</li>
-<li>Treated eyes have a 77% lower hazard rate at time <span class="math inline">\(t\)</span> than untreated eyes, holding age at diagnosis and risk group constant.</li>
-<li>Eyes in risk group 8 have a 37.5% lower hazard rate at time <span class="math inline">\(t\)</span> than eyes in risk group 6, holding age at diagnosis and treatment status constant. (I say “eyes in risk group 8” because risk group applies to the eye, not the patient. The same patient can have eyes in two different risk groups.)</li>
-<li>Eyes in risk group 9 have a 35% lower hazard rate at time <span class="math inline">\(t\)</span> than eyes in risk group 6, holding age at diagnosis and treatment status constant.</li>
-<li>Eyes in risk group 10 have a 151% higher hazard rate at time <span class="math inline">\(t\)</span> than eyes in risk group 6, holding age at diagnosis and treatment status constant.</li>
-<li>Eyes in risk group 11 have a 5% lower hazard rate at time <span class="math inline">\(t\)</span> than eyes in risk group 6, holding age at diagnosis and treatment status constant.</li>
-<li>Eyes in risk group 12 have a 38% higher hazard rate at time <span class="math inline">\(t\)</span> than eyes in risk group 6, holding age at diagnosis and treatment status constant.</li>
-</ul>
+<p>All the p-values for the hypothesis tests are large, and the curves in the plots are flat, indicating the proportional hazards assumption is met for this model.</p>
 </div>
 </div>
 </div>
@@ -1655,13 +1700,13 @@ Score (logrank) test = 44.34  on 7 df,   p=2e-07</code></pre>
   </script>
 <nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
-      <a href="../07_cox/03_hazard.html" class="pagination-link" aria-label="Hazard Rate">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">86</span>&nbsp; <span class="chapter-title">Hazard Rate</span></span>
+      <a href="../07_cox/06_ph.html" class="pagination-link" aria-label="Proportional Hazards Assumption">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">89</span>&nbsp; <span class="chapter-title">Proportional Hazards Assumption</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../A_problems_with_coding/01_index.html" class="pagination-link" aria-label="Introduction">
-        <span class="nav-page-text"><span class="chapter-number">88</span>&nbsp; <span class="chapter-title">Introduction</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../07_cox/08_hypothesis_testing.html" class="pagination-link" aria-label="Hypothesis Testing">
+        <span class="nav-page-text"><span class="chapter-number">91</span>&nbsp; <span class="chapter-title">Hypothesis Testing</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
