@@ -31,6 +31,7 @@ For example, let's compare these two interaction models
 using the diabetic retinopathy data.
 
 ```{r}
+#| echo: true
 mod_01 <- coxph(formula = Surv(time = time,
                                event = status) ~ trt * laser,
                 data = d_dr)
