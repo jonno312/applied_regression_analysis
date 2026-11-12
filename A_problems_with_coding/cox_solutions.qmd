@@ -1,0 +1,247 @@
+---
+title: "Cox Proportional Hazards Regression (Solutions)"
+format: html
+---
+
+```{r}
+#| warning: false
+# Load packages
+library(survival)
+library(ggsurvfit)
+library(survminer)
+```
+
+
+## Problem 1
+
+This problem uses data from a placebo-controlled clinical trial of
+D-penicillamine (DPCA) for primary biliary cirrhosis (PBC).
+PBC destroys bile ducts in the liver, causing bile to accumulate,
+which causes progressive tissue damage and ultimately leads to liver failure.
+The outcome in this study is time to death.
+I'm not sure what the time origin is.
+The data set and codebook are available in the GitHub repository.
+
+```{r}
+# Load data
+pbc <- read.csv("pbc.csv")
+```
+
+### Part (a)
+
+Create a single plot with two Kaplan-Meier curves on it,
+one for the DPCA group and one for the placebo group.
+
+```{r}
+# Create integer-valued status variable
+sum(is.na(pbc$status))
+pbc$status_int <- 0
+pbc$status_int[pbc$status == "Dead"] <- 1
+
+# Kaplan-Meier curves
+ggsurvfit(survfit2(Surv(time = years,
+                        event = status_int) ~ rx,
+                   data = pbc)) +
+  labs(x = "Years",
+       y = "Probability of Survival") +
+  add_risktable()
+```
+
+### Part (b)
+
+Run a Cox regression with `rx` as the only explanatory variable.
+Then, check whether the proportional hazards assumption is met.
+If it is, interpret the coefficients. If it isn't, move on to the next problem.
+
+```{r}
+# Ensure "Placebo" is the reference group
+pbc$rx <- as.factor(pbc$rx)
+pbc$rx <- relevel(x = pbc$rx,
+                  ref = "Placebo")
+
+# Cox regresssion
+mod_01 <- coxph(formula = Surv(time = years,
+                               event = status_int) ~ rx,
+                data = pbc)
+
+# Complementary log-log plot
+ggsurvplot(fit = survfit(Surv(time = years,
+                              event = status_int) ~ rx,
+                         data = pbc),
+           fun = "cloglog")
+
+# Schoenfeld residual test
+ggcoxzph(cox.zph(mod_01))
+```
+
+The lines in the complementary log-log plot cross multiple times.
+The Schoenfeld residual test is not significant,
+but the Schoenfeld residual plot shows a non-flat line.
+I'm not convinced that the proportional hazards assumption is met,
+so I'm not going to interpret the coefficients.
+
+### Part (c)
+
+Run a Cox regression with at least two explanatory variables.
+One of the explanatory variables must be `rx`,
+and you must include at least one interaction.
+Then, check whether the proportional hazards assumption is met.
+If it is, interpret the coefficients. If it isn't, move on to the next problem.
+
+```{r}
+# Create character variable for sex
+sum(is.na(pbc$sex))
+pbc$sex_ch <- "Male"
+pbc$sex_ch[pbc$sex == 1] <- "Female"
+
+# Cox regresssion
+mod_02 <- coxph(formula = Surv(time = years,
+                               event = status_int) ~ rx * sex_ch + age,
+                data = pbc)
+
+# Schoenfeld residual test
+ggcoxzph(cox.zph(mod_02))
+
+# Results
+summary(mod_02)
+
+# Interaction terms
+exp(sum(mod_02$coefficients[c(1,4)]))
+exp(sum(mod_02$coefficients[c(2,4)]))
+```
+
+
+The Schoenfeld residual plots still don't look flat,
+even though the tests are not significant.
+I'm going to provide interpretations for the coefficients,
+just so people can get practice interpreting coefficients:
+
+- $\exp\left(\hat{\beta}_1\right) = 1.206100$:
+At a given time $t$,
+women on DPCA have a 21% higher hazard rate than women on placebo,
+holding age constant.
+- $\exp\left(\hat{\beta}_2\right) = 1.905265$:
+At a given time $t$,
+men on placebo have a 90% higher hazard rate than women on placebo,
+holdling age constant.
+- $\exp\left(\hat{\beta}_1+\hat{\beta}_4\right) = 0.5974903$:
+At a given time $t$,
+men on DPCA have a 40% lower hazard rate than men on placebo,
+holding age constant.
+- $\exp\left(\hat{\beta}_2+\hat{\beta}_4\right) = 0.9438501$:
+At a given time $t$,
+men on DPCA have a 6% lower hazard rate than women on DPCA,
+holding age constant.
+- $\exp\left(\hat{\beta}_3\right) = 1.040865$:
+At a given time $t$,
+a person who is $x + 1$ years old has a 4% higher hazard rate
+than a person who is $x$ years old,
+holding treatment group and sex constant.
+
+
+
+### Part (d)
+
+Is there evidence of effect modification in your analysis?
+Justify your answer.
+
+The p-value for the interaction term is non-significant,
+so you could argue that there is no evidence of effect modification.
+However, the effect of DPCA is in opposite directions for men and women,
+so you could also argue that that's clinically meaningful.
+
+Just out of curiosity, I'm going to make some new
+Kaplan-Meier curves for each combination of sex and treatment status.
+
+```{r}
+# Kaplan-Meier curves
+ggsurvfit(survfit2(Surv(time = years,
+                        event = status_int) ~ rx + sex_ch,
+                   data = pbc)) +
+  labs(x = "Years",
+       y = "Probability of Survival")
+```
+
+Within sex, the survival curves for DPCA and placebo cross.
+I'm not convinced there's an effect of treatment, even when stratified
+by sex, and I'm not convinced that the effect of treatment is different
+across sex.
+
+## Problem 2
+
+This problem uses data from a study of time to death after a kidney transplant.
+The data set and documentation are available in the GitHub repository.
+
+```{r}
+# Load data
+kidney <- read.csv("kidney_data.csv")
+```
+
+Create a Cox regression model, check the assumption of proportional hazards,
+and interpret the coefficients.
+
+```{r}
+# Create character variables for gender and race
+kidney$gender_ch <- as.character(NA)
+kidney$gender_ch[kidney$gender == 1] <- "Male"
+kidney$gender_ch[kidney$gender == 2] <- "Female"
+kidney$race_ch <- as.character(NA)
+kidney$race_ch[kidney$race == 1] <- "White"
+kidney$race_ch[kidney$race == 2] <- "Black"
+
+# Cox regresssion
+mod_03 <- coxph(formula = Surv(time = obstime,
+                               event = death) ~ gender_ch + race_ch + age,
+                data = kidney)
+
+# Schoenfeld residual test
+ggcoxzph(cox.zph(mod_03))
+
+# Results
+summary(mod_03)
+```
+
+
+The Schoenfeld residual test is non-significant for every covariate,
+and the curves are flat,
+so the proportional hazards assumption is met.
+
+- $\exp\left(\hat{\beta}_1\right) = 0.973810$:
+At a given time $t$,
+the hazard rate for males is 3% lower than the hazard rate for females,
+holding race and age constant.
+- $\exp\left(\hat{\beta}_2\right) = 0.8902$:
+At a given time $t$,
+the hazard rate for white people is 11% lower than the hazard rate
+for Black people, holding gender and age constant.
+- $\exp\left(\hat{\beta}_3\right) = 1.0524$:
+At a given time $t$,
+each additional year of age is associated with a 5% higher hazard rate,
+holding gender and race constant.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

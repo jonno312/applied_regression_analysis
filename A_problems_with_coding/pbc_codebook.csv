@@ -1,0 +1,24 @@
+﻿variable,definition
+number,case number
+status,"censored (i.e., alive at last contact), or death"
+rx,Placebo or DPCA (D-penicillamine)
+sex,"0 = male, 1 = female"
+asictes,"prescence of asictes (0 no, 1 yes)"
+hepatom,"presence of hepatomegaly (0 no, 1 yes)"
+spiders,"presence of spiders (0 no, 1 yes)"
+edema,"presence of edema (0 no, 1 yes)"
+bilirubin,serum bilirubin in mg/dl
+cholest,serum cholesterol in mg/dl
+albumin,albumin in gm/dl
+copper,urine copper in ug/day
+alkphos,alkaline phosphatase in U/liter
+sgot,SGOT in U/ml
+trigli,triglycerides in mg/dl
+platel,plateles per cubic ml/1000
+prothrom,prothrombin time in seconds
+histol,"histologic stage of disease (1,2,3,4)"
+age,age in years
+years,time to death or censoring (in years)
+logbili,bilirubin (log)
+logalbu,albumin (log)
+logprot,prothrombin time (log)

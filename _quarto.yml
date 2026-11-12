@@ -132,6 +132,8 @@ book:
         - A_problems_with_coding/calibration_ROC_solutions.qmd
         - A_problems_with_coding/poisson.qmd
         - A_problems_with_coding/poisson_solutions.qmd
+        - A_problems_with_coding/cox.qmd
+        - A_problems_with_coding/cox_solutions.qmd
     - part: "Appendix B: Past Quizzes"
       chapters:
         - B_past_quizzes/01_index.qmd

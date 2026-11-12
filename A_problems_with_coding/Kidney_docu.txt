@@ -1,0 +1,16 @@
+Kidney transplant data
+=========================================================================
+
+This file contains data on 863 individuals who underwent a kidney transplant.
+
+To load the data in R use the following command:
+kidney <- read.csv("Kidney_data.csv", header=TRUE)
+
+The variables are (in column order):
+
+ 1 ptid      patient id
+ 2 obstime   time-to-death or on-study time, days
+ 3 death     indicator of whether or not the observed time is a time-to-death; 0/1 = No/Yes
+ 4 gender    indicator of gender; 1/2 = male/female
+ 5 race      indicator of race; 1/2 = white/black
+ 6 age       age of the patient, in years

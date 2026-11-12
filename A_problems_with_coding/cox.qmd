@@ -1,0 +1,114 @@
+---
+title: "Cox Proportional Hazards Regression"
+format: html
+---
+
+
+
+
+## Problem 1
+
+This problem uses data from a placebo-controlled clinical trial of
+D-penicillamine (DPCA) for primary biliary cirrhosis (PBC).
+PBC destroys bile ducts in the liver, causing bile to accumulate,
+which causes progressive tissue damage and ultimately leads to liver failure.
+The outcome in this study is time to death.
+I'm not sure what the time origin is.
+The data set and codebook are available in the GitHub repository.
+
+```{r}
+# Load data
+pbc <- read.csv("pbc.csv")
+```
+
+### Part (a)
+
+Create a single plot with two Kaplan-Meier curves on it,
+one for the DPCA group and one for the placebo group.
+
+```{r}
+
+```
+
+### Part (b)
+
+Run a Cox regression with `rx` as the only explanatory variable.
+Then, check whether the proportional hazards assumption is met.
+If it is, interpret the coefficients. If it isn't, move on to the next problem.
+
+```{r}
+
+```
+
+
+
+### Part (c)
+
+Run a Cox regression with at least two explanatory variables.
+One of the explanatory variables must be `rx`,
+and you must include at least one interaction.
+Then, check whether the proportional hazards assumption is met.
+If it is, interpret the coefficients. If it isn't, move on to the next problem.
+
+```{r}
+
+```
+
+
+
+
+
+
+### Part (d)
+
+Is there evidence of effect modification in your analysis?
+Justify your answer.
+
+
+
+## Problem 2
+
+This problem uses data from a study of time to death after a kidney transplant.
+The data set and documentation are available in the GitHub repository.
+
+```{r}
+# Load data
+kidney <- read.csv("kidney_data.csv")
+```
+
+Create a Cox regression model, check the assumption of proportional hazards,
+and interpret the coefficients.
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
