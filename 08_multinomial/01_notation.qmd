@@ -1,0 +1,96 @@
+---
+title: "Notation"
+execute:
+  echo: false
+format: html
+---
+
+## Learning Objective
+
+Use and interpret the notation for a categorical outcome
+
+
+## Lesson
+
+Up to this point, we have considered continuous, binary, count,
+and time-to-event outcomes.
+Now we're going to consider categorical outcomes.
+A categorical outcome can either be ordered or unordered.
+
+An ordered categorical (or ordinal) outcome has levels that can be put into
+a natural order.
+However, consecutive levels aren't separated by the same distance.
+This is probably more clear with examples.
+These are examples of an ordered categorical outcome:
+
+- Strongly disagree, disagree, neutral, agree, strongly agree
+- Low, medium, high
+- Never, rarely, sometimes, often, every day
+- Rare, medium rare, medium, medium well, well done
+- Cold, lukewarm, hot
+
+An unordered categorical outcome has levels that have no natural order.
+These are some examples:
+
+- Vermont, New Hampshire, Maine, Massachusetts, Connecticut, Rhode Island
+- Blue, yellow, red
+- Animal, vegetable, mineral
+- House, apartment, tent
+- Smartphone, laptop, desktop, tablet
+
+Categorical outcomes are not as common as the other outcome types,
+but they're not uncommon.
+In order to discuss regression methods for categorical outcomes,
+we'll need a common notation.
+Let's define the following:
+
+- $M$ is the number of levels.
+- Even if the levels cannot be ordered, we will assign them numbers.
+So, we'll say $Y_i \in\left\{1,2,3,\dotsc,M\right\}$,
+meaning $Y_i$, the outcome value for the $i$th observation,
+is 1 or 2 or 3 or 4 or . . . or $M$.
+- For $m\in\left\{1,2,3,\dotsc,M\right\}$,
+$$
+\pi_{im} = P\left(Y_i = m\middle|X_{i1},\dotsc,X_{ip}\right) \text{.}
+$$
+In words, $\pi_{im}$ is the probability that the $i$th observation
+has outcome level $m$,
+conditional on all the covariates.
+
+One last note:
+As with every other regression model in this course,
+we assume the observations are iid.
+
+## Problems
+
+### Problem 1
+
+What is $\sum_{j=1}^M \pi_{im}$?
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+1.
+
+$Y_i$ must be 1 or 2 or 3 or 4 or . . . or $M$.
+Each of these options is mutually exclusive
+and together they are exhaustive, so the probability that one of them occurs
+is 1.
+
+:::
+
+### Problem 2
+
+Is $\pi_{im}$ a risk or an odds?
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+It's a risk, not an odds.
+It's a probability, which is synonymous with risk in the context
+of biostatistics.
+
+:::
+
+
+
+
