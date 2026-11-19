@@ -1,0 +1,248 @@
+---
+title: "Baseline Category Logit Model"
+execute:
+  echo: false
+format: html
+---
+
+```{r}
+#| echo: true
+#| warning: false
+library(nnet)
+library(AER)
+```
+
+## Learning Objectives
+
+If provided with the assumptions of a baseline category logit model,
+
+- Interpret the coefficients
+- Interpret the results of a hypothesis test
+
+
+## Lesson
+
+### Overview
+
+In the baseline category logit model, we assume that
+for each $m\in\{1,2,\dotsc,M-1\}$,
+$$
+\log \left(\frac{\pi_{im}}{\pi_{iM}}\right) = \beta_{0m} + \beta_{1m} X_{i1} + \cdots + \beta_{pm} X_{ip} \text{.}
+$$
+In words, we assume that the log risk ratio comparing level $m$
+to level $M$ is a linear function of the covariates.
+
+### Interpretation
+
+How do we interpret the coefficients?
+Let's start with the intercept.
+Suppose all the covariates are equal to zero.
+Then
+$$
+\begin{align*}
+\log \left(\frac{\pi_{im}}{\pi_{iM}}\right) &= \beta_{0m} + \beta_{1m} (0) + \cdots + \beta_{pm} (0) \\
+\log \left(\frac{\pi_{im}}{\pi_{iM}}\right) &= \beta_{0m}  \\
+\frac{\pi_{im}}{\pi_{iM}} &= \exp\left(\beta_{0m}\right) \text{.}
+\end{align*}
+$$
+So, $\exp\left(\beta_{0m}\right)$ is the ratio of the risk of level $m$
+to the risk of level $M$ when all the covariates equal zero.
+
+What about non-intercept coefficients?
+Suppose observations $i$ and $j$ differ only in that $X_{i1} = x + 1$
+and $X_{j1} = x$.
+Then
+$$
+\begin{align*}
+\log \left(\frac{\pi_{im}}{\pi_{iM}}\right) - \log \left(\frac{\pi_{jm}}{\pi_{jM}}\right) &= \beta_{0m} + \beta_{1m} X_{i1} + \cdots + \beta_{pm} X_{ip} - \left(\beta_{0m} + \beta_{1m} X_{j1} + \cdots + \beta_{pm} X_{jp}\right) \\
+\log \left(\frac{\pi_{im}/\pi_{iM}}{\pi_{jm}/\pi_{jM}}\right)  &= \beta_{0m} + \beta_{1m} (x + 1) + \cdots + \beta_{pm} X_{ip} - \left(\beta_{0m} + \beta_{1m} x + \cdots + \beta_{pm} X_{ip}\right) \\
+\log \left(\frac{\pi_{im}/\pi_{iM}}{\pi_{jm}/\pi_{jM}}\right) &= \beta_{1m} \\
+\frac{\pi_{im}/\pi_{iM}}{\pi_{jm}/\pi_{jM}} &= \exp\left(\beta_{1m}\right) \text{.}
+\end{align*}
+$$
+In words, the ratio of the risk of category $m$ to the risk of category $M$
+among observations with $X_{i1} = x + 1$ is $\exp\left(\beta_{1m}\right)$ times
+the same ratio among observations with $X_{i1} = x$,
+holding all else constant.
+
+I know that's a lot of words.
+Interpreting the coefficients in regression with a categorical outcome
+always results in a lot of words.
+
+### Hypothesis Testing
+
+As always, the default null hypothesis for a test involving a regression
+coefficient is that the coefficient equals zero.
+Here, as in logistic, Poisson, and Cox regression,
+we are exponentiating our coefficients,
+so the null hypothesis is that the exponentiated coefficient equals 1.
+For the baseline category logit model,
+$\beta_{0m} = 0$ would imply that
+the risk of level $m$ is equal
+to the risk of level $M$ when all the covariates equal zero.
+In contrast,
+$\beta_{1m} = 0$ would imply that
+the ratio of the risk of category $m$ to the risk of category $M$
+among observations with $X_{i1} = x + 1$ is equal to
+the same ratio among observations with $X_{i1} = x$.
+
+### Example
+
+```{r}
+d_student <- Lock5Data::StudentSurvey
+```
+
+Let's look at a data set containing survey responses from students
+in introductory statistics courses.
+Our outcome will be the student's preferred award from among these
+three options: Academy Award, Nobel Prize, or Olympic Medal.
+For explanatory variables, we'll use
+sex (`F` is female, `M` is male),
+hours of exercise per week,
+hours of TV viewing per week,
+and combined verbal and math SAT score.
+
+```{r}
+#| echo: true
+# The multinom function is from the package nnet
+mod_01 <- multinom(formula = Award ~ Sex + Exercise + TV + SAT,
+                   data = d_student)
+summary(mod_01)
+exp(summary(mod_01)$coefficients)
+```
+
+**Interpretations**
+
+- 0.143208: Among females who don't exercise or watch TV
+and who scored a zero on the SAT,
+the probability of preferring a Nobel Prize is 86% lower than
+the probability of preferring an Academy Award.
+- 9.652715: Among females who don't exercise or watch TV
+and who scored a zero on the SAT,
+the probability of preferring an Olympic medal is 9.65 times
+the probability of preferring an Academy Award.
+- 1.802041: The ratio of the probability of preferring a Nobel Prize
+to the probability of preferring an Academy Award
+among males is 1.8 times the same ratio among females,
+holding all else constant.
+- 2.333026: The ratio of the probability of preferring an Olympic Medal
+to the probability of preferring an Academy Award
+among males is 2.33 times the same ratio among females,
+holding all else constant.
+- 0.9955136: The ratio of the probability of preferring a Nobel Prize
+to the probability of preferring an Academy Award
+among students who exercise $x+1$ hours per week
+is 0.45% lower than the same ratio among students who exercise $x$ hours per week,
+holding all else constant.
+- 1.1717084: The ratio of the probability of preferring an Olympic Medal
+to the probability of preferring an Academy Award
+among students who exercise $x+1$ hours per week
+is 17% greater than the same ratio among students who exercise $x$ hours per week,
+holding all else constant.
+- 0.9530915: The ratio of the probability of preferring a Nobel Prize
+to the probability of preferring an Academy Award
+among students who watch $x+1$ hours of TV per week
+is 5% lower than the same ratio among students who watch $x$ hours of TV per week,
+holding all else constant.
+- 1.0036990: The ratio of the probability of preferring an Olympic Medal
+to the probability of preferring an Academy Award
+among students who watch $x+1$ hours of TV per week
+is 0.37% higher than the same ratio among students who watch $x$ hours of TV per week,
+holding all else constant.
+- 1.0029547: The ratio of the probability of preferring a Nobel Prize
+to the probability of preferring an Academy Award
+among students who scored $x+1$ on the SAT
+is 0.29% higher than the same ratio among students who scored $x$ on the SAT,
+holding all else constant.
+- 0.9980527: The ratio of the probability of preferring an Olympic Medal
+to the probability of preferring an Academy Award
+among students who scored $x+1$ on the SAT
+is 0.19% lower than the same ratio among students who scored $x$ on the SAT,
+holding all else constant.
+
+
+**Hypothesis Tests**
+
+```{r}
+#| echo: true
+# The coeftest function is from the package AER
+coeftest(mod_01)
+```
+
+For these tests, we'll use $\alpha = 0.05$.
+
+- There is a statistically significant difference between the following:
+  - The probability of preferring a Nobel Prize and
+  the probability of preferring an Academy Award,
+  among females who don't exercise or watch TV
+  and who scored a zero on the SAT.
+  - The ratio of the probability of preferring a Nobel Prize
+  to the probability of preferring an Academy Award
+  among students who scored $x+1$ on the SAT
+  and the same ratio among students who scored $x$ on the SAT,
+  holding all else constant.
+  - The probability of preferring an Olympic medal and
+  the probability of preferring an Academy Award,
+  among females who don't exercise or watch TV
+  and who scored a zero on the SAT.
+  - The ratio of the probability of preferring an Olympic Medal
+  to the probability of preferring an Academy Award
+  among males and the same ratio among females,
+  holding all else constant.
+  - The ratio of the probability of preferring an Olympic Medal
+  to the probability of preferring an Academy Award
+  among students who exercise $x+1$ hours per week
+  and the same ratio among students who exercise $x$ hours per week,
+  holding all else constant.
+  - The ratio of the probability of preferring an Olympic Medal
+  to the probability of preferring an Academy Award
+  among students who scored $x+1$ on the SAT
+  and the same ratio among students who scored $x$ on the SAT,
+  holding all else constant.
+- There is not a statistically significant difference between the following:
+  - The ratio of the probability of preferring a Nobel Prize
+  to the probability of preferring an Academy Award
+  among males and the same ratio among females,
+  holding all else constant.
+  - The ratio of the probability of preferring a Nobel Prize
+  to the probability of preferring an Academy Award
+  among students who exercise $x+1$ hours per week
+  and the same ratio among students who exercise $x$ hours per week,
+  holding all else constant.
+  - The ratio of the probability of preferring a Nobel Prize
+  to the probability of preferring an Academy Award
+  among students who watch $x+1$ hours of TV per week
+  and the same ratio among students who watch $x$ hours of TV per week,
+  holding all else constant.
+  - The ratio of the probability of preferring an Olympic Medal
+  to the probability of preferring an Academy Award
+  among students who watch $x+1$ hours of TV per week
+  and the same ratio among students who watch $x$ hours of TV per week,
+  holding all else constant.
+
+
+## Problems
+
+### Problem 1
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+### Problem 2
+
+
+
+::: {.callout-tip title="Solution" collapse="true"}
+
+
+
+:::
+
+
+
+
