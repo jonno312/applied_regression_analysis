@@ -225,17 +225,60 @@ For these tests, we'll use $\alpha = 0.05$.
 
 ### Problem 1
 
+```{r}
+d_iris <- Lock5Data::FisherIris
+d_iris$Type <- relevel(x = d_iris$Type,
+                       ref = "Versicolor")
+d_iris$PetalWidth_13 <- d_iris$PetalWidth - 13
+d_iris$PetalLength_44 <- d_iris$PetalLength - 44
+d_iris$SepalWidth_28 <- d_iris$SepalWidth - 28
+d_iris$SepalLength_59 <- d_iris$SepalLength - 59
+```
 
+
+Let's look at a famous data set from the 1936 paper
+"[The use of multiple measurements in taxonomic problems](https://doi.org/10.1111/j.1469-1809.1936.tb02137.x)."
+Each observation is an iris (flower);
+the outcome is species, with three options:
+Setosa, Virginica, and Versicolor.
+These are the explanatory variables:
+
+- Petal length in mm.
+- Petal width in mm.
+- Sepal length in mm.
+- Sepal width in mm.
+
+```{r}
+mod_02 <- multinom(formula = Type ~ PetalLength_44 + PetalWidth_13 + SepalLength_59 + SepalWidth_28,
+                   data = d_iris)
+summary(mod_02)
+```
+
+#### Part (a)
+
+Interpret the coefficients in real-world terms.
+
+```{r}
+#| echo: true
+exp(summary(mod_02)$coefficients)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-
+- 
 
 :::
 
-### Problem 2
+#### Part (b)
 
 
+
+Interpret the results of the hypothesis tests associated with the coefficients.
+
+```{r}
+#| echo: true
+coeftest(mod_02)
+```
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
