@@ -119,6 +119,10 @@ book:
         - 07_cox/08_hypothesis_testing.qmd
         - 07_cox/09_interactions.qmd
         - 07_cox/10_performance.qmd
+    - part: "Regression with a Categorical Outcome"
+      chapters:
+        - 08_multinomial/01_notation.qmd
+        - 08_multinomial/02_baseline_category_logit.qmd
     - part: "Appendix A: Problems with Coding"
       chapters:
         - A_problems_with_coding/01_index.qmd
