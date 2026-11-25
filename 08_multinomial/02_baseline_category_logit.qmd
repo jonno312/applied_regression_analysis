@@ -106,7 +106,8 @@ and combined verbal and math SAT score.
 #| echo: true
 # The multinom function is from the package nnet
 mod_01 <- multinom(formula = Award ~ Sex + Exercise + TV + SAT,
-                   data = d_student)
+                   data = d_student,
+                   trace = FALSE)
 summary(mod_01)
 exp(summary(mod_01)$coefficients)
 ```
@@ -227,12 +228,6 @@ For these tests, we'll use $\alpha = 0.05$.
 
 ```{r}
 d_iris <- Lock5Data::FisherIris
-d_iris$Type <- relevel(x = d_iris$Type,
-                       ref = "Versicolor")
-d_iris$PetalWidth_13 <- d_iris$PetalWidth - 13
-d_iris$PetalLength_44 <- d_iris$PetalLength - 44
-d_iris$SepalWidth_28 <- d_iris$SepalWidth - 28
-d_iris$SepalLength_59 <- d_iris$SepalLength - 59
 ```
 
 
@@ -240,7 +235,7 @@ Let's look at a famous data set from the 1936 paper
 "[The use of multiple measurements in taxonomic problems](https://doi.org/10.1111/j.1469-1809.1936.tb02137.x)."
 Each observation is an iris (flower);
 the outcome is species, with three options:
-Setosa, Virginica, and Versicolor.
+setosa, virginica, and versicolor.
 These are the explanatory variables:
 
 - Petal length in mm.
@@ -248,13 +243,56 @@ These are the explanatory variables:
 - Sepal length in mm.
 - Sepal width in mm.
 
+Before diving into a regression, let's take a look at some plots.
+
 ```{r}
+boxplot(formula = PetalLength ~ Type,
+        data = d_iris,
+        ylab = "Petal Length (mm)")
+boxplot(formula = PetalWidth ~ Type,
+        data = d_iris,
+        ylab = "Petal Width (mm)")
+boxplot(formula = SepalLength ~ Type,
+        data = d_iris,
+        ylab = "Sepal Length (mm)")
+boxplot(formula = SepalWidth ~ Type,
+        data = d_iris,
+        ylab = "Sepal Width (mm)")
+```
+
+If you had a real flower and were trying to distinguish between
+setosa and versicolor, you could just look at the petal length or width.
+There's no overlap in these measurements between these two species.
+Regression would really only be useful if you were trying to distinguish
+between versicolor and virginica.
+
+So, here's what I'm going to do:
+
+- Set versicolor to be the reference.
+Without my intervention, setosa would be the reference,
+and we wouldn't be able to compare versicolor and virginica directly.
+- Re-center the explanatory variables at the median values for versicolor.
+That way, when the new explanatory variables are zero,
+this will be a meaningful value.
+Also, it will be essentially certain that the species is versicolor.
+
+
+```{r}
+#| echo: true
+summary(d_iris[d_iris$Type == "Versicolor", ])
+d_iris$Type <- relevel(x = d_iris$Type,
+                       ref = "Versicolor")
+d_iris$PetalLength_44 <- d_iris$PetalLength - 44
+d_iris$PetalWidth_13 <- d_iris$PetalWidth - 13
+d_iris$SepalLength_59 <- d_iris$SepalLength - 59
+d_iris$SepalWidth_28 <- d_iris$SepalWidth - 28
 mod_02 <- multinom(formula = Type ~ PetalLength_44 + PetalWidth_13 + SepalLength_59 + SepalWidth_28,
-                   data = d_iris)
+                   data = d_iris,
+                   trace = FALSE)
 summary(mod_02)
 ```
 
-#### Part (a)
+
 
 Interpret the coefficients in real-world terms.
 
@@ -265,26 +303,50 @@ exp(summary(mod_02)$coefficients)
 
 ::: {.callout-tip title="Solution" collapse="true"}
 
-- 
+- `5.560529e-10`:
+The probability the species is setosa is $5.56\times 10^{-10}$ times
+the probability the species is versicolor when petal length is 44mm,
+petal width is 13mm, sepal length is 59mm, and sepal width is 28mm.
+- `0.442123`: Each additional millimeter in petal length is associated with
+a 56% decrease in the ratio of the probability that the species is setosa
+to the probability that the species is versicolor,
+holding all else constant.
+- `0.3105612`: Each additional millimeter in petal width is associated with
+a 69% decrease in the ratio of the probability that the species is setosa
+to the probability that the species is versicolor,
+holding all else constant.
+- `1.0957297`: Each additional millimeter in sepal length is associated with
+a 9.6% increase in the ratio of the probability that the species is setosa
+to the probability that the species is versicolor,
+holding all else constant.
+- `2.0349636`: Each additional millimeter in sepal width is associated with
+a 103.5% increase in the ratio of the probability that the species is setosa
+to the probability that the species is versicolor,
+holding all else constant.
+- `1.729799e-03`:
+The probability the species is virginica is $1.73\times 10^{-3}$ times
+the probability the species is versicolor when petal length is 44mm,
+petal width is 13mm, sepal length is 59mm, and sepal width is 28mm.
+- `1.814121`: Each additional millimeter in petal length is associated with
+an 81% increase in the ratio of the probability that the species is virginica
+to the probability that the species is versicolor,
+holding all else constant.
+- `3.0458445`: Each additional millimeter in petal width is associated with
+a 204.6% increase in the ratio of the probability that the species is virginica
+to the probability that the species is versicolor,
+holding all else constant.
+- `0.8850907`: Each additional millimeter in sepal length is associated with
+an 11.5% decrease in the ratio of the probability that the species is virginica
+to the probability that the species is versicolor,
+holding all else constant.
+- `0.6950615`: Each additional millimeter in sepal width is associated with
+a 30.5% decrease in the ratio of the probability that the species is virginica
+to the probability that the species is versicolor,
+holding all else constant.
 
 :::
 
-#### Part (b)
 
-
-
-Interpret the results of the hypothesis tests associated with the coefficients.
-
-```{r}
-#| echo: true
-coeftest(mod_02)
-```
-
-::: {.callout-tip title="Solution" collapse="true"}
-
-
-
-:::
 
 
 
